@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import { parseEnv } from './build/utils'
+import { createVitePlugins } from './build/vite'
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir)
@@ -21,7 +21,6 @@ export default defineConfig(({ command, mode }) => {
   return {
     base: VITE_PUBLIC_PATH,
     root,
-    plugins: [vue()],
     resolve: {
       alias: [
         {
@@ -81,5 +80,7 @@ export default defineConfig(({ command, mode }) => {
     optimizeDeps: {
 
     },
+
+    plugins: createVitePlugins(env, isBuild),
   }
 })

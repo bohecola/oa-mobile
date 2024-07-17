@@ -13,13 +13,13 @@ const scopeComplete = execSync('git status --porcelain || true')
   .trim()
   .split('\n')
   .find(r => ~r.indexOf('M  src'))
-  ?.replace(/(\/)/g, '%%')
-  ?.match(/src%%((\w|-)*)/)?.[1]
+  ?.replace(/\//g, '%%')
+  ?.match(/src%%((?:\w|-)*)/)?.[1]
   ?.replace(/s$/, '')
 
 /** @type {import('cz-git').UserConfig} */
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  extends: ['gitmoji'],
   rules: {
     'body-leading-blank': [2, 'always'],
     'footer-leading-blank': [1, 'always'],
@@ -27,27 +27,6 @@ module.exports = {
     'subject-empty': [2, 'never'],
     'type-empty': [2, 'never'],
     'subject-case': [0],
-    'type-enum': [
-      2,
-      'always',
-      [
-        'feat',
-        'fix',
-        'perf',
-        'style',
-        'docs',
-        'test',
-        'refactor',
-        'build',
-        'ci',
-        'chore',
-        'revert',
-        'wip',
-        'workflow',
-        'types',
-        'release',
-      ],
-    ],
   },
   prompt: {
     defaultScope: scopeComplete,
