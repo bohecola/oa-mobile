@@ -9,5 +9,9 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "types/**/*.d.ts",
+    "build/**/*.ts",
+    "vite.config.ts"
+  ]
 }
