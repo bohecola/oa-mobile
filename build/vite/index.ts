@@ -4,6 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
 import { configHtmlPlugin } from './plugin/html'
+import { configCompressPlugin } from './plugin/compress'
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
@@ -31,6 +32,10 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   ]
 
   vitePlugins.push(configHtmlPlugin(env, isBuild))
+
+  if (isBuild) {
+    vitePlugins.push(configCompressPlugin())
+  }
 
   return vitePlugins
 }
