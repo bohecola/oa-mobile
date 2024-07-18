@@ -4,6 +4,13 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const constantRoutes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/dashboard',
+    meta: {
+      title: 'Root',
+    },
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/Login.vue'),
     meta: {
@@ -12,9 +19,19 @@ const constantRoutes: RouteRecordRaw[] = [
   },
 ]
 
+const otherRoutes: RouteRecordRaw[] = [
+  {
+    path: '/dashboard',
+    meta: {
+      title: '主控台',
+    },
+    component: () => import('@/views/dashboard/index.vue'),
+  },
+]
+
 const router = createRouter({
   history: createWebHashHistory(''),
-  routes: constantRoutes,
+  routes: constantRoutes.concat(otherRoutes),
   strict: true,
 })
 
