@@ -30,6 +30,7 @@
     "types": ["vite/client"]
   },
   "include": [
+    "types/**/*.d.ts",
     "components.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",

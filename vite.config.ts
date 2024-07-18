@@ -14,7 +14,7 @@ export default defineConfig(({ command, mode }) => {
   // 加载解析环境变量
   const env = parseEnv(loadEnv(mode, root))
 
-  const { VITE_PORT, VITE_PROXY, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE } = env
+  const { VITE_PORT, VITE_PROXY, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_GLOB_API_URL, VITE_GLOB_API_URL_PREFIX } = env
 
   const isBuild = command === 'build'
 
@@ -74,6 +74,14 @@ export default defineConfig(({ command, mode }) => {
       warmup: {
         // 预热的客户端文件: 首页、views、components
         clientFiles: ['./index.html', './src/{views,components}/*'],
+      },
+      // 开发服务器代理转发
+      proxy: {
+        [VITE_GLOB_API_URL_PREFIX]: {
+          target: VITE_GLOB_API_URL,
+          changeOrigin: true,
+          rewrite: path => path.replace(new RegExp(`^${VITE_GLOB_API_URL_PREFIX}`), ''),
+        },
       },
     },
 
