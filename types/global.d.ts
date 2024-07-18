@@ -8,5 +8,6 @@ declare global {
     VITE_PROXY: [string, string][]
     VITE_PUBLIC_PATH: string
     VITE_DROP_CONSOLE: boolean
+    VITE_GLOB_APP_TITLE: string
   }
 }

@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
+import { configHtmlPlugin } from './plugin/html'
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
@@ -28,6 +29,8 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
       dts: 'types/auto-imports.d.ts',
     }),
   ]
+
+  vitePlugins.push(configHtmlPlugin(env, isBuild))
 
   return vitePlugins
 }
