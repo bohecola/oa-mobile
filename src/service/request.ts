@@ -1,12 +1,10 @@
 import axios from 'axios'
+import { useGlobSetting } from '@/hooks/settings'
 
-const {
-  VITE_GLOB_API_URL,
-  VITE_GLOB_API_URL_PREFIX,
-} = import.meta.env
+const globSetting = useGlobSetting()
 
 const axiosInstance = axios.create({
-  baseURL: VITE_GLOB_API_URL + VITE_GLOB_API_URL_PREFIX,
+  baseURL: `${globSetting.apiUrl}${globSetting.apiUrlPrefix}`,
   timeout: 5 * 1000,
 })
 
