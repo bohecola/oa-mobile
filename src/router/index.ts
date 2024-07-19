@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouterGuards } from './guards'
 
 const constantRoutes: RouteRecordRaw[] = [
   {
@@ -29,12 +30,17 @@ const otherRoutes: RouteRecordRaw[] = [
   },
 ]
 
+// 创建路由器
 const router = createRouter({
   history: createWebHashHistory(''),
   routes: constantRoutes.concat(otherRoutes),
-  strict: true,
+  // strict: true,
 })
 
+// 创建路由守卫
+createRouterGuards(router)
+
+// 装载路由器
 export function setupRouter(app: App) {
   app.use(router)
 }
