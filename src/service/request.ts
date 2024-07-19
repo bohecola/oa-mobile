@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { Result } from './types'
 import { useGlobSetting } from '@/hooks/settings'
 
@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
       case 200:
         return data
       default:
-        return Promise.reject({ code, msg })
+        return Promise.reject(new Error(`${code} ${msg || 'axios response onfullfilled, but code is not 200.'}`))
     }
   },
 
@@ -43,4 +43,11 @@ axiosInstance.interceptors.response.use(
   },
 )
 
-export default axiosInstance
+function myAxios<T = any>(config: AxiosRequestConfig): Promise<T> {
+  return new Promise((resolve, reject) => {
+    axiosInstance<any, T>(config)
+      .then(resolve, reject)
+  })
+}
+
+export default myAxios

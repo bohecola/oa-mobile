@@ -8,12 +8,12 @@ export function login(data: any) {
   })
 }
 
-export function captcha(): Promise<{
-  captchaEnabled: boolean
-  uuid?: string
-  img?: string
-}> {
-  return request({
+export function captcha() {
+  return request<{
+    captchaEnabled: boolean
+    uuid?: string
+    img?: string
+  }>({
     url: '/auth/code',
     method: 'get',
   })
