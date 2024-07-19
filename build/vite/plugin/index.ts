@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
-import { configHtmlPlugin } from './plugin/html'
-import { configCompressPlugin } from './plugin/compress'
+import { configHtmlPlugin } from './html'
+import { configCompressPlugin } from './compress'
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [

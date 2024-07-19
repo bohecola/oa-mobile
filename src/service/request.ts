@@ -1,4 +1,6 @@
 import axios from 'axios'
+import type { AxiosResponse } from 'axios'
+import type { Result } from './types'
 import { useGlobSetting } from '@/hooks/settings'
 
 const globSetting = useGlobSetting()
@@ -10,6 +12,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    config.headers.Clientid = globSetting.appClientId
+
     return config
   },
 
@@ -19,8 +23,19 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-  (res) => {
-    return res
+  (res: AxiosResponse<Result>) => {
+    if (!res.data) {
+      return res
+    }
+
+    const { code, data, msg } = res.data
+
+    switch (code) {
+      case 200:
+        return data
+      default:
+        return Promise.reject({ code, msg })
+    }
   },
 
   (error) => {

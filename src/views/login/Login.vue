@@ -1,9 +1,22 @@
 <script setup lang='ts'>
+import LoginForm from './LoginForm.vue'
+import Logo from '@/components/Logo.vue'
+import { useGlobSetting } from '@/hooks/settings'
 
+const { appTitle } = useGlobSetting()
 </script>
 
 <template>
-  <div>
-    login
+  <div class="h-screen flex justify-center p-8">
+    <div class="w-full flex flex-col">
+      <div class="flex flex-col items-center justify-center">
+        <Logo class="mb-8 mt08" />
+        <div class="text-2xl mb-12 font-black">
+          {{ appTitle }}
+        </div>
+
+        <LoginForm />
+      </div>
+    </div>
   </div>
 </template>

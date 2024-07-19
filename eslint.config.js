@@ -8,5 +8,6 @@ export default antfu({
     'node/prefer-global/process': ['error', 'always'],
     // 警告未使用的导入和变量
     'unused-imports/no-unused-vars': ['warn'],
+    'prefer-promise-reject-errors': ['warn'],
   },
 })
