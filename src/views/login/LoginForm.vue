@@ -31,7 +31,7 @@ onMounted(() => {
       placeholder="用户名"
     >
       <template #left-icon>
-        <i class="i-carbon-user" />
+        <i class="i-carbon-user h-full" />
       </template>
     </van-field>
 
@@ -42,7 +42,7 @@ onMounted(() => {
       type="password"
     >
       <template #left-icon>
-        <i class="i-carbon-password" />
+        <i class="i-carbon-password h-full" />
       </template>
     </van-field>
 
@@ -53,11 +53,15 @@ onMounted(() => {
       class="mb-4"
     >
       <template #left-icon>
-        <i class="i-carbon-security" />
+        <i class="i-carbon-security h-full" />
       </template>
 
       <template #button>
-        <img :src="base64" alt="captcha">
+        <img
+          class="w-24"
+          :src="base64"
+          alt="captcha"
+        >
       </template>
     </van-field>
 
