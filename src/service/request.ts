@@ -43,11 +43,6 @@ axiosInstance.interceptors.response.use(
   },
 )
 
-function myAxios<T = any>(config: AxiosRequestConfig): Promise<T> {
-  return new Promise((resolve, reject) => {
-    axiosInstance<any, T>(config)
-      .then(resolve, reject)
-  })
+export default function<T>(config: AxiosRequestConfig) {
+  return axiosInstance.request<any, T>(config)
 }
-
-export default myAxios

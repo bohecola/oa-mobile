@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import LoginForm from './LoginForm.vue'
+import LoginForm from './components/LoginForm.vue'
 import Logo from '@/components/Logo.vue'
 import { useGlobSetting } from '@/hooks/settings'
 

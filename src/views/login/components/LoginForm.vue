@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { FormInstance } from 'vant'
-import { captcha } from '@/api/system/user'
+import Captcha from './Captcha.vue'
 
 const formRef = ref<FormInstance>()
 const formData = reactive({
@@ -9,18 +9,11 @@ const formData = reactive({
   code: '',
 })
 
-const base64 = ref('')
+const passwordVisible = ref(false)
 
 function handleSubmit(values: object) {
 
 }
-
-onMounted(() => {
-  captcha()
-    .then(({ img }) => {
-      base64.value = `data:image/gif;base64,${img}`
-    })
-})
 </script>
 
 <template>
@@ -31,7 +24,7 @@ onMounted(() => {
       placeholder="用户名"
     >
       <template #left-icon>
-        <i class="i-carbon-user h-full" />
+        <i class="i-carbon-user mr-1 h-full" />
       </template>
     </van-field>
 
@@ -39,10 +32,15 @@ onMounted(() => {
       v-model="formData.password"
       name="password"
       placeholder="密码"
-      type="password"
+      :type="`${passwordVisible ? 'text' : 'password'}`"
+      @click-right-icon="passwordVisible = !passwordVisible"
     >
       <template #left-icon>
-        <i class="i-carbon-password h-full" />
+        <i class="i-carbon-password mr-1 h-full" />
+      </template>
+
+      <template #right-icon>
+        <i :class="`${passwordVisible ? 'i-carbon-view' : 'i-carbon-view-off'} align-middle`" />
       </template>
     </van-field>
 
@@ -53,15 +51,11 @@ onMounted(() => {
       class="mb-4"
     >
       <template #left-icon>
-        <i class="i-carbon-security h-full" />
+        <i class="i-carbon-security mr-1 h-full" />
       </template>
 
       <template #button>
-        <img
-          class="w-24"
-          :src="base64"
-          alt="captcha"
-        >
+        <Captcha />
       </template>
     </van-field>
 
