@@ -14,6 +14,7 @@ declare global {
     VITE_DROP_CONSOLE: boolean
     VITE_GLOB_APP_TITLE: string
     VITE_GLOB_APP_CLIENT_ID: string
+    VITE_GLOB_APP_RSA_PUBLIC_KEY: string
     VITE_GLOB_API_URL: string
     VITE_GLOB_API_URL_PREFIX: string
   }

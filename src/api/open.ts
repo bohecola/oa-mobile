@@ -5,7 +5,7 @@ export function login(data: any) {
     url: '/auth/login',
     method: 'post',
     data,
-  })
+  }, { isEncrypt: true })
 }
 
 export function captcha() {
