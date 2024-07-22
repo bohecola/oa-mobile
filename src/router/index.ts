@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createRouterGuards } from './guards'
 
+// 基础路由
 const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -20,13 +21,52 @@ const constantRoutes: RouteRecordRaw[] = [
   },
 ]
 
-const otherRoutes: RouteRecordRaw[] = [
+// 布局组件
+const Layout = () => import('@/layouts/index.vue')
+
+// 其他路由
+export const otherRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     meta: {
       title: '主控台',
+      icon: '',
     },
-    component: () => import('@/views/dashboard/index.vue'),
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/dashboard/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/example',
+    component: Layout,
+    meta: {
+      title: '示例',
+      icon: '',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/example/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/my',
+    component: Layout,
+    meta: {
+      title: '我的',
+      icon: '',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/my/index.vue'),
+      },
+    ],
   },
 ]
 
