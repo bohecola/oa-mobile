@@ -30,7 +30,7 @@ export const otherRoutes: RouteRecordRaw[] = [
     path: '/dashboard',
     meta: {
       title: '主控台',
-      icon: '',
+      icon: 'i-mdi-atlassian',
     },
     component: Layout,
     children: [
@@ -45,7 +45,7 @@ export const otherRoutes: RouteRecordRaw[] = [
     component: Layout,
     meta: {
       title: '示例',
-      icon: '',
+      icon: 'i-carbon-logo-wechat',
     },
     children: [
       {
@@ -55,11 +55,25 @@ export const otherRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/moments',
+    component: Layout,
+    meta: {
+      title: '动态',
+      icon: 'i-carbon-aperture',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/moments/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/my',
     component: Layout,
     meta: {
       title: '我的',
-      icon: '',
+      icon: 'i-simple-icons-docsify',
     },
     children: [
       {

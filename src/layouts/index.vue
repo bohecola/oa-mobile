@@ -12,7 +12,7 @@ const menus = otherRoutes.filter(item => !item.meta?.innerPage)
 </script>
 
 <template>
-  <div class="h-screen">
+  <div class="h-screen flex flex-col">
     <!-- 导航条 -->
     <van-nav-bar
       :title="navbarTitle"
@@ -20,10 +20,16 @@ const menus = otherRoutes.filter(item => !item.meta?.innerPage)
       placeholder
     />
 
-    <router-view />
+    <!-- 视图 -->
+    <div class="flex-1">
+      <router-view />
+    </div>
 
     <!-- 底部菜单 -->
-    <van-tabbar route>
+    <van-tabbar
+      :fixed="false"
+      route
+    >
       <van-tabbar-item
         v-for="menu in menus"
         :key="menu.path"
