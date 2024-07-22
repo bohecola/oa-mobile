@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       case 200:
         return data
       default:
-        return Promise.reject(new Error(`${code} ${msg || 'axios response onfullfilled, but code is not 200.'}`))
+        return Promise.reject(new Error(`${code}: ${msg}`))
     }
   },
 

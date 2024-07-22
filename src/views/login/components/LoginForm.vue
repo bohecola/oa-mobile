@@ -1,12 +1,14 @@
 <script setup lang='ts'>
-import type { FormInstance } from 'vant'
+import { type FormInstance, showFailToast } from 'vant'
 import { debounce } from 'lodash-es'
 import type { LoginData } from '@/api/open'
 import { captcha, login } from '@/api/open'
 import { useGlobSetting } from '@/hooks/settings'
 import { useStore } from '@/store'
-import router from '@/router'
 
+// 路由器
+const router = useRouter()
+// 用户状态
 const { user } = useStore()
 
 // 是否初始化完成
@@ -46,23 +48,32 @@ const handleCaptchaClick = debounce(getCaptcha, 300)
 
 // 提交表单
 async function handleSubmit(_: LoginData) {
-  // 登录
-  const { access_token } = await login({
-    ...formData,
-    clientId: appClientId,
-    grantType: 'password',
-  })
+  try {
+    // 登录
+    const { access_token } = await login({
+      ...formData,
+      clientId: appClientId,
+      grantType: 'password',
+    })
 
-  // 持久化 token
-  user.setToken({
-    token: access_token,
-  })
+    // 持久化 token
+    user.setToken({
+      token: access_token,
+    })
 
-  // 用户信息
-  user.get()
+    // 用户信息
+    user.get()
 
-  // 跳转首页
-  router.push('/')
+    // 跳转首页
+    router.push('/')
+  }
+  catch (error) {
+    // 刷新验证码
+    getCaptcha()
+
+    // 提示
+    showFailToast((error as Error).message)
+  }
 }
 
 // 挂载
