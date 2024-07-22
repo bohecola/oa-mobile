@@ -59,14 +59,14 @@ export default function<T>(config: AxiosRequestConfig, requestOptions?: RequestO
     const { isEncrypt } = requestOptions
 
     if (isEncrypt && (config.method === 'post' || config.method === 'put')) {
-      // 加密数据
+      // 混合加密
       const { encryptedAesKey, AES } = useMixedEncrypt()
-      // 请求头中携带经过 RSA 加密的 AES 密钥
+      // 加密密钥
       config.headers = config.headers || {}
       Object.assign(config.headers, {
         'encrypt-key': encryptedAesKey,
       })
-
+      // 加密数据
       config.data = typeof config.data === 'object' ? AES(JSON.stringify(config.data)) : AES(config.data)
     }
   }
