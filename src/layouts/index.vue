@@ -7,6 +7,9 @@ const route = useRoute()
 // 导航标题
 const navbarTitle = computed(() => route.meta.title as string)
 
+// 是否展示顶栏
+const showTopbar = computed(() => !route.meta.hiddenTopbar)
+
 // 菜单
 const menus = otherRoutes.filter(item => !item.meta?.innerPage)
 </script>
@@ -15,6 +18,7 @@ const menus = otherRoutes.filter(item => !item.meta?.innerPage)
   <div class="h-screen flex flex-col">
     <!-- 导航条 -->
     <van-nav-bar
+      v-if="showTopbar"
       :title="navbarTitle"
       fixed
       placeholder

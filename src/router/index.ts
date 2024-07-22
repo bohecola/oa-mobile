@@ -78,6 +78,9 @@ export const otherRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
+        meta: {
+          hiddenTopbar: true,
+        },
         component: () => import('@/views/my/index.vue'),
       },
     ],
