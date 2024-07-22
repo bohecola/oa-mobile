@@ -11,7 +11,7 @@ export default {
   },
   plugins: [
     iconsPlugin({
-      collections: getIconCollections(['carbon', 'mdi']),
+      collections: getIconCollections(['carbon', 'mdi', 'simple-icons']),
     }),
   ],
 }
