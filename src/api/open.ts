@@ -1,7 +1,25 @@
 import request from '@/service/request'
 
-export function login(data: any) {
-  return request({
+export interface LoginData {
+  tenantId?: string
+  username?: string
+  password?: string
+  rememberMe?: boolean
+  socialCode?: string
+  socialState?: string
+  source?: string
+  code?: string
+  uuid?: string
+  clientId: string
+  grantType: string
+}
+
+export function login(data: LoginData) {
+  return request<{
+    access_token: string
+    client_id: string
+    expire_in: number
+  }>({
     url: '/auth/login',
     method: 'post',
     data,

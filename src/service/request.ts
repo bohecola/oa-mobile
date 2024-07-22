@@ -4,6 +4,7 @@ import type { RequestOptions, Result } from './types'
 import { useGlobSetting } from '@/hooks/settings'
 import { ContentTypeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
+import { useStore } from '@/store'
 
 const globSetting = useGlobSetting()
 
@@ -18,6 +19,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    const { user } = useStore()
+
+    if (user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`
+    }
+
     return config
   },
 

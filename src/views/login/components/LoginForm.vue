@@ -1,8 +1,13 @@
 <script setup lang='ts'>
 import type { FormInstance } from 'vant'
 import { debounce } from 'lodash-es'
+import type { LoginData } from '@/api/open'
 import { captcha, login } from '@/api/open'
 import { useGlobSetting } from '@/hooks/settings'
+import { useStore } from '@/store'
+import router from '@/router'
+
+const { user } = useStore()
 
 // 是否初始化完成
 const initFinished = ref(false)
@@ -40,16 +45,24 @@ async function getCaptcha() {
 const handleCaptchaClick = debounce(getCaptcha, 300)
 
 // 提交表单
-function handleSubmit(_values: object) {
-  // console.log(values)
-  login({
+async function handleSubmit(_: LoginData) {
+  // 登录
+  const { access_token } = await login({
     ...formData,
     clientId: appClientId,
     grantType: 'password',
   })
-    .then((res) => {
-      console.log(res)
-    })
+
+  // 持久化 token
+  user.setToken({
+    token: access_token,
+  })
+
+  // 用户信息
+  user.get()
+
+  // 跳转首页
+  router.push('/')
 }
 
 // 挂载
