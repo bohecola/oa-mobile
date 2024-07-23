@@ -25,7 +25,7 @@ const menus = otherRoutes.filter(item => !item.meta?.innerPage)
     />
 
     <!-- 视图 -->
-    <div class="flex-1">
+    <div class="flex-1 overflow-x-hidden">
       <router-view />
     </div>
 

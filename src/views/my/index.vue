@@ -32,19 +32,19 @@ const logoutActions = [
 </script>
 
 <template>
-  <!-- cover -->
+  <!-- Cover -->
   <div :style="getCoverBg" class="my-bg h-72" />
 
-  <!-- card -->
+  <!-- Card -->
   <div
     class="
-      mx-6 relative -top-16
-      flex flex-col items-center
-      rounded-md shadow-xl
-      backdrop-blur bg-white/70
-    "
+    mx-6 relative -top-16
+    flex flex-col items-center
+    rounded-md shadow-xl
+    backdrop-blur bg-white/70
+  "
   >
-    <!-- avatar -->
+    <!-- Avatar -->
     <van-image
       class="h-20 w-20 border-2 !absolute -top-10"
       round
@@ -52,7 +52,7 @@ const logoutActions = [
       :src="avatar"
     />
 
-    <!-- info -->
+    <!-- Info -->
     <div class="mt-12 flex flex-col items-center">
       <div class="mb-2 text-xl font-black">
         {{ user.info?.nickName }}
@@ -62,10 +62,10 @@ const logoutActions = [
       </div>
     </div>
 
-    <!-- divider -->
+    <!-- Divider -->
     <van-divider class="w-full" />
 
-    <!-- cell -->
+    <!-- Cell -->
     <van-cell :border="false" title="个人信息" is-link to="/profile">
       <template #icon>
         <i class="i-mingcute-idcard-fill text-xl mr-2" />
@@ -93,6 +93,7 @@ const logoutActions = [
     </van-cell>
   </div>
 
+  <!-- Action Sheet -->
   <van-action-sheet
     v-model:show="showLogoutAction"
     :actions="logoutActions"
