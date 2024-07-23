@@ -1,8 +1,9 @@
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { showConfirmDialog, showFailToast } from 'vant'
 import type { RequestOptions, Result } from './types'
 import { useGlobSetting } from '@/hooks/settings'
-import { ContentTypeEnum } from '@/enums/httpEnum'
+import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
 import { useStore } from '@/store'
 
@@ -45,12 +46,31 @@ axiosInstance.interceptors.response.use(
     }
 
     const { code, data, msg } = res.data
+    const { user } = useStore()
 
     switch (code) {
-      case 200:
+      // 接口请求成功，直接返回结果
+      case ResultCodeEnum.SUCCESS:
         return data
+      // Token 过期
+      case ResultCodeEnum.TOKEN_EXPIRED:
+        showConfirmDialog({
+          title: '提示',
+          message: '登录身份已失效，请重新登录!',
+        })
+          .then(() => {
+            user.logout()
+          })
+          .catch(() => {
+            // on cancel
+          })
+        return Promise.reject(new Error('登录超时'))
+      // 接口请求错误，提示错误信息
+      case ResultCodeEnum.ERROR:
+        showFailToast(msg)
+        return Promise.reject(new Error(msg))
       default:
-        return Promise.reject(new Error(`${code}: ${msg}`))
+        return Promise.reject(new Error(msg))
     }
   },
 

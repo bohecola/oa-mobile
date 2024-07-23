@@ -1,4 +1,13 @@
 /**
+ * @description: 请求结果集
+ */
+export enum ResultCodeEnum {
+  SUCCESS = 200,
+  TOKEN_EXPIRED = 401,
+  ERROR = 500,
+}
+
+/**
  * @description:  常用的contentTyp类型
  */
 export enum ContentTypeEnum {
