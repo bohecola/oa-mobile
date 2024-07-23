@@ -1,4 +1,5 @@
 import { getIconCollections, iconsPlugin } from '@egoist/tailwindcss-icons'
+import remToPx from 'tailwindcss-rem-to-px'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,7 +12,15 @@ export default {
   },
   plugins: [
     iconsPlugin({
-      collections: getIconCollections(['carbon', 'mdi', 'simple-icons']),
+      collections: getIconCollections([
+        'carbon',
+        'mdi',
+        'simple-icons',
+        'mingcute',
+        'solar',
+        'material-symbols',
+      ]),
     }),
+    remToPx(),
   ],
 }

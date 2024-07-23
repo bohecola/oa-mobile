@@ -51,12 +51,21 @@ importers:
       '@iconify-json/carbon':
         specifier: ^1.1.36
         version: 1.1.36
+      '@iconify-json/material-symbols':
+        specifier: ^1.1.85
+        version: 1.1.85
       '@iconify-json/mdi':
         specifier: ^1.1.67
         version: 1.1.67
+      '@iconify-json/mingcute':
+        specifier: ^1.1.18
+        version: 1.1.18
       '@iconify-json/simple-icons':
         specifier: ^1.1.109
         version: 1.1.109
+      '@iconify-json/solar':
+        specifier: ^1.1.9
+        version: 1.1.9
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -108,6 +117,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.4
+      tailwindcss-rem-to-px:
+        specifier: ^0.1.0
+        version: 0.1.0
       typescript:
         specifier: ^5.2.2
         version: 5.5.3
@@ -490,11 +502,20 @@ packages:
   '@iconify-json/carbon@1.1.36':
     resolution: {integrity: sha512-NC3VcqLtwLZpi7+LeXj+99/byv+asrnCQxiDNCZV6hKr9WcNh6C25kJguJYfN+dV54kOkw78e+6PitQi2Bppnw==}
 
+  '@iconify-json/material-symbols@1.1.85':
+    resolution: {integrity: sha512-GJXTScAIdaxxMPcp6GCd4qbntvHpG9UrF/2V03PMUuD7+1fMU5vHG5w0IGDdvqOnI9HpEcUFa7CFDVQHOpBeDA==}
+
   '@iconify-json/mdi@1.1.67':
     resolution: {integrity: sha512-00nllHES8hyACwIfgySlQgAE6MKgpr2wsKfpifMiZWZ9aXC5l4Jb0lR3lJSWwXgOW6kzAOdzC3T+2VOfBBZ13A==}
 
+  '@iconify-json/mingcute@1.1.18':
+    resolution: {integrity: sha512-P5szgBqUMv8XVjZpbVT5eG1XtqpRPgfvZWxOR/uSqBwmVroHpxN5+nbLTHj9HJxL16msMsNbA294b69MNEQzaw==}
+
   '@iconify-json/simple-icons@1.1.109':
     resolution: {integrity: sha512-vIhIJQDdbS5R6kSyIHVBRCaR2jiFjVlbVtB4PAoLjQL45vJRHMTwkrFa536XcX7yW69HbQkoanydcyDjknI6pw==}
+
+  '@iconify-json/solar@1.1.9':
+    resolution: {integrity: sha512-BcWzZqA02BiQduYizqU/J4v4RNs0MkjZUGpMbejpozH8YQSt3+S/LfV6zfVRonx/2DhXTVSqiLa1abDRAZtojQ==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -2782,6 +2803,9 @@ packages:
     resolution: {integrity: sha512-7gr8p9TQP6RAHusBOSLs46F4564ZrjV8xFmw5zCmgmhGUcw2hxsShhJ6CEiHQMgPDwAQ1fWHPM0ypc4RMAig4A==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
+  tailwindcss-rem-to-px@0.1.0:
+    resolution: {integrity: sha512-YKbIJaW9lecX62+/tkYHEOxA1/fbJemdqNye4D8ZZM3S+p9d0eiQa2/5cggSkN9BN5hSRe0Nywn88i8SDAOA8A==}
+
   tailwindcss@3.4.4:
     resolution: {integrity: sha512-ZoyXOdJjISB7/BcLTR6SEsLgKtDStYyYZVLsUtWChO4Ps20CBad7lfJKVDiejocV4ME1hLmyY0WJE3hSDcmQ2A==}
     engines: {node: '>=14.0.0'}
@@ -3440,11 +3464,23 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify-json/material-symbols@1.1.85':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/mdi@1.1.67':
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify-json/mingcute@1.1.18':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify-json/simple-icons@1.1.109':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/solar@1.1.9':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -5849,6 +5885,12 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.1.1
       tslib: 2.6.3
+
+  tailwindcss-rem-to-px@0.1.0:
+    dependencies:
+      tailwindcss: 3.4.4
+    transitivePeerDependencies:
+      - ts-node
 
   tailwindcss@3.4.4:
     dependencies:
