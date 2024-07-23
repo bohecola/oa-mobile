@@ -1,6 +1,7 @@
 import type { DeptVO } from './dept'
 import type { PostVO } from './post'
 import type { RoleVO } from './role'
+import request from '@/service/request'
 
 export interface UserVO extends BaseEntity {
   userId: string | number
@@ -34,3 +35,11 @@ export interface UserInfoVO {
   roleGroup: string
   postGroup: string
 }
+
+export function uploadAvatar(data: FormData) {
+  return request({
+    url: '/system/user/profile/avatar',
+    method: 'post',
+    data,
+  })
+};

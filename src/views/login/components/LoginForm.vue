@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { type FormInstance, showFailToast } from 'vant'
+import { type FormInstance, showFailToast, showLoadingToast, showSuccessToast } from 'vant'
 import { debounce } from 'lodash-es'
 import type { LoginData } from '@/api/open'
 import { captcha, login } from '@/api/open'
@@ -10,6 +10,8 @@ import { useStore } from '@/store'
 const router = useRouter()
 // 用户状态
 const { user } = useStore()
+// 加载
+const loading = ref(false)
 
 // 是否初始化完成
 const initFinished = ref(false)
@@ -20,7 +22,9 @@ const captchaEnabled = ref(false)
 // 应用客户端ID
 const { appClientId } = useGlobSetting()
 
+// 表单
 const formRef = ref<FormInstance>()
+// 数据
 const formData = reactive({
   tenantId: '000000',
   username: 'admin',
@@ -49,12 +53,21 @@ const handleCaptchaClick = debounce(getCaptcha, 300)
 // 提交表单
 async function handleSubmit(_: LoginData) {
   try {
+    // 加载
+    loading.value = true
+
+    // 提示
+    showLoadingToast('登录中...')
+
     // 登录
     const { access_token } = await login({
       ...formData,
       clientId: appClientId,
       grantType: 'password',
     })
+
+    // 提示
+    showSuccessToast('登录成功，即将进入系统')
 
     // 持久化 token
     user.setToken({
@@ -74,11 +87,17 @@ async function handleSubmit(_: LoginData) {
     // 提示
     showFailToast((error as Error).message)
   }
+  finally {
+    // 关闭加载
+    loading.value = false
+  }
 }
 
 // 挂载
 onMounted(async () => {
+  // 加载验证码
   await getCaptcha()
+  // 初始化完毕
   initFinished.value = true
 })
 </script>

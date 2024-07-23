@@ -25,6 +25,11 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${user.token}`
     }
 
+    // 文件上传请求头配置
+    if (config.data instanceof FormData) {
+      config.headers['Content-Type'] = ContentTypeEnum.FORM_DATA
+    }
+
     return config
   },
 
@@ -56,8 +61,10 @@ axiosInstance.interceptors.response.use(
 
 export default function<T>(config: AxiosRequestConfig, requestOptions?: RequestOptions) {
   if (requestOptions) {
+    // 配置
     const { isEncrypt } = requestOptions
 
+    // 加密配置
     if (isEncrypt && (config.method === 'post' || config.method === 'put')) {
       // 混合加密
       const { encryptedAesKey, AES } = useMixedEncrypt()
