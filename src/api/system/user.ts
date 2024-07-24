@@ -14,7 +14,6 @@ export interface UserVO extends BaseEntity {
   sex: string
   avatar: string
   status: string
-  delFlag: string
   loginIp: string
   loginDate: string
   remark: string
@@ -23,7 +22,7 @@ export interface UserVO extends BaseEntity {
   roleIds: any
   postIds: any
   roleId: any
-  admin: boolean
+  tenantId: number
 }
 
 export interface UserInfoVO {
@@ -43,3 +42,11 @@ export function uploadAvatar(data: FormData) {
     data,
   })
 };
+
+export function updateUserProfile(data: Partial<UserVO>) {
+  return request({
+    url: '/system/user/profile',
+    method: 'put',
+    data,
+  })
+}
