@@ -10,6 +10,8 @@ interface ProfileState {
   nickName: string
   gender: string[]
   genderText: string
+  phonenumber: string
+  email: string
   [key: string]: any
 }
 
@@ -24,6 +26,8 @@ const state = reactive<ProfileState>({
   nickName: user.info?.nickName as string,
   gender: ['0'],
   genderText: genderOptions.find(e => e.value === user.info?.sex)?.text as string,
+  phonenumber: user.info?.phonenumber as string,
+  email: user.info?.email as string,
 })
 
 // 更新状态
@@ -36,7 +40,7 @@ async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
   // 选中项
   const [option] = selectedOptions
   // 更新用户性别
-  await updateUserProfile({ sex: option?.value as string })
+  await updateUserProfile({ ...user.info, sex: option?.value as string })
   // 刷新用户信息
   await user.get()
   // 更新页面状态
@@ -81,7 +85,7 @@ async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
     :center="true"
     :border="false"
     is-link
-    to="/edit-nickname"
+    to="/edit-nickName"
   />
 
   <van-field
@@ -94,6 +98,64 @@ async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
     :border="false"
     is-link
     @click="genderPickerVisible = true"
+  />
+
+  <van-field
+    v-model="state.phonenumber"
+    label="手机号码"
+    readonly
+    label-class="font-bold"
+    input-align="right"
+    :center="true"
+    :border="false"
+    is-link
+    to="/edit-phone-number"
+  />
+
+  <van-field
+    v-model="state.email"
+    label="邮箱"
+    readonly
+    label-class="font-bold"
+    input-align="right"
+    :center="true"
+    :border="false"
+    is-link
+    to="/edit-email"
+  />
+
+  <van-field
+    v-model="state.email"
+    label="邮箱"
+    readonly
+    label-class="font-bold"
+    input-align="right"
+    :center="true"
+    :border="false"
+    is-link
+    to="/edit-email"
+  />
+  <van-field
+    v-model="state.email"
+    label="邮箱"
+    readonly
+    label-class="font-bold"
+    input-align="right"
+    :center="true"
+    :border="false"
+    is-link
+    to="/edit-email"
+  />
+  <van-field
+    v-model="state.email"
+    label="邮箱"
+    readonly
+    label-class="font-bold"
+    input-align="right"
+    :center="true"
+    :border="false"
+    is-link
+    to="/edit-email"
   />
 
   <!-- Gender Picker -->

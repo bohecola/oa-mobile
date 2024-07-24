@@ -5,8 +5,8 @@ import { useStore } from '@/store'
 import { updateUserProfile } from '@/api/system/user'
 
 // 类型
-interface EditNicknameForm {
-  nickName: string | undefined
+interface EditEmaileForm {
+  email: string | undefined
 }
 
 // 路由器
@@ -19,17 +19,17 @@ const { user } = useStore()
 const formRef = ref<FormInstance>()
 
 // 表单
-const form = reactive<EditNicknameForm>({
-  nickName: user.info?.nickName,
+const form = reactive<EditEmaileForm>({
+  email: user.info?.email,
 })
 
-// 修改昵称
-async function handleNickname(values: EditNicknameForm) {
+// 修改邮箱
+async function handleNickname(values: EditEmaileForm) {
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
 
   try {
-    // 更新昵称
+    // 更新邮箱
     await updateUserProfile({ ...user.info, ...values })
     // 刷新用户信息
     await user.get()
@@ -56,11 +56,11 @@ async function handleNickname(values: EditNicknameForm) {
 
   <van-form ref="formRef" @submit="handleNickname">
     <van-field
-      v-model="form.nickName"
+      v-model="form.email"
       class="mt-4"
-      name="nickName"
-      placeholder="请输入昵称"
-      :rules="[{ required: true, message: '请输入昵称' }]"
+      name="email"
+      placeholder="请输入邮箱"
+      :rules="[{ required: true, message: '请输入邮箱' }]"
     />
   </van-form>
 </template>

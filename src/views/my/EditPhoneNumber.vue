@@ -5,8 +5,8 @@ import { useStore } from '@/store'
 import { updateUserProfile } from '@/api/system/user'
 
 // 类型
-interface EditNicknameForm {
-  nickName: string | undefined
+interface EditPhoneNumberForm {
+  phonenumber: string | undefined
 }
 
 // 路由器
@@ -19,17 +19,17 @@ const { user } = useStore()
 const formRef = ref<FormInstance>()
 
 // 表单
-const form = reactive<EditNicknameForm>({
-  nickName: user.info?.nickName,
+const form = reactive<EditPhoneNumberForm>({
+  phonenumber: user.info?.phonenumber,
 })
 
-// 修改昵称
-async function handleNickname(values: EditNicknameForm) {
+// 修改手机号
+async function handlePhone(values: EditPhoneNumberForm) {
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
 
   try {
-    // 更新昵称
+    // 更新手机号
     await updateUserProfile({ ...user.info, ...values })
     // 刷新用户信息
     await user.get()
@@ -54,13 +54,13 @@ async function handleNickname(values: EditNicknameForm) {
     </template>
   </NavBar>
 
-  <van-form ref="formRef" @submit="handleNickname">
+  <van-form ref="formRef" @submit="handlePhone">
     <van-field
-      v-model="form.nickName"
+      v-model="form.phonenumber"
       class="mt-4"
-      name="nickName"
-      placeholder="请输入昵称"
-      :rules="[{ required: true, message: '请输入昵称' }]"
+      name="phonenumber"
+      placeholder="请输入手机号"
+      :rules="[{ required: true, message: '请输入手机号' }]"
     />
   </van-form>
 </template>
