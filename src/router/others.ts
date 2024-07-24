@@ -65,6 +65,14 @@ export const otherRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/edit-nickname',
+    meta: {
+      title: '修改昵称',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/EditNickname.vue'),
+  },
+  {
     path: '/profile',
     meta: {
       title: '编辑个人信息',
