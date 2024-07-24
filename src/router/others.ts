@@ -65,6 +65,14 @@ export const otherRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/profile',
+    meta: {
+      title: '编辑个人信息',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/Profile.vue'),
+  },
+  {
     path: '/edit-nickname',
     meta: {
       title: '修改昵称',
@@ -73,11 +81,19 @@ export const otherRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/my/EditNickname.vue'),
   },
   {
-    path: '/profile',
+    path: '/edit-phone-number',
     meta: {
-      title: '编辑个人信息',
+      title: '修改手机号码',
       innerPage: true,
     },
-    component: () => import('@/views/my/Profile.vue'),
+    component: () => import('@/views/my/EditPhoneNumber.vue'),
+  },
+  {
+    path: '/edit-email',
+    meta: {
+      title: '修改邮箱',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/EditEmail.vue'),
   },
 ]
