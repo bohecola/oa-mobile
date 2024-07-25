@@ -14,6 +14,7 @@ export interface LoginData {
   grantType: string
 }
 
+// 登录
 export function login(data: LoginData) {
   return request<{
     access_token: string
@@ -26,6 +27,7 @@ export function login(data: LoginData) {
   }, { isEncrypt: true })
 }
 
+// 验证码
 export function captcha() {
   return request<{
     captchaEnabled: boolean
