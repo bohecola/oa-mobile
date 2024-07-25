@@ -1,41 +1,40 @@
 <script setup lang='ts'>
-import type { FormInstance } from 'vant'
+import type { FieldProps, FormInstance } from 'vant'
 import NavBar from './NavBar.vue'
 
 // 类型
-interface Item {
-  field: string
-  label: string
+export interface FieldItem extends WithRequiredProperty<Partial<FieldProps>, 'name'> {
   initialFieldValue: any
 }
-
 // 参数
 const props = defineProps<{
-  items: Item[]
+  items: FieldItem[]
 }>()
-
 // 自定义事件
 const emits = defineEmits(['submit'])
 
 // 类型
-type EditEmaileForm = Record<string, any>
-
+type EditForm = Record<string, any>
 // 表单引用
 const formRef = ref<FormInstance>()
-
 // 表单数据
-const form = reactive<EditEmaileForm>(
-  props.items.reduce<EditEmaileForm>((prev, curr) => {
-    prev[curr.field] = curr.initialFieldValue
+const form = reactive<EditForm>(
+  props.items.reduce<EditForm>((prev, curr) => {
+    prev[curr.name] = curr.initialFieldValue
     return prev
   }, {}),
 )
 
 // 提交修改
-async function handleSubmit(values: EditEmaileForm) {
+async function handleSubmit(values: EditForm) {
   // 发送事件
   emits('submit', values)
 }
+
+// Expose Instance Property
+defineExpose({
+  formRef,
+})
 </script>
 
 <template>
@@ -48,11 +47,14 @@ async function handleSubmit(values: EditEmaileForm) {
   <van-form ref="formRef" @submit="handleSubmit">
     <van-field
       v-for="item in items"
-      :key="item.field"
-      v-model="form[item.field]"
-      :name="item.field"
-      :placeholder="`请输入${item.label}`"
-      :rules="[{ required: true, message: `请输入${item.label}` }]"
+      :key="item.name"
+      v-model="form[item.name]"
+      v-bind="item"
+      :placeholder="item.placeholder ?? `请输入${item.label}`"
+      :rules="[
+        { required: true, message: `请输入${item.label}`, trigger: 'onChange' },
+        ...(item.rules ?? []),
+      ]"
       class="mt-4"
     />
   </van-form>

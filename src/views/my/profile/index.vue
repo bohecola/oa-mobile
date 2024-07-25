@@ -47,40 +47,6 @@
   />
 
   <van-field
-    v-model="state.phonenumber"
-    label="手机号码"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-    is-link
-    to="/edit-phone-number"
-  />
-
-  <van-field
-    v-model="state.email"
-    label="邮箱"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-    is-link
-    to="/edit-email"
-  />
-
-  <van-field
-    v-model="state.userName"
-    label="用户名"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-  />
-
-  <van-field
     v-model="state.deptName"
     label="所属部门"
     readonly
@@ -93,16 +59,6 @@
   <van-field
     v-model="state.roleNames"
     label="所属角色"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-  />
-
-  <van-field
-    v-model="state.createTime"
-    label="创建日期"
     readonly
     label-class="font-bold"
     input-align="right"
@@ -123,7 +79,7 @@
 </template>
 
 <script setup lang='ts'>
-import { type PickerConfirmEventParams, showSuccessToast } from 'vant'
+import { type PickerConfirmEventParams, showFailToast, showLoadingToast } from 'vant'
 import NavBar from '../components/NavBar.vue'
 import ImageUploader from '../components/ImageUploader.vue'
 import { genderOptions } from '../options'
@@ -132,15 +88,11 @@ import { updateUserProfile } from '@/api/system/user'
 
 // 状态类型
 interface ProfileState {
-  userName: string
   nickName: string
   gender?: string[]
   genderText?: string
-  phonenumber?: string
-  email?: string
   deptName?: string
   roleNames?: string
-  createTime?: string
   [key: string]: any
 }
 
@@ -152,15 +104,11 @@ const genderPickerVisible = ref(false)
 
 // 页面状态
 const state = reactive<ProfileState>({
-  userName: '',
   nickName: '',
   gender: ['0'], // -
   genderText: '', // -
-  phonenumber: '',
-  email: '',
   deptName: '', // -
   roleNames: '', // -
-  createTime: '',
 })
 
 // 设置状态
@@ -180,32 +128,40 @@ function setState(state: ProfileState) {
   state.gender = [user.info?.sex as string ?? '0']
 }
 
-// 更新状态
-function updateState(state: ProfileState, key: string, value: any) {
-  state[key] = value
-}
-
 // 修改性别
 async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
+  // 开启加载
+  const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
   // 选中项
   const [option] = selectedOptions
-  // 更新用户性别
-  await updateUserProfile({ ...user.info, sex: option?.value as string })
-  // 刷新用户信息
-  await user.get()
-  // 更新页面状态
-  updateState(state, 'genderText', option?.text)
-  // 收起选择器
-  genderPickerVisible.value = false
-  // 提示成功
-  showSuccessToast('编辑成功')
+  try {
+    // 更新用户性别
+    await updateUserProfile({ ...user.info, sex: option?.value as string })
+    // 刷新
+    await refresh()
+    // 关闭加载
+    loadingToast.close()
+    // 收起选择器
+    genderPickerVisible.value = false
+  }
+  catch (error) {
+    // 关闭加载
+    loadingToast.close()
+    // 提示错误
+    showFailToast((error as Error).message)
+  }
 }
 
-// 挂载
-onMounted(async () => {
+// 刷新
+async function refresh() {
   // 刷新用户信息
   await user.get()
   // 更新页面状态
   setState(state)
+}
+
+// 挂载
+onMounted(async () => {
+  await refresh()
 })
 </script>

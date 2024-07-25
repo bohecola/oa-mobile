@@ -3,6 +3,10 @@ export {}
 declare global {
   type Recordable<T = any> = Record<string, T>
 
+  type WithRequiredProperty<T, K extends keyof T> = T & {
+    [P in K]-?: T[P]
+  }
+
   interface ImportMetaEnv extends ViteEnv {
     __: unknown
   }

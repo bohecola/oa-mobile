@@ -71,7 +71,7 @@ const logoutActions = [
         <i class="i-mingcute-idcard-fill text-xl mr-2" />
       </template>
     </van-cell>
-    <van-cell :border="false" title="账号与安全" is-link>
+    <van-cell :border="false" title="账号与安全" is-link to="/account-settings">
       <template #icon>
         <i class="i-material-symbols-account-box text-xl mr-2" />
       </template>
