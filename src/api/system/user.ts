@@ -23,6 +23,7 @@ export interface UserVO extends BaseEntity {
   postIds: any
   roleId: any
   tenantId: number
+  [key: string]: any
 }
 
 export interface UserInfoVO {

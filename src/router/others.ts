@@ -70,7 +70,7 @@ export const otherRoutes: RouteRecordRaw[] = [
       title: '编辑个人信息',
       innerPage: true,
     },
-    component: () => import('@/views/my/Profile.vue'),
+    component: () => import('@/views/my/profile/index.vue'),
   },
   {
     path: '/edit-nickname',
@@ -78,7 +78,7 @@ export const otherRoutes: RouteRecordRaw[] = [
       title: '修改昵称',
       innerPage: true,
     },
-    component: () => import('@/views/my/EditNickname.vue'),
+    component: () => import('@/views/my/profile/EditNickname.vue'),
   },
   {
     path: '/edit-phone-number',
@@ -86,7 +86,7 @@ export const otherRoutes: RouteRecordRaw[] = [
       title: '修改手机号码',
       innerPage: true,
     },
-    component: () => import('@/views/my/EditPhoneNumber.vue'),
+    component: () => import('@/views/my/profile/EditPhoneNumber.vue'),
   },
   {
     path: '/edit-email',
@@ -94,6 +94,6 @@ export const otherRoutes: RouteRecordRaw[] = [
       title: '修改邮箱',
       innerPage: true,
     },
-    component: () => import('@/views/my/EditEmail.vue'),
+    component: () => import('@/views/my/profile/EditEmail.vue'),
   },
 ]

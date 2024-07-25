@@ -58,7 +58,7 @@ const logoutActions = [
         {{ user.info?.nickName }}
       </div>
       <div class="text-base">
-        {{ user.info?.remark }}
+        {{ user.info?.roles.map((e) => e.roleName).join(',') }}
       </div>
     </div>
 
