@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { storage } from '@/utils'
-import { person } from '@/api/comm'
+import { person, userLogout } from '@/api/comm'
 import type { UserVO } from '@/api/system/user'
 import router from '@/router'
 
@@ -37,7 +37,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 退出
-  function logout() {
+  async function logout() {
+    await userLogout()
     clear()
     router.push('/login')
   }
