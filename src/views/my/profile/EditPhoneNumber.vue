@@ -34,9 +34,13 @@ async function handleEmail(values: any) {
 
 <template>
   <EditField
-    field="phonenumber"
-    label="手机号码"
-    :initial-field-value="user.info?.phonenumber"
+    :items="[
+      {
+        field: 'phonenumber',
+        label: '手机号码',
+        initialFieldValue: user.info?.phonenumber,
+      },
+    ]"
     @submit="handleEmail"
   />
 </template>
