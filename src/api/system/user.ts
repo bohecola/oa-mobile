@@ -14,7 +14,6 @@ export interface UserVO extends BaseEntity {
   sex: string
   avatar: string
   status: string
-  delFlag: string
   loginIp: string
   loginDate: string
   remark: string
@@ -23,7 +22,8 @@ export interface UserVO extends BaseEntity {
   roleIds: any
   postIds: any
   roleId: any
-  admin: boolean
+  tenantId: number
+  [key: string]: any
 }
 
 export interface UserInfoVO {
@@ -36,6 +36,21 @@ export interface UserInfoVO {
   postGroup: string
 }
 
+export interface UpdatePasswordForm {
+  oldPassword: string
+  newPassword: string
+}
+
+// 修改密码
+export function updatePassword(data: UpdatePasswordForm) {
+  return request({
+    url: '/system/user/profile/updatePwd',
+    method: 'put',
+    params: data,
+  }, { isEncrypt: true })
+}
+
+// 修改头像
 export function uploadAvatar(data: FormData) {
   return request({
     url: '/system/user/profile/avatar',
@@ -43,3 +58,12 @@ export function uploadAvatar(data: FormData) {
     data,
   })
 };
+
+// 修改个人信息
+export function updateUserProfile(data: Partial<UserVO>) {
+  return request({
+    url: '/system/user/profile',
+    method: 'put',
+    data,
+  })
+}
