@@ -36,7 +36,7 @@ async function handleEmail(values: any) {
   <EditField
     :items="[
       {
-        field: 'nickName',
+        name: 'nickName',
         label: '昵称',
         initialFieldValue: user.info?.nickName,
       },

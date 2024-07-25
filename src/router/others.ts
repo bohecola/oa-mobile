@@ -64,6 +64,7 @@ export const otherRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  // 个人信息
   {
     path: '/profile',
     meta: {
@@ -80,13 +81,22 @@ export const otherRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/my/profile/EditNickname.vue'),
   },
+  // 账户与安全
+  {
+    path: '/account-settings',
+    meta: {
+      title: '账号与安全',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/account/index.vue'),
+  },
   {
     path: '/edit-phone-number',
     meta: {
       title: '修改手机号码',
       innerPage: true,
     },
-    component: () => import('@/views/my/profile/EditPhoneNumber.vue'),
+    component: () => import('@/views/my/account/EditPhoneNumber.vue'),
   },
   {
     path: '/edit-email',
@@ -94,6 +104,14 @@ export const otherRoutes: RouteRecordRaw[] = [
       title: '修改邮箱',
       innerPage: true,
     },
-    component: () => import('@/views/my/profile/EditEmail.vue'),
+    component: () => import('@/views/my/account/EditEmail.vue'),
+  },
+  {
+    path: '/change-password',
+    meta: {
+      title: '修改登录密码',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/account/EditPassword.vue'),
   },
 ]
