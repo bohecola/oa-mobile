@@ -1,5 +1,10 @@
 <template>
-  <van-form v-if="initFinished" ref="formRef" @submit="handleSubmit">
+  <van-form
+    v-if="initFinished"
+    ref="formRef"
+    :disabled="loading"
+    @submit="handleSubmit"
+  >
     <van-field
       v-show="false"
       v-model="formData.tenantId"
@@ -63,19 +68,20 @@
       </template>
     </van-field>
 
-    <div class="mt-4 mb-10 px-1 flex justify-between">
+    <div class="mt-4 mb-6 px-1 flex justify-between">
       <div class="flex items-center">
-        <van-switch v-model="formData.remenberMe" size="18px" class="mr-2" />
-        <span>记住我</span>
+        <van-switch v-model="formData.remenberMe" size="14px" class="mr-2" :disabled="loading" />
+        <span class="text-sm">记住我</span>
       </div>
 
-      <a>忘记密码?</a>
+      <!-- <a>忘记密码?</a> -->
     </div>
 
     <van-button
       type="primary"
       native-type="submit"
       block
+      :disabled="loading"
     >
       登 录
     </van-button>
@@ -102,6 +108,8 @@ const captchaEnabled = ref(false)
 // 应用客户端ID
 const { appClientId } = useGlobSetting()
 
+// 加载
+const loading = ref(false)
 // 表单
 const formRef = ref<FormInstance>()
 // 数据
@@ -125,7 +133,7 @@ async function getCaptcha() {
   const res = await captcha()
   base64.value = `data:image/gif;base64,${res.img}`
   captchaEnabled.value = res.captchaEnabled
-  formData.value.uuid = res.uuid || ''
+  formData.value.uuid = res.uuid ?? ''
 }
 // 防抖点击验证码
 const handleCaptchaClick = debounce(getCaptcha, 300)
@@ -133,6 +141,7 @@ const handleCaptchaClick = debounce(getCaptcha, 300)
 // 提交表单
 async function handleSubmit(_: LoginData) {
   try {
+    loading.value = true
     showLoadingToast('登录中...')
     // 登录
     const { access_token } = await login({
@@ -148,7 +157,7 @@ async function handleSubmit(_: LoginData) {
     // 用户信息
     user.get()
     // 跳转首页
-    router.push('/')
+    await router.push('/')
   }
   catch (error) {
     // 刷新验证码
@@ -156,8 +165,12 @@ async function handleSubmit(_: LoginData) {
     // 提示
     showFailToast((error as Error).message)
   }
+  finally {
+    loading.value = false
+  }
 }
 
+// 记住我
 function memoMe() {
   if (formData.value.remenberMe) {
     storage.set('me', JSON.stringify({ ...formData.value, code: '', uuid: '' }))
@@ -167,6 +180,7 @@ function memoMe() {
   }
 }
 
+// use memo data
 function getMe() {
   const me = JSON.parse(storage.get('me') ?? null)
   if (me) {
