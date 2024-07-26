@@ -15,6 +15,7 @@ export async function bootstrap(app: App) {
     // 换行时截断单词
     wordBreak: 'break-all',
     // 禁用背景点击
+    // Todo: 取消这里
     forbidClick: true,
   })
 
