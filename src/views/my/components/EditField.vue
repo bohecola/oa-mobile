@@ -58,4 +58,6 @@ defineExpose({
       class="mt-4"
     />
   </van-form>
+
+  <slot name="default" />
 </template>
