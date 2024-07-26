@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang='ts'>
-import { type PickerConfirmEventParams, showFailToast, showLoadingToast } from 'vant'
+import { type PickerConfirmEventParams, showLoadingToast } from 'vant'
 import NavBar from '../components/NavBar.vue'
 import ImageUploader from '../components/ImageUploader.vue'
 import { genderOptions } from '../options'
@@ -134,22 +134,14 @@ async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
   // 选中项
   const [option] = selectedOptions
-  try {
-    // 更新用户性别
-    await updateUserProfile({ ...user.info, sex: option?.value as string })
-    // 刷新
-    await refresh()
-    // 关闭加载
-    loadingToast.close()
-    // 收起选择器
-    genderPickerVisible.value = false
-  }
-  catch (error) {
-    // 关闭加载
-    loadingToast.close()
-    // 提示错误
-    showFailToast((error as Error).message)
-  }
+  // 更新用户性别
+  await updateUserProfile({ ...user.info, sex: option?.value as string })
+  // 刷新
+  await refresh()
+  // 关闭加载
+  loadingToast.close()
+  // 收起选择器
+  genderPickerVisible.value = false
 }
 
 // 刷新
