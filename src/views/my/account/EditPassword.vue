@@ -78,5 +78,11 @@ async function handleEmail(values: any) {
     ref="EFRef"
     :items="items"
     @submit="handleEmail"
-  />
+  >
+    <div class="p-4 text-[var(--van-text-color-2)]">
+      <p class="text-sm">
+        密码长度在 6 到 20 个字符
+      </p>
+    </div>
+  </EditField>
 </template>

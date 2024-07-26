@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { showToast } from 'vant'
 import { useStore } from '@/store'
 
 // 用户
@@ -25,7 +24,6 @@ const logoutActions = [
     color: '#ee0a24',
     callback: () => {
       user.logout()
-      showToast('退出成功')
     },
   },
 ]
