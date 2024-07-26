@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { FieldRule } from 'vant'
-import { showFailToast, showLoadingToast } from 'vant'
+import { showLoadingToast } from 'vant'
 import type { FieldItem } from '../components/EditField.vue'
 import EditField from '../components/EditField.vue'
 import { updatePassword } from '@/api/system/user'
@@ -52,24 +52,15 @@ const items: FieldItem[] = [
 async function handleEmail(values: any) {
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
-
-  try {
-    // 更新字段
-    await updatePassword({
-      oldPassword: values.oldPassword,
-      newPassword: values.newPassword,
-    })
-    // 关闭加载
-    loadingToast.close()
-    // 返回
-    router.back()
-  }
-  catch (error) {
-    // 关闭加载
-    loadingToast.close()
-    // 提示错误
-    showFailToast((error as Error).message)
-  }
+  // 更新字段
+  await updatePassword({
+    oldPassword: values.oldPassword,
+    newPassword: values.newPassword,
+  })
+  // 关闭加载
+  loadingToast.close()
+  // 返回
+  router.back()
 }
 </script>
 
