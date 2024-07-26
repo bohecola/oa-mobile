@@ -1,5 +1,6 @@
 export interface RequestOptions {
   isEncrypt?: boolean
+  ignoreCancelToken?: boolean
 }
 
 export interface Result<T = any> {
