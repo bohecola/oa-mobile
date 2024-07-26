@@ -2,6 +2,7 @@ import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { showConfirmDialog, showFailToast } from 'vant'
 import type { RequestOptions, Result } from './types'
+import { useCanceler } from './canceler'
 import { useGlobSetting } from '@/hooks/settings'
 import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
@@ -9,6 +10,7 @@ import { useStore } from '@/store'
 
 const globSetting = useGlobSetting()
 
+// 请求实例
 const axiosInstance = axios.create({
   baseURL: `${globSetting.apiUrl}${globSetting.apiUrlPrefix}`,
   headers: {
@@ -18,6 +20,10 @@ const axiosInstance = axios.create({
   timeout: 5 * 1000,
 })
 
+// 配置取消请求
+const { addPending, removePending } = useCanceler()
+
+// 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
     const { user } = useStore()
@@ -39,8 +45,14 @@ axiosInstance.interceptors.request.use(
   },
 )
 
+// 响应拦截器
 axiosInstance.interceptors.response.use(
   (res: AxiosResponse<Result>) => {
+    // Map 中移除已完成请求的 cancel 方法
+    if (res)
+      removePending(res.config)
+
+    // 数据不存在，返回 Axios 响应
     if (!res.data) {
       return res
     }
@@ -79,23 +91,26 @@ axiosInstance.interceptors.response.use(
   },
 )
 
-export default function<T>(config: AxiosRequestConfig, requestOptions?: RequestOptions) {
-  if (requestOptions) {
-    // 配置
-    const { isEncrypt } = requestOptions
+// 请求方法
+export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
+  // 配置项
+  const { isEncrypt, ignoreCancelToken } = requestOptions
 
-    // 加密配置
-    if (isEncrypt && (config.method === 'post' || config.method === 'put')) {
-      // 混合加密
-      const { encryptedAesKey, AES } = useMixedEncrypt()
-      // 加密密钥
-      config.headers = config.headers || {}
-      Object.assign(config.headers, {
-        'encrypt-key': encryptedAesKey,
-      })
-      // 加密数据
-      config.data = typeof config.data === 'object' ? AES(JSON.stringify(config.data)) : AES(config.data)
-    }
+  // 默认取消重复请求
+  if (!ignoreCancelToken) {
+    addPending(config)
+  }
+
+  // 加密配置
+  if (isEncrypt && (config.method === 'post' || config.method === 'put')) {
+    // 混合加密
+    const { encryptedAesKey, AES } = useMixedEncrypt()
+    // 加密密钥
+    Object.assign(config.headers ??= {}, {
+      'encrypt-key': encryptedAesKey,
+    })
+    // 加密数据
+    config.data = typeof config.data === 'object' ? AES(JSON.stringify(config.data)) : AES(config.data)
   }
 
   return axiosInstance.request<any, T>(config)
