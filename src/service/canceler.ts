@@ -2,7 +2,7 @@ import type { AxiosRequestConfig, Canceler } from 'axios'
 import axios from 'axios'
 import qs from 'qs'
 
-// 生产请求 hash
+// 生成请求 hash
 function hash(config: AxiosRequestConfig) {
   const meta = [
     config.method,
