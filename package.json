@@ -17,6 +17,7 @@
     "lint:lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "crypto-js": "^4.2.0",
     "jsencrypt": "^3.3.2",
