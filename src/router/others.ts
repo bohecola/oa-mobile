@@ -114,4 +114,13 @@ export const otherRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/my/account/EditPassword.vue'),
   },
+  // 主题设置
+  {
+    path: '/theme-settings',
+    meta: {
+      title: '主题设置',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/theme/index.vue'),
+  },
 ]
