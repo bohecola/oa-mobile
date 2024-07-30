@@ -2,9 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color: #222;
+  --bg-color: #f5f5f5;
+}
+
+:root[data-theme-mode=dark] {
+  --color: #fff;
+  --bg-color: #222;
+}
+
+.theme-green[data-theme-mode=light] {
+  --van-primary-color: #16a34a;
+}
+
+.theme-green[data-theme-mode=dark] {
+  --van-primary-color: #22c55e;
+}
+
+.theme-violet[data-theme-mode=light] {
+  --van-primary-color: #7c3aed;
+}
+
+.theme-violet[data-theme-mode=dark]  {
+  --van-primary-color: #6d28d9;
+}
+
+.theme-rose[data-theme-mode=light] {
+  --van-primary-color: #e11d48;
+}
+
+.theme-rose[data-theme-mode=dark]  {
+  --van-primary-color: #e11d48;
+}
+
+.theme-yellow[data-theme-mode=light] {
+  --van-primary-color: #facc15;
+}
+
+.theme-yellow[data-theme-mode=dark]  {
+  --van-primary-color: #facc15;
+}
+
+.theme-blue[data-theme-mode=light] {
+  --van-primary-color: #2563eb;
+}
+
+.theme-blue[data-theme-mode=dark]  {
+  --van-primary-color: #3b82f6;
+}
+
+.theme-orange[data-theme-mode=light] {
+  --van-primary-color: #f97316;
+}
+
+.theme-orange[data-theme-mode=dark]  {
+  --van-primary-color: #ea580c;
+}
+
+.theme-emerald[data-theme-mode=light] {
+  --van-primary-color: #78dec7;
+}
+
+.theme-emerald[data-theme-mode=dark]  {
+  --van-primary-color: #78dec7;
+}
+
+.theme-teal[data-theme-mode=light] {
+  --van-primary-color: #00c1d4;
+}
+
+.theme-teal[data-theme-mode=dark]  {
+  --van-primary-color: #00c1d4;
+}
+
+body {
+  color: var(--color);
+  background-color: var(--bg-color);
+}
+
 #app {
   height: 100%;
   width: 100%;
   position: relative;
-  background: #f5f5f5;
 }
