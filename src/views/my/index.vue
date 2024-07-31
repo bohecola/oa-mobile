@@ -36,11 +36,11 @@ const logoutActions = [
   <!-- Card -->
   <div
     class="
-    mx-6 relative -top-16
-    flex flex-col items-center
-    rounded-md shadow-xl
-    backdrop-blur bg-white/70
-  "
+      mx-6 relative -top-16
+      flex flex-col items-center
+      rounded-md shadow-xl
+      backdrop-blur bg-white/70 dark:bg-black/30
+    "
   >
     <!-- Avatar -->
     <van-image
@@ -74,7 +74,7 @@ const logoutActions = [
         <i class="i-material-symbols-account-box text-xl mr-2" />
       </template>
     </van-cell>
-    <van-cell :border="false" title="主题设置" is-link>
+    <van-cell :border="false" title="主题设置" is-link to="/theme-settings">
       <template #icon>
         <i class="i-material-symbols-palette text-xl mr-2" />
       </template>
