@@ -11,7 +11,7 @@ const props = defineProps<{
   items: FieldItem[]
 }>()
 // 自定义事件
-const emits = defineEmits(['submit'])
+const emit = defineEmits(['submit'])
 
 // 类型
 type EditForm = Record<string, any>
@@ -28,7 +28,7 @@ const form = reactive<EditForm>(
 // 提交修改
 async function handleSubmit(values: EditForm) {
   // 发送事件
-  emits('submit', values)
+  emit('submit', values)
 }
 
 // Expose Instance Property

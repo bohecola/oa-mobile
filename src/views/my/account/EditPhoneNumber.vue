@@ -11,7 +11,7 @@ const { user } = useStore()
 const router = useRouter()
 
 // 提交表单
-async function handleEmail(values: any) {
+async function handleSubmit(values: any) {
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
   // 更新字段
@@ -32,6 +32,6 @@ async function handleEmail(values: any) {
         initialFieldValue: user.info?.phonenumber,
       },
     ]"
-    @submit="handleEmail"
+    @submit="handleSubmit"
   />
 </template>
