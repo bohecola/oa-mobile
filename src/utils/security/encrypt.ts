@@ -1,8 +1,8 @@
 import JSEncrypt from 'jsencrypt'
-import { useGlobSetting } from '@/hooks/settings'
+import { useGlobSettings } from '@/hooks/settings'
 // 密钥对生成 http://web.chacuo.net/netrsakeypair
 
-const { appRsaPublicKey } = useGlobSetting()
+const { appRsaPublicKey } = useGlobSettings()
 
 // 前端不建议存放私钥 不建议解密数据 因为都是透明的意义不大
 const privateKey = '**********'

@@ -93,7 +93,7 @@ import { type FormInstance, showFailToast, showLoadingToast, showSuccessToast } 
 import { debounce } from 'lodash-es'
 import type { LoginData } from '@/api/open'
 import { captcha, login } from '@/api/open'
-import { useGlobSetting } from '@/hooks/settings'
+import { useGlobSettings } from '@/hooks/settings'
 import { useStore } from '@/store'
 import { storage } from '@/utils'
 
@@ -106,7 +106,7 @@ const initFinished = ref(false)
 // 验证码是否启用
 const captchaEnabled = ref(false)
 // 应用客户端ID
-const { appClientId } = useGlobSetting()
+const { appClientId } = useGlobSettings()
 
 // 加载
 const loading = ref(false)

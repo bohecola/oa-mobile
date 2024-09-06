@@ -1,27 +1,27 @@
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { showConfirmDialog, showFailToast } from 'vant'
+import { showConfirmDialog, showDialog, showFailToast } from 'vant'
 import type { RequestOptions, Result } from './types'
-import { useCanceler } from './canceler'
-import { useGlobSetting } from '@/hooks/settings'
+import { checkStatus, useRequstCanceller } from './hepler'
+import { useGlobSettings } from '@/hooks/settings'
 import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
 import { useStore } from '@/store'
 
-const globSetting = useGlobSetting()
+const globSettings = useGlobSettings()
 
 // 请求实例
 const axiosInstance = axios.create({
-  baseURL: `${globSetting.apiUrl}${globSetting.apiUrlPrefix}`,
+  baseURL: `${globSettings.apiUrl}${globSettings.apiUrlPrefix}`,
   headers: {
     'Content-Type': ContentTypeEnum.JSON,
-    'Clientid': globSetting.appClientId,
+    'Clientid': globSettings.appClientId,
   },
   timeout: 5 * 1000,
 })
 
-// 配置取消请求
-const { addPending, removePending } = useCanceler()
+// 请求取消器
+const { addRequestCancel, removeRequestCancel } = useRequstCanceller()
 
 // 请求拦截器
 axiosInstance.interceptors.request.use(
@@ -32,7 +32,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${user.token}`
     }
 
-    // 文件上传请求头配置
+    // 文件上传
     if (config.data instanceof FormData) {
       config.headers['Content-Type'] = ContentTypeEnum.FORM_DATA
     }
@@ -48,12 +48,13 @@ axiosInstance.interceptors.request.use(
 // 响应拦截器
 axiosInstance.interceptors.response.use(
   (res: AxiosResponse<Result>) => {
-    // Map 中移除已完成请求的 cancel 方法
-    if (res)
-      removePending(res.config)
+    if (res) {
+      // 移除已响应请求的 cancel
+      removeRequestCancel(res.config)
+    }
 
-    // 数据不存在，返回 Axios 响应
     if (!res.data) {
+      // 数据不存在，返回 Axios 响应
       return res
     }
 
@@ -61,7 +62,7 @@ axiosInstance.interceptors.response.use(
     const { user } = useStore()
 
     switch (code) {
-      // 接口请求成功，直接返回结果
+      // 请求成功，直接返回结果
       case ResultCodeEnum.SUCCESS:
         return data
       // Token 过期
@@ -77,8 +78,12 @@ axiosInstance.interceptors.response.use(
             // on cancel
           })
         return Promise.reject(new Error('登录超时'))
-      // 接口请求错误，提示错误信息
+      // 系统内部错误
       case ResultCodeEnum.ERROR:
+        showFailToast(msg)
+        return Promise.reject(new Error(msg))
+      // 系统警告消息
+      case ResultCodeEnum.WARN:
         showFailToast(msg)
         return Promise.reject(new Error(msg))
       default:
@@ -87,6 +92,37 @@ axiosInstance.interceptors.response.use(
   },
 
   (error) => {
+    const { response, code, message } = error || {}
+    // TODO 此处要根据后端接口返回格式修改
+    const msg: string = response && response.data && response.data.message ? response.data.message : ''
+    const err: string = error.toString()
+    try {
+      if (code === 'ECONNABORTED' && message.includes('timeout')) {
+        showFailToast('接口请求超时，请刷新页面重试!')
+        return
+      }
+      if (err && err.includes('Network Error')) {
+        showDialog({
+          title: '网络异常',
+          message: '请检查您的网络连接是否正常',
+        })
+          .then(() => {})
+          .catch(() => {})
+        return Promise.reject(error)
+      }
+    }
+    catch (error) {
+      throw new Error(error as any)
+    }
+
+    // 请求是否被取消
+    const isCancel = axios.isCancel(error)
+    if (!isCancel) {
+      checkStatus(response && response.status, msg)
+    }
+    else {
+      console.warn(error, '请求被取消！')
+    }
     return Promise.reject(error)
   },
 )
@@ -94,11 +130,11 @@ axiosInstance.interceptors.response.use(
 // 请求方法
 export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
   // 配置项
-  const { isEncrypt, ignoreCancelToken } = requestOptions
+  const { isEncrypt, isCancel = true } = requestOptions
 
   // 默认取消重复请求
-  if (!ignoreCancelToken) {
-    addPending(config)
+  if (isCancel) {
+    addRequestCancel(config)
   }
 
   // 加密配置
