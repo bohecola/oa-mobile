@@ -1,9 +1,9 @@
 <script setup lang='ts'>
 import LoginForm from './components/LoginForm.vue'
 import Logo from '@/components/Logo.vue'
-import { useGlobSetting } from '@/hooks/settings'
+import { useGlobSettings } from '@/hooks/settings'
 
-const { appTitle } = useGlobSetting()
+const { appTitle } = useGlobSettings()
 </script>
 
 <template>

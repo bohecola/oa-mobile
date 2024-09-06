@@ -1,6 +1,6 @@
 import type { GlobConfig } from 'types/config'
 
-export function useGlobSetting(): Readonly<GlobConfig> {
+export function useGlobSettings(): Readonly<GlobConfig> {
   const {
     VITE_GLOB_APP_TITLE,
     VITE_GLOB_APP_CLIENT_ID,

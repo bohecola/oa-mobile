@@ -1,5 +1,5 @@
-import type { Theme, ThemeMode } from '@/settings/designSetting'
-import { themes } from '@/settings/designSetting'
+import type { Theme, ThemeMode } from '@/settings/designSettings'
+import { themes } from '@/settings/designSettings'
 import { storage } from '@/utils'
 
 // 数据
