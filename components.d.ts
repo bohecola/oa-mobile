@@ -7,7 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    '(:bug': fix: global components adjust)
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
