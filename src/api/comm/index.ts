@@ -1,9 +1,10 @@
-import type { UserInfoVO } from './system/user'
+import type { AxiosPromise } from 'axios'
+import type { UserInfoVO } from '../system/user/types'
 import request from '@/service/request'
 
 // 获取用户信息
-export function person() {
-  return request<UserInfoVO>({
+export function person(): AxiosPromise<UserInfoVO> {
+  return request({
     url: '/system/user/getInfo',
     method: 'get',
   })

@@ -17,6 +17,7 @@
     "lint:lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.55.4",
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "crypto-js": "^4.2.0",
