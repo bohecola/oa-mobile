@@ -19,34 +19,43 @@ export const otherRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  // 审批中心
   {
-    path: '/example',
-    component: Layout,
+    path: '/approval',
     meta: {
-      title: '示例',
-      icon: 'i-carbon-logo-wechat',
+      title: '审批中心',
+      innerPage: true,
     },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/example/index.vue'),
-      },
-    ],
+    component: () => import('@/views/dashboard/approval/index.vue'),
   },
-  {
-    path: '/moments',
-    component: Layout,
-    meta: {
-      title: '动态',
-      icon: 'i-carbon-aperture',
-    },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/moments/index.vue'),
-      },
-    ],
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   meta: {
+  //     title: '示例',
+  //     icon: 'i-carbon-logo-wechat',
+  //   },
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: () => import('@/views/example/index.vue'),
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/moments',
+  //   component: Layout,
+  //   meta: {
+  //     title: '动态',
+  //     icon: 'i-carbon-aperture',
+  //   },
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: () => import('@/views/moments/index.vue'),
+  //     },
+  //   ],
+  // },
   {
     path: '/my',
     component: Layout,
