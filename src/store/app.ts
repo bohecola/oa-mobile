@@ -8,6 +8,7 @@ const data = storage.info()
 const initThemeMode = data.themeMode ?? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
 // 初始主题
 const [initTheme] = themes
+
 export const useAppStore = defineStore('app', () => {
   // 主题模式
   const themeMode = ref<ThemeMode>(data.themeMode ?? initThemeMode)

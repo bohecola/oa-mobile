@@ -1,5 +1,5 @@
 import JSEncrypt from 'jsencrypt'
-import { useGlobSettings } from '@/hooks/settings'
+import { useGlobSettings } from '@/hooks'
 // 密钥对生成 http://web.chacuo.net/netrsakeypair
 
 const { appRsaPublicKey } = useGlobSettings()

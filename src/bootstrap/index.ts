@@ -1,7 +1,9 @@
 import type { App } from 'vue'
 import { setToastDefaultOptions } from 'vant'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import { setupStore } from '@/store'
 import { setupRouter } from '@/router'
+import plugins from '@/plugins'
 
 export async function bootstrap(app: App) {
   // 配置状态管理
@@ -15,6 +17,12 @@ export async function bootstrap(app: App) {
     // 换行时截断单词
     wordBreak: 'break-all',
   })
+
+  // vue-query
+  app.use(VueQueryPlugin)
+
+  // 插件
+  app.use(plugins)
 
   // 挂载应用实例
   app.mount('#app')
