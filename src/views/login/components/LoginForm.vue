@@ -91,9 +91,9 @@
 <script setup lang='ts'>
 import { type FormInstance, showFailToast, showLoadingToast, showSuccessToast } from 'vant'
 import { debounce } from 'lodash-es'
-import type { LoginData } from '@/api/open'
-import { captcha, login } from '@/api/open'
-import { useGlobSettings } from '@/hooks/settings'
+import type { LoginData } from '@/api/open/types'
+import { service } from '@/service'
+import { useGlobSettings } from '@/hooks'
 import { useStore } from '@/store'
 import { storage } from '@/utils'
 
@@ -130,11 +130,12 @@ const base64 = ref('')
 
 // 获取验证码
 async function getCaptcha() {
-  const res = await captcha()
-  base64.value = `data:image/gif;base64,${res.img}`
-  captchaEnabled.value = res.captchaEnabled
-  formData.value.uuid = res.uuid ?? ''
+  const { data } = await service.open.captcha()
+  base64.value = `data:image/gif;base64,${data.img}`
+  captchaEnabled.value = data.captchaEnabled
+  formData.value.uuid = data.uuid ?? ''
 }
+
 // 防抖点击验证码
 const handleCaptchaClick = debounce(getCaptcha, 300)
 
@@ -144,7 +145,7 @@ async function handleSubmit(_: LoginData) {
     loading.value = true
     showLoadingToast('登录中...')
     // 登录
-    const { access_token } = await login({
+    const { data } = await service.open.login({
       ...formData.value,
       clientId: appClientId,
       grantType: 'password',
@@ -153,7 +154,7 @@ async function handleSubmit(_: LoginData) {
     // 是否记住用户
     memoMe()
     // 持久化 token
-    user.setToken({ token: access_token })
+    user.setToken({ token: data.access_token })
     // 用户信息
     user.get()
     // 跳转首页

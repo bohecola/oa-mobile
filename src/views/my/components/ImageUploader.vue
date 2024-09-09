@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import type { UploaderFileListItem } from 'vant'
 import { showFailToast, showLoadingToast } from 'vant'
-import { uploadAvatar } from '@/api/system/user'
+import { service } from '@/service'
 import { useStore } from '@/store'
 
 // 用户状态
@@ -36,7 +36,7 @@ async function afterReadHandler(file: UploaderFileListItem | UploaderFileListIte
 
   try {
     // 上传头像
-    await uploadAvatar(formData)
+    await service.system.user.uploadAvatar(formData)
     // 更新用户信息
     user.get()
     // 关闭加载中

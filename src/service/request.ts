@@ -1,9 +1,9 @@
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { showConfirmDialog, showDialog, showFailToast } from 'vant'
-import type { RequestOptions, Result } from './types'
+import type { RequestOptions } from './types'
 import { checkStatus, useRequstCanceller } from './hepler'
-import { useGlobSettings } from '@/hooks/settings'
+import { useGlobSettings } from '@/hooks'
 import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
 import { useStore } from '@/store'
@@ -47,7 +47,7 @@ axiosInstance.interceptors.request.use(
 
 // 响应拦截器
 axiosInstance.interceptors.response.use(
-  (res: AxiosResponse<Result>) => {
+  (res: AxiosResponse) => {
     if (res) {
       // 移除已响应请求的 cancel
       removeRequestCancel(res.config)
@@ -58,13 +58,14 @@ axiosInstance.interceptors.response.use(
       return res
     }
 
-    const { code, data, msg } = res.data
+    const { code, msg } = res.data
+
     const { user } = useStore()
 
     switch (code) {
       // 请求成功，直接返回结果
       case ResultCodeEnum.SUCCESS:
-        return data
+        return res.data
       // Token 过期
       case ResultCodeEnum.TOKEN_EXPIRED:
         showConfirmDialog({
@@ -117,11 +118,11 @@ axiosInstance.interceptors.response.use(
 
     // 请求是否被取消
     const isCancel = axios.isCancel(error)
-    if (!isCancel) {
-      checkStatus(response && response.status, msg)
+    if (isCancel) {
+      console.warn(error, '请求被取消！')
     }
     else {
-      console.warn(error, '请求被取消！')
+      checkStatus(response && response.status, msg)
     }
     return Promise.reject(error)
   },
@@ -130,10 +131,10 @@ axiosInstance.interceptors.response.use(
 // 请求方法
 export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
   // 配置项
-  const { isEncrypt, isCancel = true } = requestOptions
+  const { isEncrypt, withCancel = true } = requestOptions
 
   // 默认取消重复请求
-  if (isCancel) {
+  if (withCancel) {
     addRequestCancel(config)
   }
 

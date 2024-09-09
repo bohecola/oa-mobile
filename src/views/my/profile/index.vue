@@ -80,11 +80,10 @@
 
 <script setup lang='ts'>
 import { type PickerConfirmEventParams, showLoadingToast } from 'vant'
-import NavBar from '../components/NavBar.vue'
 import ImageUploader from '../components/ImageUploader.vue'
 import { genderOptions } from '../options'
 import { useStore } from '@/store'
-import { updateUserProfile } from '@/api/system/user'
+import { service } from '@/service'
 
 // 状态类型
 interface ProfileState {
@@ -122,7 +121,7 @@ function setState(state: ProfileState) {
 
   // set field text value.
   state.genderText = genderOptions.find(e => e.value === user.info?.sex)?.text as string
-  state.deptName = user.info?.dept.deptName
+  state.deptName = user.info?.deptName
   state.roleNames = user.info?.roles.map((e: any) => e.roleName).join(',')
   // set the pick seleted value.
   state.gender = [user.info?.sex as string ?? '0']
@@ -135,7 +134,7 @@ async function handleGender({ selectedOptions }: PickerConfirmEventParams) {
   // 选中项
   const [option] = selectedOptions
   // 更新用户性别
-  await updateUserProfile({ ...user.info, sex: option?.value as string })
+  await service.system.user.updateUserProfile({ ...user.info, sex: option?.value as string })
   // 刷新
   await refresh()
   // 关闭加载
