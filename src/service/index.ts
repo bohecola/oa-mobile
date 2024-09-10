@@ -9,6 +9,7 @@ import * as post from '@/api/system/post'
 
 // workflow
 import * as processInstance from '@/api/workflow/processInstance'
+import * as task from '@/api/workflow/task'
 
 const service = {
   comm,
@@ -21,6 +22,7 @@ const service = {
   },
   workflow: {
     processInstance,
+    task,
   },
 }
 

@@ -1,7 +1,7 @@
 <template>
   <NavBar :title="title" />
 
-  <van-tabs v-model:active="active" lazy-render>
+  <van-tabs v-model:active="active" lazy-render @click-tab="handleTabClick">
     <van-tab
       v-for="item in tabs"
       :key="item.title"
@@ -18,8 +18,10 @@ import MyInitiated from './components/my-initiated.vue'
 import MyToDo from './components/my-to-do.vue'
 import MyCompleted from './components/my-completed.vue'
 import MyCc from './components/my-cc.vue'
+import NavBar from '@/components/NavBar/index.vue'
 
 const route = useRoute()
+const router = useRouter()
 const active = ref(route.query.category as string ?? 'my-initiated')
 
 const tabs = [
@@ -30,4 +32,13 @@ const tabs = [
 ]
 
 const title = computed(() => tabs.find(tab => tab.category === active.value)?.title)
+
+function handleTabClick({ name }: any) {
+  router.replace({
+    path: route.path,
+    query: {
+      category: name,
+    },
+  })
+}
 </script>
