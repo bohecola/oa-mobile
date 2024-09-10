@@ -1,18 +1,5 @@
-<script setup lang='ts'>
-withDefaults(defineProps<{
-  title?: string
-}>(), {
-  title: () => {
-    const route = useRoute()
-    return route.meta.title as string ?? ''
-  },
-})
-
-const router = useRouter()
-</script>
-
 <template>
-  <van-nav-bar @click-left="router.back">
+  <van-nav-bar :fixed="fixed" :placeholder="placeholder" @click-left="router.back">
     <template #title>
       {{ title }}
     </template>
@@ -25,3 +12,20 @@ const router = useRouter()
     </template>
   </van-nav-bar>
 </template>
+
+<script setup lang='ts'>
+withDefaults(defineProps<{
+  title?: string
+  fixed?: boolean
+  placeholder?: boolean
+}>(), {
+  title: () => {
+    const route = useRoute()
+    return route.meta.title as string ?? ''
+  },
+  fixed: false,
+  placeholder: true,
+})
+
+const router = useRouter()
+</script>

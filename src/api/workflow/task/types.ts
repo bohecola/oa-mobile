@@ -28,6 +28,7 @@ export interface TaskVO extends BaseEntity {
   taskDefinitionId?: any
   processDefinitionId: string
   endTime?: string
+  startTime?: string
   taskDefinitionKey: string
   dueDate?: string
   category?: any
