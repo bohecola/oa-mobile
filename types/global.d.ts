@@ -1,6 +1,11 @@
+import type { ComponentInternalInstance as ComponentInstance } from 'vue'
+
 export {}
 
 declare global {
+  /** vue Instance */
+  declare type ComponentInternalInstance = ComponentInstance
+
   type Recordable<T = any> = Record<string, T>
 
   type WithRequiredProperty<T, K extends keyof T> = T & {
