@@ -7,16 +7,24 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ApprovalRecord: typeof import('./src/components/Process/approvalRecord.vue')['default']
+    DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
+    MultiInstanceUser: typeof import('./src/components/Process/multiInstanceUser.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
+    SubmitVerify: typeof import('./src/components/Process/submitVerify.vue')['default']
+    TextareaView: typeof import('./src/components/TextareaView/index.vue')['default']
     ThemeProvider: typeof import('./src/components/ThemeProvider.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
+    VanCheckbox: typeof import('vant/es')['Checkbox']
+    VanCheckboxGroup: typeof import('vant/es')['CheckboxGroup']
     VanConfigProvider: typeof import('vant/es')['ConfigProvider']
+    VanDialog: typeof import('vant/es')['Dialog']
     VanDivider: typeof import('vant/es')['Divider']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
@@ -28,6 +36,9 @@ declare module 'vue' {
     VanNavBar: typeof import('vant/es')['NavBar']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
+    VanSkeleton: typeof import('vant/es')['Skeleton']
+    VanSkeletonParagraph: typeof import('vant/es')['SkeletonParagraph']
+    VanSpace: typeof import('vant/es')['Space']
     VanSwipeCell: typeof import('vant/es')['SwipeCell']
     VanSwitch: typeof import('vant/es')['Switch']
     VanTab: typeof import('vant/es')['Tab']
@@ -36,5 +47,7 @@ declare module 'vue' {
     VanTabs: typeof import('vant/es')['Tabs']
     VanTag: typeof import('vant/es')['Tag']
     VanUploader: typeof import('vant/es')['Uploader']
+    WorkflowPage: typeof import('./src/components/WorkflowPage/index.vue')['default']
+    WorlflowPage: typeof import('./src/components/WorlflowPage/index.vue')['default']
   }
 }

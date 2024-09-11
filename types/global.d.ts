@@ -7,6 +7,7 @@ declare global {
   declare type ComponentInternalInstance = ComponentInstance
 
   type Recordable<T = any> = Record<string, T>
+  type Override<P, S> = Omit<P, keyof S> & S
 
   type WithRequiredProperty<T, K extends keyof T> = T & {
     [P in K]-?: T[P]

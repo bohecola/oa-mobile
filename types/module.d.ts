@@ -6,6 +6,9 @@ export {}
 
 declare module 'vue' {
   interface ComponentCustomProperties {
+    // 全局方法声明
+    $modal: typeof modal
+
     useDict: typeof useDict
     addDateRange: typeof addDateRange
     handleTree: typeof handleTree

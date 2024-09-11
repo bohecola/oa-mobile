@@ -11,6 +11,14 @@ import * as post from '@/api/system/post'
 import * as processInstance from '@/api/workflow/processInstance'
 import * as task from '@/api/workflow/task'
 
+// oa
+import * as contract from '@/api/oa/business/contract'
+import * as project from '@/api/oa/business/project'
+import * as supplierCustomer from '@/api/oa/business/supplierCustomer'
+import * as projectSubject from '@/api/oa/finance/projectSubject'
+import * as subject from '@/api/oa/finance/subject'
+import * as subjectCalculateItem from '@/api/oa/finance/subjectCalculateItem'
+
 const service = {
   comm,
   open,
@@ -23,6 +31,14 @@ const service = {
   workflow: {
     processInstance,
     task,
+  },
+  oa: {
+    contract,
+    project,
+    supplierCustomer,
+    projectSubject,
+    subject,
+    subjectCalculateItem,
   },
 }
 

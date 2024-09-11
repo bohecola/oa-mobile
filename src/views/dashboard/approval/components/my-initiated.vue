@@ -2,7 +2,7 @@
   <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height))] overflow-y-auto">
     <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
       <van-swipe-cell v-for="row in list" :key="row.id">
-        <van-cell>
+        <van-cell @click="handleView(row)">
           <!-- 标题 -->
           <template #title>
             <span class="mr-2">{{ row.processDefinitionName }}</span>
@@ -48,6 +48,9 @@
         </template>
       </van-swipe-cell>
     </van-list>
+    <van-divider v-if="!hasNextPage && !isFetching">
+      已经到底部了
+    </van-divider>
   </div>
 </template>
 
@@ -55,6 +58,8 @@
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import { showConfirmDialog, showLoadingToast, showSuccessToast } from 'vant'
 import type { ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
+import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
+import workflowCommon from '@/api/workflow/workflowCommon'
 import { service } from '@/service'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -98,6 +103,20 @@ const list = computed(() => {
   }, [])
 })
 
+function handleView(row: any) {
+  const routerJumpVo = reactive<RouterJumpVo>({
+    wfDefinitionConfigVo: row.wfDefinitionConfigVo,
+    wfNodeConfigVo: row.wfNodeConfigVo,
+    businessKey: row.businessKey,
+    businessStatus: row.businessStatus,
+    taskId: '',
+    processInstanceId: row.id,
+    type: 'view',
+  })
+  workflowCommon.routerJump(routerJumpVo, proxy)
+}
+
+// 删除
 function handleDelete(row: ProcessInstanceVO) {
   showConfirmDialog({
     title: '确定删除吗？',
@@ -112,7 +131,7 @@ function handleDelete(row: ProcessInstanceVO) {
     .catch(() => {})
 }
 
-/** 撤销按钮操作 */
+// 撤销
 async function handleCancelProcessApply(row: ProcessInstanceVO) {
   showConfirmDialog({
     title: '是否确认撤销当前单据？',
@@ -127,3 +146,13 @@ async function handleCancelProcessApply(row: ProcessInstanceVO) {
     .catch(() => {})
 }
 </script>
+
+<style lang="scss" scoped>
+:deep() {
+  .van-cell {
+    .van-cell__title {
+      flex: 2;
+    }
+  }
+}
+</style>
