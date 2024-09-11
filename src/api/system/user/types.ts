@@ -1,29 +1,74 @@
-import type { DeptVO } from '../dept/types'
-import type { PostVO } from '../post/types'
-import type { RoleVO } from '../role/types'
+import type { RoleVO } from '@/api/system/role/types'
+import type { PostVO } from '@/api/system/post/types'
 
+/**
+ * 用户信息
+ */
+export interface UserInfo {
+  user: UserVO
+  roles: string[]
+  permissions: string[]
+}
+
+/**
+ * 用户查询对象类型
+ */
+export interface UserQuery extends PageQuery {
+  nickName?: string
+  userName?: string
+  phonenumber?: string
+  status?: string
+  deptId?: string | number
+  roleId?: string | number
+}
+
+/**
+ * 用户返回对象
+ */
 export interface UserVO extends BaseEntity {
   userId: string | number
+  tenantId: string
   deptId: number
   userName: string
   nickName: string
-  deptName: string
   userType: string
+  password: string
   email: string
   phonenumber: string
   sex: string
   avatar: string
   status: string
+  delFlag: string
   loginIp: string
   loginDate: string
   remark: string
-  dept: DeptVO
+  deptName: string
   roles: RoleVO[]
   roleIds: any
   postIds: any
   roleId: any
-  tenantId: number
+  admin: boolean
   [key: string]: any
+}
+
+/**
+ * 用户表单类型
+ */
+export interface UserForm {
+  id?: string
+  userId?: string
+  deptId?: number
+  avatar?: string
+  userName: string
+  nickName?: string
+  password?: string
+  phonenumber?: string
+  email?: string
+  sex?: string
+  status: string
+  remark?: string
+  postIds: string[]
+  roleIds: string[]
 }
 
 export interface UserInfoVO {
@@ -36,7 +81,13 @@ export interface UserInfoVO {
   postGroup: string
 }
 
-export interface UpdatePasswordForm {
+export interface ResetPwdForm {
   oldPassword: string
   newPassword: string
+  confirmPassword: string
+}
+
+export interface CheckUserNameAndPhoneUnique {
+  userName?: string
+  phonenumber?: string
 }

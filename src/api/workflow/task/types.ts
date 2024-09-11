@@ -16,24 +16,25 @@ export interface ParticipantVo {
 }
 
 export interface TaskVO extends BaseEntity {
-  id: string
-  name: string
+  id?: string
+  name?: string
   description?: string
-  priority: number
+  priority?: number
   owner?: string
   assignee?: string | number
   assigneeName?: string
-  processInstanceId: string
-  executionId: string
+  processInstanceId?: string
+  procinstName?: string
+  executionId?: string
   taskDefinitionId?: any
-  processDefinitionId: string
+  processDefinitionId?: string
   endTime?: string
   startTime?: string
-  taskDefinitionKey: string
+  taskDefinitionKey?: string
   dueDate?: string
   category?: any
   parentTaskId?: any
-  tenantId: string
+  tenantId?: string
   claimTime?: string
   businessStatus?: string
   businessStatusName?: string

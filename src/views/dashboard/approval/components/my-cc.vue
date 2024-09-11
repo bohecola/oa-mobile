@@ -1,10 +1,10 @@
 <template>
   <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height))] overflow-y-auto">
     <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
-      <van-cell v-for="row in list" :key="row.id">
+      <van-cell v-for="row in list" :key="row.id" @click="handleView(row)">
         <!-- 标题 -->
         <template #title>
-          <span class="mr-2">{{ row.processDefinitionName }}</span>
+          <span class="mr-2">{{ row.procinstName }}</span>
         </template>
 
         <!-- 描述 -->
@@ -24,13 +24,18 @@
         </template>
       </van-cell>
     </van-list>
+    <van-divider v-if="!hasNextPage && !isFetching">
+      已经到底部了
+    </van-divider>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import type { TaskQuery, TaskVO } from '@/api/workflow/task/types'
+import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 import { service } from '@/service'
+import workflowCommon from '@/api/workflow/workflowCommon'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { wf_business_status } = toRefs<any>(proxy?.useDict('wf_business_status'))
@@ -74,4 +79,27 @@ const list = computed(() => {
     return prev.concat(curr.rows)
   }, [])
 })
+
+function handleView(row: any) {
+  const routerJumpVo = reactive<RouterJumpVo>({
+    wfDefinitionConfigVo: row.wfDefinitionConfigVo,
+    wfNodeConfigVo: row.wfNodeConfigVo,
+    businessKey: row.businessKey,
+    businessStatus: row.businessStatus,
+    taskId: row.id,
+    processInstanceId: '',
+    type: 'view',
+  })
+  workflowCommon.routerJump(routerJumpVo, proxy)
+}
 </script>
+
+<style lang="scss" scoped>
+:deep() {
+  .van-cell {
+    .van-cell__title {
+      flex: 2;
+    }
+  }
+}
+</style>

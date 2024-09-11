@@ -1,3 +1,5 @@
+import type { FieldRule } from 'vant'
+
 export {}
 
 declare global {
@@ -7,6 +9,27 @@ declare global {
     updateBy?: any
     createTime?: string
     updateTime?: string
+  }
+
+  /**
+   * 弹窗属性
+   */
+  declare interface DialogOption {
+    title?: string
+    visible: boolean
+  }
+
+  /**
+   * 分页数据
+   * T : 表单数据
+   * D : 查询参数
+   */
+  declare interface PageData<T, D> {
+    form: T
+    queryParams: D
+    rules: {
+      [key: string]: FieldRule[]
+    }
   }
 
   /**
