@@ -4,19 +4,9 @@ import Loading from '@/components/Loading/index.vue'
 
 const loadingDirective = {
   mounted(el: any, binding: DirectiveBinding) {
+    el.style.position = 'relative'
     if (binding.value) {
-      const loadingInstance = createApp(Loading)
-      const loadingElement = loadingInstance.mount(document.createElement('div')).$el
-
-      el.style.position = 'relative'
-      loadingElement.style.position = 'absolute'
-      loadingElement.style.top = '0'
-      loadingElement.style.left = '50%'
-      loadingElement.style.width = '100%'
-      loadingElement.style.height = '100%'
-      loadingElement.style.background = '#ffffffee'
-      loadingElement.style.transform = 'translate(-50%, 0)'
-
+      const loadingElement = createLoading()
       el.appendChild(loadingElement)
       el._loadingElement = loadingElement
     }
@@ -24,8 +14,7 @@ const loadingDirective = {
   updated(el: any, binding: DirectiveBinding) {
     if (binding.value) {
       if (!el._loadingElement) {
-        const loadingInstance = createApp(Loading)
-        const loadingElement = loadingInstance.mount(document.createElement('div')).$el
+        const loadingElement = createLoading()
         el.appendChild(loadingElement)
         el._loadingElement = loadingElement
       }
@@ -43,6 +32,25 @@ const loadingDirective = {
       el._loadingElement = null
     }
   },
+}
+
+function createLoading() {
+  const loadingInstance = createApp(Loading)
+  const container = document.createElement('div')
+
+  // loadingInstance 在没有引用时会被自动垃圾回收
+  // 这里访问的是 mount 方法执行后返回实例的属性
+  const loadingElement = loadingInstance.mount(container).$el
+
+  loadingElement.style.position = 'absolute'
+  loadingElement.style.top = '0'
+  loadingElement.style.left = '50%'
+  loadingElement.style.width = '100%'
+  loadingElement.style.height = '100%'
+  loadingElement.style.transform = 'translate(-50%, 0)'
+  loadingElement.className = 'bg-[rgba(var(--bg-color),0.5)]'
+
+  return loadingElement
 }
 
 export default loadingDirective
