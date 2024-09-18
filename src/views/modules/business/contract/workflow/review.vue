@@ -3,15 +3,15 @@
     <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_08sjg5i'">
+      <div v-if="taskDefinitionKey === 'Activity_08sjg5i'" v-loading="loading">
         <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
       <!-- 收入- 部门经理节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_08vtkwi'">
+      <div v-else-if="taskDefinitionKey === 'Activity_08vtkwi'" v-loading="loading">
         <Detail ref="Detail2Ref" :include-fields="includeFieldsDetail2" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
-      <div v-else>
+      <div v-else v-loading="loading">
         <Detail ref="DetailOtherRef" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>
@@ -153,6 +153,7 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
+  loading.value = true
   const res = await useWorkflowViewData({ taskId, processInstanceId })
 
   const { entity, task } = res.data
@@ -164,8 +165,6 @@ onMounted(async () => {
       case 'update':
       case 'approval': {
         try {
-          loading.value = true
-
           // await Upsert.value?.workflowView({ taskId, processInstanceId });
 
           // await Upsert2.value?.workflowView({ taskId, processInstanceId });

@@ -20,6 +20,8 @@
     "@tanstack/vue-query": "^5.55.4",
     "@vant/touch-emulator": "^1.4.0",
     "@vueuse/core": "^10.11.0",
+    "@xuanmo/dl-common": "0.0.5-beta.29",
+    "@xuanmo/dl-ui": "0.0.5-beta.39",
     "axios": "^1.7.2",
     "crypto-js": "^4.2.0",
     "jsencrypt": "^3.3.2",

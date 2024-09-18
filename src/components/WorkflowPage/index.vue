@@ -1,42 +1,56 @@
 <template>
   <NavBar />
 
-  <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)]">
-    <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" @click="handleTempSave">
+  <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border">
+    <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
       暂存
     </van-button>
-    <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" @click="handleSubmit">
+    <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
       提 交
     </van-button> -->
-    <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" @click="handleApproval">
+    <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
       审批
     </van-button>
   </div>
-  <div
-    :class="`
-      py-2 flex flex-col gap-2 overflow-y-auto
-      ${
-      submitVisible || approvalVisible
-        ? 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-button-small-height)-16px)]'
-        : 'h-[calc(100vh-var(--van-nav-bar-height))]'}`"
-  >
-    <div v-if="entityVariables?.initiator">
-      <van-divider>发起人信息</van-divider>
-      <van-cell title="发起人：" :value="entityVariables.initiator.nickName" />
-      <van-cell title="部门：" :value="entityVariables.initiator.deptName" />
-      <van-cell title="发起时间：" :value="parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')!" />
-    </div>
-    <van-divider>表单</van-divider>
-    <slot />
-    <van-divider>已经到底部了</van-divider>
 
-    <!-- 提交组件 -->
-    <SubmitVerify ref="submitVerifyRef" :entity-variables="entityVariables" @submit-callback="submitCallback" />
-  </div>
+  <van-tabs v-model:active="active" lazy-render @change="onTabChange">
+    <div
+      :class="`
+      flex flex-col gap-2 overflow-y-auto
+      ${
+        submitVisible || approvalVisible
+          ? 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height)-var(--van-button-small-height)-16px-2px)]'
+          : 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]'}`"
+    >
+      <!-- 审批表单 -->
+      <van-tab title="审批表单" name="form">
+        <div v-if="entityVariables?.initiator">
+          <van-cell-group inset title="发起人信息">
+            <van-cell title="发起人：" :value="entityVariables.initiator.nickName" />
+            <van-cell title="部门：" :value="entityVariables.initiator.deptName" />
+            <van-cell title="发起时间：" :value="parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')!" />
+          </van-cell-group>
+        </div>
+        <van-cell-group inset title="表单">
+          <slot />
+        </van-cell-group>
+        <van-divider>已经到底部了</van-divider>
+      </van-tab>
+
+      <!-- 审批记录 -->
+      <van-tab title="审批记录" name="record">
+        <ApprovalSteps ref="ApprovalStepsRef" />
+      </van-tab>
+    </div>
+  </van-tabs>
+
+  <!-- 提交组件 -->
+  <SubmitVerify ref="submitVerifyRef" :entity-variables="entityVariables" @submit-callback="submitCallback" />
 </template>
 
 <script setup lang='ts'>
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from './types'
+import ApprovalSteps from './steps.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
 import { useStore } from '@/store'
 
@@ -60,6 +74,9 @@ interface Emits {
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 提交组件
 const submitVerifyRef = ref<InstanceType<typeof SubmitVerify>>()
+const ApprovalStepsRef = ref<InstanceType<typeof ApprovalSteps> | null>()
+
+const active = ref<'form' | 'record'>('form')
 
 const { user } = useStore()
 
@@ -67,6 +84,9 @@ const { user } = useStore()
 const tempSaveLoading = ref(false)
 // 提交加载
 const submitLoading = ref(false)
+
+// 按钮禁用
+const actionBtnDisabled = computed(() => active.value === 'record')
 
 // 提交可见
 const submitVisible = computed(() => {
@@ -135,5 +155,15 @@ function handleApproval() {
 async function submitCallback() {
   // await proxy.$tab.closePage(proxy.$route);
   proxy?.$router.go(-1)
+}
+
+function onTabChange(val: any) {
+  switch (val) {
+    case 'record': {
+      nextTick(() => {
+        ApprovalStepsRef.value?.init(props.entityVariables?.id)
+      })
+    }
+  }
 }
 </script>

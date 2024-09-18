@@ -7,13 +7,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ApprovalRecord: typeof import('./src/components/Process/approvalRecord.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
+    Loading: typeof import('./src/components/Loading/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
     MultiInstanceUser: typeof import('./src/components/Process/multiInstanceUser.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
+    Steps: typeof import('./src/components/WorkflowPage/steps.vue')['default']
     SubmitVerify: typeof import('./src/components/Process/submitVerify.vue')['default']
     TextareaView: typeof import('./src/components/TextareaView/index.vue')['default']
     ThemeProvider: typeof import('./src/components/ThemeProvider.vue')['default']
@@ -39,6 +40,8 @@ declare module 'vue' {
     VanSkeleton: typeof import('vant/es')['Skeleton']
     VanSkeletonParagraph: typeof import('vant/es')['SkeletonParagraph']
     VanSpace: typeof import('vant/es')['Space']
+    VanStep: typeof import('vant/es')['Step']
+    VanSteps: typeof import('vant/es')['Steps']
     VanSwipeCell: typeof import('vant/es')['SwipeCell']
     VanSwitch: typeof import('vant/es')['Switch']
     VanTab: typeof import('vant/es')['Tab']

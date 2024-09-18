@@ -17,6 +17,12 @@ importers:
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.31(typescript@5.5.4))
+      '@xuanmo/dl-common':
+        specifier: 0.0.5-beta.29
+        version: 0.0.5-beta.29
+      '@xuanmo/dl-ui':
+        specifier: 0.0.5-beta.39
+        version: 0.0.5-beta.39
       axios:
         specifier: ^1.7.2
         version: 1.7.2
@@ -968,6 +974,12 @@ packages:
 
   '@vueuse/shared@10.11.0':
     resolution: {integrity: sha512-fyNoIXEq3PfX1L3NkNhtVQUSRtqYwJtJg+Bp9rIzculIZWHTkKSysujrOk2J+NrRulLTQH9+3gGSfYLWSEWU1A==}
+
+  '@xuanmo/dl-common@0.0.5-beta.29':
+    resolution: {integrity: sha512-loKkOL6J8MuXUz4O2PrtLF5wNFPc4fYekz2JywmhnRlxwvRpuYIrDUiq+oR+KDIPbENdBgvREwP4bW5/RlUmYA==}
+
+  '@xuanmo/dl-ui@0.0.5-beta.39':
+    resolution: {integrity: sha512-JvLQsSLRldtRC121XiGrw6/P7Whx/7DztNDvUUBzX4JY8l8ZWGRTu+cvAWkaGTDRvmtPNsuzJtaYH3lanx3Z5w==}
 
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -4100,6 +4112,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@xuanmo/dl-common@0.0.5-beta.29': {}
+
+  '@xuanmo/dl-ui@0.0.5-beta.39': {}
 
   JSONStream@1.3.5:
     dependencies:
