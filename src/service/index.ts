@@ -10,6 +10,7 @@ import * as post from '@/api/system/post'
 // workflow
 import * as processInstance from '@/api/workflow/processInstance'
 import * as task from '@/api/workflow/task'
+import * as formManage from '@/api/workflow/formManage'
 
 // oa
 import * as contract from '@/api/oa/business/contract'
@@ -31,6 +32,7 @@ const service = {
   workflow: {
     processInstance,
     task,
+    formManage,
   },
   oa: {
     contract,

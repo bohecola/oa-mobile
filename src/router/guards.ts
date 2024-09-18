@@ -1,26 +1,31 @@
-import type { Router } from 'vue-router'
 import NProgress from 'nprogress'
-import { useUserStore } from '@/store/user'
 import 'nprogress/nprogress.css'
+import { useStore } from '@/store'
 
 const whitePathList = ['/login']
 
 export function createRouterGuards(router: Router) {
   // 全局前置路由守卫
-  router.beforeEach((to, from) => {
-    const user = useUserStore()
-
+  router.beforeEach(async (to, from) => {
     NProgress.start()
+    // 数据缓存
+    const { user } = useStore()
+    // 预先注册路由
+    const { isReg, route } = await router.register(to.path)
 
-    if (whitePathList.includes(to.path)) {
-      return true
+    if (!isReg) {
+      return to.fullPath
     }
+    else {
+      if (whitePathList.includes(to.path)) {
+        return true
+      }
 
-    if (user.token) {
-      return true
+      if (user.token) {
+        return true
+      }
+      return '/login'
     }
-
-    return { path: '/login' }
   })
 
   // 全局后置路由钩子
