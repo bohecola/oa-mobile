@@ -29,14 +29,6 @@ export const otherRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/dashboard/approval/index.vue'),
   },
-  {
-    path: '/oaManage/taskCollection/business/contractReview',
-    meta: {
-      title: '合同评审申请',
-      innerPage: true,
-    },
-    component: () => import('@/views/modules/business/contract/workflow/review.vue'),
-  },
   // {
   //   path: '/example',
   //   component: Layout,

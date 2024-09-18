@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 用户信息
-  const info = ref<UserVO | null>(data.userInfo)
+  const info = ref<UserVO | null>(null)
 
   // 设置用户信息
   function set(value: UserVO) {
@@ -39,9 +39,10 @@ export const useUserStore = defineStore('user', () => {
 
   // 退出登录
   async function logout() {
+    clear()
+    router.clear()
     await userLogout()
     await router.push('/login')
-    clear()
     showToast('退出成功')
   }
 

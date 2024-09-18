@@ -24,6 +24,11 @@ export interface FormManageVO {
   router: string
 
   /**
+   * 移动端组件路径
+   */
+  appComponent: string
+
+  /**
    * 备注
    */
   remark: string
@@ -49,6 +54,11 @@ export interface FormManageForm extends BaseEntity {
    * 路由地址/表单ID
    */
   router?: string
+
+  /**
+   * 移动端组件路径
+   */
+  appComponent?: string
 
   /**
    * 备注
