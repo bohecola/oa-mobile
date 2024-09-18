@@ -88,7 +88,7 @@ function handleView(row: TaskVO) {
     wfNodeConfigVo: row.wfNodeConfigVo!,
     businessKey: row.businessKey!,
     businessStatus: row.businessStatus!,
-    taskId: row.id,
+    taskId: row.id as string,
     processInstanceId: '',
     type: 'approval',
   })

@@ -1,32 +1,7 @@
 <template>
   <van-popup v-model:show="dialog.visible" position="bottom" round class="h-30vh" :before-close="cancel" :close-on-click-overlay="false">
     <van-form label-width="120px">
-      <van-field name="messageType" label="消息提醒">
-        <template #input>
-          <van-checkbox-group v-model="form.messageType" direction="horizontal">
-            <van-checkbox name="1" shape="square" icon-size="16px" disabled>
-              站内信
-            </van-checkbox>
-            <!-- <van-checkbox name="2" shape="square" icon-size="16px">
-              邮件
-            </van-checkbox>
-            <van-checkbox name="3" shape="square" icon-size="16px">
-              短信
-            </van-checkbox> -->
-          </van-checkbox-group>
-        </template>
-      </van-field>
-      <!-- <el-form-item v-if="task.businessStatus === 'waiting'" label="附件">
-        <fileUpload v-model="form.fileId" :file-type="['doc', 'xls', 'ppt', 'txt', 'pdf', 'xlsx', 'docx', 'zip']" :file-size="20" />
-      </el-form-item> -->
-      <!-- <el-form-item label="抄送">
-        <el-button type="primary" icon="Plus" circle @click="openUserSelectCopy" />
-        <el-tag v-for="user in selectCopyUserList" :key="user.userId" closable style="margin: 2px" @close="handleCopyCloseTag(user)">
-          {{ user.nickName }}
-        </el-tag>
-      </el-form-item> -->
       <van-field
-        v-if="task.businessStatus === 'waiting'"
         v-model="form.message"
         rows="2"
         autosize
@@ -73,7 +48,15 @@
     <!-- <MultiInstanceUser ref="multiInstanceUserRef" :title="title" @submit-callback="closeDialog" /> -->
 
     <!-- 驳回开始 -->
-    <van-dialog v-model:show="backVisible" title="驳回" :close-on-click-overlay="false" show-cancel-button @confirm="handleBackProcess()">
+    <van-dialog
+      v-model:show="backVisible"
+      title="驳回"
+      show-cancel-button
+      :close-on-click-overlay="false"
+      :confirm-button-disabled="backButtonDisabled"
+      :cancel-button-disabled="backButtonDisabled"
+      @confirm="handleBackProcess()"
+    >
       <van-field
         v-if="task.businessStatus === 'waiting'"
         v-model="rejectNodeName"
@@ -91,39 +74,6 @@
           @cancel="onRejectNodeCancel"
         />
       </van-popup>
-      <!-- <ElForm v-if="task.businessStatus === 'waiting'" v-loading="backLoading" :model="backForm" label-width="120px">
-        <el-form-item label="驳回节点">
-          <el-select v-model="backForm.targetActivityId" clearable placeholder="请选择" style="width: 300px">
-            <el-option v-for="item in taskNodeList" :key="item.nodeId" :label="item.nodeName" :value="item.nodeId" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="消息提醒">
-          <el-checkbox-group v-model="backForm.messageType">
-            <el-checkbox label="1" name="type" disabled>
-              站内信
-            </el-checkbox>
-            <el-checkbox label="2" name="type">
-              邮件
-            </el-checkbox>
-            <el-checkbox label="3" name="type">
-              短信
-            </el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="审批意见">
-          <el-input v-model="backForm.message" type="textarea" resize="none" />
-        </el-form-item>
-      </ElForm>
-      <template #footer>
-        <div class="dialog-footer" style="float: right; padding-bottom: 20px">
-          <el-button :disabled="backButtonDisabled" type="primary" @click="handleBackProcess">
-            确认
-          </el-button>
-          <el-button :disabled="backButtonDisabled" @click="backVisible = false">
-            取消
-          </el-button>
-        </div>
-      </template> -->
     </van-dialog>
     <!-- 驳回结束 -->
   </van-popup>

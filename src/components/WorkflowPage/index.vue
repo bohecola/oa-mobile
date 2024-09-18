@@ -77,7 +77,7 @@ const submitVisible = computed(() => {
 // 审批可见
 const approvalVisible = computed(() => {
   const { type, wfStatus } = proxy?.$route.query ?? {}
-  return type === 'approval' && wfStatus && wfStatus === 'waiting'
+  return type === 'approval' && wfStatus && (wfStatus === 'waiting' || wfStatus === 'back')
 })
 
 // 流程可见
