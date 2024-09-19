@@ -54,12 +54,25 @@
     :center="true"
     :border="false"
   />
+
+  <van-cell
+    title="人员选择"
+    title-class="font-bold"
+    is-link
+    @click="UserSelectRef?.open"
+  >
+    <UserSelect ref="UserSelectRef" v-model="userId" :multiple="false" />
+  </van-cell>
 </template>
 
 <script setup lang='ts'>
 import { useStore } from '@/store'
+import UserSelect from '@/components/UserSelect/index.vue'
 
 const { user } = useStore()
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
+
+const userId = ref('1767026837160038402')
 
 // 状态类型
 interface AccountState {

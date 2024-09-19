@@ -1,5 +1,5 @@
 <template>
-  <van-skeleton :loading="isLoading" animated class="h-8 flex items-center">
+  <van-skeleton :loading="isLoading" animated class="h-6 flex items-center">
     <template #template>
       <van-skeleton-paragraph class="!h-[60%]" />
     </template>

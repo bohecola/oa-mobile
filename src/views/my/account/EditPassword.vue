@@ -50,13 +50,11 @@ const items: FieldItem[] = [
 
 // 提交表单
 async function handleSubmit(values: any) {
+  const { oldPassword, newPassword } = values
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
   // 更新字段
-  await service.system.user.updatePassword({
-    oldPassword: values.oldPassword,
-    newPassword: values.newPassword,
-  })
+  await service.system.user.updateUserPwd(oldPassword, newPassword)
   // 关闭加载
   loadingToast.close()
   // 返回

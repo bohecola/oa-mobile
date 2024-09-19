@@ -91,3 +91,50 @@ export interface CheckUserNameAndPhoneUnique {
   userName?: string
   phonenumber?: string
 }
+
+/**
+ * SysUserMobileVo，用户信息视图对象 sys_user
+ */
+export interface SysUserMobileVO {
+  /**
+   * 部门ID
+   */
+  deptId?: number
+  /**
+   * 部门名
+   */
+  deptName?: string
+  /**
+   * 用户邮箱
+   */
+  email?: string
+  /**
+   * 用户昵称
+   */
+  nickName?: string
+  /**
+   * 手机号码
+   */
+  phonenumber?: string
+  /**
+   * 昵称拼音
+   */
+  pinyin?: string
+  /**
+   * 帐号状态（0正常 1停用）
+   */
+  status?: string
+  /**
+   * 租户ID
+   */
+  tenantId?: string
+  /**
+   * 用户ID
+   */
+  userId?: string | number
+  /**
+   * 用户账号
+   */
+  userName?: string
+  [property: string]: any
+}

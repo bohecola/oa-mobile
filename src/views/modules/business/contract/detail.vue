@@ -27,7 +27,7 @@
       </van-field>
     </template>
 
-    <van-field v-model="form.deptId" v-show-field="['deptId', includeFields]" name="deptId" label="需求部门：">
+    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门：">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />
       </template>
