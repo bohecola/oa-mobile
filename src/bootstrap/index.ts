@@ -1,12 +1,13 @@
 import type { App } from 'vue'
 import { setToastDefaultOptions } from 'vant'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import '@xuanmo/dl-ui/dist/index.css'
 import DLUI from '@xuanmo/dl-ui'
 import { setupStore } from '@/store'
 import { setupRouter } from '@/router'
-import plugins from '@/plugins'
 import { setupDirective } from '@/directive'
+import plugins from '@/plugins'
+
+import '@xuanmo/dl-ui/dist/index.css'
 
 export async function bootstrap(app: App) {
   // 配置状态管理
