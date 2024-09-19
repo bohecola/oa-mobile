@@ -48,9 +48,7 @@
         </template>
       </van-swipe-cell>
     </van-list>
-    <van-divider v-if="!hasNextPage && !isFetching">
-      已经到底部了
-    </van-divider>
+    <bottom-line v-if="!hasNextPage && !isFetching" />
   </div>
 </template>
 

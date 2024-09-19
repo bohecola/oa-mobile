@@ -34,7 +34,7 @@
         <van-cell-group inset title="表单">
           <slot />
         </van-cell-group>
-        <van-divider>已经到底部了</van-divider>
+        <bottom-line />
       </van-tab>
 
       <!-- 审批记录 -->

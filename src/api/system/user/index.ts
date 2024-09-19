@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import type { DeptVO } from './../dept/types'
-import type { CheckUserNameAndPhoneUnique, UserForm, UserInfoVO, UserQuery, UserVO } from './types'
+import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoVO, UserQuery, UserVO } from './types'
 import type { RoleVO } from '@/api/system/role/types'
 import { parseStrEmpty } from '@/utils/base'
 import request from '@/service/request'
@@ -237,6 +237,17 @@ export function deptTreeSelect(): AxiosPromise<DeptVO[]> {
 export function getUserMessageAll(userId: string | number) {
   return request({
     url: `/oa/personnel/userInfo/getUserMessageAll/${userId}`,
+    method: 'get',
+  })
+}
+
+/**
+ * 查询当前部门的所有用户信息
+ * @param deptId
+ */
+export function getUserMobileList(): AxiosPromise<Record<string, SysUserMobileVO[]>> {
+  return request({
+    url: `/system/user/userMobileList`,
     method: 'get',
   })
 }

@@ -24,9 +24,7 @@
       <!-- <dict-tag :options="wf_business_status" :value="item.status" /> -->
       <!-- TODO 附件 -->
     </van-steps>
-    <van-divider v-if="!loading">
-      已经到底部了
-    </van-divider>
+    <bottom-line v-if="!loading" />
   </div>
 </template>
 
