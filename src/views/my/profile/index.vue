@@ -31,7 +31,7 @@
     :center="true"
     :border="false"
     is-link
-    to="/edit-nickName"
+    to="/edit-nickname"
   />
 
   <van-field
