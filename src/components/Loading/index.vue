@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
-    <van-loading>加载中...</van-loading>
-  </div>
+  <van-loading>
+    加载中...
+  </van-loading>
 </template>

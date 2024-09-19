@@ -41,15 +41,7 @@ function createLoading() {
   // loadingInstance 在没有引用时会被自动垃圾回收
   // 这里访问的是 mount 方法执行后返回实例的属性
   const loadingElement = loadingInstance.mount(container).$el
-
-  loadingElement.style.position = 'absolute'
-  loadingElement.style.top = '0'
-  loadingElement.style.left = '50%'
-  loadingElement.style.width = '100%'
-  loadingElement.style.height = '100%'
-  loadingElement.style.transform = 'translate(-50%, 0)'
-  loadingElement.className = 'bg-[rgba(var(--bg-color),0.5)]'
-
+  loadingElement.className = 'p-2 w-full h-full absolute min-h-10 top-0 left-[50%] text-center -translate-x-[50%] bg-[--bg-loading-color] z-10'
   return loadingElement
 }
 

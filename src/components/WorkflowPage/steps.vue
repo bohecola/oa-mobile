@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <van-steps v-loading="loading" direction="vertical" :active="active">
+  <div v-loading="loading">
+    <van-steps direction="vertical" :active="active">
       <van-step v-for="(item, index) in historyList" :key="item.id">
         <h3>{{ item.name }}</h3>
         <div class="text-xs p-2 flex flex-col gap-1">
@@ -10,7 +10,7 @@
           <p>办理人：{{ item.nickName }}</p>
           <div class="flex gap-2">
             <div>状态：</div>
-            <!-- <dict-tag :options="wf_business_status" :value="item.status" /> -->
+
             <van-tag type="primary">
               {{ item.statusName }}
             </van-tag>
@@ -19,9 +19,10 @@
             <div>审批意见：</div>
             <TextareaView :value="item.comment" />
           </div>
-        <!-- TODO 附件 -->
         </div>
       </van-step>
+      <!-- <dict-tag :options="wf_business_status" :value="item.status" /> -->
+      <!-- TODO 附件 -->
     </van-steps>
     <van-divider v-if="!loading">
       已经到底部了
