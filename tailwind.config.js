@@ -1,5 +1,6 @@
 import { getIconCollections, iconsPlugin } from '@egoist/tailwindcss-icons'
 import remToPx from 'tailwindcss-rem-to-px'
+import tailwindcssSafeArea from 'tailwindcss-safe-area'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -23,5 +24,6 @@ export default {
       ]),
     }),
     remToPx(),
+    tailwindcssSafeArea,
   ],
 }

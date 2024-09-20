@@ -59,9 +59,12 @@
     title="人员选择"
     title-class="font-bold"
     is-link
+    value-class="!flex-[3]"
     @click="UserSelectRef?.open"
   >
-    <UserSelect ref="UserSelectRef" v-model="userId" :multiple="false" />
+    <template #value>
+      <UserSelect ref="UserSelectRef" v-model="userId" :multiple="true" />
+    </template>
   </van-cell>
 </template>
 
