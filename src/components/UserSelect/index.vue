@@ -18,23 +18,23 @@
       teleport="body"
       @closed="popupClosed"
     >
-      <NavBar
-        v-if="!isSearchFocused"
-        title="选择联系人"
-        @click-left="close"
-      />
-
-      <div v-loading="loading">
-        <!-- 搜索 注: form[action="/"] 作用：IOS 键盘显示搜索按钮 -->
-        <form action="/">
-          <van-search
-            v-model="searchText"
-            placeholder="搜索"
-            :show-action="isSearchFocused"
-            @focus="handleSearchFocus"
-            @cancel="handleSearchCancel"
-          />
-        </form>
+      <!-- class="h-[calc(100vh-var(--van-nav-bar-height))] overflow-y-auto" -->
+      <!-- <NavBar
+          title="选择联系人"
+          :fixed="true"
+          :is-left-click-back="false"
+          @click-left="close"
+        /> -->
+      <!-- :sticky-offset-top="46" -->
+      <div v-loading="loading" class="">
+        <!-- 搜索 -->
+        <van-search
+          v-model="searchText"
+          placeholder="搜索"
+          :show-action="isSearchFocused"
+          @focus="handleSearchFocus"
+          @cancel="handleSearchCancel"
+        />
         <!-- 索引栏 -->
         <div v-show="!isSearchFocused" class="h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
           <van-index-bar
