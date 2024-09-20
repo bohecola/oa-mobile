@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply dark:border-[var(--van-divider-border-color,#3a3a3c)];
+  }
+}
+
 :root {
   --color: #222;
   --bg-color: #fff;

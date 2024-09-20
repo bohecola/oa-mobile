@@ -1,5 +1,11 @@
 <template>
   <van-divider>
-    已经到底部了
+    {{ content ?? '已经到底部了' }}
   </van-divider>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  content?: string
+}>()
+</script>
