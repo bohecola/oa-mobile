@@ -8,9 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
+    Cell: typeof import('./src/components/UserSelect/cell.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
+    ListItem: typeof import('./src/components/UserSelect/list-item.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
     MultiInstanceUser: typeof import('./src/components/Process/multiInstanceUser.vue')['default']
@@ -41,6 +43,7 @@ declare module 'vue' {
     VanNavBar: typeof import('vant/es')['NavBar']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
+    VanSearch: typeof import('vant/es')['Search']
     VanSkeleton: typeof import('vant/es')['Skeleton']
     VanSkeletonParagraph: typeof import('vant/es')['SkeletonParagraph']
     VanSpace: typeof import('vant/es')['Space']
