@@ -69,7 +69,7 @@ export default defineConfig(({ command, mode }) => {
     },
 
     server: {
-      host: false,
+      host: true,
       open: false,
       // port: VITE_PORT,
       warmup: {

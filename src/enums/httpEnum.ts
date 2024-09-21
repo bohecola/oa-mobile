@@ -5,6 +5,7 @@ export enum ResultCodeEnum {
   SUCCESS = 200,
   TOKEN_EXPIRED = 401,
   ERROR = 500,
+  WARN = 601,
 }
 
 /**

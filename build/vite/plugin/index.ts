@@ -27,6 +27,7 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
         'vue',
         'vue-router',
         'pinia',
+        '@vueuse/core',
       ],
       dts: 'types/auto-imports.d.ts',
     }),

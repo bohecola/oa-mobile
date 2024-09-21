@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 import { showLoadingToast } from 'vant'
-import EditField from '../components/EditField.vue'
+import EditField from '@/components/EditField/index.vue'
 import { useStore } from '@/store'
-import { updateUserProfile } from '@/api/system/user'
+import { service } from '@/service'
 
 // 用户状态
 const { user } = useStore()
@@ -16,7 +16,7 @@ async function handleSubmit(values: any) {
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
 
   // 更新字段
-  await updateUserProfile({ ...user.info, ...values })
+  await service.system.user.updateUserProfile({ ...user.info, ...values })
   // 关闭加载
   loadingToast.close()
   // 返回

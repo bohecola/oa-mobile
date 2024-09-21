@@ -7,7 +7,7 @@
   >
     <van-field
       v-show="false"
-      v-model="formData.tenantId"
+      v-model="form.tenantId"
       name="tenantId"
       placeholder="租户编号"
     >
@@ -17,7 +17,7 @@
     </van-field>
 
     <van-field
-      v-model="formData.username"
+      v-model="form.username"
       name="username"
       placeholder="用户名"
       :rules="[{ required: true, message: '请输入用户名', trigger: 'onChange' }]"
@@ -29,7 +29,7 @@
     </van-field>
 
     <van-field
-      v-model="formData.password"
+      v-model="form.password"
       name="password"
       placeholder="密码"
       :type="`${passwordVisible ? 'text' : 'password'}`"
@@ -48,7 +48,7 @@
 
     <van-field
       v-if="captchaEnabled"
-      v-model="formData.code"
+      v-model="form.code"
       name="code"
       placeholder="验证码"
       :rules="[{ required: true, message: '请输入验证码', trigger: 'onChange' }]"
@@ -70,7 +70,7 @@
 
     <div class="mt-4 mb-6 px-1 flex justify-between">
       <div class="flex items-center">
-        <van-switch v-model="formData.remenberMe" size="14px" class="mr-2" :disabled="loading" />
+        <van-switch v-model="form.remenberMe" size="14px" class="mr-2" :disabled="loading" />
         <span class="text-sm">记住我</span>
       </div>
 
@@ -91,29 +91,29 @@
 <script setup lang='ts'>
 import { type FormInstance, showFailToast, showLoadingToast, showSuccessToast } from 'vant'
 import { debounce } from 'lodash-es'
-import type { LoginData } from '@/api/open'
-import { captcha, login } from '@/api/open'
-import { useGlobSetting } from '@/hooks/settings'
+import type { LoginData } from '@/api/open/types'
+import { service } from '@/service'
+import { useGlobSettings } from '@/hooks'
 import { useStore } from '@/store'
 import { storage } from '@/utils'
 
 // 路由器
 const router = useRouter()
 // 用户状态
-const { user } = useStore()
+const { user, menu } = useStore()
 // 是否初始化完成
 const initFinished = ref(false)
 // 验证码是否启用
 const captchaEnabled = ref(false)
 // 应用客户端ID
-const { appClientId } = useGlobSetting()
+const { appClientId } = useGlobSettings()
 
 // 加载
 const loading = ref(false)
 // 表单
 const formRef = ref<FormInstance>()
 // 数据
-const formData = ref({
+const form = ref({
   tenantId: '000000',
   username: '',
   password: '',
@@ -130,11 +130,12 @@ const base64 = ref('')
 
 // 获取验证码
 async function getCaptcha() {
-  const res = await captcha()
-  base64.value = `data:image/gif;base64,${res.img}`
-  captchaEnabled.value = res.captchaEnabled
-  formData.value.uuid = res.uuid ?? ''
+  const { data } = await service.open.captcha()
+  base64.value = `data:image/gif;base64,${data.img}`
+  captchaEnabled.value = data.captchaEnabled
+  form.value.uuid = data.uuid ?? ''
 }
+
 // 防抖点击验证码
 const handleCaptchaClick = debounce(getCaptcha, 300)
 
@@ -144,8 +145,8 @@ async function handleSubmit(_: LoginData) {
     loading.value = true
     showLoadingToast('登录中...')
     // 登录
-    const { access_token } = await login({
-      ...formData.value,
+    const { data } = await service.open.login({
+      ...form.value,
       clientId: appClientId,
       grantType: 'password',
     })
@@ -153,9 +154,11 @@ async function handleSubmit(_: LoginData) {
     // 是否记住用户
     memoMe()
     // 持久化 token
-    user.setToken({ token: access_token })
+    user.setToken({ token: data.access_token })
     // 用户信息
     user.get()
+    // 菜单信息
+    menu.get()
     // 跳转首页
     await router.push('/')
   }
@@ -172,8 +175,8 @@ async function handleSubmit(_: LoginData) {
 
 // 记住我
 function memoMe() {
-  if (formData.value.remenberMe) {
-    storage.set('me', JSON.stringify({ ...formData.value, code: '', uuid: '' }))
+  if (form.value.remenberMe) {
+    storage.set('me', JSON.stringify({ ...form.value, code: '', uuid: '' }))
   }
   else {
     storage.remove('me')
@@ -184,16 +187,16 @@ function memoMe() {
 function getMe() {
   const me = JSON.parse(storage.get('me') ?? null)
   if (me) {
-    formData.value = me
+    form.value = me
   }
 }
 
 // 挂载
 onMounted(async () => {
-  // 加载验证码
-  await getCaptcha()
   // 上次记住信息
   getMe()
+  // 加载验证码
+  await getCaptcha()
   // 初始化完毕
   initFinished.value = true
 })

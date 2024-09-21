@@ -1,9 +1,9 @@
 <script setup lang='ts'>
 import type { FieldRule } from 'vant'
 import { showLoadingToast } from 'vant'
-import type { FieldItem } from '../components/EditField.vue'
-import EditField from '../components/EditField.vue'
-import { updatePassword } from '@/api/system/user'
+import type { FieldItem } from '@/components/EditField/index.vue'
+import EditField from '@/components/EditField/index.vue'
+import { service } from '@/service'
 
 // 路由器
 const router = useRouter()
@@ -50,13 +50,11 @@ const items: FieldItem[] = [
 
 // 提交表单
 async function handleSubmit(values: any) {
+  const { oldPassword, newPassword } = values
   // 提示加载
   const loadingToast = showLoadingToast({ duration: 0, message: '加载中' })
   // 更新字段
-  await updatePassword({
-    oldPassword: values.oldPassword,
-    newPassword: values.newPassword,
-  })
+  await service.system.user.updateUserPwd(oldPassword, newPassword)
   // 关闭加载
   loadingToast.close()
   // 返回

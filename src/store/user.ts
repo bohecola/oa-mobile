@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { showToast } from 'vant'
 import { storage } from '@/utils'
 import { person, userLogout } from '@/api/comm'
-import type { UserVO } from '@/api/system/user'
+import type { UserVO } from '@/api/system/user/types'
 import router from '@/router'
 
 // 本地缓存
@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 用户信息
-  const info = ref<UserVO | null>(data.userInfo)
+  const info = ref<UserVO | null>(null)
 
   // 设置用户信息
   function set(value: UserVO) {
@@ -39,17 +39,18 @@ export const useUserStore = defineStore('user', () => {
 
   // 退出登录
   async function logout() {
+    clear()
+    router.clear()
     await userLogout()
     await router.push('/login')
-    clear()
     showToast('退出成功')
   }
 
   // 获取用户信息
   async function get() {
-    return person().then((res) => {
-      set(res.user)
-      return res.user
+    return person().then(({ data }) => {
+      set(data.user)
+      return data.user
     })
   }
 

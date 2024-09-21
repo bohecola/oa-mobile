@@ -17,7 +17,11 @@
     "lint:lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.55.4",
+    "@vant/touch-emulator": "^1.4.0",
     "@vueuse/core": "^10.11.0",
+    "@xuanmo/dl-common": "0.0.5-beta.29",
+    "@xuanmo/dl-ui": "0.0.5-beta.39",
     "axios": "^1.7.2",
     "crypto-js": "^4.2.0",
     "jsencrypt": "^3.3.2",
@@ -59,6 +63,7 @@
     "simple-git-hooks": "^2.11.1",
     "tailwindcss": "^3.4.4",
     "tailwindcss-rem-to-px": "^0.1.0",
+    "tailwindcss-safe-area": "^0.6.0",
     "typescript": "^5.3.3",
     "unplugin-auto-import": "^0.18.0",
     "unplugin-vue-components": "^0.27.3",
