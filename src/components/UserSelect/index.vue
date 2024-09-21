@@ -209,6 +209,7 @@ function handleRemoveUser(user: SysUserMobileVO) {
 function confirm() {
   visible.value = false
   const payload = getValues()
+  // TODO 序列化与反序列化
   emit('confirm', payload)
   emit('update:modelValue', payload)
 }
@@ -261,7 +262,7 @@ function handleSearchCancel() {
   searchText.value = ''
 }
 
-// 回显
+// 回显（这里根据查询到的全量列表数据进行回显、getList 调用后得到 userList 数据，根据 id 在 userList 中查询数据，然后进行回显）
 watch(
   [() => props.modelValue, userList],
   ([value]) => {
@@ -279,6 +280,12 @@ watch(
     })
   },
 )
+
+// TODO 挂载时回显数据查询、可优化为根据 id 查询相应数据进行回显
+onMounted(() => {
+  // TODO 临时处理、挂载时查询所有列表，然后在根据 id 再在列表中查找出对应的数据进行回显
+  getList()
+})
 
 defineExpose({
   open,
