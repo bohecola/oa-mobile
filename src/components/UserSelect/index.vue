@@ -21,6 +21,7 @@
       <NavBar
         v-if="!isSearchFocused"
         title="选择联系人"
+        :is-left-click-back="false"
         @click-left="close"
       />
 

@@ -107,7 +107,7 @@ function setState(state: AccountState) {
 // 刷新
 async function refresh() {
   // 刷新用户信息
-  // await user.get()
+  await user.get()
   // 更新页面状态
   setState(state)
 }
