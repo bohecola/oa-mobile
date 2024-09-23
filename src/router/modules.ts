@@ -3,8 +3,16 @@ import type { RouteRecordRaw } from 'vue-router'
 // 布局组件
 const Layout = () => import('@/layouts/index.vue')
 
-// 其他路由
-export const otherRoutes: RouteRecordRaw[] = [
+// 基础路由
+export const clientBaseRoutes: RouteRecordRaw[] = [
+  {
+    path: '/404',
+    component: () => import('@/views/exception/404.vue'),
+  },
+]
+
+// 模块路由
+export const clientModuleRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     meta: {
@@ -19,7 +27,6 @@ export const otherRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-
   // 审批中心
   {
     path: '/approval',
@@ -134,3 +141,5 @@ export const otherRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/my/theme/index.vue'),
   },
 ]
+
+export const clientRoutes = [...clientBaseRoutes, ...clientModuleRoutes]
