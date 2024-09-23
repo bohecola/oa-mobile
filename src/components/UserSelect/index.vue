@@ -1,16 +1,23 @@
 <template>
   <div>
     <!-- TODO 未打开 Popup 时，数据回显、挂载时请求数据、注意重复请求 -->
-    <div class="flex flex-wrap justify-end gap-2">
-      <van-tag
-        v-for="selected in selectedList"
-        :key="selected.userId"
-        type="primary"
-        size="large"
-      >
-        {{ selected.nickName }}
-      </van-tag>
-    </div>
+    <van-skeleton :loading="loading">
+      <template #template>
+        <div class="w-full h-[var(--van-cell-line-height)] flex items-center">
+          <van-skeleton-paragraph />
+        </div>
+      </template>
+      <div class="flex flex-wrap justify-end gap-2">
+        <van-tag
+          v-for="selected in selectedList"
+          :key="selected.userId"
+          type="primary"
+          size="large"
+        >
+          {{ selected.nickName }}
+        </van-tag>
+      </div>
+    </van-skeleton>
     <van-popup
       v-model:show="visible"
       position="bottom"
@@ -101,7 +108,7 @@
 </template>
 
 <script setup lang='ts'>
-import { cloneDeep, isArray, isNumber, isObject, isString } from 'lodash-es'
+import { cloneDeep, isArray, isEmpty, isNumber, isObject, isString } from 'lodash-es'
 import UserCell from './cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
@@ -284,7 +291,9 @@ watch(
 // TODO 挂载时回显数据查询、可优化为根据 id 查询相应数据进行回显
 onMounted(() => {
   // TODO 临时处理、挂载时查询所有列表，然后在根据 id 再在列表中查找出对应的数据进行回显
-  getList()
+  if (!isEmpty(props.modelValue)) {
+    getList()
+  }
 })
 
 defineExpose({
