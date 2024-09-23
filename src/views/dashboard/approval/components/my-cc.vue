@@ -17,11 +17,6 @@
             </div>
           </div>
         </template>
-
-        <!-- 右侧内容 -->
-        <template #value>
-          <div />
-        </template>
       </van-cell>
     </van-list>
     <bottom-line v-if="!hasNextPage && !isFetching" />
@@ -91,13 +86,3 @@ function handleView(row: any) {
   workflowCommon.routerJump(routerJumpVo, proxy)
 }
 </script>
-
-<style lang="scss" scoped>
-:deep() {
-  .van-cell {
-    .van-cell__title {
-      flex: 2;
-    }
-  }
-}
-</style>
