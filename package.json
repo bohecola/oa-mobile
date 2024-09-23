@@ -51,6 +51,7 @@
     "@types/qs": "^6.9.15",
     "@types/store": "^2.0.5",
     "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
     "autoprefixer": "^10.4.19",
     "commitizen": "^4.3.0",
     "commitlint-config-gitmoji": "^2.3.1",
