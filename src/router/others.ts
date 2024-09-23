@@ -29,20 +29,20 @@ export const otherRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/dashboard/approval/index.vue'),
   },
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   meta: {
-  //     title: '示例',
-  //     icon: 'i-carbon-logo-wechat',
-  //   },
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: () => import('@/views/example/index.vue'),
-  //     },
-  //   ],
-  // },
+  {
+    path: '/example',
+    component: Layout,
+    meta: {
+      title: '示例',
+      icon: 'i-carbon-logo-wechat',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/example/index.vue'),
+      },
+    ],
+  },
   // {
   //   path: '/moments',
   //   component: Layout,
