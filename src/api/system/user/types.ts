@@ -28,7 +28,7 @@ export interface UserQuery extends PageQuery {
 export interface UserVO extends BaseEntity {
   userId: string | number
   tenantId: string
-  deptId: number
+  deptId: string | number
   userName: string
   nickName: string
   userType: string
