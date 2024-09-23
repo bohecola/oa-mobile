@@ -109,7 +109,7 @@
 
 <script setup lang='ts'>
 import { cloneDeep, isArray, isEmpty, isNumber, isObject, isString } from 'lodash-es'
-import UserCell from './cell.vue'
+import UserCell from './user-cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
 
