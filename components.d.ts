@@ -8,7 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
-    Cell: typeof import('./src/components/UserSelect/cell.vue')['default']
+    CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
@@ -19,8 +19,11 @@ declare module 'vue' {
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
     Steps: typeof import('./src/components/WorkflowPage/steps.vue')['default']
     SubmitVerify: typeof import('./src/components/Process/submitVerify.vue')['default']
+    TableCard: typeof import('./src/components/TableCard/index.vue')['default']
+    TableCardCell: typeof import('./src/components/TableCard/table-card-cell.vue')['default']
     TextareaView: typeof import('./src/components/TextareaView/index.vue')['default']
     ThemeProvider: typeof import('./src/components/ThemeProvider.vue')['default']
+    UserCell: typeof import('./src/components/UserSelect/user-cell.vue')['default']
     UserSelect: typeof import('./src/components/UserSelect/index.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
     VanButton: typeof import('vant/es')['Button']
@@ -35,6 +38,7 @@ declare module 'vue' {
     VanForm: typeof import('vant/es')['Form']
     VanGrid: typeof import('vant/es')['Grid']
     VanGridItem: typeof import('vant/es')['GridItem']
+    VanIcon: typeof import('vant/es')['Icon']
     VanImage: typeof import('vant/es')['Image']
     VanIndexAnchor: typeof import('vant/es')['IndexAnchor']
     VanIndexBar: typeof import('vant/es')['IndexBar']
