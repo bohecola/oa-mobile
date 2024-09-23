@@ -28,11 +28,6 @@
               </span>
             </div>
           </template>
-
-          <!-- 右侧内容 -->
-          <template #value>
-            <div />
-          </template>
         </van-cell>
         <template #right>
           <van-button
@@ -144,13 +139,3 @@ async function handleCancelProcessApply(row: ProcessInstanceVO) {
     .catch(() => {})
 }
 </script>
-
-<style lang="scss" scoped>
-:deep() {
-  .van-cell {
-    .van-cell__title {
-      flex: 2;
-    }
-  }
-}
-</style>
