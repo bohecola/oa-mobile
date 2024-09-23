@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { otherRoutes } from '@/router'
+import { clientModuleRoutes } from '@/router'
 
 // 路由
 const route = useRoute()
@@ -11,7 +11,7 @@ const navbarTitle = computed(() => route.meta.title as string)
 const showTopbar = computed(() => !route.meta.hiddenTopbar)
 
 // 菜单
-const menus = otherRoutes.filter(item => !item.meta?.innerPage)
+const menus = clientModuleRoutes.filter(item => !item.meta?.innerPage)
 </script>
 
 <template>
