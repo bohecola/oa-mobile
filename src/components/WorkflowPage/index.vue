@@ -109,6 +109,8 @@ const processVisible = computed(() => {
 // 发起人信息
 function createInitiator(): Initiator {
   const initialValue = {
+    userId: user.info?.userId as (string | number),
+    deptId: user.info?.deptId as (string | number),
     nickName: user.info?.nickName as string,
     deptName: user.info?.deptName as string,
     createTime: new Date().toLocaleString(),
