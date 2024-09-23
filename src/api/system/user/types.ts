@@ -56,19 +56,19 @@ export interface UserVO extends BaseEntity {
  */
 export interface UserForm {
   id?: string
-  userId?: string
-  deptId?: number
+  userId?: string | number
+  deptId?: string | number
   avatar?: string
-  userName: string
+  userName?: string
   nickName?: string
   password?: string
   phonenumber?: string
   email?: string
   sex?: string
-  status: string
+  status?: string
   remark?: string
-  postIds: string[]
-  roleIds: string[]
+  postIds?: string[]
+  roleIds?: string[]
 }
 
 export interface UserInfoVO {
