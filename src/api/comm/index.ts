@@ -1,5 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import type { UserInfoVO } from '../system/user/types'
+import type { UploadResult } from './types'
 import request from '@/service/request'
 
 // 获取用户信息
@@ -15,5 +16,14 @@ export function userLogout() {
   return request({
     url: '/auth/logout',
     method: 'post',
+  })
+}
+
+// 文件上传
+export function upload(data: FormData): AxiosPromise<UploadResult> {
+  return request({
+    url: '/resource/oss/upload',
+    method: 'post',
+    data,
   })
 }
