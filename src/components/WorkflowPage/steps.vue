@@ -2,6 +2,11 @@
   <div v-loading="loading">
     <van-steps direction="vertical" :active="active">
       <van-step v-for="(item, index) in historyList" :key="item.id">
+        <template #active-icon>
+          <van-icon v-if="item.status === 'pass'" name="checked" class="text-[var(--van-primary-color)]" />
+          <van-icon v-else name="pause-circle" class="text-[var(--van-primary-color)]" />
+        </template>
+
         <h3>{{ item.name }}</h3>
         <div class="text-xs p-2 flex flex-col gap-1">
           <p>开始时间：{{ item.startTime }}</p>
@@ -12,7 +17,7 @@
             <div>状态：</div>
 
             <van-tag type="primary">
-              {{ item.statusName }}
+              {{ item.statusName }} {{ item.status }}
             </van-tag>
           </div>
           <div v-if="index > 0" class="flex gap2">

@@ -113,7 +113,7 @@ function createInitiator(): Initiator {
     deptId: user.info?.deptId as (string | number),
     nickName: user.info?.nickName as string,
     deptName: user.info?.deptName as string,
-    maxPostLevel: user.info?.maxPostLevel,
+    maxPostLevel: user.info?.maxPostLevel as number,
     createTime: new Date().toLocaleString(),
   }
 
