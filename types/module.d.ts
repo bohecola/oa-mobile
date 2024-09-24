@@ -1,6 +1,7 @@
 import type { useDict } from '@/utils/dict'
 import type { addDateRange, handleTree, parseTime, selectDictLabel, selectDictLabels } from '@/utils/base'
 import type { getConfigKey, updateConfigByKey } from '@/api/system/config'
+import type modal from '@/plugins/modal'
 
 export {}
 
