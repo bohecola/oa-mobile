@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="dialog.visible" position="bottom" round class="h-30vh" :before-close="cancel" :close-on-click-overlay="false">
+  <van-popup v-model:show="popup.visible" position="bottom" round class="h-30vh" :before-close="cancel" :close-on-click-overlay="false">
     <van-form label-width="120px">
       <van-field
         v-model="form.message"
@@ -11,10 +11,20 @@
         placeholder="请输入审批意见"
         show-word-limit
       />
+      <van-field label="抄送人" is-link @click="UserSelectRef?.open">
+        <template #input>
+          <UserSelect
+            ref="UserSelectRef"
+            v-model="selectCopyUserList"
+            value-type="object"
+            :multiple="true"
+          />
+        </template>
+      </van-field>
     </van-form>
 
     <span class="flex justify-end gap-2 p-2">
-      <van-button :disabled="buttonDisabled" type="primary" size="small" @click="handleCompleteTask"> 提交 </van-button>
+      <van-button :disabled="buttonDisabled" type="primary" size="small" @click="handleCompleteTask">提交</van-button>
       <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="primary" @click="openDelegateTask"> 委托 </van-button> -->
       <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="primary" @click="openTransferTask"> 转办 </van-button> -->
       <!-- <van-button
@@ -33,13 +43,10 @@
       >
         减签
       </van-button> -->
-      <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button>
+      <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
       <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen"> 退回 </van-button>
       <van-button :disabled="buttonDisabled" size="small" @click="cancel">取消</van-button>
     </span>
-
-    <!-- 抄送 -->
-    <!-- <UserSelect ref="userSelectCopyRef" :multiple="true" :data="selectCopyUserIds" @confirm-call-back="userSelectCopyCallBack" /> -->
     <!-- 转办 -->
     <!-- <UserSelect ref="transferTaskRef" :multiple="false" @confirm-call-back="handleTransferTask" /> -->
     <!-- 委托 -->
@@ -55,7 +62,7 @@
       :close-on-click-overlay="false"
       :confirm-button-disabled="backButtonDisabled"
       :cancel-button-disabled="backButtonDisabled"
-      @confirm="handleBackProcess()"
+      @confirm="handleBackProcess"
     >
       <van-field
         v-if="task.businessStatus === 'waiting'"
@@ -83,7 +90,7 @@
 import type { ComponentInternalInstance } from 'vue'
 import { ref } from 'vue'
 import { backProcess, completeTask, getTaskById, getTaskNodeList, terminationTask } from '@/api/workflow/task'
-// import UserSelect from '@/components/UserSelect/index.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 // import MultiInstanceUser from '@/components/Process/multiInstanceUser.vue'
 import type { UserVO } from '@/api/system/user/types'
 import type { TaskVO } from '@/api/workflow/task/types'
@@ -97,6 +104,7 @@ const props = defineProps({
 const emits = defineEmits(['submitCallback', 'cancelCallback'])
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 // const userSelectCopyRef = ref<InstanceType<typeof UserSelect>>()
 // const transferTaskRef = ref<InstanceType<typeof UserSelect>>()
 // const delegateTaskRef = ref<InstanceType<typeof UserSelect>>()
@@ -116,8 +124,7 @@ const buttonDisabled = ref(true)
 const taskId = ref<string>('')
 // 抄送人
 const selectCopyUserList = ref<UserVO[]>([])
-// 抄送人id
-const selectCopyUserIds = ref<string | undefined>(undefined)
+
 // 驳回是否显示
 const backVisible = ref(false)
 const backLoading = ref(true)
@@ -132,6 +139,7 @@ const computedTaskNodeList = computed(() => {
     }
   })
 })
+
 // 任务
 const task = ref<TaskVO>({
   id: undefined,
@@ -161,9 +169,10 @@ const task = ref<TaskVO>({
   businessKey: undefined,
   wfNodeConfigVo: undefined,
 })
+
 // 加签 减签标题
 const title = ref('')
-const dialog = reactive<DialogOption>({
+const popup = reactive<DialogOption>({
   visible: false,
   title: '提示',
 })
@@ -182,17 +191,27 @@ const backForm = ref<Record<string, any>>({
   variables: {},
   messageType: ['1'],
 })
+
 function closeDialog() {
-  dialog.visible = false
+  popup.visible = false
 }
+
+// 审批意见校验
+function isMessageEmpty() {
+  if (!form.value.message) {
+    proxy?.$modal.msgWarning('请填写审批意见')
+    return true
+  }
+  return false
+}
+
 // 打开弹窗
 function openDialog(id?: string) {
-  selectCopyUserIds.value = undefined
   selectCopyUserList.value = []
   form.value.fileId = undefined
   taskId.value = id as string
   form.value.message = undefined
-  dialog.visible = true
+  popup.visible = true
   loading.value = true
   buttonDisabled.value = true
   nextTick(() => {
@@ -204,30 +223,32 @@ function openDialog(id?: string) {
   })
 }
 
-onMounted(() => {})
-/** 办理流程 */
+// 取消
+function cancel() {
+  popup.visible = false
+  buttonDisabled.value = false
+  emits('cancelCallback')
+  return true
+}
+
+// 提交
 async function handleCompleteTask() {
+  if (isMessageEmpty()) {
+    return false
+  }
   form.value.taskId = taskId.value
   form.value.entityVariable = props.entityVariables
-  if (selectCopyUserList.value && selectCopyUserList.value.length > 0) {
-    const wfCopyList: any[] = []
-    selectCopyUserList.value.forEach((e) => {
-      const copyUser = {
-        userId: e.userId,
-        userName: e.nickName,
-      }
-      wfCopyList.push(copyUser)
-    })
-    form.value.wfCopyList = wfCopyList
-  }
-  console.log(form.value)
+  form.value.wfCopyList = selectCopyUserList.value.map(e => ({
+    userId: e.userId,
+    userName: e.nickName,
+  }))
 
   await proxy?.$modal.confirm('是否确认提交？')
   loading.value = true
   buttonDisabled.value = true
   try {
     await completeTask(form.value)
-    dialog.visible = false
+    popup.visible = false
     emits('submitCallback')
     proxy?.$modal.msgSuccess('操作成功')
   }
@@ -237,8 +258,11 @@ async function handleCompleteTask() {
   }
 }
 
-/** 驳回弹窗打开 */
+// 驳回弹窗打开
 async function handleBackProcessOpen() {
+  if (isMessageEmpty()) {
+    return false
+  }
   // TODO
   Object.assign(backForm.value, form.value)
   backForm.value.variables = undefined
@@ -258,7 +282,8 @@ async function handleBackProcessOpen() {
   backForm.value.targetActivityId = nodeId
   rejectNodeName.value = nodeName
 }
-/** 驳回流程 */
+
+// 驳回
 async function handleBackProcess() {
   backForm.value.taskId = taskId.value
   await proxy?.$modal.confirm('是否确认驳回到申请人？')
@@ -266,39 +291,13 @@ async function handleBackProcess() {
   backLoading.value = true
   backButtonDisabled.value = true
   await backProcess(backForm.value).finally(() => (loading.value = false))
-  dialog.visible = false
+  popup.visible = false
   backLoading.value = false
   backButtonDisabled.value = false
   emits('submitCallback')
   proxy?.$modal.msgSuccess('操作成功')
 }
-// 取消
-async function cancel() {
-  dialog.visible = false
-  buttonDisabled.value = false
-  emits('cancelCallback')
 
-  return true
-}
-// // 打开抄送人员
-// function openUserSelectCopy() {
-//   userSelectCopyRef.value.open()
-// }
-// // 确认抄送人员
-// function userSelectCopyCallBack(data: UserVO[]) {
-//   if (data && data.length > 0) {
-//     selectCopyUserList.value = data
-//     selectCopyUserIds.value = selectCopyUserList.value.map(item => item.userId).join(',')
-//   }
-// }
-// // 删除抄送人员
-// function handleCopyCloseTag(user: UserVO) {
-//   const userId = user.userId
-//   // 使用split删除用户
-//   const index = selectCopyUserList.value.findIndex(item => item.userId === userId)
-//   selectCopyUserList.value.splice(index, 1)
-//   selectCopyUserIds.value = selectCopyUserList.value.map(item => item.userId).join(',')
-// }
 // // 加签
 // function addMultiInstanceUser() {
 //   if (multiInstanceUserRef.value) {
@@ -313,6 +312,7 @@ async function cancel() {
 //     multiInstanceUserRef.value.getDeleteMultiInstanceList(taskId.value)
 //   }
 // }
+
 // // 打开转办
 // function openTransferTask() {
 //   transferTaskRef.value.open()
@@ -329,7 +329,7 @@ async function cancel() {
 //     loading.value = true
 //     buttonDisabled.value = true
 //     await transferTask(params).finally(() => (loading.value = false))
-//     dialog.visible = false
+//     popup.visible = false
 //     emits('submitCallback')
 //     proxy?.$modal.msgSuccess('操作成功')
 //   }
@@ -354,7 +354,7 @@ async function cancel() {
 //     loading.value = true
 //     buttonDisabled.value = true
 //     await delegateTask(params).finally(() => (loading.value = false))
-//     dialog.visible = false
+//     popup.visible = false
 //     emits('submitCallback')
 //     proxy?.$modal.msgSuccess('操作成功')
 //   }
@@ -362,6 +362,7 @@ async function cancel() {
 //     proxy?.$modal.msgWarning('请选择用户！')
 //   }
 // }
+
 // 终止任务
 async function handleTerminationTask(data: any) {
   const params = {
@@ -372,7 +373,7 @@ async function handleTerminationTask(data: any) {
   loading.value = true
   buttonDisabled.value = true
   await terminationTask(params).finally(() => (loading.value = false))
-  dialog.visible = false
+  popup.visible = false
   emits('submitCallback')
   proxy?.$modal.msgSuccess('操作成功')
 }
@@ -389,9 +390,7 @@ function onRejectNodeCancel() {
   // backForm.value.targetActivityId = undefined
   showNodePicker.value = false
 }
-/**
- * 对外暴露子组件方法
- */
+
 defineExpose({
   openDialog,
 })
