@@ -7,9 +7,11 @@
           <van-skeleton-paragraph />
         </div>
       </template>
-      <div class="flex flex-wrap justify-end gap-2">
+
+      <!-- 回显列表 -->
+      <div v-if="showEchoList" class="flex flex-wrap justify-end gap-2">
         <van-tag
-          v-for="selected in selectedList"
+          v-for="selected in echoList"
           :key="selected.userId"
           type="primary"
           size="large"
@@ -17,7 +19,9 @@
           {{ selected.nickName }}
         </van-tag>
       </div>
+      <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
     </van-skeleton>
+    <!-- 弹窗 -->
     <van-popup
       v-model:show="visible"
       position="bottom"
@@ -79,7 +83,7 @@
       </div>
 
       <!-- 底部面板 -->
-      <div ref="BottomSelectPanel" class="px-3 flex flex-col justify-center w-full h-14 whitespace-nowrap border-t">
+      <div class="px-3 flex flex-col justify-center w-full h-14 whitespace-nowrap border-t">
         <!-- 操作按钮 -->
         <div class="flex items-center justify-between gap-2">
           <span class="text-sm">
@@ -127,9 +131,6 @@ const props = withDefaults(
 
 const emit = defineEmits(['confirm', 'update:modelValue'])
 
-const BottomSelectPanel = ref<HTMLDivElement>()
-const BottomSelectPanelHeight = ref(0)
-
 const visible = ref(false)
 const loading = ref(false)
 const userListMap = ref<Record<string, SysUserMobileVO[]>>({})
@@ -139,6 +140,13 @@ const selectedList = ref<SysUserMobileVO[]>([])
 const selectedIdList = computed(() => selectedList.value.map((e => e.userId)))
 const selectedNum = computed(() => selectedList.value.length)
 const userList = computed(() => Object.values(userListMap.value).flat())
+
+// 回显列表
+const echoList = computed(() => {
+  return getSeletedList(props.modelValue)
+})
+// 回显列表显示
+const showEchoList = computed(() => echoList.value.length > 0)
 
 // 搜索
 const searchText = ref('')
@@ -170,7 +178,7 @@ function close() {
 
 // 弹窗关闭动画结束后
 function popupClosed() {
-  searchText.value = ''
+  handleSearchCancel()
 }
 
 // 请求人员列表
@@ -260,13 +268,23 @@ function getValues() {
   }
 }
 
+// 搜索框 focus
 function handleSearchFocus() {
   isSearchFocused.value = true
 }
 
+// 搜索框 cancel
 function handleSearchCancel() {
   isSearchFocused.value = false
   searchText.value = ''
+}
+
+// 获取已选择的用户列表
+function getSeletedList(value: typeof props.modelValue) {
+  // 绑定值转为 id 数组
+  const ids = transformValue(value)
+  // 根据 id 数组计算已选择的列表
+  return userList.value.filter(e => ids.includes(e.userId))
 }
 
 // 回显（这里根据查询到的全量列表数据进行回显、getList 调用后得到 userList 数据，根据 id 在 userList 中查询数据，然后进行回显）
@@ -274,17 +292,7 @@ watch(
   [() => props.modelValue, userList],
   ([value]) => {
     console.log(value, 'user-select:watch')
-
-    // 绑定值转为 id 数组
-    const ids = transformValue(value)
-
-    // 根据 id 数组计算已选择的列表
-    selectedList.value = userList.value.filter(e => ids.includes(e.userId))
-
-    // 设置底部选择面板占位元素的高度
-    nextTick(() => {
-      BottomSelectPanelHeight.value = BottomSelectPanel.value?.getBoundingClientRect().height ?? 0
-    })
+    selectedList.value = getSeletedList(value)
   },
 )
 
