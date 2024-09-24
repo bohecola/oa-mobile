@@ -6,6 +6,7 @@ import * as user from '@/api/system/user'
 import * as role from '@/api/system/role'
 import * as dept from '@/api/system/dept'
 import * as post from '@/api/system/post'
+import * as oss from '@/api/system/oss'
 
 // workflow
 import * as processInstance from '@/api/workflow/processInstance'
@@ -28,6 +29,7 @@ const service = {
     role,
     dept,
     post,
+    oss,
   },
   workflow: {
     processInstance,

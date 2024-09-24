@@ -23,6 +23,7 @@ declare module 'vue' {
     TableCardCell: typeof import('./src/components/TableCard/table-card-cell.vue')['default']
     TextareaView: typeof import('./src/components/TextareaView/index.vue')['default']
     ThemeProvider: typeof import('./src/components/ThemeProvider.vue')['default']
+    UploadFile: typeof import('./src/components/UploadFile/index.vue')['default']
     UserCell: typeof import('./src/components/UserSelect/user-cell.vue')['default']
     UserSelect: typeof import('./src/components/UserSelect/index.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
