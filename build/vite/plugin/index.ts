@@ -1,5 +1,6 @@
 import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
@@ -9,6 +10,7 @@ import { configCompressPlugin } from './compress'
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
     vue(),
+    vueJsx(),
     // 自动导入 Vant 组件
     Components({
       dts: true,

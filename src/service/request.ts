@@ -17,7 +17,7 @@ const axiosInstance = axios.create({
     'Content-Type': ContentTypeEnum.JSON,
     'Clientid': globSettings.appClientId,
   },
-  timeout: 5 * 1000,
+  timeout: 50 * 1000,
 })
 
 // 请求取消器

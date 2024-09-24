@@ -2,12 +2,12 @@ import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { isArray } from 'lodash-es'
-import { createRouterGuards } from './guards'
-import { otherRoutes } from './others'
+import { createRouterGuards } from './router-guards'
+import { clientRoutes } from './modules'
 import { useStore } from '@/store'
 
-// 基础路由
-const constantRoutes: RouteRecordRaw[] = [
+// 默认路由
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/dashboard',
@@ -22,12 +22,17 @@ const constantRoutes: RouteRecordRaw[] = [
       title: '登录',
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import('@/views/exception/404.vue'),
+  },
 ]
 
 // 创建路由器
 const router = createRouter({
   history: createWebHashHistory(''),
-  routes: constantRoutes.concat(otherRoutes),
+  routes,
   // strict: true,
 }) as Router
 
@@ -102,10 +107,16 @@ router.register = async function (path: string) {
     // TODO 待优化，刷新后重新请求配置数据
     if (user.info === null) {
       await user.get()
-      await menu.get()
+      // await menu.get()
     }
 
+    // 动态菜单数据
     menu.routes.forEach((e) => {
+      list.push({ ...e })
+    })
+
+    // 本地模块数据
+    clientRoutes.forEach((e) => {
       list.push({ ...e })
     })
 
@@ -128,5 +139,5 @@ export function setupRouter(app: App) {
 // 创建路由守卫
 createRouterGuards(router)
 
-export * from './others'
+export * from './modules'
 export default router

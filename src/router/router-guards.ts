@@ -2,7 +2,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useStore } from '@/store'
 
-const whitePathList = ['/login']
+const whitePathList = ['/login', '/404']
 
 export function createRouterGuards(router: Router) {
   // 全局前置路由守卫
@@ -13,18 +13,23 @@ export function createRouterGuards(router: Router) {
     // 预先注册路由
     const { isReg, route } = await router.register(to.path)
 
-    if (!isReg) {
-      return to.fullPath
+    if (!route?.components) {
+      return user.token ? '/404' : '/login'
     }
     else {
-      if (whitePathList.includes(to.path)) {
-        return true
+      if (!isReg) {
+        return to.fullPath
       }
+      else {
+        if (whitePathList.includes(to.path)) {
+          return true
+        }
 
-      if (user.token) {
-        return true
+        if (user.token) {
+          return true
+        }
+        return '/login'
       }
-      return '/login'
     }
   })
 

@@ -1,7 +1,10 @@
 export interface Initiator {
+  userId: string | number
   nickName: string
+  deptId: string | number
   deptName: string
   createTime: string
+  maxPostLevel: number
 }
 
 export interface TempSavePayload {

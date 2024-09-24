@@ -28,7 +28,7 @@ export interface UserQuery extends PageQuery {
 export interface UserVO extends BaseEntity {
   userId: string | number
   tenantId: string
-  deptId: number
+  deptId: string | number
   userName: string
   nickName: string
   userType: string
@@ -48,6 +48,7 @@ export interface UserVO extends BaseEntity {
   postIds: any
   roleId: any
   admin: boolean
+  maxPostLevel?: number
   [key: string]: any
 }
 
@@ -56,19 +57,19 @@ export interface UserVO extends BaseEntity {
  */
 export interface UserForm {
   id?: string
-  userId?: string
-  deptId?: number
+  userId?: string | number
+  deptId?: string | number
   avatar?: string
-  userName: string
+  userName?: string
   nickName?: string
   password?: string
   phonenumber?: string
   email?: string
   sex?: string
-  status: string
+  status?: string
   remark?: string
-  postIds: string[]
-  roleIds: string[]
+  postIds?: string[]
+  roleIds?: string[]
 }
 
 export interface UserInfoVO {
