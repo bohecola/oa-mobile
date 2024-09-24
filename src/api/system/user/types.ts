@@ -48,6 +48,7 @@ export interface UserVO extends BaseEntity {
   postIds: any
   roleId: any
   admin: boolean
+  maxPostLevel?: number
   [key: string]: any
 }
 
