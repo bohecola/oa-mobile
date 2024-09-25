@@ -1,7 +1,7 @@
 <template>
   <van-nav-bar :fixed="fixed" :placeholder="placeholder" z-index="10" @click-left="handleLeftClick">
     <template #title>
-      {{ title }}
+      <span class="w-full text-ellipsis overflow-hidden">{{ title }}</span>
     </template>
     <template #left>
       <i class="i-material-symbols-arrow-back-ios-new text-xl" />
