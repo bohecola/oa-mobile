@@ -107,7 +107,7 @@ router.register = async function (path: string) {
     // TODO 待优化，刷新后重新请求配置数据
     if (user.info === null) {
       await user.get()
-      // await menu.get()
+      await menu.get()
     }
 
     // 动态菜单数据
