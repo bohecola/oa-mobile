@@ -55,15 +55,29 @@
     :border="false"
   />
 
+  <!-- 调试使用、生产删除 -->
   <van-cell
     title="人员选择"
     title-class="font-bold"
     is-link
     value-class="!flex-[3]"
+    :border="false"
     @click="UserSelectRef?.open"
   >
     <template #value>
-      <UserSelect ref="UserSelectRef" v-model="userId" :multiple="false" />
+      <UserSelect ref="UserSelectRef" v-model="userId" :multiple="true" />
+    </template>
+  </van-cell>
+
+  <!-- 文件上传 -->
+  <van-cell
+    title="文件上传"
+    title-class="font-bold"
+    is-link
+    value-class="!flex-[2]"
+  >
+    <template #value>
+      <UploadFile v-model="ids" is-multiple :limit="8" :card-size="60" :is-show-tip="true" />
     </template>
   </van-cell>
 </template>
@@ -75,7 +89,8 @@ import UserSelect from '@/components/UserSelect/index.vue'
 const { user } = useStore()
 const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
-const userId = ref('1767026837160038402')
+const userId = ref(['1767026837160038402'])
+const ids: any = '1838931766797766657,1838931827212521473,1838931827522899969,1838931827900387330'
 
 // 状态类型
 interface AccountState {
@@ -94,8 +109,8 @@ const state = reactive<AccountState>({
   createTime: '',
 })
 
-// 设置状态
-function setState(state: AccountState) {
+// 刷新状态
+function refreshState() {
   Object.keys(state)
     .forEach((key) => {
       if (key in user.info!) {
@@ -104,16 +119,14 @@ function setState(state: AccountState) {
     })
 }
 
-// 刷新
-async function refresh() {
-  // 刷新用户信息
-  // await user.get()
+watch(
+  () => user.info,
+  () => {
   // 更新页面状态
-  setState(state)
-}
-
-// 挂载
-onMounted(async () => {
-  await refresh()
-})
+    refreshState()
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
