@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- TODO 未打开 Popup 时，数据回显、挂载时请求数据、注意重复请求 -->
-    <van-skeleton :loading="loading">
+    <van-skeleton :loading="loading" class="!p-0">
       <template #template>
-        <div class="w-full h-[var(--van-cell-line-height)] flex items-center">
+        <div class="w-full h-[var(--van-cell-line-height)] flex items-center justify-end">
           <van-skeleton-paragraph />
         </div>
       </template>

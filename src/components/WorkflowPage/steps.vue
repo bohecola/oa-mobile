@@ -17,7 +17,7 @@
             <div>状态：</div>
 
             <van-tag type="primary">
-              {{ item.statusName }} {{ item.status }}
+              {{ item.statusName }}
             </van-tag>
           </div>
           <div v-if="index > 0" class="flex gap2">
