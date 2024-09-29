@@ -55,4 +55,7 @@ export interface DeptForm {
   status?: string
   delFlag?: string
   ancestors?: string
+  redFile?: string
+  ossIdList?: string
+  deptPostVoList?: []
 }

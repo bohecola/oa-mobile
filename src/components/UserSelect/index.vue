@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang='ts'>
-import { cloneDeep, isArray, isEmpty, isNumber, isObject, isString } from 'lodash-es'
+import { cloneDeep, isArray, isNumber, isObject, isString } from 'lodash-es'
 import UserCell from './user-cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
@@ -299,9 +299,9 @@ watch(
 // TODO 挂载时回显数据查询、可优化为根据 id 查询相应数据进行回显
 onMounted(() => {
   // TODO 临时处理、挂载时查询所有列表，然后在根据 id 再在列表中查找出对应的数据进行回显
-  if (!isEmpty(props.modelValue)) {
-    getList()
-  }
+  // if (!isEmpty(props.modelValue)) {
+  getList()
+  // }
 })
 
 defineExpose({
