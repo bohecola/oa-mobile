@@ -4,11 +4,13 @@
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_08sjg5i'" v-loading="loading">
-        <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
+        <Detail ref="UpsertRef" :include-fields="includeFields" :show-loading="false" />
       </div>
-      <!-- 收入- 部门经理节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_08vtkwi'" v-loading="loading">
+      <!-- 归档 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'" v-loading="loading">
         <Detail ref="Detail2Ref" :include-fields="includeFieldsDetail2" :show-loading="false" />
+        <Detail ref="Upsert2Ref" :include-fields="includeFieldsUpsert2" :show-loading="false" />
+        <Detail ref="Detail3Ref" :include-fields="includeFieldsDetail3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
@@ -37,14 +39,17 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
+const UpsertRef = ref<InstanceType<typeof Detail> | null>()
+const Upsert2Ref = ref<InstanceType<typeof Detail> | null>()
 const DetailRef = ref<InstanceType<typeof Detail> | null>()
 const Detail2Ref = ref<InstanceType<typeof Detail> | null>()
+const Detail3Ref = ref<InstanceType<typeof Detail> | null>()
 const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
 
 // 字段
 const includeFields = ref(
   filterTruthyKeys<ContractForm>({
-    // no: true,
+    no: true,
     deptId: true,
     projectId: true,
     projectName: true,
@@ -64,15 +69,15 @@ const includeFields = ref(
     taxRate: true,
     paymentWay: true,
     reviewWay: true,
-    originalFile: true,
-    noAmountFile: true,
-    status: true,
+    // originalFile: true,
+    // noAmountFile: true,
+    // status: true,
     remark: true,
     ossIdList: true,
   }),
 )
 
-// 收入部门经理 节点 - 查看
+// 归档 - 查看
 const includeFieldsDetail2 = filterTruthyKeys<ContractForm>({
   no: true,
   deptId: true,
@@ -84,6 +89,28 @@ const includeFieldsDetail2 = filterTruthyKeys<ContractForm>({
   partyC: true,
   partyD: true,
   type: true,
+  category: true,
+  reviewWay: true,
+  amount: true,
+  invoiceType: true,
+  taxRate: true,
+  paymentWay: true,
+})
+
+// 归档 - 编辑
+const includeFieldsUpsert2 = filterTruthyKeys<ContractForm>({
+  startDate: true,
+  endDate: true,
+  signDate: true,
+  description: true,
+  originalFile: true,
+  noAmountFile: true,
+  remark: true,
+})
+
+// 归档 - 查看
+const includeFieldsDetail3 = filterTruthyKeys<ContractForm>({
+  ossIdList: true,
 })
 
 // 字段
@@ -134,9 +161,9 @@ async function handleApproval({ open }: ApprovalPayload) {
   //   // 发起流程 第一步节点
   //   res = await Upsert.value?.workflowSubmit()
   // }
-  // else if (taskDefinitionKey.value == 'Activity_08vtkwi') {
-  //   // 收入部门经理 节点
-  //   res = await Upsert2.value?.workflowSubmit()
+  // else if (taskDefinitionKey.value == 'Activity_0bj6sxt') {
+  //   // 归档 节点
+  //   res = await Upsert2.value?.workflowSubmit();
   // }
   // if (res) {
   //   const { valid, data } = res
@@ -159,15 +186,22 @@ onMounted(async () => {
   const { entity, task } = res.data
   submitFormData.value.variables.entity = entity
   taskDefinitionKey.value = task.taskDefinitionKey
+  proxy?.$router.replace({
+    query: {
+      ...proxy?.$route.query,
+      taskDefinitionKey: taskDefinitionKey.value,
+      isEditNode: (taskDefinitionKey.value === 'Activity_0bj6sxt') ? 'true' : 'false',
+    },
+  })
 
   nextTick(async () => {
     switch (type as string) {
       case 'update':
       case 'approval': {
         try {
-          // await Upsert.value?.workflowView({ taskId, processInstanceId });
+          await UpsertRef.value?.workflowView({ taskId, processInstanceId })
 
-          // await Upsert2.value?.workflowView({ taskId, processInstanceId });
+          await Upsert2Ref.value?.workflowView({ taskId, processInstanceId })
 
           await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
 
