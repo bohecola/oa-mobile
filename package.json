@@ -45,6 +45,7 @@
     "@iconify-json/mingcute": "^1.1.18",
     "@iconify-json/simple-icons": "^1.1.109",
     "@iconify-json/solar": "^1.1.9",
+    "@types/big.js": "^6.2.2",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.14.10",

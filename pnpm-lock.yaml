@@ -87,6 +87,9 @@ importers:
       '@iconify-json/solar':
         specifier: ^1.1.9
         version: 1.1.9
+      '@types/big.js':
+        specifier: ^6.2.2
+        version: 6.2.2
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -860,6 +863,9 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+
+  '@types/big.js@6.2.2':
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
 
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
@@ -4186,6 +4192,8 @@ snapshots:
       '@vue/devtools-api': 6.6.3
       vue: 3.4.31(typescript@5.5.4)
       vue-demi: 0.14.10(vue@3.4.31(typescript@5.5.4))
+
+  '@types/big.js@6.2.2': {}
 
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
