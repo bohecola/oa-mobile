@@ -131,7 +131,7 @@ axiosInstance.interceptors.response.use(
 // 请求方法
 export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
   // 配置项
-  const { isEncrypt, withCancel = true } = requestOptions
+  const { isEncrypt, withCancel = false } = requestOptions
 
   // 默认取消重复请求
   if (withCancel) {

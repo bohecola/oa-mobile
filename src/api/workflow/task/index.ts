@@ -224,7 +224,7 @@ export function getTaskVariables(taskId: string) {
   return request({
     url: `/workflow/task/getTaskVariables/${taskId}`,
     method: 'get',
-  })
+  }, { withCancel: false })
 }
 
 /**
@@ -235,7 +235,7 @@ export function getVariablesByProcessInstanceId(processInstanceId: string) {
   return request({
     url: `/workflow/task/getVariablesByProcessInstanceId/${processInstanceId}`,
     method: 'get',
-  })
+  }, { withCancel: false })
 }
 
 /**
