@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
 
     <template v-else>
       <!-- 发起流程 第一步节点 -->
@@ -9,26 +9,26 @@
       </div>
       <!-- 部门经理会签需要选择交接人 详情--交接人--附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_1qpajzq'" v-loading="loading">
-        <Detail ref="Detail1Ref" :include-fields="includeFields1" :show-loading="false" />
+        <detail ref="Detail1" :include-fields="includeFields1" :show-loading="false" />
       </div>
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_05cxsln'" v-loading="loading">
-        <Detail ref="Detail3Ref" :include-fields="includeFields2" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="includeFields2" :show-loading="false" />
       </div>
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'" v-loading="loading">
-        <Detail ref="Detail2Ref" :include-fields="includeFields3" :show-loading="false" />
+        <detail ref="Detail2" :include-fields="includeFields3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFields3" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFields3" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
 <script setup lang="ts">
-import Detail from '../detail.vue'
+import detail from '../detail.vue'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
@@ -47,14 +47,14 @@ const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
 // 部门经理
-const Detail1Ref = ref<InstanceType<typeof Detail> | null>()
+const Detail1 = ref<InstanceType<typeof detail> | null>()
 // 归档节点
-const Detail2Ref = ref<InstanceType<typeof Detail> | null>()
+const Detail2 = ref<InstanceType<typeof detail> | null>()
 // 详情
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 // 工作交接
-const Detail3Ref = ref<InstanceType<typeof Detail> | null>()
+const Detail3 = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
@@ -159,19 +159,19 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
-
-  const { entity, task } = res.data
-  submitFormData.value.variables.entity = entity
-  taskDefinitionKey.value = task.taskDefinitionKey
-
-  proxy?.$router.replace({
-    query: {
-      ...proxy?.$route.query,
-      taskDefinitionKey: taskDefinitionKey.value,
-      isEditNode: (taskDefinitionKey.value === 'Activity_1qpajzq' || taskDefinitionKey.value === 'Activity_05cxsln' || taskDefinitionKey.value === 'Activity_0zx1e0l') ? 'true' : 'false',
-    },
-  })
+  if (taskId || processInstanceId) {
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task } = res.data
+    submitFormData.value.variables.entity = entity
+    taskDefinitionKey.value = task.taskDefinitionKey
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: (taskDefinitionKey.value === 'Activity_1qpajzq' || taskDefinitionKey.value === 'Activity_05cxsln' || taskDefinitionKey.value === 'Activity_0zx1e0l') ? 'true' : 'false',
+      },
+    })
+  }
 
   nextTick(async () => {
     switch (type as string) {
@@ -180,15 +180,15 @@ onMounted(async () => {
         try {
           loading.value = true
           // 部门经理人审批节点
-          await Detail1Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail1.value?.workflowView({ taskId, processInstanceId })
 
           // 归档节点
-          await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail2.value?.workflowView({ taskId, processInstanceId })
 
           // 工作交接节点
-          await Detail3Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail3.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
         }
         finally {
           loading.value = false
@@ -196,7 +196,7 @@ onMounted(async () => {
         break
       }
       case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+        await Detail.value?.workflowView?.({ taskId, processInstanceId })
       }
     }
   })

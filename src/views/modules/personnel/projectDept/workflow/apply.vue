@@ -1,29 +1,28 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFieldsOther" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_0g08l2m'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_0jtyn89'" v-loading="loading">
         <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
       <!-- 其他审批通用节点 -->
-      <!-- 查看需要编号，编号后端在新增时处理 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFields" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
-<script setup lang='ts'>
-import Detail from '../detail.vue'
-import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
+<script setup lang="ts">
+import detail from '../detail.vue'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import { useWorkflowViewData } from '@/hooks'
+import type { DeptForm } from '@/api/system/dept/types'
 
-type Entity = UserRecruitForm & { initiator: Initiator }
+type Entity = DeptForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -34,21 +33,46 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
-  filterTruthyKeys<UserRecruitForm>({
-    no: true,
+  filterTruthyKeys<DeptForm>({
     deptId: true,
+    parentId: true,
+    deptName: true,
+    type: true,
+    deptCategory: true,
+    responsibility: true,
+    purview: true,
+    orderNum: false,
+    leader: true,
+    phone: false,
+    email: false,
     status: false,
-    recruitStartDate: false,
-    recruitEndDate: false,
-    hopeArriveDate: true,
-    applyReason: true,
-    remark: false,
-    userRecruitPostBoList: true,
+    adress: true,
+    redFile: true,
+    ossIdList: true,
+  }),
+)
+const includeFieldsOther = ref(
+  filterTruthyKeys<DeptForm>({
+    deptId: true,
+    parentId: true,
+    deptName: true,
+    type: true,
+    deptCategory: true,
+    responsibility: true,
+    purview: true,
+    orderNum: false,
+    leader: true,
+    phone: false,
+    email: false,
+    status: false,
+    adress: true,
+    redFile: true,
+    deptPostVoList: false,
     ossIdList: true,
   }),
 )
@@ -66,7 +90,7 @@ const isView = computed(() => proxy?.$route.query.type === 'view')
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   // let res: any
-  // if (taskDefinitionKey.value == 'Activity_0g08l2m') {
+  // if (taskDefinitionKey.value == 'Activity_0jtyn89') {
   //   // 发起流程 第一步节点
   //   res = await Upsert.value?.workflowSubmit()
   // }
@@ -99,9 +123,9 @@ onMounted(async () => {
       case 'approval': {
         try {
           loading.value = true
-          await DetailRef.value?.workflowView({ taskId, processInstanceId })
+          await Detail.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
         }
         finally {
           loading.value = false
@@ -109,7 +133,7 @@ onMounted(async () => {
         break
       }
       case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+        await Detail.value?.workflowView?.({ taskId, processInstanceId })
       }
     }
   })
