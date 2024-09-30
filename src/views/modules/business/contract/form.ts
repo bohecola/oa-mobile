@@ -10,7 +10,7 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions = Options<string | number>
+export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
 
 // 合同模式
@@ -66,7 +66,7 @@ export function useForm() {
   }
 
   // 数据
-  const data = reactive<Omit<PageData<_ContractForm, object>, 'queryParams'>>({
+  const data = reactive<Omit<PageData<_ContractForm, any>, 'queryParams'>>({
     form: { ...initFormData },
     rules: {
       id: [{ required: true, message: 'ID不能为空', trigger: 'onBlur' }],
@@ -149,59 +149,65 @@ export function useForm() {
   }
 
   // // 提交表单
-  // async function submit(options?: SubmitOptions) {
-  //   const { success, fail } = options ?? {}
-
-  //   let res: AxiosResponse<ContractForm['id']>
+  // async function submit(options?: SubmitOptions<SuccessData>) {
+  //   const { success, fail } = options ?? {};
 
   //   const valid = await Form.value?.validate(async (valid: boolean) => {
   //     try {
-  //       const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
-  //       const data: ContractForm = {
-  //         ...form.value,
-  //         taxRate,
-  //       }
   //       if (valid) {
-  //         updateLoading.value = true
-  //         if (form.value.id) {
-  //           res = await updateContract(data).finally(() => (updateLoading.value = false))
-  //         }
-  //         else {
-  //           res = await addContract(data).finally(() => (updateLoading.value = false))
-  //         }
-  //       }
-  //     }
-  //     catch (err) {
-  //       console.error(err)
-  //       fail?.(err)
-  //     }
-  //     success?.(res.data)
-  //   })
+  //         updateLoading.value = true;
 
-  //   return valid
+  //         const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined;
+  //         const data: ContractForm = {
+  //           ...form.value,
+  //           taxRate
+  //         };
+
+  //         if (form.value.id) {
+  //           await updateContract(data).finally(() => (updateLoading.value = false));
+  //         } else {
+  //           // 生成编号
+  //           const { msg } = (await getGenerateCode(BusinessCodeEnum.HTCODE, 'oa_contract')) ?? {};
+  //           data.no = form.value.no = msg;
+  //           // 新增
+  //           const { data: id } = (await addContract(data).finally(() => (updateLoading.value = false))) ?? {};
+  //           form.value.id = id;
+  //         }
+  //         success?.({
+  //           id: form.value.id,
+  //           no: form.value.no
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       fail?.(err);
+  //     }
+  //   });
+
+  //   return valid;
   // }
 
   // // 工作流中提交表单
   // async function workflowSubmit(options?: SubmitOptions) {
-  //   const { success } = options ?? {}
+  //   const { success } = options ?? {};
 
-  //   let data: ContractForm = {}
+  //   let data: ContractForm;
 
   //   const valid = await Form.value?.validate(async (valid: boolean) => {
-  //     const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
+  //     const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined;
   //     data = {
   //       ...form.value,
-  //       taxRate,
-  //     }
+  //       taxRate
+  //     };
   //     if (valid) {
-  //       success?.()
+  //       success?.();
   //     }
-  //   })
+  //   });
 
   //   return {
   //     valid,
-  //     data,
-  //   }
+  //     data
+  //   };
   // }
 
   // 工作流中回显
