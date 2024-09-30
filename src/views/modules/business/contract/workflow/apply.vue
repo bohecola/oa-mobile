@@ -37,6 +37,12 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const loading = ref(false)
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
+// 流程表单
+const submitFormData = ref<StartProcessBo<Entity>>({
+  businessKey: '',
+  tableName: '',
+  variables: {},
+})
 
 // 引用
 const UpsertRef = ref<InstanceType<typeof Detail> | null>()
@@ -144,13 +150,6 @@ const includeFieldsOther = ref(
   }),
 )
 
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-})
-
 // 是否查看
 const isView = computed(() => proxy?.$route.query.type === 'view')
 
@@ -182,10 +181,11 @@ onMounted(async () => {
 
   loading.value = true
   const res = await useWorkflowViewData({ taskId, processInstanceId })
-
   const { entity, task } = res.data
+
   submitFormData.value.variables.entity = entity
   taskDefinitionKey.value = task.taskDefinitionKey
+
   proxy?.$router.replace({
     query: {
       ...proxy?.$route.query,
@@ -195,10 +195,10 @@ onMounted(async () => {
   })
 
   nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval': {
-        try {
+    try {
+      switch (type as string) {
+        case 'update':
+        case 'approval': {
           await UpsertRef.value?.workflowView({ taskId, processInstanceId })
 
           await Upsert2Ref.value?.workflowView({ taskId, processInstanceId })
@@ -206,15 +206,16 @@ onMounted(async () => {
           await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
 
           await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+
+          break
         }
-        finally {
-          loading.value = false
+        case 'view': {
+          await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
         }
-        break
       }
-      case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
-      }
+    }
+    finally {
+      loading.value = false
     }
   })
 })
