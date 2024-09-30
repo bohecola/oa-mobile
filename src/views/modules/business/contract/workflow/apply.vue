@@ -1,27 +1,27 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_08sjg5i'" v-loading="loading">
-        <Detail ref="UpsertRef" :include-fields="includeFields" :show-loading="false" />
+        <detail ref="Upsert" :include-fields="includeFields" :show-loading="false" />
       </div>
       <!-- 归档 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'" v-loading="loading">
-        <Detail ref="Detail2Ref" :include-fields="includeFieldsDetail2" :show-loading="false" />
-        <Detail ref="Upsert2Ref" :include-fields="includeFieldsUpsert2" :show-loading="false" />
-        <Detail ref="Detail3Ref" :include-fields="includeFieldsDetail3" :show-loading="false" />
+        <detail ref="Detail2" :include-fields="includeFieldsDetail2" :show-loading="false" />
+        <detail ref="Upsert2" :include-fields="includeFieldsUpsert2" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="includeFieldsDetail3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFieldsOther" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
 <script setup lang='ts'>
-import Detail from '../detail.vue'
+import detail from '../detail.vue'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
@@ -45,12 +45,12 @@ const submitFormData = ref<StartProcessBo<Entity>>({
 })
 
 // 引用
-const UpsertRef = ref<InstanceType<typeof Detail> | null>()
-const Upsert2Ref = ref<InstanceType<typeof Detail> | null>()
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const Detail2Ref = ref<InstanceType<typeof Detail> | null>()
-const Detail3Ref = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Upsert = ref<InstanceType<typeof detail> | null>()
+const Upsert2 = ref<InstanceType<typeof detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const Detail2 = ref<InstanceType<typeof detail> | null>()
+const Detail3 = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
@@ -199,18 +199,18 @@ onMounted(async () => {
       switch (type as string) {
         case 'update':
         case 'approval': {
-          await UpsertRef.value?.workflowView({ taskId, processInstanceId })
+          await Upsert.value?.workflowView({ taskId, processInstanceId })
 
-          await Upsert2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Upsert2.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail2.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
 
           break
         }
         case 'view': {
-          await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+          await Detail.value?.workflowView?.({ taskId, processInstanceId })
         }
       }
     }

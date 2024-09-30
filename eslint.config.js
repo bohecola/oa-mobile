@@ -12,8 +12,7 @@ export default antfu({
 
     // vue
     'vue/block-order': 'off',
-    'vue/custom-event-name-casing': ['off'],
-    // TODO
-    // 'vue/custom-event-name-casing': ['error', 'camelCase' | 'kebab-case'],
+    'vue/custom-event-name-casing': 'off',
+    'vue/component-name-in-template-casing': 'off',
   },
 })
