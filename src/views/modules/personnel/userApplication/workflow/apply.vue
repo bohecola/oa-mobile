@@ -1,7 +1,7 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
     <div v-if="isView">
-      <Detail ref="DetailRef" :include-fields="includeFieldsDetail" />
+      <detail ref="Detail" :include-fields="includeFieldsDetail" />
     </div>
 
     <template v-else>
@@ -11,20 +11,20 @@
       </div>
       <!-- 当是归档节点时需要确认系统账号和实际到岗时间 -->
       <div v-else-if="taskDefinitionKey === 'Activity_1gtf30k'" v-loading="loading">
-        <Detail ref="Detail2Ref" :include-fields="includeFieldsDetail2" :show-loading="false" />
-        <Detail ref="Upsert2Ref" :include-fields="includeFieldsUpsert2" :show-loading="false" />
-        <Detail ref="Detail3Ref" :include-fields="includeFieldsDetail3" :show-loading="false" />
+        <detail ref="Detail2" :include-fields="includeFieldsDetail2" :show-loading="false" />
+        <detail ref="Upsert2" :include-fields="includeFieldsUpsert2" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="includeFieldsDetail3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFieldsOther" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
 <script setup lang="ts">
-import Detail from '../detail.vue'
+import detail from '../detail.vue'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userApplication/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
@@ -43,11 +43,11 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const Upsert2Ref = ref<InstanceType<typeof Detail> | null>()
-const Detail2Ref = ref<InstanceType<typeof Detail> | null>()
-const Detail3Ref = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const Upsert2 = ref<InstanceType<typeof detail> | null>()
+const Detail2 = ref<InstanceType<typeof detail> | null>()
+const Detail3 = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
@@ -223,15 +223,15 @@ onMounted(async () => {
       case 'approval': {
         try {
           loading.value = true
-          await DetailRef.value?.workflowView({ taskId, processInstanceId })
+          await Detail.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail2.value?.workflowView({ taskId, processInstanceId })
 
-          await Upsert2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Upsert2.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail3Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail3.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
         }
         finally {
           loading.value = false
@@ -239,7 +239,7 @@ onMounted(async () => {
         break
       }
       case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+        await Detail.value?.workflowView?.({ taskId, processInstanceId })
       }
     }
   })

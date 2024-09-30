@@ -1,28 +1,29 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFieldsOther" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_0jtyn89'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_0g08l2m'" v-loading="loading">
         <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
       <!-- 其他审批通用节点 -->
+      <!-- 查看需要编号，编号后端在新增时处理 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFieldsOther" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFields" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
-<script setup lang="ts">
-import Detail from '../detail.vue'
+<script setup lang='ts'>
+import detail from '../detail.vue'
+import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import { useWorkflowViewData } from '@/hooks'
-import type { DeptForm } from '@/api/system/dept/types'
 
-type Entity = DeptForm & { initiator: Initiator }
+type Entity = UserRecruitForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -33,46 +34,21 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
-  filterTruthyKeys<DeptForm>({
+  filterTruthyKeys<UserRecruitForm>({
+    no: true,
     deptId: true,
-    parentId: true,
-    deptName: true,
-    type: true,
-    deptCategory: true,
-    responsibility: true,
-    purview: true,
-    orderNum: false,
-    leader: true,
-    phone: false,
-    email: false,
     status: false,
-    adress: true,
-    redFile: true,
-    ossIdList: true,
-  }),
-)
-const includeFieldsOther = ref(
-  filterTruthyKeys<DeptForm>({
-    deptId: true,
-    parentId: true,
-    deptName: true,
-    type: true,
-    deptCategory: true,
-    responsibility: true,
-    purview: true,
-    orderNum: false,
-    leader: true,
-    phone: false,
-    email: false,
-    status: false,
-    adress: true,
-    redFile: true,
-    deptPostVoList: false,
+    recruitStartDate: false,
+    recruitEndDate: false,
+    hopeArriveDate: true,
+    applyReason: true,
+    remark: false,
+    userRecruitPostBoList: true,
     ossIdList: true,
   }),
 )
@@ -90,7 +66,7 @@ const isView = computed(() => proxy?.$route.query.type === 'view')
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   // let res: any
-  // if (taskDefinitionKey.value == 'Activity_0jtyn89') {
+  // if (taskDefinitionKey.value == 'Activity_0g08l2m') {
   //   // 发起流程 第一步节点
   //   res = await Upsert.value?.workflowSubmit()
   // }
@@ -109,12 +85,17 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
-
-  if (res && res.data) {
+  if (taskId || processInstanceId) {
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+      },
+    })
   }
 
   nextTick(async () => {
@@ -123,9 +104,9 @@ onMounted(async () => {
       case 'approval': {
         try {
           loading.value = true
-          await DetailRef.value?.workflowView({ taskId, processInstanceId })
+          await Detail.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
         }
         finally {
           loading.value = false
@@ -133,7 +114,7 @@ onMounted(async () => {
         break
       }
       case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+        await Detail.value?.workflowView?.({ taskId, processInstanceId })
       }
     }
   })

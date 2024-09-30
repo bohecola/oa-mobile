@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_06mn8j5'" v-loading="loading">
@@ -8,14 +8,14 @@
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFields" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFields" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
 <script setup lang="ts">
-import Detail from '../detail.vue'
+import detail from '../detail.vue'
 import type { UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
@@ -33,8 +33,8 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
@@ -91,12 +91,17 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
-
-  if (res && res.data) {
+  if (taskId || processInstanceId) {
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+      },
+    })
   }
 
   nextTick(async () => {
@@ -105,9 +110,9 @@ onMounted(async () => {
       case 'approval': {
         try {
           loading.value = true
-          await DetailRef.value?.workflowView({ taskId, processInstanceId })
+          await Detail.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
         }
         finally {
           loading.value = false
@@ -115,7 +120,7 @@ onMounted(async () => {
         break
       }
       case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
+        await Detail.value?.workflowView?.({ taskId, processInstanceId })
       }
     }
   })
