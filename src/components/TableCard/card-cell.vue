@@ -18,8 +18,8 @@
 
 <script setup lang='ts'>
 defineProps<{
-  label?: string
-  value?: string
+  label?: string | number
+  value?: string | number
   labelClass?: string
   valueClass?: string
 }>()

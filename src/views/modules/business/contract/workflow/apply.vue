@@ -1,25 +1,27 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
-    <Detail v-if="isView" ref="DetailRef" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_08sjg5i'" v-loading="loading">
-        <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
+        <detail ref="Upsert" :include-fields="includeFields" :show-loading="false" />
       </div>
-      <!-- 收入- 部门经理节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_08vtkwi'" v-loading="loading">
-        <Detail ref="Detail2Ref" :include-fields="includeFieldsDetail2" :show-loading="false" />
+      <!-- 归档 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'" v-loading="loading">
+        <detail ref="Detail2" :include-fields="includeFieldsDetail2" :show-loading="false" />
+        <detail ref="Upsert2" :include-fields="includeFieldsUpsert2" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="includeFieldsDetail3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <Detail ref="DetailOtherRef" :include-fields="includeFieldsOther" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
 </template>
 
 <script setup lang='ts'>
-import Detail from '../detail.vue'
+import detail from '../detail.vue'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
@@ -35,16 +37,25 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const loading = ref(false)
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
+// 流程表单
+const submitFormData = ref<StartProcessBo<Entity>>({
+  businessKey: '',
+  tableName: '',
+  variables: {},
+})
 
 // 引用
-const DetailRef = ref<InstanceType<typeof Detail> | null>()
-const Detail2Ref = ref<InstanceType<typeof Detail> | null>()
-const DetailOtherRef = ref<InstanceType<typeof Detail> | null>()
+const Upsert = ref<InstanceType<typeof detail> | null>()
+const Upsert2 = ref<InstanceType<typeof detail> | null>()
+const Detail = ref<InstanceType<typeof detail> | null>()
+const Detail2 = ref<InstanceType<typeof detail> | null>()
+const Detail3 = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
   filterTruthyKeys<ContractForm>({
-    // no: true,
+    no: true,
     deptId: true,
     projectId: true,
     projectName: true,
@@ -64,15 +75,15 @@ const includeFields = ref(
     taxRate: true,
     paymentWay: true,
     reviewWay: true,
-    originalFile: true,
-    noAmountFile: true,
-    status: true,
+    // originalFile: true,
+    // noAmountFile: true,
+    // status: true,
     remark: true,
     ossIdList: true,
   }),
 )
 
-// 收入部门经理 节点 - 查看
+// 归档 - 查看
 const includeFieldsDetail2 = filterTruthyKeys<ContractForm>({
   no: true,
   deptId: true,
@@ -84,6 +95,28 @@ const includeFieldsDetail2 = filterTruthyKeys<ContractForm>({
   partyC: true,
   partyD: true,
   type: true,
+  category: true,
+  reviewWay: true,
+  amount: true,
+  invoiceType: true,
+  taxRate: true,
+  paymentWay: true,
+})
+
+// 归档 - 编辑
+const includeFieldsUpsert2 = filterTruthyKeys<ContractForm>({
+  startDate: true,
+  endDate: true,
+  signDate: true,
+  description: true,
+  originalFile: true,
+  noAmountFile: true,
+  remark: true,
+})
+
+// 归档 - 查看
+const includeFieldsDetail3 = filterTruthyKeys<ContractForm>({
+  ossIdList: true,
 })
 
 // 字段
@@ -117,13 +150,6 @@ const includeFieldsOther = ref(
   }),
 )
 
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-})
-
 // 是否查看
 const isView = computed(() => proxy?.$route.query.type === 'view')
 
@@ -134,9 +160,9 @@ async function handleApproval({ open }: ApprovalPayload) {
   //   // 发起流程 第一步节点
   //   res = await Upsert.value?.workflowSubmit()
   // }
-  // else if (taskDefinitionKey.value == 'Activity_08vtkwi') {
-  //   // 收入部门经理 节点
-  //   res = await Upsert2.value?.workflowSubmit()
+  // else if (taskDefinitionKey.value == 'Activity_0bj6sxt') {
+  //   // 归档 节点
+  //   res = await Upsert2.value?.workflowSubmit();
   // }
   // if (res) {
   //   const { valid, data } = res
@@ -155,32 +181,41 @@ onMounted(async () => {
 
   loading.value = true
   const res = await useWorkflowViewData({ taskId, processInstanceId })
-
   const { entity, task } = res.data
+
   submitFormData.value.variables.entity = entity
   taskDefinitionKey.value = task.taskDefinitionKey
 
+  proxy?.$router.replace({
+    query: {
+      ...proxy?.$route.query,
+      taskDefinitionKey: taskDefinitionKey.value,
+      isEditNode: (taskDefinitionKey.value === 'Activity_0bj6sxt') ? 'true' : 'false',
+    },
+  })
+
   nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval': {
-        try {
-          // await Upsert.value?.workflowView({ taskId, processInstanceId });
+    try {
+      switch (type as string) {
+        case 'update':
+        case 'approval': {
+          await Upsert.value?.workflowView({ taskId, processInstanceId })
 
-          // await Upsert2.value?.workflowView({ taskId, processInstanceId });
+          await Upsert2.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail2Ref.value?.workflowView({ taskId, processInstanceId })
+          await Detail2.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOtherRef.value?.workflowView({ taskId, processInstanceId })
+          await DetailOther.value?.workflowView({ taskId, processInstanceId })
+
+          break
         }
-        finally {
-          loading.value = false
+        case 'view': {
+          await Detail.value?.workflowView?.({ taskId, processInstanceId })
         }
-        break
       }
-      case 'view': {
-        await DetailRef.value?.workflowView?.({ taskId, processInstanceId })
-      }
+    }
+    finally {
+      loading.value = false
     }
   })
 })

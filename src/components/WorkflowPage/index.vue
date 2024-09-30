@@ -24,6 +24,11 @@
     >
       <!-- 审批表单 -->
       <van-tab title="审批表单" name="form">
+        <van-notice-bar
+          v-if="$route.query.isEditNode === 'true'"
+          :scrollable="false"
+          text="当前节点存在需要填写的字段，请暂时在PC端审批"
+        />
         <div v-if="entityVariables?.initiator">
           <van-cell-group inset title="发起人信息">
             <van-cell title="发起人：" :value="entityVariables.initiator.nickName" />
@@ -96,8 +101,8 @@ const submitVisible = computed(() => {
 
 // 审批可见
 const approvalVisible = computed(() => {
-  const { type, wfStatus } = proxy?.$route.query ?? {}
-  return type === 'approval' && wfStatus && (wfStatus === 'waiting' || wfStatus === 'back')
+  const { type, wfStatus, isEditNode } = proxy?.$route.query ?? {}
+  return type === 'approval' && wfStatus && (wfStatus === 'waiting' || wfStatus === 'back') && isEditNode === 'false'
 })
 
 // 流程可见

@@ -26,6 +26,9 @@ importers:
       axios:
         specifier: ^1.7.2
         version: 1.7.2
+      big.js:
+        specifier: ^6.2.2
+        version: 6.2.2
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -84,6 +87,9 @@ importers:
       '@iconify-json/solar':
         specifier: ^1.1.9
         version: 1.1.9
+      '@types/big.js':
+        specifier: ^6.2.2
+        version: 6.2.2
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -858,6 +864,9 @@ packages:
       '@vue/composition-api':
         optional: true
 
+  '@types/big.js@6.2.2':
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
+
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
 
@@ -1231,6 +1240,9 @@ packages:
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
+  big.js@6.2.2:
+    resolution: {integrity: sha512-y/ie+Faknx7sZA5MfGA2xKlu0GDv8RWrXGsmlteyJQ2lvoKv9GBK/fpRMc2qlSoBAgNxrixICFCBefIq8WCQpQ==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -4181,6 +4193,8 @@ snapshots:
       vue: 3.4.31(typescript@5.5.4)
       vue-demi: 0.14.10(vue@3.4.31(typescript@5.5.4))
 
+  '@types/big.js@6.2.2': {}
+
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
       '@types/node': 20.14.10
@@ -4657,6 +4671,8 @@ snapshots:
   balanced-match@1.0.2: {}
 
   base64-js@1.5.1: {}
+
+  big.js@6.2.2: {}
 
   binary-extensions@2.3.0: {}
 
