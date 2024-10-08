@@ -1,10 +1,11 @@
 <template>
   <div class="bg-[--bg-color] border" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
-    <div v-if="slots.header || title" class="p-2" :class="{ 'border-b': !isCollapse }">
-      <slot v-if="slots.header" name="header" :title="title" />
-      <div v-else class="flex justify-between" @click="isCollapse = !isCollapse">
-        <span :class="titleClass">{{ title }}</span>
-        <span>
+    <div class="p-2" :class="{ 'border-b': !isCollapse }" @click="handleCollapse">
+      <div class="flex justify-between">
+        <slot v-if="slots.header" name="header" />
+        <span v-else :class="titleClass">{{ title }}</span>
+
+        <span v-if="showCollapse">
           <van-icon v-show="isCollapse" name="arrow" />
           <van-icon v-show="!isCollapse" name="arrow-down" />
         </span>
@@ -29,19 +30,27 @@ const props = withDefaults(
     shadow?: boolean
     round?: boolean
     defaultCollapse?: boolean
+    showCollapse?: boolean
   }>(),
   {
     shadow: true,
     round: false,
     defaultCollapse: false,
+    showCollapse: true,
   },
 )
 
 const slots = defineSlots<{
-  header?: (props: { title?: string }) => any
+  header?: () => any
   default?: () => any
   footer?: () => any
 }>()
 
 const isCollapse = ref(props.defaultCollapse)
+
+function handleCollapse() {
+  if (props.showCollapse) {
+    isCollapse.value = !isCollapse.value
+  }
+}
 </script>
