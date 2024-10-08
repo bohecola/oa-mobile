@@ -8,7 +8,7 @@ import request from '@/service/request'
  * @returns {*}
  */
 
-export function listContract(query?: ContractQuery): AxiosPromise<ContractVO[]> {
+export function listContract(query?: Partial<ContractQuery>): AxiosPromise<ContractVO[]> {
   return request({
     url: '/oa/business/contract/list',
     method: 'get',

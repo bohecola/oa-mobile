@@ -278,4 +278,6 @@ export interface ContractQuery extends PageQuery {
    * 日期范围参数
    */
   params?: any
+
+  ids?: (string | number)[]
 }
