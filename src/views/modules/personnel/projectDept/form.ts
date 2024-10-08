@@ -48,7 +48,7 @@ export function useForm() {
       responsibility: [{ required: true, message: '部门职能不能为空', trigger: 'onBlur' }],
       purview: [{ required: true, message: '部门权限不能为空', trigger: 'onBlur' }],
       orderNum: [{ required: true, message: '显示排序不能为空', trigger: 'onBlur' }],
-      email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['onBlur', 'onChange'] }],
+      // email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['onBlur', 'onChange'] }],
       phone: [{ pattern: /^1[3-9|]\d{9}$/, message: '请输入正确的手机号码', trigger: 'onBlur' }],
     },
   })
@@ -76,7 +76,7 @@ export function useForm() {
     reset()
     const res = await getDept(id)
     Object.assign(form.value, res.data)
-    form.value.id = form.value.deptId
+    // form.value.id = form.value.deptId
     isLoading.value = false
   }
 

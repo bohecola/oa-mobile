@@ -1,37 +1,37 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
-    <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="编号：" />
+    <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="编号：" input-align="right" />
 
-    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称：">
+    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称：" input-align="right">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />
       </template>
     </van-field>
-    <van-field v-model="form.status" v-show-field="['status', includeFields]" name="status" label="状态：">
+    <van-field v-model="form.status" v-show-field="['status', includeFields]" name="status" label="状态：" input-align="right">
       <template #input>
         <dict-tag :options="oa_recruit_status" :value="form.status" />
       </template>
     </van-field>
 
-    <van-field v-model="form.recruitStartDate" v-show-field="['recruitStartDate', includeFields]" name="recruitStartDate" label="招聘开始时间：">
+    <van-field v-model="form.recruitStartDate" v-show-field="['recruitStartDate', includeFields]" name="recruitStartDate" label="招聘开始时间：" input-align="right">
       <template #input>
         {{ parseTime(form.recruitStartDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
 
-    <van-field v-model="form.recruitEndDate" v-show-field="['recruitEndDate', includeFields]" name="recruitEndDate" label="招聘完成日期：">
+    <van-field v-model="form.recruitEndDate" v-show-field="['recruitEndDate', includeFields]" name="recruitEndDate" label="招聘完成日期：" input-align="right">
       <template #input>
         {{ parseTime(form.recruitEndDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
 
-    <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到达日期：">
+    <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到达日期：" input-align="right">
       <template #input>
         {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
 
-    <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因：">
+    <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因：" input-align="right">
       <template #input>
         <TextareaView :value="form.applyReason" />
       </template>

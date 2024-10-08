@@ -1,27 +1,27 @@
 <template>
   <van-form ref="Form" v-loading="isLoading" readonly label-width="8em">
-    <van-field v-model="form.userName" name="userName" label="员工：" />
+    <van-field v-model="form.userName" name="userName" label="员工：" input-align="right" />
 
-    <van-field name="deptId" label="部门名称：">
+    <van-field name="deptId" label="部门名称：" input-align="right">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />
       </template>
     </van-field>
-    <van-field v-model="form.postName" name="postName" label="岗位名称：" />
+    <van-field v-model="form.postName" name="postName" label="岗位名称：" input-align="right" />
 
-    <van-field name="type" label="提前转正：">
+    <van-field name="type" label="提前转正：" input-align="right">
       <template #input>
         <dict-tag :options="sysYesNo" :value="form.type" />
       </template>
     </van-field>
 
-    <van-cell title="附件：">
+    <van-cell title="附件：" input-align="right">
       <template #value>
         <UploadFile v-model="form.files" readonly :card-size="60" />
       </template>
     </van-cell>
 
-    <van-field v-model="form.description" name="description" label="描述：">
+    <van-field v-model="form.description" name="description" label="描述：" input-align="right">
       <template #input>
         <TextareaView :value="form.description" />
       </template>

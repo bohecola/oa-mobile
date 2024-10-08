@@ -102,12 +102,6 @@ export function useForm() {
     form.value.preEmploymentId = id as string
     const res = await listUserEmployment({ preEmploymentId: id, pageNum: 1, pageSize: 10 })
     Object.assign(form.value, res.rows[0])
-    const res1 = await getUserPreEmployment(id)
-    form.value.deptName = res1.data.deptName
-    form.value.postName = res1.data.postName
-    form.value.sex = res1.data.sex
-    form.value.phonenumber = res1.data.phonenumber
-    form.value.isProbation = res1.data.isProbation
     isLoading.value = false
   }
 
@@ -115,16 +109,19 @@ export function useForm() {
   async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
     let res: any
-
     try {
       reset()
       isLoading.value = true
       res = await useWorkflowViewData({ taskId, processInstanceId })
       const { entity } = res.data
-      nextTick(() => {
+      nextTick(async () => {
         Object.assign(form.value, {
           ...entity,
         })
+        if (entity.preEmploymentId) {
+          const res = await getUserPreEmployment(entity.preEmploymentId)
+          form.value.name = res.data.name
+        }
       })
     }
     catch (err) {
