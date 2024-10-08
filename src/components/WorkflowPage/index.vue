@@ -30,15 +30,28 @@
           text="当前节点存在需要填写的字段，请暂时在PC端审批"
         />
         <div v-if="entityVariables?.initiator">
-          <van-cell-group inset title="发起人信息">
-            <van-cell title="发起人：" :value="entityVariables.initiator.nickName" />
-            <van-cell title="部门：" :value="entityVariables.initiator.deptName" />
-            <van-cell title="发起时间：" :value="parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')!" />
+          <van-cell-group inset class="!mt-3">
+            <van-field label="发起人：" input-align="right">
+              <template #input>
+                <span>{{ entityVariables.initiator.nickName }}</span>
+              </template>
+            </van-field>
+            <van-field label="部门：" input-align="right">
+              <template #input>
+                <span>{{ entityVariables.initiator.deptName }}</span>
+              </template>
+            </van-field>
+            <van-field label="发起时间：" input-align="right">
+              <template #input>
+                <span>{{ parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')! }}</span>
+              </template>
+            </van-field>
           </van-cell-group>
         </div>
-        <van-cell-group inset title="表单">
+        <van-cell-group v-if="group" inset class="!my-3">
           <slot />
         </van-cell-group>
+        <slot v-else />
         <bottom-line />
       </van-tab>
 
@@ -64,9 +77,15 @@ interface EntityVariables {
   [key: string]: any
 }
 
-const props = defineProps<{
-  entityVariables?: EntityVariables
-}>()
+const props = withDefaults(
+  defineProps<{
+    entityVariables?: EntityVariables
+    group?: boolean
+  }>(),
+  {
+    group: true,
+  },
+)
 
 const emit = defineEmits<Emits>()
 
