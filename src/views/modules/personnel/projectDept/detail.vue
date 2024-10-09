@@ -49,6 +49,12 @@
         <TextareaView :value="form.adress" />
       </template>
     </van-field>
+
+    <!-- 附件列表 -->
+    <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4">
+      <UploadFile v-if="form.ossIdList" v-model="form.ossIdList" readonly :card-size="60" />
+      <van-empty v-else image-size="80" description="数据为空" />
+    </TableCard>
   </van-form>
 </template>
 
