@@ -27,7 +27,9 @@ export function useForm() {
     unit: undefined,
     num: undefined,
     amount: undefined,
+    realAmount: undefined,
     totalAmount: undefined,
+    realTotalAmount: undefined,
     inquiryWay: undefined,
     supplier: undefined,
     remark: undefined,
@@ -55,6 +57,8 @@ export function useForm() {
     file: undefined,
     remark: undefined,
     itemList: [{ ...purchaseItem }],
+    checkFiles: undefined,
+    purchaseContractIds: undefined,
     ossIdList: undefined,
   }
 
@@ -64,7 +68,7 @@ export function useForm() {
     rules: {
       // id: [{ required: true, message: 'ID不能为空', trigger: 'onBlur' }],
       // no: [{ required: true, message: '编号不能为空', trigger: 'onBlur' }],
-      projectId: [{ required: false, message: '项目id不能为空', trigger: 'onBlur' }],
+      projectId: [{ required: true, message: '项目id不能为空', trigger: 'onBlur' }],
       contractId: [{ required: false, message: '关联收入合同不能为空', trigger: 'onBlur' }],
       contractExecute: [{ required: false, message: '合同执行情况不能为空', trigger: 'onBlur' }],
       type: [{ required: true, message: '采购类型不能为空', trigger: 'onChange' }],
@@ -78,7 +82,9 @@ export function useForm() {
       description: [{ required: true, message: '采购说明不能为空', trigger: 'onBlur' }],
       file: [{ required: true, message: '申购附件不能为空', trigger: 'onBlur' }],
       remark: [{ required: false, message: '备注不能为空', trigger: 'onBlur' }],
-      // realAmount: [{ required: true, message: '实际采购金额不能为空', trigger: 'onBlur' }],
+      realAmount: [{ required: true, message: '实际采购金额不能为空', trigger: 'onBlur' }],
+      checkFiles: [{ required: true, message: '验收附件不能为空', trigger: 'onBlur' }],
+      purchaseContractIds: [{ required: true, message: '采购合同不能为空', trigger: 'onBlur' }],
     },
   })
 
@@ -106,10 +112,12 @@ export function useForm() {
       ...item,
       num: Number(item.num),
       amount: Number(item.amount),
+      realAmount: Number(item.realAmount),
       totalAmount: Number(item.totalAmount),
+      realTotalAmount: Number(item.realTotalAmount),
     }))
     nextTick(() => {
-      Object.assign(form.value, { ...data, amount: Number(data.amount), itemList })
+      Object.assign(form.value, { ...data, amount: Number(data.amount), realAmount: Number(data.realAmount), itemList })
       isLoading.value = false
     })
   }
@@ -117,6 +125,7 @@ export function useForm() {
   interface SuccessData {
     id: PurchaseForm['id']
     no: PurchaseForm['no']
+    itemList: PurchaseForm['itemList']
   }
 
   // // 提交
@@ -136,13 +145,15 @@ export function useForm() {
   //           const { msg } = (await getGenerateCode(BusinessCodeEnum.CGCODE, 'oa_purchase')) ?? {}
   //           form.value.no = msg
   //           // 新增
-  //           const { data } = (await addPurchase(form.value).finally(() => (updateLoading.value = false))) ?? {} as any
-  //           form.value.id = data
+  //           const { data } = (await addPurchase(form.value).finally(() => (updateLoading.value = false))) ?? {}
+  //           form.value.id = data.id
+  //           form.value.itemList = data.itemList
   //         }
 
   //         success?.({
   //           id: form.value.id,
   //           no: form.value.no,
+  //           itemList: form.value.itemList,
   //         })
   //       }
   //     }

@@ -8,12 +8,24 @@
         <detail ref="Upsert" :include-fields="applyFields" :show-loading="false" />
       </div>
 
-      <!-- 中间节点 -->
-      <!-- <div v-else-if="taskDefinitionKey == 'Activity_0bj6sxt'" v-loading="loading">
-        <detail ref="Detail2" :include-fields="includeFieldsDetail2" :show-loading="false" />
-        <upsert ref="Upsert2" :include-fields="includeFieldsUpsert2" :show-loading="false" />
-        <detail ref="Detail3" :include-fields="includeFieldsDetail3" :show-loading="false" />
-      </div> -->
+      <!-- 采购执行节点 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_0qbyt2w'" v-loading="loading">
+        <detail ref="ExecuteDetail" :include-fields="executeDetailFields" :show-loading="false" />
+        <detail ref="ExecuteUpsert" :include-fields="executeUpsertFields" :show-loading="false" />
+        <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
+      </div>
+
+      <!-- 验收节点 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_0ccirhe'" v-loading="loading">
+        <detail ref="CheckDetail" :include-fields="checkDetailFields" :show-loading="false" />
+        <detail ref="CheckUpsert" :include-fields="checkUpsertFields" :show-loading="false" />
+        <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
+      </div>
+
+      <!-- 验收确认 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_10qfp2k'" v-loading="loading">
+        <detail ref="ReCheckDetail" :include-fields="recheckFields" :show-loading="false" />
+      </div>
 
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
@@ -41,9 +53,15 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const Detail = ref<InstanceType<typeof detail> | null>()
 const Upsert = ref<InstanceType<typeof detail> | null>()
 
-// const Detail2 = ref<InstanceType<typeof detail> | null>();
-// const Upsert2 = ref<InstanceType<typeof upsert> | null>();
-// const Detail3 = ref<InstanceType<typeof detail> | null>();
+const AttachmentListDetail = ref<InstanceType<typeof detail> | null>()
+
+const ExecuteDetail = ref<InstanceType<typeof detail> | null>()
+const ExecuteUpsert = ref<InstanceType<typeof detail> | null>()
+
+const CheckDetail = ref<InstanceType<typeof detail> | null>()
+const CheckUpsert = ref<InstanceType<typeof detail> | null>()
+
+const ReCheckDetail = ref<InstanceType<typeof detail> | null>()
 
 const CommonDetail = ref<InstanceType<typeof detail> | null>()
 
@@ -61,84 +79,103 @@ const submitFormData = ref<StartProcessBo<Entity>>({
 // 是否查看
 const isView = computed(() => proxy!.$route.query.type === 'view')
 
+const allFields: PartialBooleanRecord<PurchaseForm> = {
+  id: true,
+  no: true,
+  projectId: true,
+  projectName: true,
+  type: true,
+  businessCategory: true,
+  objectCategory: true,
+  serviceCategory: true,
+  leaseType: true,
+  isDeposit: true,
+  contractId: true,
+  contractName: true,
+  contractExecute: true,
+  isOwnerSettlement: true,
+  amount: true,
+  realAmount: true,
+  description: true,
+  file: true,
+  remark: true,
+  itemList: true,
+  ossIdList: true,
+  purchaseContractIds: true,
+  checkFiles: true,
+}
+
+// 附件列表字段
+const attachementFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    ossIdList: true,
+  }),
+)
+
 // 总览字段
 const overviewFields = ref(
   filterTruthyKeys<PurchaseForm>({
-    id: true,
-    no: true,
-    projectId: true,
-    projectName: true,
-    type: true,
-    businessCategory: true,
-    objectCategory: true,
-    serviceCategory: true,
-    leaseType: true,
-    isDeposit: true,
-    contractId: true,
-    contractName: true,
-    contractExecute: true,
-    isOwnerSettlement: true,
-    amount: true,
-    realAmount: true,
-    description: true,
-    file: true,
-    remark: true,
-    itemList: true,
-    ossIdList: true,
+    ...allFields,
   }),
 )
 
 // 申请字段
 const applyFields = ref(
   filterTruthyKeys<PurchaseForm>({
-    id: true,
-    no: true,
-    projectId: true,
-    projectName: true,
-    type: true,
-    businessCategory: true,
-    objectCategory: true,
-    serviceCategory: true,
-    leaseType: true,
-    isDeposit: true,
-    contractId: true,
-    contractName: true,
-    contractExecute: true,
-    isOwnerSettlement: true,
-    amount: true,
-    realAmount: true,
-    description: true,
-    file: true,
-    remark: true,
-    itemList: true,
-    ossIdList: true,
+    ...allFields,
+    realAmount: false,
+    purchaseContractIds: false,
+    checkFiles: false,
   }),
 )
 
 // 其他通用节点审批字段
 const commonFields = ref(
   filterTruthyKeys<PurchaseForm>({
-    id: true,
-    no: true,
-    projectId: true,
-    projectName: true,
-    type: true,
-    businessCategory: true,
-    objectCategory: true,
-    serviceCategory: true,
-    leaseType: true,
-    isDeposit: true,
-    contractId: true,
-    contractName: true,
-    contractExecute: true,
-    isOwnerSettlement: true,
-    amount: true,
-    realAmount: true,
-    description: true,
-    file: true,
-    remark: true,
+    ...allFields,
+    realAmount: false,
+    purchaseContractIds: false,
+    checkFiles: false,
+  }),
+)
+
+// 执行字段
+const executeDetailFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    ...allFields,
+    itemList: false,
+    realAmount: false,
+    purchaseContractIds: false,
+    checkFiles: false,
+    ossIdList: false,
+  }),
+)
+const executeUpsertFields = ref(
+  filterTruthyKeys<PurchaseForm>({
     itemList: true,
-    ossIdList: true,
+    realAmount: true,
+    purchaseContractIds: true,
+  }),
+)
+
+// 验收字段
+const checkDetailFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    ...allFields,
+    checkFiles: false,
+    ossIdList: false,
+  }),
+)
+const checkUpsertFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    checkFiles: true,
+  }),
+)
+
+// 验收确认字段
+const recheckFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    ...allFields,
   }),
 )
 
@@ -146,7 +183,7 @@ const commonFields = ref(
 // async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
 //   // 业务提交
 //   await Upsert.value?.submit({
-//     success: async ({ id, no }) => {
+//     success: async ({ id, no, itemList }) => {
 //       // 表名
 //       submitFormData.value.tableName = 'oa_purchase'
 //       // 业务主键
@@ -157,6 +194,7 @@ const commonFields = ref(
 //           ...entity,
 //           id,
 //           no,
+//           itemList
 //         },
 //       }
 //       // 启动流程
@@ -200,21 +238,25 @@ const commonFields = ref(
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy!.$route.query
-  // let res: any
+  let res: any
 
   // // 申请节点
   // if (taskDefinitionKey.value === 'Activity_11sjm5p') {
   //   res = await Upsert.value?.workflowSubmit()
+  //   // 执行节点
   // }
-  // // else if ('Activity_0bj6sxt' === taskDefinitionKey.value) {
-  // //   // 归档节点
-  // //   res = await Upsert2.value?.workflowSubmit();
-  // // }
+  // else if (taskDefinitionKey.value === 'Activity_0qbyt2w') {
+  //   res = await ExecuteUpsert.value?.workflowSubmit()
+  //   // 验收节点
+  // }
+  // else if (taskDefinitionKey.value === 'Activity_0ccirhe') {
+  //   res = await CheckUpsert.value?.workflowSubmit()
+  // }
 
   // if (res) {
   //   const { valid, data } = res
   //   if (valid) {
-  //     Object.assign(submitFormData.value.variables.entity, data)
+  //     Object.assign(submitFormData.value.variables.entity!, data)
   //     open(taskId as string)
   //   }
   //   return true
@@ -241,7 +283,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: (taskDefinitionKey.value === 'Activity_11sjm5p') ? 'true' : 'false',
+        isEditNode: (['Activity_11sjm5p', 'Activity_0qbyt2w', 'Activity_0ccirhe'].includes(taskDefinitionKey.value as string) ? 'true' : 'false'),
       },
     })
   }
@@ -253,9 +295,15 @@ onMounted(async () => {
         case 'approval': {
           await Upsert.value?.workflowView({ taskId, processInstanceId })
 
-          // await Detail2.value?.workflowView({ taskId, processInstanceId });
-          // await Upsert2.value?.workflowView({ taskId, processInstanceId });
-          // await Detail3.value?.workflowView({ taskId, processInstanceId });
+          await AttachmentListDetail.value?.workflowView({ taskId, processInstanceId })
+
+          await ExecuteDetail.value?.workflowView({ taskId, processInstanceId })
+          await ExecuteUpsert.value?.workflowView({ taskId, processInstanceId })
+
+          await CheckDetail.value?.workflowView({ taskId, processInstanceId })
+          await CheckUpsert.value?.workflowView({ taskId, processInstanceId })
+
+          await ReCheckDetail.value?.workflowView({ taskId, processInstanceId })
 
           await CommonDetail.value?.workflowView({ taskId, processInstanceId })
 

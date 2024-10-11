@@ -8,7 +8,7 @@
       </van-field>
       <van-field v-show-field="['contractId', includeFields]" label="收入合同：" name="contractId" input-align="right">
         <template #input>
-          <dict-tag :options="contractOptions" :value="form.contractId" />
+          <ContractSelect v-model="form.contractId" readonly />
         </template>
       </van-field>
       <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况：" name="contractExecute" input-align="right">
@@ -56,6 +56,12 @@
           <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
         </template>
       </van-field>
+      <van-field v-show-field="['realAmount', includeFields]" label="实际金额：" name="amount" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
+          <span class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
+        </template>
+      </van-field>
       <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业务单独结算：" name="isOwnerSettlement" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isOwnerSettlement" />
@@ -78,12 +84,12 @@
       </van-field>
     </van-cell-group>
 
-    <div class="px-6 py-2 text-sm text-gray-500">
-      采购清单
-    </div>
-
-    <TableCard v-for="(item, index) in form.itemList" :key="item.id" v-show-field="['itemList', includeFields]" :title="item.name" class="mx-4 mb-2" :default-collapse="true">
-      <!-- <template #header>
+    <div v-show-field="['itemList', includeFields]">
+      <div class="px-6 py-2 text-sm text-gray-500 dark:text-gray-200">
+        采购清单
+      </div>
+      <TableCard v-for="(item, index) in form.itemList" :key="item.id" :title="item.name" class="mx-4 mb-2" :default-collapse="true">
+        <!-- <template #header>
         <div class="flex">
           <PurchaseCategorySelect
             v-model="item.psiId"
@@ -94,93 +100,120 @@
           <span>（采购清单）</span>
         </div>
       </template> -->
-      <van-field
-        v-model="item.psiId"
-        :name="`itemList.${index}.psiId`"
-        :rules="[
-          {
-            required: true,
-            message: '预算类别不能为空',
-            trigger: 'onBlur',
-          },
-        ]"
-        label="预算类别"
-        input-align="right"
-      >
+        <van-field
+          v-model="item.psiId"
+          :name="`itemList.${index}.psiId`"
+          :rules="[
+            {
+              required: true,
+              message: '预算类别不能为空',
+              trigger: 'onBlur',
+            },
+          ]"
+          label="预算类别"
+          input-align="right"
+        >
+          <template #input>
+            <PurchaseCategorySelect
+              v-model="item.psiId"
+              :project-id="form.projectId!"
+              :dept-id="(form as any)?.initiator?.deptId ?? form?.createDept"
+              readonly
+            />
+          </template>
+        </van-field>
+        <van-field
+          v-model="item.name"
+          :name="`itemList.${index}.name`"
+          label="物品名称"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.brand"
+          :name="`itemList.${index}.brand`"
+          label="品牌"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.specsModel"
+          :name="`itemList.${index}.specsModel`"
+          label="规格型号"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.unit"
+          :name="`itemList.${index}.unit`"
+          label="单位"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.num"
+          :name="`itemList.${index}.num`"
+          label="数量"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.amount"
+          :name="`itemList.${index}.amount`"
+          label="单价(元)"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.realAmount"
+          :name="`itemList.${index}.realAmount`"
+          label="实际单价(元)"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.totalAmount"
+          :name="`itemList.${index}.totalAmount`"
+          label="含税合计(元)"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.realTotalAmount"
+          :name="`itemList.${index}.realTotalAmount`"
+          label="实际含税合计(元)"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.inquiryWay"
+          :name="`itemList.${index}.inquiryWay`"
+          label="询价途径"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.supplier"
+          :name="`itemList.${index}.supplier`"
+          label="指定供应商"
+          input-align="right"
+        />
+        <van-field
+          v-model="item.remark"
+          :name="`itemList.${index}.remark`"
+          label="备注"
+          input-align="right"
+        >
+          <template #input>
+            <TextareaView :value="item.remark" />
+          </template>
+        </van-field>
+      </TableCard>
+    </div>
+
+    <van-cell-group inset class="!my-3">
+      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同：" name="purchaseContractIds" input-align="right">
         <template #input>
-          <PurchaseCategorySelect
-            v-model="item.psiId"
-            :project-id="form.projectId!"
-            :dept-id="(form as any)?.initiator?.deptId ?? form?.createDept"
-            readonly
-          />
+          <ContractSelect v-model="form.purchaseContractIds" readonly multiple />
         </template>
       </van-field>
-      <van-field
-        v-model="item.name"
-        :name="`itemList.${index}.name`"
-        label="物品名称"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.brand"
-        :name="`itemList.${index}.brand`"
-        label="品牌"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.specsModel"
-        :name="`itemList.${index}.specsModel`"
-        label="规格型号"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.unit"
-        :name="`itemList.${index}.unit`"
-        label="单位"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.num"
-        :name="`itemList.${index}.num`"
-        label="数量"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.amount"
-        :name="`itemList.${index}.amount`"
-        label="单价(元)"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.totalAmount"
-        :name="`itemList.${index}.totalAmount`"
-        label="含税合计(元)"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.inquiryWay"
-        :name="`itemList.${index}.inquiryWay`"
-        label="询价途径"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.supplier"
-        :name="`itemList.${index}.supplier`"
-        label="指定供应商"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.remark"
-        :name="`itemList.${index}.remark`"
-        label="备注"
-        input-align="right"
-      >
+
+      <van-field v-show-field="['checkFiles', includeFields]" label="验收附件：" name="checkFiles" input-align="right">
         <template #input>
-          <TextareaView :value="item.remark" />
+          <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
         </template>
       </van-field>
-    </TableCard>
+    </van-cell-group>
 
     <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4">
       <UploadFile v-if="form.ossIdList" v-model="form.ossIdList" readonly :card-size="60" />
@@ -192,12 +225,13 @@
 <script setup lang="ts">
 import nzh from 'nzh'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
+import ContractSelect from '../components/ContractSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
-import { useContractOptions, useProjectOptions } from '@/hooks'
+import { useProjectOptions } from '@/hooks'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: (keyof PurchaseForm)[]
     showLoading?: boolean
@@ -241,17 +275,6 @@ const { projectOptions } = useProjectOptions()
 
 // 合同列表
 const contractOptions = ref<DictDataOption[]>([])
-watch(
-  () => form.value.contractId,
-  async (val) => {
-    if (val) {
-      const res = await useContractOptions({
-        ids: [val],
-      })
-      contractOptions.value = res.contractOptions.value
-    }
-  },
-)
 
 defineExpose({
   isLoading,
