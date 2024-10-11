@@ -274,10 +274,14 @@ export interface ContractQuery extends PageQuery {
    */
   category?: string
 
+  queryType?: string
+
+  projectId?: string
+
+  ids?: (string | number)[]
+
   /**
    * 日期范围参数
    */
   params?: any
-
-  ids?: (string | number)[]
 }

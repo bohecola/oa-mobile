@@ -15,6 +15,8 @@ declare global {
     [P in K]-?: T[P]
   }
 
+  type PartialBooleanRecord<T> = Partial<Record<keyof T, boolean>>
+
   interface Router extends VueRouter {
     find: (path: string) => RouteRecordRaw | undefined
     append: (

@@ -132,6 +132,11 @@ export interface PurchaseForm extends BaseEntity {
   serviceCategory?: string
 
   /**
+   * 采购合同
+   */
+  purchaseContractIds?: string
+
+  /**
    * 租赁类型
    */
   leaseType?: string
@@ -189,7 +194,13 @@ export interface PurchaseForm extends BaseEntity {
   /**
    * 采购清单
    */
-  itemList: PurchaseItemVO[]
+  itemList?: PurchaseItemVO[]
+
+  /**
+   * 验收附件
+   */
+  checkFiles?: string
+
   /**
    * 附件列表
    */
@@ -306,9 +317,19 @@ export interface PurchaseItemVO {
   amount?: number
 
   /**
+   * 实际单价(元)
+   */
+  realAmount?: number
+
+  /**
    * 含税合计(元)
    */
   totalAmount?: number
+
+  /**
+   * 实际含税合计(元)
+   */
+  realTotalAmount?: number
 
   /**
    * 询价途径
