@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[--bg-color] border" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
+  <div class="bg-[--bg-card] border" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
     <div class="p-2" :class="{ 'border-b': !isCollapse }" @click="handleCollapse">
       <div class="flex justify-between">
         <slot v-if="slots.header" name="header" />

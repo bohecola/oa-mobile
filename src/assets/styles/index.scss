@@ -15,6 +15,7 @@
   --bg-color: #fff;
   --bg-secondary-color: #f5f5f5;
   --bg-loading-color: #ffffffee;
+  --bg-card: #fff;
 }
 
 :root[data-theme-mode=dark] {
@@ -22,6 +23,7 @@
   --bg-color: #000;
   --bg-secondary-color: #222;
   --bg-loading-color: #222222ee;
+  --bg-card: #1c1c1e;
 }
 
 .theme-green[data-theme-mode=light] {
