@@ -192,6 +192,8 @@ const backForm = ref<Record<string, any>>({
   messageType: ['1'],
 })
 
+const backNode = computed(() => taskNodeList.value.find(e => e.nodeId === backForm.value.targetActivityId))
+
 function closeDialog() {
   popup.visible = false
 }
@@ -286,7 +288,7 @@ async function handleBackProcessOpen() {
 // 驳回
 async function handleBackProcess() {
   backForm.value.taskId = taskId.value
-  await proxy?.$modal.confirm('是否确认驳回到申请人？')
+  await proxy?.$modal.confirm(`是否确认驳回到${backNode.value.nodeName}？`)
   loading.value = true
   backLoading.value = true
   backButtonDisabled.value = true

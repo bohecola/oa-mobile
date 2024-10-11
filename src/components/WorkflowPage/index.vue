@@ -25,7 +25,7 @@
       <!-- 审批表单 -->
       <van-tab title="审批表单" name="form">
         <van-notice-bar
-          v-if="$route.query.isEditNode === 'true'"
+          v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
           :scrollable="false"
           text="当前节点存在需要填写的字段，请暂时在PC端审批"
         />
