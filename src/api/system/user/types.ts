@@ -117,10 +117,17 @@ export interface SysUserMobileVO {
    * 手机号码
    */
   phonenumber?: string
+
   /**
    * 昵称拼音
    */
   pinyin?: string
+
+  /**
+   * 拼音首字母
+   */
+  firstPinyin?: string
+
   /**
    * 帐号状态（0正常 1停用）
    */

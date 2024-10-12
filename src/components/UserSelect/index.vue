@@ -1,44 +1,43 @@
 <template>
-  <div>
-    <!-- TODO 未打开 Popup 时，数据回显、挂载时请求数据、注意重复请求 -->
-    <van-skeleton :loading="loading" class="!p-0">
-      <template #template>
-        <div class="w-full h-[var(--van-cell-line-height)] flex items-center justify-end">
-          <van-skeleton-paragraph />
-        </div>
-      </template>
-
-      <!-- 回显列表 -->
-      <div v-if="showEchoList" class="flex flex-wrap justify-end gap-2">
-        <van-tag
-          v-for="selected in echoList"
-          :key="selected.userId"
-          type="primary"
-          size="large"
-        >
-          {{ selected.nickName }}
-        </van-tag>
+  <!-- TODO 未打开 Popup 时，数据回显、挂载时请求数据、注意重复请求 -->
+  <van-skeleton v-if="!popupOnly" :loading="loading" class="!p-0">
+    <template #template>
+      <div class="w-full h-[var(--van-cell-line-height)] flex items-center justify-end">
+        <van-skeleton-paragraph />
       </div>
-      <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
-    </van-skeleton>
-    <!-- 弹窗 -->
-    <van-popup
-      v-model:show="visible"
-      position="bottom"
-      class="h-full w-full"
-      teleport="body"
-      @closed="popupClosed"
-    >
-      <!-- class="h-[calc(100vh-var(--van-nav-bar-height))] overflow-y-auto" -->
-      <!-- <NavBar
-          title="选择联系人"
-          :fixed="true"
-          :is-left-click-back="false"
-          @click-left="close"
-        /> -->
-      <!-- :sticky-offset-top="46" -->
-      <div v-loading="loading" class="">
-        <!-- 搜索 -->
+    </template>
+
+    <!-- 回显列表 -->
+    <div v-if="showEchoList" class="flex flex-wrap justify-end gap-2">
+      <van-tag
+        v-for="selected in echoList"
+        :key="selected.userId"
+        type="primary"
+        size="large"
+      >
+        {{ selected.nickName }}
+      </van-tag>
+    </div>
+    <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
+  </van-skeleton>
+  <!-- 弹窗 -->
+  <van-popup
+    v-model:show="visible"
+    position="bottom"
+    class="h-full w-full"
+    teleport="body"
+    @closed="popupClosed"
+  >
+    <NavBar
+      v-if="!isSearchFocused"
+      title="选择联系人"
+      :is-left-click-back="false"
+      @click-left="close"
+    />
+
+    <div v-loading="loading">
+      <!-- 搜索 注: form[action="/"] 作用：IOS 键盘显示搜索按钮 -->
+      <form action="/">
         <van-search
           v-model="searchText"
           placeholder="搜索"
@@ -46,69 +45,69 @@
           @focus="handleSearchFocus"
           @cancel="handleSearchCancel"
         />
-        <!-- 索引栏 -->
-        <div v-show="!isSearchFocused" class="h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
-          <van-index-bar
-            class="pb-28"
-            :sticky="true"
-            :index-list="indexList"
-          >
-            <template v-for="(list, key, index) in userListMap" :key="index">
-              <van-index-anchor :index="key.toLocaleUpperCase()" />
-              <UserCell
-                v-for="user in list"
-                :key="user.userId"
-                :is-active="selectedIdList.includes(user.userId)"
-                :user="user"
-                @click="handleUserCellClick(user)"
-              />
-            </template>
-          </van-index-bar>
-        </div>
-        <!-- 搜索列表 -->
-        <div
-          v-show="isSearchFocused"
-          class="h-[calc(100dvh-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
+      </form>
+      <!-- 索引栏 -->
+      <div v-show="!isSearchFocused" class="h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
+        <van-index-bar
+          class="pb-28"
+          :sticky="true"
+          :index-list="indexList"
         >
-          <div class="pb-28">
+          <template v-for="(list, key, index) in userListMap" :key="index">
+            <van-index-anchor :index="key.toLocaleUpperCase()" />
             <UserCell
-              v-for="user in searchList"
+              v-for="user in list"
               :key="user.userId"
               :is-active="selectedIdList.includes(user.userId)"
               :user="user"
               @click="handleUserCellClick(user)"
             />
-          </div>
+          </template>
+        </van-index-bar>
+      </div>
+      <!-- 搜索列表 -->
+      <div
+        v-show="isSearchFocused"
+        class="h-[calc(100dvh-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
+      >
+        <div class="pb-28">
+          <UserCell
+            v-for="user in searchList"
+            :key="user.userId"
+            :is-active="selectedIdList.includes(user.userId)"
+            :user="user"
+            @click="handleUserCellClick(user)"
+          />
         </div>
       </div>
+    </div>
 
-      <!-- 底部面板 -->
-      <div class="px-3 flex flex-col justify-center w-full h-14 whitespace-nowrap border-t">
-        <!-- 操作按钮 -->
-        <div class="flex items-center justify-between gap-2">
-          <span class="text-sm">
-            已选择 {{ selectedNum }}
-          </span>
-          <div class="w-[70vw] overflow-x-auto flex gap-2">
-            <van-tag
-              v-for="selected in selectedList"
-              :key="selected.userId"
-              type="primary"
-              size="medium"
-              closeable
-              @close="handleRemoveUser(selected)"
-            >
-              {{ selected.nickName }}
-            </van-tag>
-          </div>
-
-          <van-button class="ml-2" type="success" size="small" @click="confirm">
-            确定
-          </van-button>
+    <!-- 底部面板 -->
+    <div class="px-3 flex flex-col justify-center w-full h-14 whitespace-nowrap border-t">
+      <!-- 操作按钮 -->
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-sm">
+          已选择 {{ selectedNum }}
+        </span>
+        <div class="w-[70vw] overflow-x-auto flex gap-2">
+          <van-tag
+            v-for="selected in selectedList"
+            :key="selected.userId"
+            type="primary"
+            size="medium"
+            closeable
+            @close="handleRemoveUser(selected)"
+          >
+            {{ selected.nickName }}
+          </van-tag>
         </div>
+
+        <van-button class="ml-2" type="primary" size="small" @click="confirm">
+          确定
+        </van-button>
       </div>
-    </van-popup>
-  </div>
+    </div>
+  </van-popup>
 </template>
 
 <script setup lang='ts'>
@@ -122,9 +121,11 @@ const props = withDefaults(
     modelValue?: SysUserMobileVO['userId'] | SysUserMobileVO['userId'][] | SysUserMobileVO | SysUserMobileVO[]
     multiple?: boolean
     valueType?: 'value' | 'object'
+    popupOnly?: boolean
   }>(),
   {
     multiple: false,
+    popupOnly: false,
     valueType: 'value',
   },
 )
@@ -155,14 +156,14 @@ const searchList = computed(() => {
   const hasSearchText = searchText.value !== ''
 
   if (hasSearchText) {
-    return userList.value.filter(e => e.nickName?.includes(searchText.value) || e.pinyin?.includes(searchText.value))
+    return userList.value.filter(e => e.nickName?.includes(searchText.value) || e.pinyin?.includes(searchText.value.toLocaleLowerCase()))
   }
 
   return []
 })
 
 // 索引列表
-const indexList = computed(() => Object.keys(userListMap.value).map(e => e.toLocaleUpperCase()))
+const indexList = computed(() => Object.keys(userListMap.value).map(e => e))
 
 // 打开
 function open() {
@@ -265,7 +266,7 @@ function getValues() {
   // 单选
   if (!props.multiple) {
     const [item] = cloneList
-    return props.valueType === 'value' ? item.userId : item
+    return props.valueType === 'value' ? item?.userId : item
   }
   // 多选
   else {
