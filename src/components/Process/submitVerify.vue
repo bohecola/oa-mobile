@@ -1,6 +1,6 @@
 <template>
   <van-popup v-model:show="popup.visible" position="bottom" round class="h-30vh" :before-close="cancel" :close-on-click-overlay="false">
-    <van-form label-width="120px">
+    <van-form v-loading="loading" label-width="120px">
       <van-field
         v-model="form.message"
         rows="2"
@@ -21,13 +21,12 @@
           />
         </template>
       </van-field>
-    </van-form>
 
-    <span class="flex justify-end gap-2 p-2">
-      <van-button :disabled="buttonDisabled" type="primary" size="small" @click="handleCompleteTask">提交</van-button>
-      <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="primary" @click="openDelegateTask"> 委托 </van-button> -->
-      <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="primary" @click="openTransferTask"> 转办 </van-button> -->
-      <!-- <van-button
+      <span class="flex justify-end gap-2 px-3 py-4">
+        <van-button type="primary" size="small" :disabled="buttonDisabled" @click="handleCompleteTask">提交</van-button>
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openDelegateTask"> 委托 </van-button>
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openTransferTask"> 转办 </van-button>
+        <!-- <van-button
         v-if="task.businessStatus === 'waiting' && task.multiInstance"
         :disabled="buttonDisabled"
         type="primary"
@@ -35,7 +34,7 @@
       >
         加签
       </van-button> -->
-      <!-- <van-button
+        <!-- <van-button
         v-if="task.businessStatus === 'waiting' && task.multiInstance"
         :disabled="buttonDisabled"
         type="primary"
@@ -43,18 +42,19 @@
       >
         减签
       </van-button> -->
-      <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
-      <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen"> 退回 </van-button>
-      <van-button :disabled="buttonDisabled" size="small" @click="cancel">取消</van-button>
-    </span>
-    <!-- 转办 -->
-    <!-- <UserSelect ref="transferTaskRef" :multiple="false" @confirm-call-back="handleTransferTask" /> -->
+        <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
+        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen"> 退回 </van-button>
+        <van-button :disabled="buttonDisabled" size="small" @click="cancel">取消</van-button>
+      </span>
+    </van-form>
+
     <!-- 委托 -->
-    <!-- <UserSelect ref="delegateTaskRef" :multiple="false" @confirm-call-back="handleDelegateTask" /> -->
+    <UserSelect ref="DelegateTaskRef" value-type="object" :multiple="false" popup-only @confirm="handleDelegateTask" />
+    <!-- 转办 -->
+    <UserSelect ref="TransferTaskRef" value-type="object" :multiple="false" popup-only @confirm="handleTransferTask" />
     <!-- 加签组件 -->
     <!-- <MultiInstanceUser ref="multiInstanceUserRef" :title="title" @submit-callback="closeDialog" /> -->
-
-    <!-- 驳回开始 -->
+    <!-- 驳回弹窗 -->
     <van-dialog
       v-model:show="backVisible"
       title="驳回"
@@ -82,14 +82,13 @@
         />
       </van-popup>
     </van-dialog>
-    <!-- 驳回结束 -->
   </van-popup>
 </template>
 
 <script lang="ts" setup>
 import type { ComponentInternalInstance } from 'vue'
 import { ref } from 'vue'
-import { backProcess, completeTask, getTaskById, getTaskNodeList, terminationTask } from '@/api/workflow/task'
+import { backProcess, completeTask, delegateTask, getTaskById, getTaskNodeList, terminationTask, transferTask } from '@/api/workflow/task'
 import UserSelect from '@/components/UserSelect/index.vue'
 // import MultiInstanceUser from '@/components/Process/multiInstanceUser.vue'
 import type { UserVO } from '@/api/system/user/types'
@@ -105,9 +104,9 @@ const emits = defineEmits(['submitCallback', 'cancelCallback'])
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
+const TransferTaskRef = ref<InstanceType<typeof UserSelect> | null>()
+const DelegateTaskRef = ref<InstanceType<typeof UserSelect> | null>()
 // const userSelectCopyRef = ref<InstanceType<typeof UserSelect>>()
-// const transferTaskRef = ref<InstanceType<typeof UserSelect>>()
-// const delegateTaskRef = ref<InstanceType<typeof UserSelect>>()
 
 // 加签组件
 // const multiInstanceUserRef = ref<InstanceType<typeof MultiInstanceUser>>()
@@ -284,7 +283,6 @@ async function handleBackProcessOpen() {
   backForm.value.targetActivityId = nodeId
   rejectNodeName.value = nodeName
 }
-
 // 驳回
 async function handleBackProcess() {
   backForm.value.taskId = taskId.value
@@ -315,55 +313,59 @@ async function handleBackProcess() {
 //   }
 // }
 
-// // 打开转办
-// function openTransferTask() {
-//   transferTaskRef.value.open()
-// }
-// // 转办
-// async function handleTransferTask(data) {
-//   if (data && data.length > 0) {
-//     const params = {
-//       taskId: taskId.value,
-//       userId: data[0].userId,
-//       comment: form.value.message,
-//     }
-//     await proxy?.$modal.confirm('是否确认提交？')
-//     loading.value = true
-//     buttonDisabled.value = true
-//     await transferTask(params).finally(() => (loading.value = false))
-//     popup.visible = false
-//     emits('submitCallback')
-//     proxy?.$modal.msgSuccess('操作成功')
-//   }
-//   else {
-//     proxy?.$modal.msgWarning('请选择用户！')
-//   }
-// }
+// 打开委托
+function openDelegateTask() {
+  DelegateTaskRef.value?.open()
+}
+// 委托
+async function handleDelegateTask(user: UserVO) {
+  if (user) {
+    const params = {
+      taskId: taskId.value,
+      userId: user.userId,
+      nickName: user.nickName,
+      comment: form.value.message,
+    }
+    await proxy?.$modal.confirm('是否确认提交？')
+    loading.value = true
+    buttonDisabled.value = true
+    await delegateTask(params).finally(() => (loading.value = false))
+    popup.visible = false
+    emits('submitCallback')
+    proxy?.$modal.msgSuccess('操作成功')
+  }
+  else {
+    proxy?.$modal.msgWarning('请选择用户！')
+  }
+}
 
-// // 打开委托
-// function openDelegateTask() {
-//   delegateTaskRef.value.open()
-// }
-// // 委托
-// async function handleDelegateTask(data) {
-//   if (data && data.length > 0) {
-//     const params = {
-//       taskId: taskId.value,
-//       userId: data[0].userId,
-//       nickName: data[0].nickName,
-//     }
-//     await proxy?.$modal.confirm('是否确认提交？')
-//     loading.value = true
-//     buttonDisabled.value = true
-//     await delegateTask(params).finally(() => (loading.value = false))
-//     popup.visible = false
-//     emits('submitCallback')
-//     proxy?.$modal.msgSuccess('操作成功')
-//   }
-//   else {
-//     proxy?.$modal.msgWarning('请选择用户！')
-//   }
-// }
+// 打开转办
+function openTransferTask() {
+  if (isMessageEmpty()) {
+    return false
+  }
+  TransferTaskRef.value?.open()
+}
+// 转办
+async function handleTransferTask(user: UserVO) {
+  if (user) {
+    const params = {
+      taskId: taskId.value,
+      userId: user.userId,
+      comment: form.value.message,
+    }
+    await proxy?.$modal.confirm('是否确认提交？')
+    loading.value = true
+    buttonDisabled.value = true
+    await transferTask(params).finally(() => (loading.value = false))
+    popup.visible = false
+    emits('submitCallback')
+    proxy?.$modal.msgSuccess('操作成功')
+  }
+  else {
+    proxy?.$modal.msgWarning('请选择用户！')
+  }
+}
 
 // 终止任务
 async function handleTerminationTask(data: any) {
