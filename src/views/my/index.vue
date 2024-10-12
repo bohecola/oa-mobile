@@ -1,16 +1,18 @@
 <script setup lang='ts'>
 import { useStore } from '@/store'
+import defaultAvatar from '@/assets/images/user-avatar.png'
+import bgImage from '@/assets/images/bg.png'
 
 // 用户
 const { user } = useStore()
 
 // 头像
-const avatar = user.info?.avatar ?? 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+const avatar = user.info?.avatar ?? defaultAvatar
 
 // 封面
 const getCoverBg = computed(() => {
   return {
-    backgroundImage: `url(${avatar})`,
+    backgroundImage: `url(${bgImage})`,
   }
 })
 
@@ -106,6 +108,8 @@ const logoutActions = [
 .my-bg {
   clip-path: inset(0 -55% 0 -55% round 0 0 100% 100%);
   background-size: cover;
+  background-position: 0px -245px;
+  background-repeat: no-repeat;
 
   &::after {
     content: '';

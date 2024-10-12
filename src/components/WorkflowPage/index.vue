@@ -1,17 +1,25 @@
 <template>
   <NavBar />
 
-  <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600">
-    <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
+  <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600"> -->
+  <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
       暂存
     </van-button>
     <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
       提 交
     </van-button> -->
-    <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
+  <!-- <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
       审批
+    </van-button> -->
+  <!-- </div> -->
+
+  <van-floating-bubble v-if="approvalVisible" axis="xy">
+    <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
+      <span class="!text-xs text-nowrap">
+        审批
+      </span>
     </van-button>
-  </div>
+  </van-floating-bubble>
 
   <van-tabs v-model:active="active" lazy-render @change="onTabChange">
     <div
@@ -19,9 +27,10 @@
       flex flex-col gap-2 overflow-y-auto
       ${
         submitVisible || approvalVisible
-          ? 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height)-var(--van-button-small-height)-16px-2px)]'
+          ? 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]'
           : 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]'}`"
     >
+      <!-- -var(--van-button-small-height)-16px-2px -->
       <!-- 审批表单 -->
       <van-tab title="审批表单" name="form">
         <van-notice-bar
