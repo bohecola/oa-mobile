@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang='ts'>
-import { cloneDeep, isArray, isNumber, isObject, isString } from 'lodash-es'
+import { cloneDeep, isArray, isEmpty, isNumber, isObject, isString } from 'lodash-es'
 import UserCell from './user-cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
@@ -174,6 +174,7 @@ function open() {
 // 关闭
 function close() {
   visible.value = false
+  selectedList.value = getSeletedList(props.modelValue)
 }
 
 // 弹窗关闭动画结束后
@@ -236,6 +237,10 @@ function isStringOrNumberArray(arr: any[]) {
 
 // 转换 modelValue 为 id 数组
 function transformValue(value: typeof props.modelValue) {
+  if (isEmpty(value)) {
+    return []
+  }
+
   if (isArray(value)) {
     if (isStringOrNumberArray(value)) {
       return value
