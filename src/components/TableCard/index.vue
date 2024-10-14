@@ -13,7 +13,8 @@
     </div>
 
     <div v-if="slots.default" v-show="!isCollapse" class="p-2">
-      <slot name="default" />
+      <slot v-if="!isEmpty" name="default" />
+      <van-empty v-else image-size="60" description="数据为空" class="!py-2" />
     </div>
 
     <div v-if="slots.footer" class="p-2">
@@ -31,12 +32,14 @@ const props = withDefaults(
     round?: boolean
     defaultCollapse?: boolean
     showCollapse?: boolean
+    isEmpty?: boolean
   }>(),
   {
     shadow: true,
     round: false,
     defaultCollapse: false,
     showCollapse: true,
+    isEmpty: false,
   },
 )
 
