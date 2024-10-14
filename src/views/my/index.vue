@@ -81,11 +81,11 @@ const logoutActions = [
         <i class="i-material-symbols-palette text-xl mr-2" />
       </template>
     </van-cell>
-    <van-cell :border="false" title="隐私政策" is-link>
+    <!-- <van-cell :border="false" title="隐私政策" is-link>
       <template #icon>
         <i class="i-material-symbols-list-alt-rounded text-xl mr-2" />
       </template>
-    </van-cell>
+    </van-cell> -->
     <van-cell :border="false" title="退出登录" is-link @click="showLogoutAction = true">
       <template #icon>
         <i class="i-solar-logout-3-bold text-xl mr-2" />
