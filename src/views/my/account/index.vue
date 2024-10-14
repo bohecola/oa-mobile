@@ -56,7 +56,7 @@
   />
 
   <!-- 调试使用、生产删除 -->
-  <van-cell
+  <!-- <van-cell
     title="人员选择"
     title-class="font-bold"
     is-link
@@ -67,10 +67,10 @@
     <template #value>
       <UserSelect ref="UserSelectRef" v-model="userId" :multiple="true" />
     </template>
-  </van-cell>
+  </van-cell> -->
 
   <!-- 文件上传 -->
-  <van-cell
+  <!-- <van-cell
     title="文件上传"
     title-class="font-bold"
     is-link
@@ -79,12 +79,12 @@
     <template #value>
       <UploadFile v-model="ids" is-multiple :limit="8" :card-size="60" :is-show-tip="true" />
     </template>
-  </van-cell>
+  </van-cell> -->
 </template>
 
 <script setup lang='ts'>
 import { useStore } from '@/store'
-import UserSelect from '@/components/UserSelect/index.vue'
+import type UserSelect from '@/components/UserSelect/index.vue'
 
 const { user } = useStore()
 const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
