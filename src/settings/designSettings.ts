@@ -9,6 +9,12 @@ export interface Theme {
 
 export const themes: Theme[] = [
   {
+    name: 'blue',
+    light: '#2563eb',
+    dark: '#3b82f6',
+    zh: '海蓝',
+  },
+  {
     name: 'green',
     light: '#16a34a',
     dark: '#22c55e',
@@ -31,12 +37,6 @@ export const themes: Theme[] = [
     light: '#facc15',
     dark: '#facc15',
     zh: '柠黄',
-  },
-  {
-    name: 'blue',
-    light: '#2563eb',
-    dark: '#3b82f6',
-    zh: '海蓝',
   },
   {
     name: 'orange',
