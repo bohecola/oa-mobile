@@ -1,6 +1,5 @@
 <template>
-  <!-- TODO 未打开 Popup 时，数据回显、挂载时请求数据、注意重复请求 -->
-  <van-skeleton v-if="!popupOnly" :loading="loading" class="!p-0">
+  <van-skeleton v-if="!popupOnly" :loading="echoLoading" class="!p-0">
     <template #template>
       <div class="w-full h-[var(--van-cell-line-height)] flex items-center justify-end">
         <van-skeleton-paragraph />
@@ -8,9 +7,9 @@
     </template>
 
     <!-- 回显列表 -->
-    <div v-if="showEchoList" class="flex flex-wrap justify-end gap-2">
+    <div v-if="existSelectedList" class="flex flex-wrap justify-end gap-2">
       <van-tag
-        v-for="selected in echoList"
+        v-for="selected in selectedList"
         :key="selected.userId"
         type="primary"
         size="large"
@@ -35,7 +34,7 @@
       @click-left="close"
     />
 
-    <div v-loading="loading">
+    <div v-loading="listLoading">
       <!-- 搜索 注: form[action="/"] 作用：IOS 键盘显示搜索按钮 -->
       <form action="/">
         <van-search
@@ -133,21 +132,18 @@ const props = withDefaults(
 const emit = defineEmits(['confirm', 'update:modelValue'])
 
 const visible = ref(false)
-const loading = ref(false)
+const listLoading = ref(false)
+const echoLoading = ref(false)
+
+// 用户列表
 const userListMap = ref<Record<string, SysUserMobileVO[]>>({})
+const userList = computed(() => Object.values(userListMap.value).flat())
 
 // 选择列表
 const selectedList = ref<SysUserMobileVO[]>([])
 const selectedIdList = computed(() => selectedList.value.map((e => e.userId)))
 const selectedNum = computed(() => selectedList.value.length)
-const userList = computed(() => Object.values(userListMap.value).flat())
-
-// 回显列表
-const echoList = computed(() => {
-  return getSeletedList(props.modelValue)
-})
-// 回显列表显示
-const showEchoList = computed(() => echoList.value.length > 0)
+const existSelectedList = computed(() => selectedList.value.length > 0)
 
 // 搜索
 const searchText = ref('')
@@ -173,9 +169,9 @@ function open() {
 }
 
 // 关闭
-function close() {
+async function close() {
   visible.value = false
-  selectedList.value = getSeletedList(props.modelValue)
+  selectedList.value = await getSeletedList(props.modelValue)
 }
 
 // 弹窗关闭动画结束后
@@ -186,12 +182,12 @@ function popupClosed() {
 // 请求人员列表
 async function getList() {
   try {
-    loading.value = true
+    listLoading.value = true
     const { data } = await service.system.user.getUserMobileList()
     userListMap.value = data
   }
   finally {
-    loading.value = false
+    listLoading.value = false
   }
 }
 
@@ -286,29 +282,40 @@ function handleSearchCancel() {
 }
 
 // 获取已选择的用户列表
-function getSeletedList(value: typeof props.modelValue) {
+async function getSeletedList(value: typeof props.modelValue) {
   // 绑定值转为 id 数组
   const ids = transformValue(value)
-  // 根据 id 数组计算已选择的列表
-  return userList.value.filter(e => ids.includes(e.userId))
+
+  // 查询列表过滤
+  if (isEmpty(userList.value)) {
+    echoLoading.value = true
+    const { data } = await service.system.user
+      .getUserMobileList({ userIds: ids.join(',') })
+      .finally(() => echoLoading.value = false)
+    return Object.values(data).flat().filter(e => ids.includes(e.userId))
+  }
+  // 已有列表过滤
+  else {
+    // 根据 id 数组计算已选择的列表
+    return userList.value.filter(e => ids.includes(e.userId))
+  }
 }
 
-// 回显（这里根据查询到的全量列表数据进行回显、getList 调用后得到 userList 数据，根据 id 在 userList 中查询数据，然后进行回显）
+// 回显
 watch(
-  [() => props.modelValue, userList],
-  ([value]) => {
-    console.log(value, 'user-select:watch')
-    selectedList.value = getSeletedList(value)
+  () => props.modelValue,
+  async (value) => {
+    if (isEmpty(value)) {
+      selectedList.value = []
+    }
+    else {
+      selectedList.value = await getSeletedList(value)
+    }
+  },
+  {
+    immediate: true,
   },
 )
-
-// TODO 挂载时回显数据查询、可优化为根据 id 查询相应数据进行回显
-onMounted(() => {
-  // TODO 临时处理、挂载时查询所有列表，然后在根据 id 再在列表中查找出对应的数据进行回显
-  // if (!isEmpty(props.modelValue)) {
-  getList()
-  // }
-})
 
 defineExpose({
   open,

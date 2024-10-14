@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import type { DeptVO } from './../dept/types'
-import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoVO, UserQuery, UserVO } from './types'
+import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoVO, UserMobileListQuery, UserQuery, UserVO } from './types'
 import type { RoleVO } from '@/api/system/role/types'
 import { parseStrEmpty } from '@/utils/base'
 import request from '@/service/request'
@@ -245,10 +245,11 @@ export function getUserMessageAll(userId: string | number) {
  * 查询当前部门的所有用户信息
  * @param deptId
  */
-export function getUserMobileList(): AxiosPromise<Record<string, SysUserMobileVO[]>> {
+export function getUserMobileList(params?: UserMobileListQuery): AxiosPromise<Record<string, SysUserMobileVO[]>> {
   return request({
     url: `/system/user/userMobileList`,
     method: 'get',
+    params,
   })
 }
 

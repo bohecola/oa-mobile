@@ -146,3 +146,7 @@ export interface SysUserMobileVO {
   userName?: string
   [property: string]: any
 }
+
+export interface UserMobileListQuery {
+  userIds?: string
+}
