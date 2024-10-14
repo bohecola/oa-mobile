@@ -23,6 +23,7 @@
 
   <van-tabs v-model:active="active" lazy-render @change="onTabChange">
     <div
+      id="TabsContainer"
       :class="`
       flex flex-col gap-2 overflow-y-auto
       ${
@@ -194,10 +195,23 @@ async function submitCallback() {
 }
 
 function onTabChange(val: any) {
+  const TabsContainer = document.querySelector('#TabsContainer')
   switch (val) {
     case 'record': {
-      nextTick(() => {
-        ApprovalStepsRef.value?.init(props.entityVariables?.id)
+      nextTick(async () => {
+        await ApprovalStepsRef.value?.init(props.entityVariables?.id)
+
+        TabsContainer?.scrollTo({
+          top: TabsContainer.scrollHeight,
+          behavior: 'smooth',
+        })
+      })
+      break
+    }
+    default: {
+      TabsContainer?.scrollTo({
+        top: 0,
+        behavior: 'smooth',
       })
     }
   }
