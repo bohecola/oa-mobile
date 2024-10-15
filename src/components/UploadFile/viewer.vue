@@ -23,7 +23,7 @@
       @click-left="doc.visible = false"
     />
 
-    <div class="w-full h-[calc(100dvh-var(--van-nav-bar-height))] overflow-y-auto">
+    <div v-loading="doc.loading" class="w-full h-[calc(100dvh-var(--van-nav-bar-height))] overflow-y-auto">
       <iframe ref="docIframe" :src="doc.url" class="border-none w-full h-full" />
     </div>
   </van-popup>
