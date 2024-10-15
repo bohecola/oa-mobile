@@ -53,7 +53,7 @@
           :index-list="indexList"
         >
           <template v-for="(list, key, index) in userListMap" :key="index">
-            <van-index-anchor :index="key.toLocaleUpperCase()" />
+            <van-index-anchor :index="key" />
             <UserCell
               v-for="user in list"
               :key="user.userId"
@@ -159,7 +159,7 @@ const searchList = computed(() => {
 })
 
 // 索引列表
-const indexList = computed(() => Object.keys(userListMap.value).map(e => e))
+const indexList = computed(() => Object.keys(userListMap.value))
 
 // 打开
 function open() {
