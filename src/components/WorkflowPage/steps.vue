@@ -4,7 +4,7 @@
       <van-step v-for="(item, index) in historyList" :key="item.id">
         <template #active-icon>
           <van-icon v-if="item.status === 'pass'" name="checked" class="text-[var(--van-primary-color)]" />
-          <van-icon v-else name="pause-circle" class="text-[var(--van-primary-color)]" />
+          <span v-else class="inline-block w-[10px] h-[10px] rounded-full bg-[var(--van-primary-color)]" />
         </template>
 
         <h3>{{ item.name }}</h3>
