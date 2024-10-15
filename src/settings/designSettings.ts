@@ -22,8 +22,8 @@ export const themes: Theme[] = [
   },
   {
     name: 'violet',
-    light: '#7c3aed',
-    dark: '#6d28d9',
+    light: '#d0378d',
+    dark: '#d0378d',
     zh: '酱紫',
   },
   {

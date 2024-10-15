@@ -7,7 +7,7 @@ const data = storage.info()
 // 初始主题模式
 const initThemeMode = data.themeMode ?? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
 // 初始主题
-const [initTheme] = themes
+const [defaultTheme] = themes
 
 export const useAppStore = defineStore('app', () => {
   // 主题模式
@@ -19,7 +19,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   // 主题色彩
-  const theme = ref<Theme>(data.theme ?? initTheme)
+  const theme = ref<Theme>(data.theme ?? defaultTheme)
   // 设置主题色彩
   function setTheme(val: Theme) {
     theme.value = val
