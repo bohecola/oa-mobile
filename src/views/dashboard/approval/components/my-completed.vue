@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height))] overflow-y-auto">
+  <div class="h-[calc(100dvh-var(--van-tabs-line-height)-var(--van-nav-bar-height))] overflow-y-auto">
     <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
       <van-cell v-for="row in list" :key="row.id" @click="handleView(row)">
         <!-- 标题 -->

@@ -24,12 +24,7 @@
   <van-tabs v-model:active="active" lazy-render @change="onTabChange">
     <div
       id="TabsContainer"
-      :class="`
-      flex flex-col gap-2 overflow-y-auto
-      ${
-        submitVisible || approvalVisible
-          ? 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]'
-          : 'h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]'}`"
+      class="flex flex-col gap-2 overflow-y-auto h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
     >
       <!-- -var(--van-button-small-height)-16px-2px -->
       <!-- 审批表单 -->
@@ -209,10 +204,14 @@ function onTabChange(val: any) {
       break
     }
     default: {
-      TabsContainer?.scrollTo({
-        top: 0,
-        behavior: 'smooth',
+      nextTick(() => {
+        TabsContainer?.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
       })
+      break
     }
   }
 }
