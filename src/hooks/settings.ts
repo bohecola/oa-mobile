@@ -7,6 +7,7 @@ export function useGlobSettings(): Readonly<GlobConfig> {
     VITE_GLOB_API_URL,
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_APP_RSA_PUBLIC_KEY,
+    VITE_GLOB_FILE_PREVIEW_URL,
   } = import.meta.env
 
   return {
@@ -15,5 +16,6 @@ export function useGlobSettings(): Readonly<GlobConfig> {
     appRsaPublicKey: VITE_GLOB_APP_RSA_PUBLIC_KEY,
     apiUrl: VITE_GLOB_API_URL,
     apiUrlPrefix: VITE_GLOB_API_URL_PREFIX,
+    apiFilePreviewUrl: VITE_GLOB_FILE_PREVIEW_URL,
   }
 }

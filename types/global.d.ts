@@ -47,5 +47,6 @@ declare global {
     VITE_GLOB_APP_RSA_PUBLIC_KEY: string
     VITE_GLOB_API_URL: string
     VITE_GLOB_API_URL_PREFIX: string
+    VITE_GLOB_FILE_PREVIEW_URL: string
   }
 }

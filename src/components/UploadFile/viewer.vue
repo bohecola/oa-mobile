@@ -30,7 +30,12 @@
 </template>
 
 <script setup lang='ts'>
-import { isDocType, isPdfType, isVideoType } from './helper'
+import CryptoJS from 'crypto-js'
+import { isDocType, isVideoType } from './helper'
+import { encryptBase64 } from '@/utils/security'
+import { useGlobSettings } from '@/hooks'
+
+const { apiFilePreviewUrl } = useGlobSettings()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const docIframe = ref<HTMLIFrameElement | null>()
@@ -76,13 +81,8 @@ function handleOpen(options: { file: any, ext: string }) {
 
   // 文档预览
   if (isDocType(ext)) {
-    if (isPdfType(ext)) {
-      return window.open(url)
-    }
-
     doc.visible = true
 
-    // 同一个文件
     if (doc.ossId === ossId) {
       return true
     }
@@ -90,10 +90,7 @@ function handleOpen(options: { file: any, ext: string }) {
     doc.loading = true
     doc.name = name
     doc.ossId = ossId
-    // doc.url = `https://view.officeapps.live.com/op/view.aspx?src=${decodeURIComponent(url)}`;
-    // doc.url = `https://view.officeapps.live.com/op/view.aspx?src=http://oa.xianxlny.com:19029/huntech/2024/01/10/5b08870e3a1d4526b8dbb79e556d261f.docx`;
-    // doc.url = `https://view.officeapps.live.com/op/view.aspx?src=https://show.cool-admin.com/api/public/uploads/20240204/8b7b40c54a9c46a284851114c81b6ee5_word文档.docx`
-    // window.open(doc.url);
+    doc.url = `${apiFilePreviewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}`
 
     nextTick(() => {
       docIframe.value!.onload = () => {
@@ -104,7 +101,7 @@ function handleOpen(options: { file: any, ext: string }) {
     return true
   }
 
-  // window.open(url)
+  window.open(url)
 }
 
 defineExpose({

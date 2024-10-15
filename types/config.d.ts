@@ -4,4 +4,5 @@ export interface GlobConfig {
   appRsaPublicKey: string
   apiUrl: string
   apiUrlPrefix?: string
+  apiFilePreviewUrl: string
 }
