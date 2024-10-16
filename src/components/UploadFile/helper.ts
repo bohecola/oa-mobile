@@ -17,6 +17,7 @@ export const isImageType = (val: any) => imageTypeEnum.includes(val)
 export const isVideoType = (val: any) => videoTypeEnum.includes(val)
 export const isDocType = (val: any) => docTypeEnum.includes(val)
 export const isPdfType = (val: any) => pdfTypeEnum.includes(val)
+export const isTxtType = (val: any) => txtTypeEnum.includes(val)
 
 export type FileType = typeof fileTypeEnum
 

@@ -31,7 +31,7 @@
 
 <script setup lang='ts'>
 import CryptoJS from 'crypto-js'
-import { isDocType, isVideoType } from './helper'
+import { isDocType, isTxtType, isVideoType } from './helper'
 import { encryptBase64 } from '@/utils/security'
 import { useGlobSettings } from '@/hooks'
 
@@ -64,7 +64,7 @@ function onImagePreviewClose() {
 }
 
 // 打开
-function handleOpen(options: { file: any, ext: string }) {
+function open(options: { file: any, ext: string }) {
   const { file, ext } = options
   const url = file.url || ''
   const name = file.name || 'DocViewer'
@@ -80,7 +80,7 @@ function handleOpen(options: { file: any, ext: string }) {
   }
 
   // 文档预览
-  if (isDocType(ext)) {
+  if (isDocType(ext) || isTxtType(ext)) {
     doc.visible = true
 
     if (doc.ossId === ossId) {
@@ -90,7 +90,7 @@ function handleOpen(options: { file: any, ext: string }) {
     doc.loading = true
     doc.name = name
     doc.ossId = ossId
-    doc.url = `${apiFilePreviewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}`
+    doc.url = isTxtType(ext) ? url : `${apiFilePreviewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}`
 
     nextTick(() => {
       docIframe.value!.onload = () => {
@@ -105,6 +105,6 @@ function handleOpen(options: { file: any, ext: string }) {
 }
 
 defineExpose({
-  open: handleOpen,
+  open,
 })
 </script>
