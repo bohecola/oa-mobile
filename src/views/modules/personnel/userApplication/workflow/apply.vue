@@ -1,5 +1,5 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
+  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <div v-if="isView">
       <detail ref="Detail" :include-fields="includeFieldsDetail" />
     </div>
