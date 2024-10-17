@@ -1,5 +1,5 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
+  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" :include-fields="includeFieldsOther" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
@@ -109,12 +109,18 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
-
-  if (res && res.data) {
+  if (taskId || processInstanceId) {
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: false,
+      },
+    })
   }
 
   nextTick(async () => {
