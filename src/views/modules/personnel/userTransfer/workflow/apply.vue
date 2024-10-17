@@ -95,6 +95,13 @@ onMounted(async () => {
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: false,
+      },
+    })
   }
 
   nextTick(async () => {
