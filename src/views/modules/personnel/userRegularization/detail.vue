@@ -1,32 +1,33 @@
 <template>
   <van-form ref="Form" v-loading="isLoading" readonly label-width="8em">
-    <van-field v-model="form.userName" name="userName" label="员工：" input-align="right" />
+    <van-cell-group inset class="!my-3">
+      <van-field v-model="form.userName" name="userName" label="员工：" input-align="right" />
 
-    <van-field name="deptId" label="部门名称：" input-align="right">
-      <template #input>
-        <DeptSelect v-model="form.deptId" readonly />
-      </template>
-    </van-field>
-    <van-field v-model="form.postName" name="postName" label="岗位名称：" input-align="right" />
+      <van-field name="deptId" label="部门名称：" input-align="right">
+        <template #input>
+          <DeptSelect v-model="form.deptId" readonly />
+        </template>
+      </van-field>
+      <van-field v-model="form.postName" name="postName" label="岗位名称：" input-align="right" />
 
-    <van-field name="type" label="提前转正：" input-align="right">
-      <template #input>
-        <dict-tag :options="sysYesNo" :value="form.type" />
-      </template>
-    </van-field>
+      <van-field name="type" label="提前转正：" input-align="right">
+        <template #input>
+          <dict-tag :options="sysYesNo" :value="form.type" />
+        </template>
+      </van-field>
 
-    <van-cell title="附件：" input-align="right">
-      <template #value>
-        <UploadFile v-model="form.files" readonly :card-size="60" />
-      </template>
-    </van-cell>
+      <van-cell title="附件：" input-align="right">
+        <template #value>
+          <UploadFile v-model="form.files" readonly :card-size="60" />
+        </template>
+      </van-cell>
 
-    <van-field v-model="form.description" name="description" label="描述：" input-align="right">
-      <template #input>
-        <TextareaView :value="form.description" />
-      </template>
-    </van-field>
-
+      <van-field v-model="form.description" name="description" label="描述：" input-align="right">
+        <template #input>
+          <TextareaView :value="form.description" />
+        </template>
+      </van-field>
+    </van-cell-group>
     <!-- 附件列表 -->
     <TableCard title="附件列表" class="mx-4">
       <UploadFile v-if="form.ossIdList" v-model="form.ossIdList" readonly :card-size="60" />

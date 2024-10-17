@@ -1,5 +1,5 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
+  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
@@ -76,6 +76,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: false,
       },
     })
   }
