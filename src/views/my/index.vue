@@ -32,76 +32,71 @@ const logoutActions = [
 </script>
 
 <template>
-  <!-- Cover -->
-  <div :style="getCoverBg" class="my-bg h-72" />
+  <div>
+    <div :style="getCoverBg" class="my-bg h-72" />
 
-  <!-- Card -->
-  <div
-    class="
-      mx-6 relative -top-16
-      flex flex-col items-center
-      rounded-md shadow-xl
-      backdrop-blur bg-white/70 dark:bg-black/30
-    "
-  >
-    <!-- Avatar -->
-    <van-image
-      class="h-20 w-20 border-2 !absolute -top-10"
-      round
-      fit="cover"
-      :src="avatar"
-    />
+    <div
+      class="
+        mx-6 relative -top-16
+        flex flex-col items-center
+        rounded-md shadow-xl
+        backdrop-blur bg-white/70 dark:bg-black/30
+      "
+    >
+      <van-image
+        class="h-20 w-20 border-2 !absolute -top-10"
+        round
+        fit="cover"
+        :src="avatar"
+      />
 
-    <!-- Info -->
-    <div class="mt-12 flex flex-col items-center">
-      <div class="mb-2 text-xl font-black">
-        {{ user.info?.nickName }}
+      <div class="mt-12 flex flex-col items-center">
+        <div class="mb-2 text-xl font-black">
+          {{ user.info?.nickName }}
+        </div>
+        <div class="text-base">
+          {{ user.info?.roles.map((e: any) => e.roleName).join(',') }}
+        </div>
       </div>
-      <div class="text-base">
-        {{ user.info?.roles.map((e: any) => e.roleName).join(',') }}
-      </div>
+
+      <van-divider class="w-full" />
+
+      <van-cell :border="false" title="个人信息" is-link to="/profile">
+        <template #icon>
+          <i class="i-mingcute-idcard-fill text-xl mr-2" />
+        </template>
+      </van-cell>
+      <van-cell :border="false" title="账号与安全" is-link to="/account-settings">
+        <template #icon>
+          <i class="i-material-symbols-account-box text-xl mr-2" />
+        </template>
+      </van-cell>
+      <van-cell :border="false" title="主题设置" is-link to="/theme-settings">
+        <template #icon>
+          <i class="i-material-symbols-palette text-xl mr-2" />
+        </template>
+      </van-cell>
+      <!-- <van-cell :border="false" title="隐私政策" is-link>
+        <template #icon>
+          <i class="i-material-symbols-list-alt-rounded text-xl mr-2" />
+        </template>
+      </van-cell> -->
+      <van-cell :border="false" title="退出登录" is-link @click="showLogoutAction = true">
+        <template #icon>
+          <i class="i-solar-logout-3-bold text-xl mr-2" />
+        </template>
+      </van-cell>
     </div>
 
-    <!-- Divider -->
-    <van-divider class="w-full" />
-
-    <!-- Cell -->
-    <van-cell :border="false" title="个人信息" is-link to="/profile">
-      <template #icon>
-        <i class="i-mingcute-idcard-fill text-xl mr-2" />
-      </template>
-    </van-cell>
-    <van-cell :border="false" title="账号与安全" is-link to="/account-settings">
-      <template #icon>
-        <i class="i-material-symbols-account-box text-xl mr-2" />
-      </template>
-    </van-cell>
-    <van-cell :border="false" title="主题设置" is-link to="/theme-settings">
-      <template #icon>
-        <i class="i-material-symbols-palette text-xl mr-2" />
-      </template>
-    </van-cell>
-    <!-- <van-cell :border="false" title="隐私政策" is-link>
-      <template #icon>
-        <i class="i-material-symbols-list-alt-rounded text-xl mr-2" />
-      </template>
-    </van-cell> -->
-    <van-cell :border="false" title="退出登录" is-link @click="showLogoutAction = true">
-      <template #icon>
-        <i class="i-solar-logout-3-bold text-xl mr-2" />
-      </template>
-    </van-cell>
+    <van-action-sheet
+      v-model:show="showLogoutAction"
+      :actions="logoutActions"
+      teleport="body"
+      cancel-text="取消"
+      description="确认退出登录"
+      close-on-click-action
+    />
   </div>
-
-  <!-- Action Sheet -->
-  <van-action-sheet
-    v-model:show="showLogoutAction"
-    :actions="logoutActions"
-    teleport="body"
-    cancel-text="取消"
-    description="确认退出登录"
-    close-on-click-action
-  />
 </template>
 
 <style lang="scss" scoped>

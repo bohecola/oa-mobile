@@ -37,26 +37,28 @@ defineExpose({
 </script>
 
 <template>
-  <NavBar>
-    <template #right>
-      <span @click="formRef?.submit">保存</span>
-    </template>
-  </NavBar>
+  <div>
+    <NavBar>
+      <template #right>
+        <span @click="formRef?.submit">保存</span>
+      </template>
+    </NavBar>
 
-  <van-form ref="formRef" @submit="handleSubmit">
-    <van-field
-      v-for="item in items"
-      :key="item.name"
-      v-model="form[item.name]"
-      v-bind="item"
-      :placeholder="item.placeholder ?? `请输入${item.label}`"
-      :rules="[
-        { required: true, message: `请输入${item.label}`, trigger: 'onChange' },
-        ...(item.rules ?? []),
-      ]"
-      class="mt-4"
-    />
-  </van-form>
+    <van-form ref="formRef" @submit="handleSubmit">
+      <van-field
+        v-for="item in items"
+        :key="item.name"
+        v-model="form[item.name]"
+        v-bind="item"
+        :placeholder="item.placeholder ?? `请输入${item.label}`"
+        :rules="[
+          { required: true, message: `请输入${item.label}`, trigger: 'onChange' },
+          ...(item.rules ?? []),
+        ]"
+        class="mt-4"
+      />
+    </van-form>
 
-  <slot name="default" />
+    <slot name="default" />
+  </div>
 </template>

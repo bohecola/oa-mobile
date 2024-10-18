@@ -1,16 +1,18 @@
 <template>
-  <NavBar :title="title" />
+  <div>
+    <NavBar :title="title" />
 
-  <van-tabs v-model:active="active" lazy-render @click-tab="handleTabClick">
-    <van-tab
-      v-for="item in tabs"
-      :key="item.title"
-      :title="item.title"
-      :name="item.category"
-    >
-      <component :is="item.component" />
-    </van-tab>
-  </van-tabs>
+    <van-tabs v-model:active="active" lazy-render @click-tab="handleTabClick">
+      <van-tab
+        v-for="item in tabs"
+        :key="item.title"
+        :title="item.title"
+        :name="item.category"
+      >
+        <component :is="item.component" />
+      </van-tab>
+    </van-tabs>
+  </div>
 </template>
 
 <script setup lang='ts'>

@@ -1,81 +1,83 @@
 <template>
-  <NavBar />
-  <van-divider>基本信息</van-divider>
-  <van-field
-    label="头像"
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-    is-link
-    readonly
-  >
-    <template #input>
-      <ImageUploader>
-        <van-image
-          class="h-16 w-16"
-          fit="cover"
-          round
-          :src="user.info?.avatar"
-        />
-      </ImageUploader>
-    </template>
-  </van-field>
+  <div>
+    <NavBar />
+    <van-divider>基本信息</van-divider>
+    <van-field
+      label="头像"
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+      is-link
+      readonly
+    >
+      <template #input>
+        <ImageUploader>
+          <van-image
+            class="h-16 w-16"
+            fit="cover"
+            round
+            :src="user.info?.avatar"
+          />
+        </ImageUploader>
+      </template>
+    </van-field>
 
-  <van-field
-    v-model="state.nickName"
-    label="昵称"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-    is-link
-    to="/edit-nickname"
-  />
-
-  <van-field
-    v-model="state.genderText"
-    label="性别"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-    is-link
-    @click="genderPickerVisible = true"
-  />
-
-  <van-field
-    v-model="state.deptName"
-    label="所属部门"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-  />
-
-  <van-field
-    v-model="state.roleNames"
-    label="所属角色"
-    readonly
-    label-class="font-bold"
-    input-align="right"
-    :center="true"
-    :border="false"
-  />
-
-  <!-- Gender Picker -->
-  <van-popup v-model:show="genderPickerVisible" position="bottom" round>
-    <van-picker
-      v-model="state.gender"
-      visible-option-num="3"
-      :columns="genderOptions"
-      @confirm="handleGender"
-      @cancel="genderPickerVisible = false"
+    <van-field
+      v-model="state.nickName"
+      label="昵称"
+      readonly
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+      is-link
+      to="/edit-nickname"
     />
-  </van-popup>
+
+    <van-field
+      v-model="state.genderText"
+      label="性别"
+      readonly
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+      is-link
+      @click="genderPickerVisible = true"
+    />
+
+    <van-field
+      v-model="state.deptName"
+      label="所属部门"
+      readonly
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+    />
+
+    <van-field
+      v-model="state.roleNames"
+      label="所属角色"
+      readonly
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+    />
+
+    <!-- Gender Picker -->
+    <van-popup v-model:show="genderPickerVisible" position="bottom" round>
+      <van-picker
+        v-model="state.gender"
+        visible-option-num="3"
+        :columns="genderOptions"
+        @confirm="handleGender"
+        @cancel="genderPickerVisible = false"
+      />
+    </van-popup>
+  </div>
 </template>
 
 <script setup lang='ts'>

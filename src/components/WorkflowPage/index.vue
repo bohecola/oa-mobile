@@ -1,74 +1,76 @@
 <template>
-  <NavBar />
+  <div>
+    <NavBar />
 
-  <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600"> -->
-  <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
-      暂存
-    </van-button>
-    <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
-      提 交
-    </van-button> -->
-  <!-- <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
-      审批
-    </van-button> -->
-  <!-- </div> -->
+    <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600"> -->
+    <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
+    暂存
+  </van-button>
+  <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
+    提 交
+  </van-button> -->
+    <!-- <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
+    审批
+  </van-button> -->
+    <!-- </div> -->
 
-  <van-floating-bubble v-if="approvalVisible" axis="xy">
-    <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
-      <span class="!text-xs text-nowrap">
-        审批
-      </span>
-    </van-button>
-  </van-floating-bubble>
+    <van-floating-bubble v-if="approvalVisible" axis="xy">
+      <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
+        <span class="!text-xs text-nowrap">
+          审批
+        </span>
+      </van-button>
+    </van-floating-bubble>
 
-  <van-tabs v-model:active="active" lazy-render @change="onTabChange">
-    <div
-      id="TabsContainer"
-      class="flex flex-col gap-2 overflow-y-auto h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
-    >
-      <!-- -var(--van-button-small-height)-16px-2px -->
-      <!-- 审批表单 -->
-      <van-tab title="审批表单" name="form">
-        <van-notice-bar
-          v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
-          :scrollable="false"
-          text="当前节点存在需要填写的字段，请暂时在PC端审批"
-        />
-        <div v-if="entityVariables?.initiator">
-          <van-cell-group inset class="!mt-3">
-            <van-field label="发起人：" input-align="right">
-              <template #input>
-                <span>{{ entityVariables.initiator.nickName }}</span>
-              </template>
-            </van-field>
-            <van-field label="部门：" input-align="right">
-              <template #input>
-                <span>{{ entityVariables.initiator.deptName }}</span>
-              </template>
-            </van-field>
-            <van-field label="发起时间：" input-align="right">
-              <template #input>
-                <span>{{ parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')! }}</span>
-              </template>
-            </van-field>
+    <van-tabs v-model:active="active" lazy-render @change="onTabChange">
+      <div
+        id="TabsContainer"
+        class="flex flex-col gap-2 overflow-y-auto h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
+      >
+        <!-- -var(--van-button-small-height)-16px-2px -->
+        <!-- 审批表单 -->
+        <van-tab title="审批表单" name="form">
+          <van-notice-bar
+            v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
+            :scrollable="false"
+            text="当前节点存在需要填写的字段，请暂时在PC端审批"
+          />
+          <div v-if="entityVariables?.initiator">
+            <van-cell-group inset class="!mt-3">
+              <van-field label="发起人：" input-align="right">
+                <template #input>
+                  <span>{{ entityVariables.initiator.nickName }}</span>
+                </template>
+              </van-field>
+              <van-field label="部门：" input-align="right">
+                <template #input>
+                  <span>{{ entityVariables.initiator.deptName }}</span>
+                </template>
+              </van-field>
+              <van-field label="发起时间：" input-align="right">
+                <template #input>
+                  <span>{{ parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')! }}</span>
+                </template>
+              </van-field>
+            </van-cell-group>
+          </div>
+          <van-cell-group v-if="group" inset class="!my-3">
+            <slot />
           </van-cell-group>
-        </div>
-        <van-cell-group v-if="group" inset class="!my-3">
-          <slot />
-        </van-cell-group>
-        <slot v-else />
-        <bottom-line />
-      </van-tab>
+          <slot v-else />
+          <bottom-line />
+        </van-tab>
 
-      <!-- 审批记录 -->
-      <van-tab title="审批记录" name="record">
-        <ApprovalSteps ref="ApprovalStepsRef" />
-      </van-tab>
-    </div>
-  </van-tabs>
+        <!-- 审批记录 -->
+        <van-tab title="审批记录" name="record">
+          <ApprovalSteps ref="ApprovalStepsRef" />
+        </van-tab>
+      </div>
+    </van-tabs>
 
-  <!-- 提交组件 -->
-  <SubmitVerify ref="submitVerifyRef" :entity-variables="entityVariables" @submit-callback="submitCallback" />
+    <!-- 提交组件 -->
+    <SubmitVerify ref="submitVerifyRef" :entity-variables="entityVariables" @submit-callback="submitCallback" />
+  </div>
 </template>
 
 <script setup lang='ts'>
