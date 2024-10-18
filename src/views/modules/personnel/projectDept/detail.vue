@@ -53,14 +53,14 @@
     </van-cell-group>
 
     <!-- 附件列表 -->
-    <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4">
-      <UploadFile v-if="form.ossIdList" v-model="form.ossIdList" readonly :card-size="60" />
-      <van-empty v-else image-size="80" description="数据为空" />
+    <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
+      <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
     </TableCard>
   </van-form>
 </template>
 
 <script setup lang="ts">
+import { isEmpty } from 'lodash-es'
 import { useForm } from './form'
 import UserSelect from '@/components/UserSelect/index.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

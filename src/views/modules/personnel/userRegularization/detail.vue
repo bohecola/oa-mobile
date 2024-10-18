@@ -29,9 +29,8 @@
       </van-field>
     </van-cell-group>
     <!-- 附件列表 -->
-    <TableCard title="附件列表" class="mx-4">
-      <UploadFile v-if="form.ossIdList" v-model="form.ossIdList" readonly :card-size="60" />
-      <van-empty v-else image-size="80" description="数据为空" />
+    <TableCard title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
+      <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
     </TableCard>
   </van-form>
 </template>
@@ -39,6 +38,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'vant'
 // import UserInfoSelect from './components/UserInfoSelect.vue'
+import { isEmpty } from 'lodash-es'
 import type { UserMessageAllVo } from '@/api/oa/personnel/userRegularization/types'
 import { useWorkflowViewData } from '@/hooks'
 
