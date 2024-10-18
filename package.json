@@ -17,6 +17,7 @@
     "lint:lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@morev/vue-transitions": "^3.0.2",
     "@tanstack/vue-query": "^5.55.4",
     "@vant/touch-emulator": "^1.4.0",
     "@vueuse/core": "^10.11.0",
