@@ -146,6 +146,7 @@
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { TrainCertificateForm } from '@/api/oa/personnel/trainCertification/types'
+import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 
 withDefaults(
   defineProps<{
