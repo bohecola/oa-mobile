@@ -66,7 +66,7 @@
             input-align="right"
           >
             <template #input>
-              <UserSelect v-model="item.userId" readonly />
+              <UserSelect v-model="item.userId" />
             </template>
           </van-field>
           <van-field
