@@ -1,14 +1,14 @@
 <template>
   <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
+    <detail v-if="isView" ref="Detail" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_0zbgk6r'" v-loading="loading" :include-fields="includeFields">
+      <div v-if="taskDefinitionKey === 'Activity_0zbgk6r'" v-loading="loading">
         <!-- <upsert ref="Upsert" :show-loading="false" /> -->
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else v-loading="loading">
-        <detail ref="DetailOther" :show-loading="false" :include-fields="includeFields" />
+        <detail ref="DetailOther" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import type { _TrainCertificateForm } from '../form'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 // import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
@@ -49,7 +50,7 @@ const isView = computed(() => proxy?.$route.query.type === 'view')
 
 // 字段
 const includeFields = ref(
-  filterTruthyKeys<TrainCertificateForm>({
+  filterTruthyKeys<_TrainCertificateForm>({
     batchId: true,
     userCertificateBo: true, // 持证
     userTrainBo: true, // 培训
@@ -89,7 +90,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: false,
+        isEditNode: 'false',
       },
     })
   }

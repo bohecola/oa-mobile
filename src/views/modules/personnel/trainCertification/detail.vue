@@ -117,7 +117,6 @@
             </template>
           </van-field>
           <van-field
-
             :name="`itemList.${index}.startDate`"
             label="开始日期"
             input-align="right"
@@ -127,13 +126,21 @@
             </template>
           </van-field>
           <van-field
-
             :name="`itemList.${index}.endDate`"
             label="开始日期"
             input-align="right"
           >
             <template #input>
               {{ parseTime(item.endDate, '{y}-{m}-{d}') }}
+            </template>
+          </van-field>
+          <van-field
+            :name="`itemList.${index}.files`"
+            label="上传"
+            input-align="right"
+          >
+            <template #input>
+              <UploadFile v-model="item.files" readonly :card-size="60" />
             </template>
           </van-field>
         </TableCard>

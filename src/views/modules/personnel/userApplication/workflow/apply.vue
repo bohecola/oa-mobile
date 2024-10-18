@@ -124,6 +124,7 @@ const includeFieldsOther = ref(
     sex: true,
     phonenumber: true,
     isProbation: true,
+    probationCycle: true,
     ossIdList: true,
   }),
 )
@@ -204,18 +205,19 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
   const res = await useWorkflowViewData({ taskId, processInstanceId })
+  if (taskId || processInstanceId) {
+    const { entity, task } = res.data
+    submitFormData.value.variables.entity = entity
+    taskDefinitionKey.value = task.taskDefinitionKey
 
-  const { entity, task } = res.data
-  submitFormData.value.variables.entity = entity
-  taskDefinitionKey.value = task.taskDefinitionKey
-
-  proxy?.$router.replace({
-    query: {
-      ...proxy?.$route.query,
-      taskDefinitionKey: taskDefinitionKey.value,
-      isEditNode: (taskDefinitionKey.value === 'Activity_1gtf30k') ? 'true' : 'false',
-    },
-  })
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: (taskDefinitionKey.value === 'Activity_1gtf30k') ? 'true' : 'false',
+      },
+    })
+  }
 
   nextTick(async () => {
     switch (type as string) {

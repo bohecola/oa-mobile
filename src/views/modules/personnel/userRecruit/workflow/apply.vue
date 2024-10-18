@@ -94,7 +94,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: false,
+        isEditNode: 'false',
       },
     })
   }

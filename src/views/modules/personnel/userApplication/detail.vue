@@ -16,7 +16,7 @@
           <dict-tag :options="sys_yes_no" :value="form.isProbation" />
         </template>
       </van-field>
-      <van-field v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)：" input-align="right" />
+      <van-field v-if="form.probationCycle" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)：" input-align="right" />
       <van-field v-model="form.nation" v-show-field="['nation', includeFields]" name="nation" label="民族：" input-align="right">
         <template #input>
           <dict-tag :options="oa_nation" :value="form.nation" />
