@@ -36,7 +36,12 @@ const router = useRouter()
 // 左侧按钮点击
 function handleLeftClick() {
   if (props.isLeftClickBack) {
-    router.back()
+    if (window.history.state.back) {
+      router.back()
+    }
+    else {
+      router.push('/')
+    }
   }
   emit('click-left')
 }

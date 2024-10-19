@@ -28,7 +28,6 @@
         class="flex flex-col gap-2 overflow-y-auto h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
       >
         <!-- -var(--van-button-small-height)-16px-2px -->
-        <!-- 审批表单 -->
         <van-tab title="审批表单" name="form">
           <van-notice-bar
             v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
@@ -61,7 +60,6 @@
           <bottom-line />
         </van-tab>
 
-        <!-- 审批记录 -->
         <van-tab title="审批记录" name="record">
           <ApprovalSteps ref="ApprovalStepsRef" />
         </van-tab>
@@ -187,8 +185,12 @@ function handleApproval() {
 
 // 提交回调
 async function submitCallback() {
-  // await proxy.$tab.closePage(proxy.$route);
-  proxy?.$router.go(-1)
+  if (window.history.state.back) {
+    proxy?.$router.back()
+  }
+  else {
+    proxy?.$router.push('/')
+  }
 }
 
 function onTabChange(val: any) {
