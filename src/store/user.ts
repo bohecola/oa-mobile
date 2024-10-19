@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { showToast } from 'vant'
 import { storage } from '@/utils'
-import { person, userLogout } from '@/api/comm'
+import { service } from '@/service'
 import type { UserVO } from '@/api/system/user/types'
 import router from '@/router'
 
@@ -41,14 +41,14 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     clear()
     router.clear()
-    await userLogout()
+    await service.comm.userLogout()
     await router.push('/login')
     showToast('退出成功')
   }
 
   // 获取用户信息
   async function get() {
-    return person().then(({ data }) => {
+    return service.comm.person().then(({ data }) => {
       set(data.user)
       return data.user
     })

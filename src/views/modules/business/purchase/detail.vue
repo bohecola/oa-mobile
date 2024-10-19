@@ -59,7 +59,7 @@
       <van-field v-show-field="['realAmount', includeFields]" label="实际金额：" name="amount" input-align="right">
         <template #input>
           <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
-          <span class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
+          <span v-if="form.realAmount" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
         </template>
       </van-field>
       <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业务单独结算：" name="isOwnerSettlement" input-align="right">
