@@ -41,6 +41,7 @@
     "@antfu/eslint-config": "^2.22.2",
     "@commitlint/cli": "^19.3.0",
     "@egoist/tailwindcss-icons": "^1.8.1",
+    "@iconify-json/ant-design": "^1.2.2",
     "@iconify-json/carbon": "^1.1.36",
     "@iconify-json/material-symbols": "^1.1.85",
     "@iconify-json/mdi": "^1.1.67",

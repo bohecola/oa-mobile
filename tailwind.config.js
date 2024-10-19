@@ -21,6 +21,7 @@ export default {
         'mingcute',
         'solar',
         'material-symbols',
+        'ant-design',
       ]),
     }),
     remToPx(),
