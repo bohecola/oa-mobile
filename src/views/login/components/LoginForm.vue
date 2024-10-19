@@ -85,6 +85,12 @@
     >
       登 录
     </van-button>
+
+    <van-divider>其他登录方式</van-divider>
+
+    <div class="flex justify-center gap-2">
+      <span class="i-ant-design-dingtalk-circle-filled w-6 h-6 rounded-full" title="钉钉登录" @click="doSocialLogin('dingtalk')" />
+    </div>
   </van-form>
 </template>
 
@@ -96,6 +102,7 @@ import { service } from '@/service'
 import { useGlobSettings } from '@/hooks'
 import { useStore } from '@/store'
 import { storage } from '@/utils'
+import { ResultCodeEnum } from '@/enums/httpEnum'
 
 // 路由器
 const router = useRouter()
@@ -189,6 +196,19 @@ function getMe() {
   if (me) {
     form.value = me
   }
+}
+
+// 第三方登录
+function doSocialLogin(type: string) {
+  service.social.authBinding(type, form.value.tenantId).then((res: any) => {
+    if (res.code === ResultCodeEnum.SUCCESS) {
+      // 获取授权地址跳转
+      window.location.href = res.data
+    }
+    else {
+      showFailToast(res.msg)
+    }
+  })
 }
 
 // 挂载

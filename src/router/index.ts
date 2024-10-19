@@ -1,10 +1,13 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { isArray } from 'lodash-es'
 import { createRouterGuards } from './router-guards'
 import { clientRoutes } from './modules'
 import { useStore } from '@/store'
+import { useGlobSettings } from '@/hooks'
+
+const { publicPath } = useGlobSettings()
 
 // 默认路由
 const routes: RouteRecordRaw[] = [
@@ -23,6 +26,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/social-callback',
+    meta: {
+      title: '第三方登录授权回调页面',
+      innerPage: true,
+    },
+    component: () => import('@/views/login/components/SocialCallback.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: '404',
     component: () => import('@/views/exception/404.vue'),
@@ -31,7 +42,7 @@ const routes: RouteRecordRaw[] = [
 
 // 创建路由器
 const router = createRouter({
-  history: createWebHashHistory(''),
+  history: createWebHistory(publicPath),
   routes,
   // strict: true,
 }) as Router

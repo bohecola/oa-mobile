@@ -1,5 +1,6 @@
 import * as comm from '@/api/comm'
 import * as open from '@/api/open'
+import * as social from '@/api/social'
 
 // system
 import * as user from '@/api/system/user'
@@ -17,6 +18,8 @@ import * as formManage from '@/api/workflow/formManage'
 import * as contract from '@/api/oa/business/contract'
 import * as project from '@/api/oa/business/project'
 import * as supplierCustomer from '@/api/oa/business/supplierCustomer'
+import * as purchase from '@/api/oa/business/purchase'
+
 import * as projectSubject from '@/api/oa/finance/projectSubject'
 import * as subject from '@/api/oa/finance/subject'
 import * as subjectCalculateItem from '@/api/oa/finance/subjectCalculateItem'
@@ -24,6 +27,7 @@ import * as subjectCalculateItem from '@/api/oa/finance/subjectCalculateItem'
 const service = {
   comm,
   open,
+  social,
   system: {
     user,
     role,
@@ -40,6 +44,7 @@ const service = {
     contract,
     project,
     supplierCustomer,
+    purchase,
     projectSubject,
     subject,
     subjectCalculateItem,

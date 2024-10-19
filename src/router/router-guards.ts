@@ -2,7 +2,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useStore } from '@/store'
 
-const whitePathList = ['/login', '/404']
+const whitePathList = ['/login', '/404', '/social-callback']
 
 export function createRouterGuards(router: Router) {
   // 全局前置路由守卫
