@@ -1,34 +1,34 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" :include-fields="overviewFields" />
 
     <template v-else>
       <!-- 采购申请 -->
-      <div v-if="taskDefinitionKey === 'Activity_11sjm5p'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_11sjm5p'">
         <detail ref="Upsert" :include-fields="applyFields" :show-loading="false" />
       </div>
 
       <!-- 采购执行节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_0qbyt2w'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_0qbyt2w'">
         <detail ref="ExecuteDetail" :include-fields="executeDetailFields" :show-loading="false" />
         <detail ref="ExecuteUpsert" :include-fields="executeUpsertFields" :show-loading="false" />
         <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
       </div>
 
       <!-- 验收节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_0ccirhe'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_0ccirhe'">
         <detail ref="CheckDetail" :include-fields="checkDetailFields" :show-loading="false" />
         <detail ref="CheckUpsert" :include-fields="checkUpsertFields" :show-loading="false" />
         <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
       </div>
 
       <!-- 验收确认 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_10qfp2k'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_10qfp2k'">
         <detail ref="ReCheckDetail" :include-fields="recheckFields" :show-loading="false" />
       </div>
 
       <!-- 其他审批通用节点 -->
-      <div v-else v-loading="loading">
+      <div v-else>
         <detail ref="CommonDetail" :include-fields="commonFields" :show-loading="false" />
       </div>
     </template>

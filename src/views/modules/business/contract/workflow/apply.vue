@@ -1,19 +1,19 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
+  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_08sjg5i'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_08sjg5i'">
         <detail ref="Upsert" :include-fields="includeFields" :show-loading="false" />
       </div>
       <!-- 归档 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'">
         <detail ref="Detail2" :include-fields="includeFieldsDetail2" :show-loading="false" />
         <detail ref="Upsert2" :include-fields="includeFieldsUpsert2" :show-loading="false" />
         <detail ref="Detail3" :include-fields="includeFieldsDetail3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
-      <div v-else v-loading="loading">
+      <div v-else>
         <detail ref="DetailOther" :include-fields="includeFieldsOther" :show-loading="false" />
       </div>
     </template>

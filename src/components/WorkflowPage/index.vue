@@ -28,7 +28,7 @@
         class="flex flex-col gap-2 overflow-y-auto h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
       >
         <!-- -var(--van-button-small-height)-16px-2px -->
-        <van-tab title="审批表单" name="form">
+        <van-tab v-loading="loading" title="审批表单" name="form">
           <van-notice-bar
             v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
             :scrollable="false"
@@ -86,9 +86,11 @@ const props = withDefaults(
   defineProps<{
     entityVariables?: EntityVariables
     group?: boolean
+    loading?: boolean
   }>(),
   {
     group: true,
+    loading: false,
   },
 )
 
