@@ -1,14 +1,20 @@
 <script setup lang='ts'>
-const route = useRoute()
-const router = useRouter()
+withDefaults(defineProps<{
+  title?: string
+}>(), {
+  title: () => {
+    const route = useRoute()
+    return route.meta.title as string ?? ''
+  },
+})
 
-const navTitle = computed(() => route.meta.title as string)
+const router = useRouter()
 </script>
 
 <template>
   <van-nav-bar @click-left="router.back">
     <template #title>
-      {{ navTitle }}
+      {{ title }}
     </template>
     <template #left>
       <i class="i-material-symbols-arrow-back-ios-new text-xl" />
