@@ -12,15 +12,12 @@ declare module 'vue' {
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
-    ListItem: typeof import('./src/components/UserSelect/list-item.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
-    MultiInstanceUser: typeof import('./src/components/Process/multiInstanceUser.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
     Steps: typeof import('./src/components/WorkflowPage/steps.vue')['default']
     SubmitVerify: typeof import('./src/components/Process/submitVerify.vue')['default']
     TableCard: typeof import('./src/components/TableCard/index.vue')['default']
-    TableCardCell: typeof import('./src/components/TableCard/table-card-cell.vue')['default']
     TextareaView: typeof import('./src/components/TextareaView/index.vue')['default']
     ThemeProvider: typeof import('./src/components/ThemeProvider.vue')['default']
     UserCell: typeof import('./src/components/UserSelect/user-cell.vue')['default']
@@ -62,6 +59,5 @@ declare module 'vue' {
     VanTag: typeof import('vant/es')['Tag']
     VanUploader: typeof import('vant/es')['Uploader']
     WorkflowPage: typeof import('./src/components/WorkflowPage/index.vue')['default']
-    WorlflowPage: typeof import('./src/components/WorlflowPage/index.vue')['default']
   }
 }
