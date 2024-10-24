@@ -9,8 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
     CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
-    Cell: typeof import('./src/components/UserSelect/cell.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
+    DictSelect: typeof import('./src/components/DictSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
