@@ -10,7 +10,8 @@
           :index="index"
           :class="item.elTagClass"
         >
-          {{ `${item.label} ` }}
+          <span>{{ `${item.label}` }}</span>
+          <span v-if="values[values.length - 1] !== item.value">、</span>
         </span>
         <van-tag
           v-else
