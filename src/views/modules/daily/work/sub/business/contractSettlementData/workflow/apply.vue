@@ -8,7 +8,7 @@
 
     <!-- 自定义审核人审核 -->
     <div v-else-if="taskDefinitionKey === 'Activity_06fn9qa'">
-      <!-- <upsert :include-fields="customizeTransactorNodeFields" /> -->
+      <detail :include-fields="customizeTransactorNodeFields" />
       <detail :include-fields="baseFields" />
     </div>
 

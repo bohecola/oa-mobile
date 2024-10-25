@@ -16,7 +16,7 @@
     rows="2"
     autosize
     type="textarea"
-    placeholder="请输入留言"
+    placeholder="请输入申请事由"
     show-word-limit
     input-align="right"
   />

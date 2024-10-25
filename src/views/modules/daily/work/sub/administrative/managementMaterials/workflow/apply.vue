@@ -1,14 +1,14 @@
 <template>
-  <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
+  <detail v-if="isView" />
   <template v-else>
     <!-- 行政部管理资料申请 -->
     <div v-if="taskDefinitionKey === 'Activity_16c7u7l'">
-      <!-- <upsert ref="Upsert" :include-fields="includeFields" /> -->
+      <!-- <upsert /> -->
     </div>
 
     <!-- 其他审批通用节点 -->
     <div v-else>
-      <detail ref="DetailOther" :include-fields="includeFields" />
+      <detail />
     </div>
   </template>
 </template>
@@ -20,17 +20,4 @@ import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
-// 引用
-const Detail = ref<InstanceType<typeof detail> | null>()
-const DetailOther = ref<InstanceType<typeof detail> | null>()
-// 字段
-const includeFields = ref(
-  filterTruthyKeys<DailyWorkForm>({
-    administrationFileType: true,
-    fileType: true,
-    isUseSeal: true,
-    reason: true,
-    ossIdList: true,
-  }),
-)
 </script>
