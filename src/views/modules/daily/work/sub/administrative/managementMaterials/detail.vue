@@ -1,17 +1,17 @@
 <template>
-  <van-field v-show-field="['administrationFileType', includeFields]" label="申请资料：" prop="administrationFileType" name="administrationFileType" input-align="right">
+  <van-field v-show-field="['administrationFileType', includeFields]" label="申请资料：" name="administrationFileType" input-align="right">
     <template #input>
       <DictSelect v-model="form.administrationFileType" dict-type="oa_administration_file_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型：" prop="fileType" name="fileType" input-align="right">
+  <van-field v-show-field="['fileType', includeFields]" label="资料类型：" name="fileType" input-align="right">
     <template #input>
       <DictSelect v-model="form.fileType" dict-type="oa_file_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印：" prop="isUseSeal" name="isUseSeal" input-align="right">
+  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印：" name="isUseSeal" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isUseSeal" readonly />
     </template>
@@ -38,7 +38,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['administrationFileType', 'fileType', 'isUseSeal', 'reason'],
+    includeFields: () => ['administrationFileType', 'fileType', 'isUseSeal'],
   },
 )
 

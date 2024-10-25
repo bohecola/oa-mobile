@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['isYwlProject', includeFields]" label="是否运维类项目：" prop="isYwlProject" name="isYwlProject" input-align="right">
+  <van-field v-show-field="['isYwlProject', includeFields]" label="是否运维类项目：" name="isYwlProject" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isYwlProject" read-only />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isPersonnelTransfer', includeFields]" label="是否涉及人员任命、调整：" prop="isPersonnelTransfer" name="isPersonnelTransfer" input-align="right">
+  <van-field v-show-field="['isPersonnelTransfer', includeFields]" label="是否涉及人员任命、调整：" name="isPersonnelTransfer" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isPersonnelTransfer" read-only />
     </template>
@@ -32,7 +32,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['isYwlProject', 'isPersonnelTransfer', 'reason'],
+    includeFields: () => ['isYwlProject', 'isPersonnelTransfer'],
   },
 )
 

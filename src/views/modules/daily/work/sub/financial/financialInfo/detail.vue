@@ -1,10 +1,10 @@
 <template>
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型：" prop="fileType" name="fileType" input-align="right">
+  <van-field v-show-field="['fileType', includeFields]" label="资料类型：" name="fileType" input-align="right">
     <template #input>
       <DictSelect v-model="form.fileType" dict-type="oa_file_type" readonly />
     </template>
   </van-field>
-  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章：" prop="isSeal" name="isSeal" input-align="right">
+  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章：" name="isSeal" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isSeal" readonly />
     </template>
@@ -31,16 +31,11 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['fileType', 'isSeal', 'reason'],
+    includeFields: () => ['fileType', 'isSeal'],
   },
 )
 
 const form = inject<DailyWorkForm>('form')
-
-// 实例
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_file_type } = toRefs<any>(proxy?.useDict('oa_file_type'))
-const { sys_yes_no } = toRefs<any>(proxy?.useDict('sys_yes_no'))
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()

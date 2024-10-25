@@ -15,8 +15,6 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
-import { filterTruthyKeys } from '@/utils'
-import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')

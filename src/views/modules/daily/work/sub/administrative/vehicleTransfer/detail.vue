@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['needDepts', includeFields]" name="needDepts" prop="needDepts" label="需求部门：" input-align="right">
+  <van-field v-show-field="['needDepts', includeFields]" name="needDepts" label="需求部门：" input-align="right">
     <template #input>
       <DeptSelect v-model="form.needDepts" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isExistRegulations', includeFields]" label="是否存在违章：" prop="isExistRegulations" name="isExistRegulations" input-align="right">
+  <van-field v-show-field="['isExistRegulations', includeFields]" label="是否存在违章：" name="isExistRegulations" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isExistRegulations" readonly />
     </template>
@@ -32,7 +32,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['needDepts', 'isExistRegulations', 'reason'],
+    includeFields: () => ['needDepts', 'isExistRegulations'],
   },
 )
 
