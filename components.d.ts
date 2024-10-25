@@ -68,5 +68,6 @@ declare module 'vue' {
     VanUploader: typeof import('vant/es')['Uploader']
     Viewer: typeof import('./src/components/UploadFile/viewer.vue')['default']
     WorkflowPage: typeof import('./src/components/WorkflowPage/index.vue')['default']
+    YesNoSwitch: typeof import('./src/components/YesNoSwitch/index.vue')['default']
   }
 }
