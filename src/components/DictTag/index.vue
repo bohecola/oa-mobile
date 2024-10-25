@@ -9,9 +9,9 @@
           :key="item.value"
           :index="index"
           :class="item.elTagClass"
+          class="after:content-['、'] last:after:content-none"
         >
-          <span>{{ `${item.label}` }}</span>
-          <span v-if="values[values.length - 1] !== item.value">、</span>
+          {{ `${item.label}` }}
         </span>
         <van-tag
           v-else

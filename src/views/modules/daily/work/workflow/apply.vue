@@ -1,6 +1,6 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <van-form ref="Form" v-loading="isLoading" :model="form" label-width="140px" :validate-on-rule-change="false">
+  <WorkflowPage :loading="isLoading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+    <van-form id="DailyWorkFormContainer" ref="Form" :model="form" label-width="140px" :validate-on-rule-change="false">
       <van-cell-group inset class="!my-3">
         <van-field prop="dailyWorkType" :label="`日常事务类型${dailyWorkTypeSelectReadOnly ? '：' : ''}`" input-align="right">
           <template #input>
@@ -16,19 +16,13 @@
           /> -->
         </van-field>
 
-        <!-- @vue-ignore -->
         <component :is="SubComponent[form.no]" :key="form.no" />
       </van-cell-group>
-      <!-- 附件列表 -->
-      <TableCard title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
-        <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
-      </TableCard>
     </van-form>
   </WorkflowPage>
 </template>
 
 <script setup name="DailyWorkApply" lang="ts">
-import { isEmpty } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 // import DailyWorkTypeSelect from '../components/DailyWorkTypeSelect.vue'
@@ -36,7 +30,6 @@ import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { useWorkflowViewData } from '@/hooks'
-import { getDailyWork } from '@/api/oa/daily/work'
 import { getDailyWorkType } from '@/api/oa/daily/category'
 
   type Entity = DailyWorkForm & { initiator: Initiator }
@@ -86,9 +79,9 @@ function trackFields(fields: KeysOfArray<DailyWorkForm>) {
 // })
 
 provide('form', form)
-provide('trackFields', trackFields)
 provide('isView', isView)
 provide('taskDefinitionKey', taskDefinitionKey)
+provide('trackFields', trackFields)
 
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({
@@ -126,6 +119,8 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
+  isLoading.value = true
+
   if (taskId || processInstanceId) {
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
@@ -141,14 +136,16 @@ onMounted(async () => {
     })
   }
 
-  nextTick(() => {
+  nextTick(async () => {
     switch (type as string) {
       case 'update':
       case 'approval':
       case 'view': {
-        workflowView({ taskId, processInstanceId })
+        await workflowView({ taskId, processInstanceId })
       }
     }
+
+    isLoading.value = false
   })
 })
 </script>

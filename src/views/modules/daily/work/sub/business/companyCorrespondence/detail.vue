@@ -1,43 +1,35 @@
 <template>
   <van-field v-show-field="['isYwlProject', includeFields]" label="是否运维类项目：" name="isYwlProject" input-align="right">
     <template #input>
-      <YesNoSwitch v-model="form.isYwlProject" read-only />
+      <YesNoSwitch v-model="form.isYwlProject" readonly />
     </template>
   </van-field>
 
   <van-field v-show-field="['isPersonnelTransfer', includeFields]" label="是否涉及人员任命、调整：" name="isPersonnelTransfer" input-align="right">
     <template #input>
-      <YesNoSwitch v-model="form.isPersonnelTransfer" read-only />
+      <YesNoSwitch v-model="form.isPersonnelTransfer" readonly />
     </template>
   </van-field>
 
-  <van-field
-    v-model="form.reason"
-    v-show-field="['reason', includeFields]" prop="reason" label="申请事由："
-    rows="2"
-    autosize
-    type="textarea"
-    placeholder="请输入留言"
-    show-word-limit
-    input-align="right"
-  />
+  <BaseDetail :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import BaseDetail from '../../../components/BaseDetail.vue'
+
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['isYwlProject', 'isPersonnelTransfer'],
+    includeFields: () => ['isYwlProject', 'isPersonnelTransfer', 'reason', 'ossIdList'],
   },
 )
 
-const form = inject<DailyWorkForm>('form')
-
+const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 </script>

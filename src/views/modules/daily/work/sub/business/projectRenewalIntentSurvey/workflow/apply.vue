@@ -2,8 +2,8 @@
   <detail v-if="isView" />
   <template v-else>
     <!-- 项目续签意向调研 -->
-    <div v-if="taskDefinitionKey === 'Activity_16c7u7l'">
-      <upsert />
+    <div v-if="taskDefinitionKey === 'Activity_14a8d37'">
+      <detail />
     </div>
 
     <!-- 其他审批通用节点 -->
