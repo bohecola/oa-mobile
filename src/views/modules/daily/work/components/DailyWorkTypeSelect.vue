@@ -1,84 +1,94 @@
 <template>
-  <el-skeleton :loading="isLoading" animated class="h-8 flex items-center">
+  <van-skeleton v-if="!popupOnly" :loading="isLoading" animated class="h-6 flex items-center">
     <template #template>
-      <el-skeleton-item variant="rect" class="!h-[60%]" />
+      <van-skeleton-paragraph class="!h-[60%]" />
     </template>
     <template #default>
-      <div v-if="readonly">
-        {{ CascaderRef?.presentText }}
-      </div>
-      <div v-show="!readonly" class="w-full">
+      <span>{{ presentText }}</span>
+      <!-- 弹窗 -->
+      <van-popup
+        v-model:show="show"
+        position="bottom"
+        teleport="body"
+        :lazy-render="false"
+        round
+      >
         <van-cascader
-          ref="CascaderRef"
           v-model="id"
+          :title="placeholder"
           :options="options"
-          :props="{
+          :field-names="{
             value: 'id',
-            label: 'name',
-            emitPath: false,
-            expandTrigger: 'click',
+            text: 'name',
           }"
-          class="w-full"
-          clearable
-          @change="onChange"
+          @close="close"
+          @finish="onFinish"
         />
-      </div>
+      </van-popup>
     </template>
-  </el-skeleton>
+  </van-skeleton>
 </template>
 
 <script setup lang="ts">
 import type { CascaderOption } from 'vant'
-import { queryByParentDaily } from '@/api/oa/daily/category'
 import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
+import { queryByParentDaily } from '@/api/oa/daily/category'
+import { findPathNode } from '@/utils'
+
+interface Params { value: string | number, selectedOptions: CascaderOption[], tabIndex: number }
 
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
+    dailyWorkNo?: string
+    wfRemark?: string
     placeholder?: string
-    readonly?: boolean
+    popupOnly?: boolean
   }>(),
   {
     modelValue: undefined,
     placeholder: '请选择事务类别',
-    readonly: false,
+    popupOnly: false,
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'before-change', 'change', 'update:dailyWorkNo', 'update:wfRemark'])
+const emit = defineEmits(['update:modelValue', 'update:dailyWorkNo', 'update:wfRemark', 'before-finish', 'finish'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 引用
-const CascaderRef = ref<CascaderOption>()
-
-// 节点数据加载状态
+const show = ref(false)
 const isLoading = ref(false)
 
-// 主键
 const id = ref<number | string>(props.modelValue)
+const list = ref<DailyWorkTypeVO[]>([])
 
-// 节点数据
-const options = ref([])
+const options = computed(() => {
+  return proxy?.handleTree<DailyWorkTypeVO>(list.value)
+})
 
-// 获取日常事务类别数据
+const presentText = computed(() => {
+  const nodes = findPathNode<DailyWorkTypeVO>(options.value, props.modelValue)
+  const text = nodes.map(e => e.name).join(' / ')
+  return text
+})
+
 async function getData() {
   isLoading.value = true
   const res = await queryByParentDaily('0').finally(() => (isLoading.value = false))
-  const treeData = proxy?.handleTree<DailyWorkTypeVO>(res.data)
-  options.value = treeData
+  list.value = res.data
 }
 
-// change 事件
-function onChange(value: string | number) {
-  emit('before-change')
+function onFinish({ value }: Params) {
+  show.value = false
+
+  emit('before-finish')
 
   emit('update:modelValue', value)
-  emit('change', value)
-  const [node] = CascaderRef.value?.getCheckedNodes(true)
+  emit('finish', value)
 
-  emit('update:dailyWorkNo', node?.data?.no)
-  emit('update:wfRemark', node?.data?.remark)
+  const node = list.value.find(e => e.id === value)
+  emit('update:dailyWorkNo', node?.no)
+  emit('update:wfRemark', node?.remark)
 }
 
 watch(
@@ -90,6 +100,17 @@ watch(
 
 onMounted(async () => {
   await getData()
-  console.log(CascaderRef.value, '2222222')
+})
+
+function open() {
+  show.value = true
+}
+
+function close() {
+  show.value = false
+}
+
+defineExpose({
+  open,
 })
 </script>

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import { getDailyWork } from '@/api/oa/daily/work/index'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { getDailyWork } from '@/api/oa/daily/work/index'
 import { useWorkflowViewData } from '@/hooks'
 
 export interface Options<T = any> {
@@ -11,12 +11,8 @@ export interface Options<T = any> {
 
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-export interface FormOptions {
-  initFormData: Partial<DailyWorkForm>
-//   rules: ElFormRules
-}
 
-export function useForm(options?: FormOptions) {
+export function useForm() {
   // 实例
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
 
