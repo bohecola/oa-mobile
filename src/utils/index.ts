@@ -11,4 +11,6 @@ export function filterTruthyKeys<T extends Record<string, any>>(obj: Partial<Rec
   return Object.keys(obj).filter(key => obj[key]) as (keyof T)[]
 }
 
+export * from './tree'
+
 export { storage }
