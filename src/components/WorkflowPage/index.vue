@@ -34,25 +34,25 @@
             :scrollable="false"
             text="当前节点存在需要填写的字段，请暂时在PC端审批"
           />
-          <div v-if="entityVariables?.initiator">
-            <van-cell-group inset class="!mt-3">
-              <van-field label="发起人：" input-align="right">
-                <template #input>
-                  <span>{{ entityVariables.initiator.nickName }}</span>
-                </template>
-              </van-field>
-              <van-field label="部门：" input-align="right">
-                <template #input>
-                  <span>{{ entityVariables.initiator.deptName }}</span>
-                </template>
-              </van-field>
-              <van-field label="发起时间：" input-align="right">
-                <template #input>
-                  <span>{{ parseTime(entityVariables.initiator.createTime, '{y}-{m}-{d}')! }}</span>
-                </template>
-              </van-field>
-            </van-cell-group>
-          </div>
+
+          <van-cell-group inset class="!mt-3">
+            <van-field label="发起人：" input-align="right">
+              <template #input>
+                <span>{{ entityVariables?.initiator.nickName }}</span>
+              </template>
+            </van-field>
+            <van-field label="部门：" input-align="right">
+              <template #input>
+                <span>{{ entityVariables?.initiator.deptName }}</span>
+              </template>
+            </van-field>
+            <van-field label="发起时间：" input-align="right">
+              <template #input>
+                <span>{{ parseTime(entityVariables?.initiator.createTime, '{y}-{m}-{d}')! }}</span>
+              </template>
+            </van-field>
+          </van-cell-group>
+
           <van-cell-group v-if="group" inset class="!my-3">
             <slot />
           </van-cell-group>
