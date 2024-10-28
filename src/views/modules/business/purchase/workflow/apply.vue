@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" />
+    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
 
     <template v-else>
       <!-- 采购申请 -->
