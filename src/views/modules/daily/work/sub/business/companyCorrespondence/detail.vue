@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['isYwlProject', includeFields]" label="是否运维类项目：" name="isYwlProject" input-align="right">
+  <van-field v-show-field="['isYwlProject', includeFields]" label="是否运维类项目：" name="isYwlProject" input-align="right" label-width="120">
     <template #input>
       <YesNoSwitch v-model="form.isYwlProject" readonly />
     </template>
