@@ -18,7 +18,7 @@ const props = withDefaults(
   {
     modelValue: undefined,
     readonly: false,
-    multiple: true,
+    multiple: false,
   },
 )
 

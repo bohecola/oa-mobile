@@ -1,7 +1,7 @@
 <template>
   <van-field v-show-field="['fileType', includeFields]" label="资料类型：" name="fileType" input-align="right">
     <template #input>
-      <DictSelect v-model="form.fileType" dict-type="oa_file_type" readonly />
+      <DictSelect v-model="form.fileType" dict-type="oa_file_type" multiple readonly />
     </template>
   </van-field>
   <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章：" name="isSeal" input-align="right">

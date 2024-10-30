@@ -1,7 +1,7 @@
 <template>
   <van-field v-show-field="['sealType', includeFields]" label="申请类型：" name="sealType" input-align="right">
     <template #input>
-      <DictSelect v-model="form.sealType" dict-type="oa_seal_type" :multiple="false" readonly />
+      <DictSelect v-model="form.sealType" dict-type="oa_seal_type" readonly />
     </template>
   </van-field>
 
