@@ -84,7 +84,7 @@ export function useForm() {
       leaseType: [{ required: false, message: '租赁类型不能为空', trigger: 'onChange' }],
       isDeposit: [{ required: false, message: '是否有押金不能为空', trigger: 'onBlur' }],
       amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
-      isOwnerSettlement: [{ required: false, message: '是否业务单独结算不能为空', trigger: 'onBlur' }],
+      isOwnerSettlement: [{ required: false, message: '是否业主单独结算不能为空', trigger: 'onBlur' }],
       description: [{ required: true, message: '采购说明不能为空', trigger: 'onBlur' }],
       file: [{ required: true, message: '申购附件不能为空', trigger: 'onBlur' }],
       remark: [{ required: false, message: '备注不能为空', trigger: 'onBlur' }],

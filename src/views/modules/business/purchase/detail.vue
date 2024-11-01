@@ -67,7 +67,7 @@
           <span v-if="form.realAmount" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
         </template>
       </van-field>
-      <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业务单独结算：" name="isOwnerSettlement" input-align="right">
+      <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算：" name="isOwnerSettlement" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isOwnerSettlement" />
         </template>
