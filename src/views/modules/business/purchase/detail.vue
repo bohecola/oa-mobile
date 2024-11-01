@@ -1,7 +1,12 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="9em">
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['projectId', includeFields]" label="项目：" name="projectId" input-align="right">
+      <van-field v-show-field="['subjectType', includeFields]" label="预算类型：" name="subjectType" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
+        </template>
+      </van-field>
+      <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目：" name="projectId" input-align="right">
         <template #input>
           <dict-tag :options="projectOptions" :value="form.projectId" />
         </template>
@@ -89,17 +94,6 @@
         采购清单
       </div>
       <TableCard v-for="(item, index) in form.itemList" :key="item.id" :title="item.name" class="mx-4 mb-2" :default-collapse="true">
-        <!-- <template #header>
-        <div class="flex">
-          <PurchaseCategorySelect
-            v-model="item.psiId"
-            :project-id="form.projectId!"
-            :dept-id="(form as any)?.initiator?.deptId ?? form?.createDept"
-            readonly
-          />
-          <span>（采购清单）</span>
-        </div>
-      </template> -->
         <van-field
           v-model="item.psiId"
           :name="`itemList.${index}.psiId`"
@@ -116,8 +110,7 @@
           <template #input>
             <PurchaseCategorySelect
               v-model="item.psiId"
-              :project-id="form.projectId!"
-              :dept-id="(form as any)?.initiator?.deptId ?? form?.createDept"
+              :params="PurchaseCategorySelectParams"
               readonly
             />
           </template>
@@ -227,8 +220,8 @@ import { isEmpty } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ContractSelect from '../components/ContractSelect.vue'
 import { useForm } from './form'
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useProjectOptions } from '@/hooks'
 
 withDefaults(
@@ -265,7 +258,7 @@ const { oa_contract_execute_situation } = toRefs(proxy!.useDict('oa_contract_exe
 const { sys_yes_no } = toRefs(proxy!.useDict('sys_yes_no'))
 
 // 表单
-const { Form, form, isLoading, purchaseItem, reset, view, workflowView } = useForm()
+const { Form, form, isLoading, reset, view, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<PurchaseForm>()
@@ -273,8 +266,25 @@ const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 // 项目列表
 const { projectOptions } = useProjectOptions()
 
-// 合同列表
-const contractOptions = ref<DictDataOption[]>([])
+// 预算类别查询条件
+const PurchaseCategorySelectParams = computed(() => {
+  const type = form.value.subjectType
+  const projectId = form.value.projectId
+  const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
+
+  if (type === 'dept') {
+    return {
+      type,
+      deptId,
+    }
+  }
+
+  return {
+    type,
+    projectId,
+    deptId,
+  }
+})
 
 defineExpose({
   isLoading,

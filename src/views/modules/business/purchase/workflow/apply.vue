@@ -82,8 +82,10 @@ const isView = computed(() => proxy!.$route.query.type === 'view')
 const allFields: PartialBooleanRecord<PurchaseForm> = {
   id: true,
   no: true,
+  subjectType: true,
   projectId: true,
   projectName: true,
+  deptId: true,
   type: true,
   businessCategory: true,
   objectCategory: true,

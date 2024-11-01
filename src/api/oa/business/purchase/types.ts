@@ -102,6 +102,11 @@ export interface PurchaseForm extends BaseEntity {
   no?: string
 
   /**
+   * 预算类型（项目预算、部门预算）
+   */
+  subjectType?: string
+
+  /**
    * 项目id
    */
   projectId?: string | number
@@ -110,6 +115,11 @@ export interface PurchaseForm extends BaseEntity {
    * 项目名称
    */
   projectName?: string
+
+  /**
+   * 部门id
+   */
+  deptId?: string | number
 
   /**
    * 采购类型; 物资采购 外委采购 框架采购
@@ -263,6 +273,12 @@ export interface PurchaseQuery extends PageQuery {
    * 合同执行情况; 合同内  合同外
    */
   contractExecute?: string
+
+  /**
+   * 状态
+   */
+
+  status?: string
 
   /**
    * 日期范围参数

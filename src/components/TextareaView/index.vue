@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full text-left" v-html="content" />
+  <div class="w-full" v-html="content" />
 </template>
 
 <script setup lang="ts">

@@ -1,8 +1,9 @@
 import { cloneDeep } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import { getPurchase } from '@/api/oa/business/purchase'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
+import { getPurchase } from '@/api/oa/business/purchase'
 import { useWorkflowViewData } from '@/hooks'
+import { useStore } from '@/store'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -12,6 +13,7 @@ export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
 
 export function useForm() {
+  const { user } = useStore()
   // 实例
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
 
@@ -39,8 +41,11 @@ export function useForm() {
   const initFormData: PurchaseForm = {
     id: undefined,
     no: undefined,
+    subjectType: 'project',
     projectId: undefined,
     projectName: undefined,
+    // TODO 后期根据需要调整
+    deptId: user.info.deptId,
     type: undefined,
     businessCategory: undefined,
     objectCategory: undefined,
@@ -68,6 +73,7 @@ export function useForm() {
     rules: {
       // id: [{ required: true, message: 'ID不能为空', trigger: 'onBlur' }],
       // no: [{ required: true, message: '编号不能为空', trigger: 'onBlur' }],
+      subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
       projectId: [{ required: true, message: '项目id不能为空', trigger: 'onBlur' }],
       contractId: [{ required: false, message: '关联收入合同不能为空', trigger: 'onBlur' }],
       contractExecute: [{ required: false, message: '合同执行情况不能为空', trigger: 'onBlur' }],

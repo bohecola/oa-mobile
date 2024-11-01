@@ -6,11 +6,17 @@ import request from '@/service/request'
 /**
  * 预算类别列表
  */
-
-export function getItemTreeByProjectIdAndDeptId(projectId: string | number, deptId: string | number): AxiosPromise<ProjectSubjectItemTreeVO[]> {
+export function getItemTreeByProjectOrDept(params: {
+  type: string
+  projectId?: string | number
+  deptId: string | number
+}): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
-    url: `/oa/finance/projectSubject/getItemTreeByProjectIdAndDeptId/${projectId}/${deptId}`,
+    url: `/oa/finance/projectSubject/getItemTreeByProjectOrDept`,
     method: 'get',
+    params,
+  }, {
+    withCancel: false,
   })
 }
 

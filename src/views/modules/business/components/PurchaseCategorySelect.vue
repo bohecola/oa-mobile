@@ -5,41 +5,46 @@
     </template>
     <template #default>
       <div v-if="readonly">
-        {{ detail?.sciName }}
+        {{ selectedLabel }}
       </div>
       <!-- <el-tree-select
-        v-else
+        v-show="!readonly"
         v-model="psiId"
         :data="treeData"
         :render-after-expand="false"
         :props="{ value: 'id', label: 'sciName', children: 'children' }"
+        :disabled="disabled"
         node-key="uuid"
         value-key="id"
         clearable
-        style="width: 185px"
+        style="min-width: 185px"
         placeholder="选择预算类别"
         @change="onChange"
-      /> -->
+      >
+        <template #default="{ data: { sciName, treeType, availableAmount } }">
+          <span>{{ sciName }}</span>
+          <span v-if="treeType === 'item'" style="color: gray">（{{ availableAmount }}）</span>
+        </template>
+      </el-tree-select> -->
     </template>
   </van-skeleton>
 </template>
 
 <script setup lang="ts">
-import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
-import { getItemTreeByProjectIdAndDeptId } from '@/api/oa/business/purchase'
+import { isEmpty } from 'lodash-es'
+import { findNodeById } from '@/utils'
+import { getItemTreeByProjectOrDept } from '@/api/oa/business/purchase'
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string | number
-    readonly?: boolean
+const props = defineProps<{
+  modelValue?: string | number
+  readonly?: boolean
+  disabled?: boolean
+  params: {
+    type: string
     projectId?: string | number
-    deptId?: string | number
-  }>(),
-  {
-    modelValue: undefined,
-    readonly: false,
-  },
-)
+    deptId: string | number
+  }
+}>()
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
@@ -50,25 +55,17 @@ const psiId = ref(props.modelValue)
 const isLoading = ref(false)
 const treeData = ref([])
 
-// 只读回显
-const detail = asyncComputed(async () => {
-  isLoading.value = true
-  const obj = {} as ProjectSubjectItemTreeVO
-  if (props.readonly) {
-    if (props.modelValue && props.projectId && props.deptId) {
-      const { data } = await getItemTreeByProjectIdAndDeptId(props.projectId, props.deptId).finally(() => (isLoading.value = false))
-      const detail = data.find(e => e.id === props.modelValue) ?? []
-
-      Object.assign(obj, detail)
-    }
-  }
-  return obj
-})
-
 function onChange(val?: string | number) {
   emit('update:modelValue', val)
   emit('change', val)
 }
+
+const selectedLabel = computed(() => {
+  if (props.modelValue && !isEmpty(treeData.value)) {
+    return findNodeById(treeData.value, props.modelValue)?.sciName
+  }
+  return ''
+})
 
 watch(
   () => props.modelValue,
@@ -77,13 +74,11 @@ watch(
   },
 )
 
-// 项目预算类别获取
+// 查询参数变化
 watch(
-  () => props.projectId,
-  (val) => {
-    if (val && !props.readonly) {
-      getTree()
-    }
+  () => props.params,
+  () => {
+    getTree()
   },
   {
     immediate: true,
@@ -91,10 +86,15 @@ watch(
 )
 
 async function getTree() {
-  if (props.projectId && props.deptId) {
+  if (props.params) {
+    if (props.params.type === 'project' && isEmpty(props.params.projectId)) {
+      treeData.value = []
+      return false
+    }
+
     isLoading.value = true
-    const { data } = (await getItemTreeByProjectIdAndDeptId(props.projectId, props.deptId).finally(() => (isLoading.value = false))) ?? {}
-    treeData.value = proxy!.handleTree(data ?? [], 'uuid')
+    const { data } = (await getItemTreeByProjectOrDept(props.params).finally(() => (isLoading.value = false))) ?? {}
+    treeData.value = proxy.handleTree(data ?? [], 'uuid')
   }
 }
 </script>
