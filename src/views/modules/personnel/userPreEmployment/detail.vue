@@ -34,19 +34,19 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.isOwnerInterview" v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试：" input-align="right">
+      <van-field v-if="form.status !== '3'" v-model="form.isOwnerInterview" v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试：" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isOwnerInterview" />
         </template>
       </van-field>
 
-      <van-field v-model="form.isProbation" v-show-field="['isProbation', includeFields]" name="isProbation" label="是否有试用期：" input-align="right">
+      <van-field v-if="form.status !== '3'" v-model="form.isProbation" v-show-field="['isProbation', includeFields]" name="isProbation" label="是否有试用期：" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isProbation" />
         </template>
       </van-field>
 
-      <van-field v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)：" input-align="right" />
+      <van-field v-if="form.status !== '3'" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)：" input-align="right" />
 
       <div class="pt-2 pl-4 text-sm">
         <h4>持证情况：</h4>
