@@ -19,6 +19,10 @@ declare global {
 
   type KeysOfArray<T> = (keyof T)[]
 
+  type TrackFieldsFn<T> = (fields: KeysOfArray<T>) => void
+
+  type UpdateRuleRequiredFn = (field: string, required: boolean) => void
+
   interface Router extends VueRouter {
     find: (path: string) => RouteRecordRaw | undefined
     append: (

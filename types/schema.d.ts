@@ -27,9 +27,7 @@ declare global {
   declare interface PageData<T, D> {
     form: T
     queryParams: D
-    rules: {
-      [key: string]: FieldRule[]
-    }
+    rules: Record<string, FieldRule[]>
   }
 
   /**

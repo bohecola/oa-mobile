@@ -5,20 +5,22 @@
     </template>
     <template #default>
       <div v-if="readonly">
-        {{ detail?.deptName }}
+        {{ selectedLabel }}
       </div>
       <!-- <el-tree-select
-        v-else
-        v-model="id"
+        v-show="!readonly"
+        ref="TreeSelectRef"
+        v-model="ids"
         :data="data"
         :render-after-expand="false"
-        :check-strictly="true"
+        :check-strictly="multiple ? false : true"
         :filter-node-method="filterNodeMethod"
         :placeholder="placeholder"
+        :clearable="clearable"
+        :multiple="multiple"
         node-key="id"
         value-key="id"
         filterable
-        clearable
         @change="onChange"
       /> -->
     </template>
@@ -26,21 +28,23 @@
 </template>
 
 <script setup lang="ts">
-import { getDept } from '@/api/system/dept'
-import type { DeptVO } from '@/api/system/dept/types'
+import { isArray, isEmpty } from 'lodash-es'
 import type { DeptTreeOption } from '@/api/system/role/types'
 import { deptTreeSelect } from '@/api/system/user'
+import { treeToArray } from '@/utils'
+
+type DeptTreeSelectValue = string | number | (string | number)[]
 
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
     placeholder?: string
     readonly?: boolean
+    clearable?: boolean
+    multiple?: boolean
   }>(),
   {
-    modelValue: undefined,
     placeholder: '请选择部门',
-    readonly: false,
   },
 )
 
@@ -49,23 +53,21 @@ const emit = defineEmits(['update:modelValue', 'change'])
 // 节点数据加载状态
 const isLoading = ref(false)
 
-// 部门 id
-const id = ref(props.modelValue)
-
-// 只读回显
-const detail = asyncComputed(async () => {
-  const obj = {} as DeptVO
-  if (props.readonly) {
-    if (props.modelValue) {
-      const { data } = await getDept(props.modelValue)
-      Object.assign(obj, data)
-    }
-  }
-  return obj
-})
+const ids = ref<DeptTreeSelectValue>(deserialize(props.modelValue))
 
 // 节点数据
-const data = ref<DeptVO[]>([])
+const data = ref([])
+
+// 选中文字
+const selectedLabel = computed(() => {
+  if (props.modelValue) {
+    const dataArr = treeToArray<DeptTreeOption>(data.value)
+    const nodes = dataArr.filter(e => (isArray(ids.value) ? ids.value.includes(e.id) : e.id === ids.value))
+
+    return nodes.map(e => e.label).join('、')
+  }
+  return ''
+})
 
 // 筛选函数
 const filterNodeMethod = (value: string, data: DeptTreeOption) => data.label.includes(value)
@@ -78,15 +80,46 @@ async function getData() {
 }
 
 // change 事件
-function onChange(value: string | number) {
-  emit('update:modelValue', value)
-  emit('change', value)
+function onChange(value: (string | number) | (string | number)[]) {
+  const payload = serialize(value)
+
+  emit('update:modelValue', payload)
+  emit('change', payload)
+}
+
+function serialize(value: DeptTreeSelectValue) {
+  if (!isEmpty(value)) {
+    if (props.multiple) {
+      return (value as (string | number)[]).join(',')
+    }
+    else {
+      return value as string | number
+    }
+  }
+  else {
+    return undefined
+  }
+}
+
+function deserialize(value: string | number) {
+  if (value) {
+    if (props.multiple) {
+      // 兼容 id 为 100、101 这种 number 类型的情况
+      return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
+    }
+    else {
+      return value
+    }
+  }
+  else {
+    return undefined
+  }
 }
 
 watch(
   () => props.modelValue,
   (val) => {
-    id.value = val
+    ids.value = deserialize(val)
   },
 )
 
@@ -99,5 +132,6 @@ onMounted(() => {
 defineExpose({
   isLoading,
   data,
+  selectedLabel,
 })
 </script>

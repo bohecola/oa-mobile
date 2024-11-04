@@ -26,6 +26,7 @@
 </template>
 
 <script setup name="DailyWorkApply" lang="ts">
+import type { FieldRule } from 'vant'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyWorkTypeSelect from '../components/DailyWorkTypeSelect.vue'
@@ -43,21 +44,21 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const DailyWorkTypeSelectRef = ref<InstanceType<typeof DailyWorkTypeSelect> | null>()
 
 // 表单
-const { Form, form, isLoading, reset, workflowView } = useForm()
+const { Form, form, rules, isLoading, reset, workflowView } = useForm()
 
 // 流程节点 Key
-const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
+const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
 // 是否查看
-const isView = computed(() => proxy?.$route.query.type === 'view')
+const isView = computed(() => proxy.$route.query.type === 'view')
 // 日常事务类型选择器只读
-const dailyWorkTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy?.$route.query.type as string))
+const dailyWorkTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
 
-const baseFields = computed(() => {
-  return dailyWorkTypeSelectReadOnly.value ? [] : ['dailyWorkType'] as KeysOfArray<DailyWorkForm>
-})
+function getBaseFields() {
+  return dailyWorkTypeSelectReadOnly.value ? [] : (['dailyWorkType'] as KeysOfArray<DailyWorkForm>)
+}
 
 // 跟踪字段
-const trackedFields = ref<KeysOfArray<DailyWorkForm>>(baseFields.value)
+const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
 
 function handleDailyWorkTypeClick() {
   if (dailyWorkTypeSelectReadOnly.value) {
@@ -68,7 +69,14 @@ function handleDailyWorkTypeClick() {
 
 function onDailyWorkTypeBeforeFinish() {
   reset()
-  trackedFields.value = baseFields.value
+  trackedFields.value = getBaseFields()
+}
+
+// 更新规则
+function updateRuleRequired(field: string, required: boolean) {
+  (rules.value[field] as Array<FieldRule>).forEach((e) => {
+    e.required = required
+  })
 }
 
 // 依赖收集
@@ -97,6 +105,7 @@ provide('form', form)
 provide('isView', isView)
 provide('taskDefinitionKey', taskDefinitionKey)
 provide('trackFields', trackFields)
+provide('updateRuleRequired', updateRuleRequired)
 
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({

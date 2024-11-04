@@ -1,6 +1,25 @@
 interface BaseTreeNode<T> {
   children?: T[]
-  [key: string]: any
+}
+
+// 树转数组
+export function treeToArray<T extends BaseTreeNode<T>>(tree: T[]): T[] {
+  const result = []
+
+  function traverse(node: T) {
+    // 将当前节点添加到结果数组中
+    result.push({ ...node, children: undefined })
+
+    // 如果有子节点，则递归遍历子节点
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => traverse(child))
+    }
+  }
+
+  // 遍历整个树（支持多棵树情况）
+  tree.forEach(rootNode => traverse(rootNode))
+
+  return result
 }
 
 // 通过id查找树中的某个节点

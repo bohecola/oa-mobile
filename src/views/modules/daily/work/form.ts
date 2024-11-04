@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es'
-import type { FormInstance } from 'vant'
+import type { FieldRule, FormInstance } from 'vant'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { getDailyWork } from '@/api/oa/daily/work/index'
 import { useWorkflowViewData } from '@/hooks'
@@ -41,28 +41,30 @@ export function useForm() {
     ossIdList: undefined,
   }
 
+  const initRules: Record<string, FieldRule[]> = {
+    dailyWorkType: [{ required: true, message: '日常事务申请类型不能为空', trigger: 'onChange' }],
+    fileType: [{ required: true, message: '资料类型不能为空', trigger: 'onChange' }],
+    fileUseType: [{ required: true, message: '使用方式不能为空', trigger: 'onChange' }],
+    isYwlProject: [{ required: true, message: '是否运维类项目不能为空', trigger: 'onChange' }],
+    isPersonnelTransfer: [{ required: true, message: '是否涉及人员任命、调整不能为空', trigger: 'onChange' }],
+    customizeApprover: [{ required: true, message: '自定义审批人不能为空', trigger: 'onChange' }],
+    customizeTransactor: [{ required: true, message: '自定义办理人不能为空', trigger: 'onChange' }],
+    sealType: [{ required: true, message: '申请类型不能为空', trigger: 'onChange' }],
+    isReturnSeal: [{ required: true, message: '是否交回原印不能为空', trigger: 'onChange' }],
+    sealFileCategory: [{ required: true, message: '文件类别不能为空', trigger: 'onChange' }],
+    sealUseType: [{ required: true, message: '用印类型不能为空', trigger: 'onChange' }],
+    administrationFileType: [{ required: true, message: '申请资料不能为空', trigger: 'onChange' }],
+    isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onChange' }],
+    needDepts: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
+    isExistRegulations: [{ required: true, message: '是否存在违章不能为空', trigger: 'onChange' }],
+    isSeal: [{ required: true, message: '是否加盖公章不能为空', trigger: 'onChange' }],
+    reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
+  }
+
   // 表单数据
   const data = reactive<Omit<PageData<DailyWorkForm, any>, 'queryParams'>>({
-    form: { ...cloneDeep(initFormData) },
-    rules: {
-      dailyWorkType: [{ required: true, message: '日常事务申请类型不能为空', trigger: 'onChange' }],
-      fileType: [{ required: true, message: '资料类型不能为空', trigger: 'onChange' }],
-      fileUseType: [{ required: true, message: '使用方式不能为空', trigger: 'onChange' }],
-      isYwlProject: [{ required: true, message: '是否运维类项目不能为空', trigger: 'onChange' }],
-      isPersonnelTransfer: [{ required: true, message: '是否涉及人员任命、调整不能为空', trigger: 'onChange' }],
-      customizeApprover: [{ required: true, message: '自定义审批人不能为空', trigger: 'onChange' }],
-      customizeTransactor: [{ required: true, message: '自定义办理人不能为空', trigger: 'onChange' }],
-      sealType: [{ required: true, message: '申请类型不能为空', trigger: 'onChange' }],
-      isReturnSeal: [{ required: true, message: '是否交回原印不能为空', trigger: 'onChange' }],
-      sealFileCategory: [{ required: true, message: '文件类别不能为空', trigger: 'onChange' }],
-      sealUseType: [{ required: true, message: '用印类型不能为空', trigger: 'onChange' }],
-      administrationFileType: [{ required: true, message: '申请资料不能为空', trigger: 'onChange' }],
-      isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onChange' }],
-      needDepts: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
-      isExistRegulations: [{ required: true, message: '是否存在违章不能为空', trigger: 'onChange' }],
-      isSeal: [{ required: true, message: '是否加盖公章不能为空', trigger: 'onChange' }],
-      reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
-    },
+    form: cloneDeep(initFormData),
+    rules: cloneDeep(initRules),
   })
 
   // 响应式解构
@@ -76,8 +78,10 @@ export function useForm() {
 
   // 表单重置
   const reset = () => {
-    form.value = { ...cloneDeep(initFormData) }
+    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
+    // 重置规则
+    rules.value = cloneDeep(initRules)
   }
 
   // 回显

@@ -1,7 +1,7 @@
 <template>
   <van-field v-show-field="['needDepts', includeFields]" name="needDepts" label="需求部门：" input-align="right">
     <template #input>
-      <DeptSelect v-model="form.needDepts" readonly />
+      <DeptSelect v-model="form.needDepts" multiple readonly />
     </template>
   </van-field>
 
