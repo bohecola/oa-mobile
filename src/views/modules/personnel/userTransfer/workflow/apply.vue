@@ -1,13 +1,13 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_1ffykq7'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_1ffykq7'">
         <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
       <!-- 其他审批通用节点 -->
-      <div v-else v-loading="loading">
+      <div v-else>
         <detail ref="DetailOther" :include-fields="includeFields" :show-loading="false" />
       </div>
     </template>
@@ -87,9 +87,9 @@ async function handleApproval({ open }: ApprovalPayload) {
 // 挂载
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
-  console.log()
-
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
+
+  loading.value = true
   if (taskId || processInstanceId) {
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
@@ -105,22 +105,21 @@ onMounted(async () => {
   }
 
   nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval': {
-        try {
-          loading.value = true
-
+    try {
+      switch (type as string) {
+        case 'update':
+        case 'approval': {
           await DetailOther.value?.workflowView({ taskId, processInstanceId })
+
+          break
         }
-        finally {
-          loading.value = false
+        case 'view': {
+          await Detail.value?.workflowView?.({ taskId, processInstanceId })
         }
-        break
       }
-      case 'view': {
-        await Detail.value?.workflowView?.({ taskId, processInstanceId })
-      }
+    }
+    finally {
+      loading.value = false
     }
   })
 })

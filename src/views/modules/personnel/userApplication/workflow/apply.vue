@@ -1,5 +1,5 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <div v-if="isView">
       <detail ref="Detail" :include-fields="includeFieldsDetail" />
     </div>
@@ -204,8 +204,11 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
+
+  loading.value = true
+
   if (taskId || processInstanceId) {
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
@@ -220,29 +223,33 @@ onMounted(async () => {
   }
 
   nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval': {
-        try {
-          loading.value = true
-          await Detail.value?.workflowView({ taskId, processInstanceId })
+    try {
+      switch (type as string) {
+        case 'update':
+        case 'approval': {
+          try {
+            await Detail.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail2.value?.workflowView({ taskId, processInstanceId })
+            await Detail2.value?.workflowView({ taskId, processInstanceId })
 
-          await Upsert2.value?.workflowView({ taskId, processInstanceId })
+            await Upsert2.value?.workflowView({ taskId, processInstanceId })
 
-          await Detail3.value?.workflowView({ taskId, processInstanceId })
+            await Detail3.value?.workflowView({ taskId, processInstanceId })
 
-          await DetailOther.value?.workflowView({ taskId, processInstanceId })
+            await DetailOther.value?.workflowView({ taskId, processInstanceId })
+          }
+          finally {
+            loading.value = false
+          }
+          break
         }
-        finally {
-          loading.value = false
+        case 'view': {
+          await Detail.value?.workflowView?.({ taskId, processInstanceId })
         }
-        break
       }
-      case 'view': {
-        await Detail.value?.workflowView?.({ taskId, processInstanceId })
-      }
+    }
+    finally {
+      loading.value = false
     }
   })
 })

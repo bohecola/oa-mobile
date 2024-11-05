@@ -1,26 +1,26 @@
 <template>
-  <WorkflowPage :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
     <detail v-if="isView" ref="Detail" :include-fields="includeFields" />
 
     <template v-else>
       <!-- 发起流程 第一步节点 -->
-      <div v-if="taskDefinitionKey === 'Activity_1npxmwc'" v-loading="loading">
+      <div v-if="taskDefinitionKey === 'Activity_1npxmwc'">
         <!-- <Upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
       <!-- 部门经理会签需要选择交接人 详情--交接人--附件列表 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_1qpajzq'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_1qpajzq'">
         <detail ref="Detail1" :include-fields="includeFields1" :show-loading="false" />
       </div>
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_05cxsln'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_05cxsln'">
         <detail ref="Detail3" :include-fields="includeFields2" :show-loading="false" />
       </div>
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'" v-loading="loading">
+      <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'">
         <detail ref="Detail2" :include-fields="includeFields3" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
-      <div v-else v-loading="loading">
+      <div v-else>
         <detail ref="DetailOther" :include-fields="includeFields3" :show-loading="false" />
       </div>
     </template>
@@ -159,6 +159,8 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
+  loading.value = true
+
   if (taskId || processInstanceId) {
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
@@ -174,11 +176,10 @@ onMounted(async () => {
   }
 
   nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval': {
-        try {
-          loading.value = true
+    try {
+      switch (type as string) {
+        case 'update':
+        case 'approval': {
           // 部门经理人审批节点
           await Detail1.value?.workflowView({ taskId, processInstanceId })
 
@@ -189,15 +190,16 @@ onMounted(async () => {
           await Detail3.value?.workflowView({ taskId, processInstanceId })
 
           await DetailOther.value?.workflowView({ taskId, processInstanceId })
+
+          break
         }
-        finally {
-          loading.value = false
+        case 'view': {
+          await Detail.value?.workflowView?.({ taskId, processInstanceId })
         }
-        break
       }
-      case 'view': {
-        await Detail.value?.workflowView?.({ taskId, processInstanceId })
-      }
+    }
+    finally {
+      loading.value = false
     }
   })
 })
