@@ -1,7 +1,7 @@
 <template>
   <detail v-if="isView" />
   <template v-else>
-    <!-- 招待费用 -->
+    <!-- 安全类培训费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
       <!-- <upsert /> -->
     </div>
