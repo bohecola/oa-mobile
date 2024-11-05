@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es'
-import type { FormInstance } from 'vant'
+import type { FieldRule, FormInstance } from 'vant'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { getDailyFee } from '@/api/oa/daily/fee/index'
 import { useWorkflowViewData } from '@/hooks'
@@ -36,19 +36,21 @@ export function useForm() {
     remark: undefined,
   }
 
+  const initRules: Record<string, FieldRule[]> = {
+    subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
+    feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
+    projectId: [{ required: true, message: '项目不能为空', trigger: 'onChange' }],
+    subjectItemId: [{ required: true, message: '预算类别不能为空', trigger: 'onChange' }],
+    isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
+    certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
+    amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
+    reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
+  }
+
   // 表单数据
   const data = reactive<Omit<PageData<DailyFeeForm, any>, 'queryParams'>>({
-    form: { ...cloneDeep(initFormData) },
-    rules: {
-      subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
-      feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
-      projectId: [{ required: true, message: '项目不能为空', trigger: 'onChange' }],
-      subjectItemId: [{ required: true, message: '预算类别不能为空', trigger: 'onChange' }],
-      isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
-      certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
-      amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
-      reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
-    },
+    form: cloneDeep(initFormData),
+    rules: cloneDeep(initRules),
   })
 
   // 响应式解构
@@ -62,8 +64,10 @@ export function useForm() {
 
   // 表单重置
   const reset = () => {
-    form.value = { ...cloneDeep(initFormData) }
+    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
+    // 重置规则
+    rules.value = cloneDeep(initRules)
   }
 
   // 回显

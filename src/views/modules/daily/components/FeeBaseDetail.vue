@@ -35,8 +35,12 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.amount" v-show-field="['amount', includeFields]" label="金额：" name="amount" input-align="right" />
-
+  <van-field v-show-field="['amount', includeFields]" label="金额：" name="amount" input-align="right">
+    <template #input>
+      <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
+      <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+    </template>
+  </van-field>
   <BaseDetail :include-fields="includeFields" />
 </template>
 
