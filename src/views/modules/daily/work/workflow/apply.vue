@@ -20,6 +20,9 @@
         </van-field>
 
         <component :is="SubComponent[form.no]" :key="form.no" />
+        <p>customizeApprover: {{ form.customizeApprover }}</p>
+        <p>userId: {{ user.info.userId }}</p>
+        <p>{{ taskDefinitionKey === 'Activity_09pmxwl' && user.info.userId === form.customizeApprover }}</p>
       </van-cell-group>
     </van-form>
   </WorkflowPage>
@@ -147,6 +150,17 @@ const isEditNode = computed(() => {
   }
 })
 
+// 自定义审核人展示在PC端编辑提示
+watch(isEditNode, () => {
+  proxy?.$router.replace({
+    query: {
+      ...proxy?.$route.query,
+      taskDefinitionKey: taskDefinitionKey.value,
+      isEditNode: isEditNode.value,
+    },
+  })
+})
+
 // 挂载
 onMounted(async () => {
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
@@ -158,14 +172,6 @@ onMounted(async () => {
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
-
-    proxy?.$router.replace({
-      query: {
-        ...proxy?.$route.query,
-        taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: isEditNode.value,
-      },
-    })
   }
 
   nextTick(async () => {
