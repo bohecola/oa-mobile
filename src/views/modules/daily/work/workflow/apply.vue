@@ -20,9 +20,6 @@
         </van-field>
 
         <component :is="SubComponent[form.no]" :key="form.no" />
-        <p>customizeApprover: {{ form.customizeApprover }}</p>
-        <p>userId: {{ user.info.userId }}</p>
-        <p>{{ taskDefinitionKey === 'Activity_09pmxwl' && user.info.userId === form.customizeApprover }}</p>
       </van-cell-group>
     </van-form>
   </WorkflowPage>
