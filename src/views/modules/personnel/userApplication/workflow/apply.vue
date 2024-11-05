@@ -1,8 +1,6 @@
 <template>
   <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <div v-if="isView">
-      <detail ref="Detail" :include-fields="includeFieldsDetail" />
-    </div>
+    <detail v-if="isView" ref="Detail" :include-fields="includeFieldsDetail" :show-loading="false" />
 
     <template v-else>
       <!-- 发起流程 第一步节点 -->

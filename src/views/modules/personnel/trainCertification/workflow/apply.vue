@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <detail v-if="isView" ref="Detail" />
+    <detail v-if="isView" ref="Detail" :show-loading="false" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_0zbgk6r'">
