@@ -32,8 +32,9 @@ export function useForm() {
     isAdministration: undefined,
     certificateType: undefined,
     no: undefined,
-    componentNo: undefined,
     remark: undefined,
+    wfRemark: undefined,
+    ossIdList: undefined,
   }
 
   const initRules: Record<string, FieldRule[]> = {

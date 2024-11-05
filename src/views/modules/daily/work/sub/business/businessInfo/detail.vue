@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../components/BaseDetail.vue'
+import BaseDetail from '../../../../components/BaseDetail.vue'
 
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

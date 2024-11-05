@@ -111,10 +111,18 @@ export interface DailyFeeForm extends BaseEntity {
    */
   remark?: string
 
+  // 流程中表单的字段
+  /**
+   * 流程中申请事由备注
+   */
+  wfRemark?: string
+  /**
+   * 事务编码
+   */
   no?: string
-
-  componentNo?: string
-
+  /**
+   * 附件列表
+   */
   ossIdList?: string[]
 }
 

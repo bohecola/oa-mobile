@@ -4,17 +4,17 @@
       <van-cell-group inset class="!my-3">
         <van-field
           prop="dailyWorkType"
-          :label="`日常事务类型${dailyWorkTypeSelectReadOnly ? '：' : ''}`"
+          :label="`日常事务类型${dailyTypeSelectReadOnly ? '：' : ''}`"
           input-align="right"
-          @click="handleDailyWorkTypeClick"
+          @click="handleDailyTypeClick"
         >
           <template #input>
-            <DailyWorkTypeSelect
-              ref="DailyWorkTypeSelectRef"
+            <DailyTypeSelect
+              ref="DailyTypeSelectRef"
               v-model="form.dailyWorkType"
-              v-model:daily-work-no="form.no"
+              v-model:no="form.no"
               v-model:wf-remark="form.wfRemark"
-              @finish="onDailyWorkTypeBeforeFinish"
+              @before-finish="onDailyTypeBeforeFinish"
             />
           </template>
         </van-field>
@@ -29,7 +29,7 @@
 import type { FieldRule } from 'vant'
 import { useForm } from '../form'
 import SubComponent from '../sub'
-import DailyWorkTypeSelect from '../components/DailyWorkTypeSelect.vue'
+import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
@@ -41,7 +41,8 @@ type Entity = DailyWorkForm & { initiator: Initiator }
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const DailyWorkTypeSelectRef = ref<InstanceType<typeof DailyWorkTypeSelect> | null>()
+// 引用
+const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect> | null>()
 
 // 表单
 const { Form, form, rules, isLoading, reset, workflowView } = useForm()
@@ -51,23 +52,25 @@ const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
 // 是否查看
 const isView = computed(() => proxy.$route.query.type === 'view')
 // 日常事务类型选择器只读
-const dailyWorkTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
+const dailyTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
 
 function getBaseFields() {
-  return dailyWorkTypeSelectReadOnly.value ? [] : (['dailyWorkType'] as KeysOfArray<DailyWorkForm>)
+  return dailyTypeSelectReadOnly.value ? [] : (['dailyWorkType'] as KeysOfArray<DailyWorkForm>)
 }
 
 // 跟踪字段
 const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
 
-function handleDailyWorkTypeClick() {
-  if (dailyWorkTypeSelectReadOnly.value) {
+// 类型选择点击
+function handleDailyTypeClick() {
+  if (dailyTypeSelectReadOnly.value) {
     return false
   }
-  DailyWorkTypeSelectRef.value?.open()
+  DailyTypeSelectRef.value?.open()
 }
 
-function onDailyWorkTypeBeforeFinish() {
+// 类型选择完成
+function onDailyTypeBeforeFinish() {
   reset()
   trackedFields.value = getBaseFields()
 }

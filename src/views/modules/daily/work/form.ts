@@ -38,6 +38,7 @@ export function useForm() {
     reason: undefined,
     remark: undefined,
     no: undefined,
+    wfRemark: undefined,
     ossIdList: undefined,
   }
 

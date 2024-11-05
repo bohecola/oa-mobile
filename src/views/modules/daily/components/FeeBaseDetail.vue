@@ -27,6 +27,7 @@
       <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
     </template>
   </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
