@@ -124,9 +124,7 @@ watch(
 )
 
 onMounted(() => {
-  if (!props.readonly) {
-    getData()
-  }
+  getData()
 })
 
 defineExpose({
