@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 
 withDefaults(
@@ -21,4 +22,9 @@ withDefaults(
     includeFields: () => ['subjectType', 'projectId', 'deptId', 'subjectItemId', 'amount', 'certificateType', 'reason', 'ossIdList'],
   },
 )
+
+const form = inject<Ref<DailyFeeForm>>('form')
+
+// 指令
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 </script>
