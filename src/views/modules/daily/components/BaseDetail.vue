@@ -6,6 +6,7 @@
     input-align="right"
     value-class="flex-nowrap"
     :right-icon="form.wfRemark ? 'info-o' : ''"
+    @click-right-icon="handleIconClick"
   >
     <template #input>
       <div>
@@ -23,10 +24,11 @@
 
 <script setup lang="tsx">
 import { isEmpty } from 'lodash-es'
+import { showDialog } from 'vant'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
-import TextareaView from '@/components/TextareaView/index.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import TextareaView from '@/components/TextareaView/index.vue'
 
 withDefaults(
   defineProps<{
@@ -40,4 +42,11 @@ withDefaults(
 const form = inject<Ref<DailyWorkForm & DailyFeeForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm & DailyFeeForm>()
+
+function handleIconClick() {
+  showDialog({
+    title: '申请事由填写说明',
+    message: () => <TextareaView value={form.value.wfRemark} class="text-left" />,
+  })
+}
 </script>
