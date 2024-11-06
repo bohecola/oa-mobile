@@ -19,9 +19,9 @@ import detail from '../detail.vue'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import { useWorkflowViewData } from '@/hooks'
-import type { UserMessageAllVo } from '@/api/oa/personnel/userRegularization/types'
+import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'
 
-type Entity = UserMessageAllVo & { initiator: Initiator }
+type Entity = UserRegularizationForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
