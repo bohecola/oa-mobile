@@ -8,15 +8,14 @@ import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
 import { useStore } from '@/store'
 
-const globSettings = useGlobSettings()
+const { apiUrlPrefix, appClientId } = useGlobSettings()
+
+axios.defaults.headers['Content-Type'] = ContentTypeEnum.JSON
+axios.defaults.headers.clientid = appClientId
 
 // 请求实例
 const axiosInstance = axios.create({
-  baseURL: `${globSettings.apiUrl}${globSettings.apiUrlPrefix}`,
-  headers: {
-    'Content-Type': ContentTypeEnum.JSON,
-    'Clientid': globSettings.appClientId,
-  },
+  baseURL: `${apiUrlPrefix}`,
   timeout: 50 * 1000,
 })
 
@@ -127,6 +126,15 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error)
   },
 )
+
+export function globalHeaders() {
+  const { user } = useStore()
+
+  return {
+    Authorization: `Bearer ${user.token}`,
+    clientid: appClientId,
+  }
+}
 
 // 请求方法
 export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {

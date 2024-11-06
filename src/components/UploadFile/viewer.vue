@@ -21,7 +21,13 @@
       :title="doc.name"
       :is-left-click-back="false"
       @click-left="doc.visible = false"
-    />
+    >
+      <template #right>
+        <div class="flex gap-3">
+          <i class="i-material-symbols-download text-xl" @click="proxy?.$download.oss(doc.ossId)" />
+        </div>
+      </template>
+    </NavBar>
 
     <div v-loading="doc.loading" class="w-full h-[calc(100dvh-var(--van-nav-bar-height))] overflow-y-auto">
       <iframe ref="docIframe" :src="doc.url" class="border-none w-full h-full" />
@@ -35,7 +41,7 @@ import { isDocType, isTxtType, isVideoType } from './helper'
 import { encryptBase64 } from '@/utils/security'
 import { useGlobSettings } from '@/hooks'
 
-const { apiFilePreviewUrl } = useGlobSettings()
+const { previewUrl } = useGlobSettings()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const docIframe = ref<HTMLIFrameElement | null>()
@@ -81,19 +87,21 @@ function open(options: { file: any, ext: string }) {
 
   // 文档预览
   if (isDocType(ext) || isTxtType(ext)) {
+    // if (doc.ossId === ossId) {
+    //   doc.visible = true
+    //   return true
+    // }
+
     doc.visible = true
-
-    if (doc.ossId === ossId) {
-      return true
-    }
-
     doc.loading = true
     doc.name = name
     doc.ossId = ossId
-    doc.url = isTxtType(ext) ? url : `${apiFilePreviewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}`
+    doc.url = isTxtType(ext)
+      ? url
+      : `${previewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}&t=${Date.now()}`
 
     nextTick(() => {
-      docIframe.value!.onload = () => {
+      docIframe.value.onload = () => {
         doc.loading = false
       }
     })
