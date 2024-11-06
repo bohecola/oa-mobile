@@ -14,6 +14,7 @@ export type ViewOptions = Options
 type _UserTrainBoForm = Override<UserTrainBoForm, { trainDate: string[] }>
 
 export type _TrainCertificateForm = Override<TrainCertificateForm, { outTrain: boolean, holdCertification: boolean, amout: number }>
+
 // 表单
 export function useForm() {
   // 实例
@@ -22,35 +23,8 @@ export function useForm() {
   // 引用
   const Form = ref<FormInstance>()
 
-  // 初始数据
-  const initFormData: _TrainCertificateForm = {
-    id: undefined,
-    batchId: '',
-    userCertificateBo: [], // 持证
-    userTrainBo: {} as UserTrainBoForm, // 培训
-    outTrain: true, // 外部培训状态
-    holdCertification: true, // 持证状态
-    amout: 0, // 培训的金额
-  }
-
-  const userTrainBo: _UserTrainBoForm = {
-    id: 0,
-    type: '',
-    userId: '',
-    commander: '',
-    trainDate: [],
-    startDate: '',
-    endDate: '',
-    content: '',
-    isCertificate: undefined,
-    amout: undefined,
-    status: undefined,
-    result: '',
-    remark: undefined,
-  }
-
   const userCertificateBo: UserCertificateBo = {
-    id: 0,
+    id: undefined,
     userId: undefined,
     userName: undefined,
     type: undefined,
@@ -62,21 +36,46 @@ export function useForm() {
     endDate: undefined,
     remark: undefined,
     status: undefined,
-    certificateStatus: '',
+    certificateStatus: undefined,
     trainId: undefined,
+  }
+
+  // 初始数据
+  const initFormData: _TrainCertificateForm = {
+    id: undefined,
+    batchId: undefined,
+    userCertificateBo: [{ ...userCertificateBo }], // 持证
+    userTrainBo: { amout: 0 } as UserTrainBoForm, // 培训
+    outTrain: true, // 外部培训状态
+    holdCertification: true, // 持证状态
+    amout: undefined, // 费用
+  }
+
+  const userTrainBo: _UserTrainBoForm = {
+    id: undefined,
+    type: undefined,
+    userId: undefined,
+    commander: undefined,
+    trainDate: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    content: undefined,
+    isCertificate: undefined,
+    amout: 0,
+    status: undefined,
+    result: undefined,
+    remark: undefined,
   }
 
   // 表单数据
   const data = reactive<Omit<PageData<_TrainCertificateForm, object>, 'queryParams'>>({
     form: { ...cloneDeep(initFormData) },
     rules: {
-      userId: [{ required: true, message: '员工不能为空', trigger: 'onChange' }],
-      commander: [{ required: true, message: '负责人不能为空', trigger: 'onChange' }],
-      type: [{ required: true, message: '培训类型不能为空', trigger: 'onChange' }],
-      trainDate: [{ required: true, message: '培训日期不能为空', trigger: 'onChange' }],
-      Date: [{ required: true, message: '培训日期不能为空', trigger: 'onChange' }],
-      content: [{ required: true, message: '培训内容不能为空', trigger: 'onBlur' }],
-      result: [{ required: true, message: '培训结果不能为空', trigger: 'onChange' }],
+      'userTrainBo.userId': [{ required: true, message: '员工不能为空', trigger: 'onChange' }],
+      'userTrainBo.commander': [{ required: true, message: '负责人不能为空', trigger: 'onChange' }],
+      'userTrainBo.trainDate': [{ required: true, message: '培训日期不能为空', trigger: 'onChange' }],
+      'userTrainBo.result': [{ required: true, message: '培训结果不能为空', trigger: 'onChange' }],
+      'userTrainBo.content': [{ required: true, message: '培训内容不能为空', trigger: 'onBlur' }],
     },
   })
 

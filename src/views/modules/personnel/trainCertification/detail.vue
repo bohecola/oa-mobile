@@ -1,7 +1,7 @@
 <template>
   <div class="p-2">
     <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
-      <van-cell-group v-show-field="['userTrainBo', includeFields]" inset class="!my-3">
+      <van-cell-group inset class="!my-3">
         <div class="flex justify-start items-center mt-3">
           <van-checkbox v-model="form.outTrain" class="ml-4" icon-size="14px" shape="square" name="outTrain" disabled>
             <span class="text-[14px]">外部培训</span>
@@ -10,44 +10,49 @@
             <span class="text-[14px]"> 持有证件</span>
           </van-checkbox>
         </div>
+        <div v-if="form.userTrainBo">
+          <van-field v-show-field="['userId', includeFields]" name="userTrainBo.userId" label="员工：" input-align="right">
+            <template #input>
+              <UserSelect v-model="form.userTrainBo.userId" :multiple="true" />
+            </template>
+          </van-field>
+          <van-field v-show-field="['commander', includeFields]" name="userTrainBo.commander" label="负责人：" input-align="right">
+            <template #input>
+              <UserSelect v-model="form.userTrainBo.commander" :multiple="true" />
+            </template>
+          </van-field>
 
-        <van-field v-if="form.userTrainBo" name="userTrainBo.userId" label="员工：" input-align="right">
-          <template #input>
-            <UserSelect v-model="form.userTrainBo.userId " :multiple="true" />
-          </template>
-        </van-field>
-        <van-field v-if="form.userTrainBo" name="userTrainBo.commander" label="负责人：" input-align="right">
-          <template #input>
-            <UserSelect v-model="form.userTrainBo.commander" :multiple="true" />
-          </template>
-        </van-field>
+          <van-field v-show-field="['trainDate', includeFields]" name="userTrainBo.trainDate" label="培训日期：" input-align="right">
+            <template #input>
+              <span> {{ parseTime(form.userTrainBo.startDate, '{y}-{m}-{d}') }} - {{ parseTime(form.userTrainBo.endDate, '{y}-{m}-{d}') }}</span>
+            </template>
+          </van-field>
+          <van-field v-show-field="['result', includeFields]" name="userTrainBo.result" label="培训结果：" input-align="right">
+            <template #input>
+              <dict-tag :options="task_pass" :value="form.userTrainBo.result" />
+            </template>
+          </van-field>
 
-        <van-field v-if="form.userTrainBo" name="userTrainBo.trainDate" label="培训日期：" input-align="right">
-          <template #input>
-            <span> {{ parseTime(form.userTrainBo.startDate, '{y}-{m}-{d}') }} - {{ parseTime(form.userTrainBo.endDate, '{y}-{m}-{d}') }}</span>
-          </template>
-        </van-field>
-        <van-field v-if="form.userTrainBo" name="userTrainBo.result" label="培训结果：" input-align="right">
-          <template #input>
-            <dict-tag :options="task_pass" :value="form.userTrainBo.result" />
-          </template>
-        </van-field>
+          <van-field v-show-field="['amout', includeFields]" name="userTrainBo.amout" label="费用：" input-align="right">
+            <template #input>
+              <span class="mr-3">{{ Number(form.userTrainBo.amout).toFixed(2) }}</span>
+            </template>
+          </van-field>
 
-        <van-field v-if="form.userTrainBo" v-model="form.userTrainBo.amout" name="userTrainBo.amout" label="费用：" input-align="right" />
-
-        <van-field v-if="form.userTrainBo" v-model="form.userTrainBo.content" name="userTrainBo.content" label="培训内容：" input-align="right">
-          <template #input>
-            <TextareaView :value="form.userTrainBo.content" />
-          </template>
-        </van-field>
-        <van-field v-if="form.userTrainBo" v-model="form.userTrainBo.remark" name="userTrainBo.remark" label="备注：" input-align="right">
-          <template #input>
-            <TextareaView :value="form.userTrainBo.remark" />
-          </template>
-        </van-field>
+          <van-field v-show-field="['content', includeFields]" name="userTrainBo.content" label="培训内容：" input-align="right">
+            <template #input>
+              <TextareaView :value="form.userTrainBo.content" />
+            </template>
+          </van-field>
+          <van-field v-show-field="['remark', includeFields]" name="userTrainBo.remark" label="备注：" input-align="right">
+            <template #input>
+              <TextareaView :value="form.userTrainBo.remark" />
+            </template>
+          </van-field>
+        </div>
       </van-cell-group>
 
-      <div v-if="form.userCertificateBo" v-show-field="['userCertificateBo', includeFields]">
+      <div v-if="form.userCertificateBo">
         <div class="px-6 py-2 text-sm text-gray-500">
           持有证件
         </div>
@@ -149,21 +154,20 @@
   </div>
 </template>
 
-<script name="TrainCertificationDetail" setup lang="ts">
+<script setup lang="ts">
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import type { TrainCertificateForm } from '@/api/oa/personnel/trainCertification/types'
-import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
+import type { UserTrainBoForm } from '@/api/oa/personnel/trainCertification/types'
 
 withDefaults(
   defineProps<{
-    includeFields?: (keyof TrainCertificateForm)[]
+    includeFields?: (keyof UserTrainBoForm)[]
     showLoading?: boolean
   }>(),
   {
     includeFields: () => {
       const { form } = useForm()
-      return Object.keys(form.value) as (keyof TrainCertificateForm)[]
+      return Object.keys(form.value.userTrainBo) as (keyof UserTrainBoForm)[]
     },
     showLoading: true,
   },
@@ -176,7 +180,7 @@ const { oa_training_type, task_pass, sys_normal_disable } = toRefs<any>(
 // 表单
 const { Form, form, isLoading, updateLoading, reset, workflowView } = useForm()
 
-const vShowField = createFieldVisibilityDirective<UserTransferForm>()
+const vShowField = createFieldVisibilityDirective<UserTrainBoForm>()
 
 defineExpose({
   isLoading,

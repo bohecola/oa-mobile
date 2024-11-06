@@ -1,14 +1,14 @@
 <template>
   <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <detail v-if="isView" ref="Detail" :show-loading="false" />
+    <detail v-if="isView" ref="Detail" :show-loading="false" :include-fields="includeFields" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_0zbgk6r'">
-        <!-- <upsert ref="Upsert" :show-loading="false" /> -->
+        <!-- <upsert ref="Upsert" :show-loading="false" :include-fields="includeFields" /> -->
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>
-        <detail ref="DetailOther" :show-loading="false" />
+        <detail ref="DetailOther" :show-loading="false" :include-fields="includeFields" />
       </div>
     </template>
   </WorkflowPage>
@@ -22,7 +22,7 @@ import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import { useWorkflowViewData } from '@/hooks'
-import type { TrainCertificateForm } from '@/api/oa/personnel/trainCertification/types'
+import type { TrainCertificateForm, UserTrainBoForm } from '@/api/oa/personnel/trainCertification/types'
 
   type Entity = TrainCertificateForm & { initiator: Initiator }
 
@@ -50,12 +50,14 @@ const isView = computed(() => proxy?.$route.query.type === 'view')
 
 // 字段
 const includeFields = ref(
-  filterTruthyKeys<_TrainCertificateForm>({
-    batchId: true,
-    userCertificateBo: true, // 持证
-    userTrainBo: true, // 培训
-    outTrain: true, // 外部培训状态
-    holdCertification: true, // 持证状态
+  filterTruthyKeys<UserTrainBoForm>({
+    userId: true,
+    commander: true,
+    trainDate: true,
+    content: true,
+    amout: true,
+    result: true,
+    remark: false,
   }),
 )
 
