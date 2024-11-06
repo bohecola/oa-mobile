@@ -97,7 +97,7 @@ function open(options: { file: any, ext: string }) {
     doc.name = name
     doc.ossId = ossId
     doc.url = isTxtType(ext)
-      ? url
+      ? `${url}?t=${Date.now()}`
       : `${previewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}&t=${Date.now()}`
 
     nextTick(() => {
