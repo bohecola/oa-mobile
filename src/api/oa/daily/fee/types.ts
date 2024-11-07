@@ -120,6 +120,11 @@ export interface DailyFeeForm extends BaseEntity {
    * 事务编码
    */
   no?: string
+
+  /**
+   * 根事务编码
+   */
+  rootNo?: string
   /**
    * 附件列表
    */

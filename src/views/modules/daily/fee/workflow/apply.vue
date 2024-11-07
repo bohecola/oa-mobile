@@ -18,7 +18,7 @@
               ref="DailyTypeSelectRef"
               v-model="form.feeType"
               v-model:no="form.no"
-              v-model:rootNo="rootNo"
+              v-model:rootNo="form.rootNo"
               v-model:wf-remark="form.wfRemark"
               type="1"
               @before-finish="onDailyTypeBeforeFinish"
@@ -26,7 +26,7 @@
           </template>
         </van-field>
 
-        <component :is="SubComponent[rootNo]" :key="form.no" />
+        <component :is="SubComponent[form.rootNo]" :key="form.no" />
       </van-cell-group>
     </van-form>
   </WorkflowPage>

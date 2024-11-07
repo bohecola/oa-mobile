@@ -32,6 +32,7 @@ export function useForm() {
     isAdministration: undefined,
     certificateType: undefined,
     no: undefined,
+    rootNo: undefined,
     remark: undefined,
     wfRemark: undefined,
     ossIdList: undefined,
