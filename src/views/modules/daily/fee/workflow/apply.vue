@@ -26,7 +26,7 @@
           </template>
         </van-field>
 
-        <component :is="SubComponent[rootNo]" :key="rootNo" />
+        <component :is="SubComponent[rootNo]" :key="form.no" />
       </van-cell-group>
     </van-form>
   </WorkflowPage>
