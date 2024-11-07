@@ -30,18 +30,20 @@ import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import TextareaView from '@/components/TextareaView/index.vue'
 
+type DailyForm = DailyWorkForm & DailyFeeForm
+
 withDefaults(
   defineProps<{
-    includeFields?: KeysOfArray<DailyWorkForm & DailyFeeForm>
+    includeFields?: KeysOfArray<DailyForm>
   }>(),
   {
     includeFields: () => ['dailyWorkType', 'feeType', 'reason', 'ossIdList'],
   },
 )
 
-const form = inject<Ref<DailyWorkForm & DailyFeeForm>>('form')
+const form = inject<Ref<DailyForm>>('form')
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyWorkForm & DailyFeeForm>()
+const vShowField = createFieldVisibilityDirective<DailyForm>()
 
 function handleIconClick() {
   showDialog({
