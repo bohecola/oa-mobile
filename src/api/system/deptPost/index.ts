@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import request from '@/service/request'
-import type { SysDeptPostForm, SysDeptPostQuery, SysDeptPostVO } from '@/api/oa/personnel/sysDeptPost/types'
+import type { SysDeptPostForm, SysDeptPostQuery, SysDeptPostVO } from '@/api/system/deptPost/types'
 
 /**
  * 查询部门岗位配置列表
@@ -10,7 +10,7 @@ import type { SysDeptPostForm, SysDeptPostQuery, SysDeptPostVO } from '@/api/oa/
 
 export function listSysDeptPost(query?: SysDeptPostQuery): AxiosPromise<SysDeptPostVO[]> {
   return request({
-    url: '/oa/personnel/sysDeptPost/list',
+    url: '/system/deptPost/list',
     method: 'get',
     params: query,
   })
@@ -22,7 +22,7 @@ export function listSysDeptPost(query?: SysDeptPostQuery): AxiosPromise<SysDeptP
  */
 export function getSysDeptPost(id: string | number): AxiosPromise<SysDeptPostVO> {
   return request({
-    url: `/oa/personnel/sysDeptPost/${id}`,
+    url: `/system/deptPost/${id}`,
     method: 'get',
   })
 }
@@ -33,7 +33,7 @@ export function getSysDeptPost(id: string | number): AxiosPromise<SysDeptPostVO>
  */
 export function addSysDeptPost(data: SysDeptPostForm) {
   return request({
-    url: '/oa/personnel/sysDeptPost',
+    url: '/system/deptPost/',
     method: 'post',
     data,
   })
@@ -45,7 +45,7 @@ export function addSysDeptPost(data: SysDeptPostForm) {
  */
 export function updateSysDeptPost(data: SysDeptPostForm) {
   return request({
-    url: '/oa/personnel/sysDeptPost',
+    url: '/system/deptPost/',
     method: 'put',
     data,
   })
@@ -57,7 +57,7 @@ export function updateSysDeptPost(data: SysDeptPostForm) {
  */
 export function delSysDeptPost(id: string | number | Array<string | number>) {
   return request({
-    url: `/oa/personnel/sysDeptPost/${id}`,
+    url: `/system/deptPost/${id}`,
     method: 'delete',
   })
 }
