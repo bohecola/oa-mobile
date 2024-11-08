@@ -13,38 +13,37 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.oldCompanyId" v-show-field="['oldCompanyId', includeFields]" name="oldCompanyId" label="原工作公司：" input-align="right">
+      <van-field v-model="form.oldCompanyId" v-show-field="['oldCompanyId', includeFields]" name="oldCompanyId" label="原公司：" input-align="right">
         <template #input>
-          <DeptSelect v-model="form.oldCompanyId" readonly />
+          <CompanySelect v-model="form.oldCompanyId" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.oldDeptId" v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原工作部门：" input-align="right">
+
+      <van-field v-model="form.oldDeptId" v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门：" input-align="right">
         <template #input>
           <DeptSelect v-model="form.oldDeptId" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.oldPostId" v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原工作岗位：" input-align="right">
+      <van-field v-model="form.oldPostId" v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原岗位：" input-align="right">
         <template #input>
-          <span>{{ getPostNameById(form.oldPostId as string) }}
-          </span>
+          <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple readonly />
         </template>
       </van-field>
-      <van-field v-model="form.newCompanyId" v-show-field="['newCompanyId', includeFields]" name="newCompanyId" label="新工作公司：" input-align="right">
+
+      <van-field v-model="form.newCompanyId" v-show-field="['newCompanyId', includeFields]" name="newCompanyId" label="新公司：" input-align="right">
         <template #input>
-          <DeptSelect v-model="form.newCompanyId" readonly />
+          <CompanySelect v-model="form.newCompanyId" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.newDeptId" v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新工作部门：" input-align="right">
+      <van-field v-model="form.newDeptId" v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门：" input-align="right">
         <template #input>
           <DeptSelect v-model="form.newDeptId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.newPostId" v-show-field="['newPostId', includeFields]" name="newPostId" label="新工作岗位：" input-align="right">
+      <van-field v-model="form.newPostId" v-show-field="['newPostId', includeFields]" name="newPostId" label="新岗位：" input-align="right">
         <template #input>
-          <span>
-            {{ getPostNames(form.newPostId as string) }}
-          </span>
+          <PostSelect v-model="form.newPostId" :dept-id="form.newDeptId" multiple readonly />
         </template>
       </van-field>
 
@@ -79,6 +78,8 @@
 
 <script setup name="userTransferDetail" lang="ts">
 import { isEmpty } from 'lodash-es'
+import CompanySelect from '../components/ComanySelect.vue'
+import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
@@ -101,30 +102,12 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 调动类型类别
 const { oa_transfer_type } = toRefs<any>(proxy?.useDict('oa_transfer_type', 'oa_transfer_status'))
 
-const { Form, form, isLoading, postList, view, reset, workflowView } = useForm()
+const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
 
-// 获取旧岗位名称
-function getPostNameById(postId: string | number) {
-  const post = postList.value.find(post => post.postId === postId)
-  return post ? post.postName : ''
-}
-// 获取新岗位名称
-function getPostNames(postIds: string) {
-  if (typeof postIds === 'string') {
-    // 将字符串按逗号分割为数组
-    const idArray = postIds.split(',')
-    // 使用 map 通过 getPostNameById 获取每个 ID 对应的名称
-    const postNames = idArray.map(id => getPostNameById(id.trim()))
-    // 将名称用逗号连接成一个字符串返回
-    return postNames.join(', ')
-  }
-  return ''
-}
-
 defineExpose({
-  postList,
+
   view,
   reset,
   workflowView,

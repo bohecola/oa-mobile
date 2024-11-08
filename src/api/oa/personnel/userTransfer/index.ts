@@ -71,3 +71,11 @@ export function getUserInfoAll(userId: string | number) {
     method: 'get',
   })
 }
+
+// 根据公司id获取对应的部门
+export function getCompanyDept(deptId: string | number) {
+  return request({
+    url: `/system/dept/getCompanyDept/${deptId}`,
+    method: 'get',
+  })
+}

@@ -25,19 +25,9 @@ export interface UserTransferVO {
   oldCompanyId: string | number
 
   /**
-   * 原工作公司名称
-   */
-  oldCompanyName: string
-
-  /**
    * 原工作部门
    */
   oldDeptId: string | number
-
-  /**
-   * 原工作部门名称
-   */
-  oldDeptName: string
 
   /**
    * 原工作岗位
@@ -55,19 +45,9 @@ export interface UserTransferVO {
   newCompanyId: string | number
 
   /**
-   * 新工作公司名称
-   */
-  newCompanyName: string
-
-  /**
    * 新原工作部门
    */
   newDeptId: string | number
-
-  /**
-   * 新工作部门名称
-   */
-  newDeptName: string
 
   /**
    * 新原工作岗位
@@ -127,11 +107,6 @@ export interface UserTransferForm extends BaseEntity {
   oldCompanyId: string | number
 
   /**
-   * 原工作公司名称
-   */
-  oldCompanyName?: string
-
-  /**
    * 类型;调动、借调
    */
   type?: string
@@ -140,11 +115,6 @@ export interface UserTransferForm extends BaseEntity {
    * 原工作部门
    */
   oldDeptId?: string | number
-
-  /**
-   * 原工作部门名称
-   */
-  oldDeptName?: string
 
   /**
    * 原工作岗位
@@ -162,19 +132,10 @@ export interface UserTransferForm extends BaseEntity {
   newCompanyId?: string | number
 
   /**
-   * 原工作名称
-   */
-  newCompanyName?: string
-
-  /**
    * 新原工作部门
    */
   newDeptId?: string | number
 
-  /**
-   * 原部门名称
-   */
-  newDeptName?: string
   /**
    * 新原工作岗位
    */

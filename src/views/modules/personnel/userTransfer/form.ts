@@ -1,5 +1,5 @@
 import type { FormInstance } from 'vant'
-import { listSysDeptPost } from '@/api/oa/personnel/sysDeptPost'
+import { listSysDeptPost } from '@/api/system/deptPost'
 import { getUserTransfer } from '@/api/oa/personnel/userTransfer'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { useWorkflowViewData } from '@/hooks'
@@ -80,18 +80,9 @@ export function useForm() {
     reset()
     const res = await getUserTransfer(id)
     Object.assign(form.value, res.data)
-    // 返回的是字符串100，但是回显的时候要转化成数字
-    // form.value.newCompanyId = Number(form.value.newCompanyId)
-    // if (form.value.newPostId && typeof form.value.newPostId == 'string') {
-    //   form.value.newPostId = (form.value.newPostId as string).split(',')
-    // }
-    // else if (!form.value.newPostId) {
-    //   form.value.newPostId = []
-    // }
     isLoading.value = false
   }
 
-  const postList = ref<any[]>([])
   // 工作流中回显
   async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
@@ -107,9 +98,6 @@ export function useForm() {
         Object.assign(form.value, {
           ...entity,
         })
-        console.log(form.value, 'form.value')
-        const res = await listSysDeptPost({ deptId: form.value.newDeptId, pageNum: 1, pageSize: 10 })
-        postList.value = res.rows
       })
     }
     catch (err) {
@@ -127,7 +115,6 @@ export function useForm() {
     rules,
     isLoading,
     updateLoading,
-    postList,
     reset,
     view,
     // submit,
