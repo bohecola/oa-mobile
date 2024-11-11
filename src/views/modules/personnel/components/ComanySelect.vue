@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 // import { isArray, isEmpty } from 'lodash-es'
+import { isEmpty, isNumber } from 'lodash-es'
 import { getCompany } from '@/api/oa/personnel/userContract'
 import type { DeptVO } from '@/api/system/dept/types'
 
@@ -62,22 +63,25 @@ const selectedLabel = computed(() => {
 })
 
 function onChange(value: (string | number) | (string | number)[]) {
-  // const payload = serialize(value);
+  const payload = serialize(value)
   emit('update:modelValue', value)
   emit('change', value)
 }
 
-// function serialize(value: CompanySelectValue) {
-//   if (!isEmpty(value)) {
-//     if (props.multiple) {
-//       return (value as (string | number)[]).join(',');
-//     } else {
-//       return value as string | number;
-//     }
-//   } else {
-//     return undefined;
-//   }
-// }
+function serialize(value: CompanySelectValue) {
+  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
+  if (!isEmpty(value) || isNumber(value)) {
+    if (props.multiple) {
+      return (value as (string | number)[]).join(',')
+    }
+    else {
+      return value as string | number
+    }
+  }
+  else {
+    return undefined
+  }
+}
 
 function deserialize(value: string | number) {
   if (value) {

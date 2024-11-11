@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNumber } from 'lodash-es'
 
 const props = withDefaults(
   defineProps<{
@@ -39,7 +39,8 @@ function onChange(val: string | string[]) {
 }
 
 function serialize(value?: string | string[]) {
-  if (!isEmpty(value)) {
+  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
+  if (!isEmpty(value) || isNumber(value)) {
     if (props.multiple) {
       return (value as string[]).join(',')
     }

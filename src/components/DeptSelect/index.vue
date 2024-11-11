@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { isArray, isEmpty } from 'lodash-es'
+import { isArray, isEmpty, isNumber } from 'lodash-es'
 import type { DeptTreeOption } from '@/api/system/role/types'
 import { deptTreeSelect } from '@/api/system/user'
 import { treeToArray } from '@/utils'
@@ -88,7 +88,8 @@ function onChange(value: (string | number) | (string | number)[]) {
 }
 
 function serialize(value: DeptTreeSelectValue) {
-  if (!isEmpty(value)) {
+  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
+  if (!isEmpty(value) || isNumber(value)) {
     if (props.multiple) {
       return (value as (string | number)[]).join(',')
     }
