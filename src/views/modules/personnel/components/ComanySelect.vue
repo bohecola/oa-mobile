@@ -1,7 +1,7 @@
 <template>
-  <el-skeleton :loading="isLoading" animated class="h-8 flex items-center">
+  <van-skeleton :loading="isLoading" animated class="h-8 flex items-center">
     <template #template>
-      <el-skeleton-item variant="rect" class="!h-[60%]" />
+      <van-skeleton-paragraph variant="rect" class="!h-[60%]" />
     </template>
     <template #default>
       <div v-if="readonly">
@@ -11,7 +11,7 @@
         <el-option v-for="item in data" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
       </el-select> -->
     </template>
-  </el-skeleton>
+  </van-skeleton>
 </template>
 
 <script setup lang="ts">
@@ -50,7 +50,7 @@ async function getData() {
   isLoading.value = true
   const res = await getCompany('0')
   data.value = res.data
-  // isLoading.value = false
+  isLoading.value = false
 }
 
 const selectedLabel = computed(() => {

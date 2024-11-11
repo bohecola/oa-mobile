@@ -1,7 +1,7 @@
 <template>
-  <el-skeleton :loading="isLoading" animated class="h-8 flex items-center">
+  <van-skeleton :loading="isLoading" animated class="h-8 flex items-center">
     <template #template>
-      <el-skeleton-item variant="rect" class="!h-[60%]" />
+      <van-skeleton-paragraph variant="rect" class="!h-[60%]" />
     </template>
     <template #default>
       <div v-if="readonly">
@@ -11,7 +11,7 @@
         <el-option v-for="item in data" :key="item.postId" :label="item.postName" :value="item.postId" />
       </el-select> -->
     </template>
-  </el-skeleton>
+  </van-skeleton>
 </template>
 
 <script setup lang="ts">

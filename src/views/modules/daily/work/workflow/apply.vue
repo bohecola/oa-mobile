@@ -156,6 +156,8 @@ watch(isEditNode, () => {
       isEditNode: isEditNode.value,
     },
   })
+}, {
+  immediate: true,
 })
 
 // 挂载
