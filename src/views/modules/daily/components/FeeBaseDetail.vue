@@ -1,17 +1,17 @@
 <template>
-  <van-field v-show-field="['subjectType', includeFields]" label="预算类型：" prop="subjectType" input-align="right">
+  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" prop="subjectType" input-align="right">
     <template #input>
       <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目：" name="projectId" input-align="right">
+  <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目" name="projectId" input-align="right">
     <template #input>
       <dict-tag :options="projectOptions" :value="form.projectId" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['subjectItemId', includeFields]" label="预算类别：" name="subjectItemId" input-align="right">
+  <van-field v-show-field="['subjectItemId', includeFields]" label="预算类别" name="subjectItemId" input-align="right">
     <template #input>
       <PurchaseCategorySelect
         v-model="form.subjectItemId"
@@ -21,7 +21,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['amount', includeFields]" label="金额：" name="amount" input-align="right">
+  <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
     <template #input>
       <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
       <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>

@@ -9,7 +9,7 @@
       <van-cell-group inset class="!my-3">
         <van-field
           prop="dailyWorkType"
-          :label="`日常费用类型${dailyTypeSelectReadOnly ? '：' : ''}`"
+          label="日常费用类型"
           input-align="right"
           @click="handleDailyTypeClick"
         >

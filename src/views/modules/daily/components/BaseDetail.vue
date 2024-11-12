@@ -2,7 +2,7 @@
   <van-field
     v-show-field="['reason', includeFields]"
     name="reason"
-    label="申请事由："
+    label="申请事由"
     input-align="right"
     value-class="flex-nowrap"
     :right-icon="form.wfRemark ? 'info-o' : ''"

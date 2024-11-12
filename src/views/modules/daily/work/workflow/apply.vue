@@ -4,7 +4,7 @@
       <van-cell-group inset class="!my-3">
         <van-field
           prop="dailyWorkType"
-          :label="`日常事务类型${dailyTypeSelectReadOnly ? '：' : ''}`"
+          label="日常事务类型"
           input-align="right"
           @click="handleDailyTypeClick"
         >

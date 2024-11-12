@@ -1,48 +1,48 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
-    <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="名称：" input-align="right" />
-    <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="合同编号：" input-align="right" />
+    <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="名称" input-align="right" />
+    <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="合同编号" input-align="right" />
 
-    <van-field v-model="form.partyA" v-show-field="['partyA', includeFields]" name="partyA" label="甲方：" input-align="right">
+    <van-field v-model="form.partyA" v-show-field="['partyA', includeFields]" name="partyA" label="甲方" input-align="right">
       <template #input>
         <dict-tag :options="scOptions" :value="form.partyA" />
       </template>
     </van-field>
-    <van-field v-model="form.partyB" v-show-field="['partyB', includeFields]" name="partyB" label="乙方：" input-align="right">
+    <van-field v-model="form.partyB" v-show-field="['partyB', includeFields]" name="partyB" label="乙方" input-align="right">
       <template #input>
         <dict-tag :options="scOptions" :value="form.partyB" />
       </template>
     </van-field>
 
     <template v-if="contractMode !== 'two'">
-      <van-field v-if="contractMode === 'three' || contractMode === 'four'" v-model="form.partyC" v-show-field="['partyC', includeFields]" name="partyC" label="丙方：" input-align="right">
+      <van-field v-if="contractMode === 'three' || contractMode === 'four'" v-model="form.partyC" v-show-field="['partyC', includeFields]" name="partyC" label="丙方" input-align="right">
         <template #input>
           <dict-tag :options="scOptions" :value="form.partyC" />
         </template>
       </van-field>
-      <van-field v-if="contractMode === 'four'" v-model="form.partyD" v-show-field="['partyD', includeFields]" name="partyD" label="丁方：" input-align="right">
+      <van-field v-if="contractMode === 'four'" v-model="form.partyD" v-show-field="['partyD', includeFields]" name="partyD" label="丁方" input-align="right">
         <template #input>
           <dict-tag :options="scOptions" :value="form.partyD" />
         </template>
       </van-field>
     </template>
 
-    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门：" input-align="right">
+    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门" input-align="right">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />
       </template>
     </van-field>
-    <van-field v-model="form.projectName" v-show-field="['projectName', includeFields]" name="projectName" label="项目：" input-align="right">
+    <van-field v-model="form.projectName" v-show-field="['projectName', includeFields]" name="projectName" label="项目" input-align="right">
       <template #input>
         <dict-tag :options="projectOptions" :value="form.projectName" />
       </template>
     </van-field>
-    <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="合同类型：" input-align="right">
+    <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="合同类型" input-align="right">
       <template #input>
         <dict-tag :options="oa_contract_type" :value="form.type" />
       </template>
     </van-field>
-    <van-field v-model="form.category" v-show-field="['category', includeFields]" name="category" label="合同类别：" input-align="right">
+    <van-field v-model="form.category" v-show-field="['category', includeFields]" name="category" label="合同类别" input-align="right">
       <template #input>
         <template v-if="form.type === 'in'">
           <dict-tag :options="oa_contract_category_in" :value="form.category" />
@@ -55,19 +55,19 @@
         </template>
       </template>
     </van-field>
-    <van-field v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式：" input-align="right">
+    <van-field v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
       <template #input>
         <dict-tag :options="oa_contract_review_way" :value="form.reviewWay" />
       </template>
     </van-field>
 
-    <van-field v-model="form.amount" v-show-field="['amount', includeFields]" name="amount" label="合同金额：" input-align="right" />
-    <van-field v-model="form.invoiceType" v-show-field="['invoiceType', includeFields]" name="invoiceType" label="发票类型：" input-align="right">
+    <van-field v-model="form.amount" v-show-field="['amount', includeFields]" name="amount" label="合同金额" input-align="right" />
+    <van-field v-model="form.invoiceType" v-show-field="['invoiceType', includeFields]" name="invoiceType" label="发票类型" input-align="right">
       <template #input>
         <dict-tag :options="oa_contract_invoice_type" :value="form.invoiceType" />
       </template>
     </van-field>
-    <van-field v-model="form.paymentWay" v-show-field="['paymentWay', includeFields]" name="paymentWay" label="付款方式：" input-align="right" />
+    <van-field v-model="form.paymentWay" v-show-field="['paymentWay', includeFields]" name="paymentWay" label="付款方式" input-align="right" />
 
     <div v-show-field="['taxRate', includeFields]" class="mb-6">
       <van-cell-group title="金额/增值税率">
@@ -82,22 +82,22 @@
       </van-cell-group>
     </div>
 
-    <van-field v-model="form.startDate" v-show-field="['startDate', includeFields]" name="startDate" label="开始日期：" input-align="right">
+    <van-field v-model="form.startDate" v-show-field="['startDate', includeFields]" name="startDate" label="开始日期" input-align="right">
       <template #input>
         {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
-    <van-field v-model="form.endDate" v-show-field="['endDate', includeFields]" name="endDate" label="结束日期：" input-align="right">
+    <van-field v-model="form.endDate" v-show-field="['endDate', includeFields]" name="endDate" label="结束日期" input-align="right">
       <template #input>
         {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
-    <van-field v-model="form.signDate" v-show-field="['signDate', includeFields]" name="signDate" label="签订日期：" input-align="right">
+    <van-field v-model="form.signDate" v-show-field="['signDate', includeFields]" name="signDate" label="签订日期" input-align="right">
       <template #input>
         {{ parseTime(form.signDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
-    <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="合同描述：" input-align="right">
+    <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="合同描述" input-align="right">
       <template #input>
         <TextareaView :value="form.description" />
       </template>

@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['isAdministration', includeFields]" label="行政部协助：" name="isAdministration" input-align="right">
+  <van-field v-show-field="['isAdministration', includeFields]" label="行政部协助" name="isAdministration" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isAdministration" readonly />
     </template>

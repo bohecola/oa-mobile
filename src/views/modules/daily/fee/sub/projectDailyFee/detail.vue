@@ -1,5 +1,5 @@
 <template>
-  <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型：" name="certificateType" input-align="right">
+  <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="right">
     <template #input>
       <DictSelect v-model="form.certificateType" dict-type="oa_project_daily_fee_certificate_type" multiple readonly />
     </template>

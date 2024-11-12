@@ -1,88 +1,88 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="9em">
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['subjectType', includeFields]" label="预算类型：" name="subjectType" input-align="right">
+      <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
         <template #input>
           <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
         </template>
       </van-field>
-      <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目：" name="projectId" input-align="right">
+      <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目" name="projectId" input-align="right">
         <template #input>
           <dict-tag :options="projectOptions" :value="form.projectId" />
         </template>
       </van-field>
-      <van-field v-show-field="['contractId', includeFields]" label="收入合同：" name="contractId" input-align="right">
+      <van-field v-show-field="['contractId', includeFields]" label="收入合同" name="contractId" input-align="right">
         <template #input>
           <ContractSelect v-model="form.contractId" readonly />
         </template>
       </van-field>
-      <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况：" name="contractExecute" input-align="right">
+      <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
         <template #input>
           <dict-tag :options="oa_contract_execute_situation" :value="form.contractExecute" />
         </template>
       </van-field>
-      <van-field v-show-field="['type', includeFields]" label="采购类型：" name="type" input-align="right">
+      <van-field v-show-field="['type', includeFields]" label="采购类型" name="type" input-align="right">
         <template #input>
           <dict-tag :options="oa_purchase_type" :value="form.type" />
         </template>
       </van-field>
-      <van-field v-show-field="['businessCategory', includeFields]" label="业务类别：" name="businessCategory" input-align="right">
+      <van-field v-show-field="['businessCategory', includeFields]" label="业务类别" name="businessCategory" input-align="right">
         <!-- 如果选择了项目，则默认项目的业务类型，如果没有项目则可选：管理、销售、研发 -->
         <template #input>
           <dict-tag :options="form.projectId ? oa_project_business_type : oa_purchase_business_type" :value="form.businessCategory" />
         </template>
       </van-field>
-      <van-field v-show-field="['objectCategory', includeFields]" label="物品类别：" name="objectCategory" input-align="right">
+      <van-field v-show-field="['objectCategory', includeFields]" label="物品类别" name="objectCategory" input-align="right">
         <template #input>
           <dict-tag :options="oa_purchase_object_category" :value="form.objectCategory" />
         </template>
       </van-field>
       <!-- 项目为空时显示，可选值有：工程施工、劳务外包、技术支持、租赁、其他 -->
-      <van-field v-if="!form.projectId" v-show-field="['serviceCategory', includeFields]" label="服务类别：" name="serviceCategory" input-align="right">
+      <van-field v-if="!form.projectId" v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
         <template #input>
           <dict-tag :options="oa_purchase_service_category" :value="form.serviceCategory" />
         </template>
       </van-field>
       <!-- 项目为空 并且 服务类别为租赁时显示，可选值有：房屋租赁、车辆租赁、其他 -->
-      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型：" name="leaseType" input-align="right">
+      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
         <template #input>
           <dict-tag :options="oa_purchase_lease_type" :value="form.leaseType" />
         </template>
       </van-field>
       <!-- 项目为空 并且 服务类别为租赁时显示，可选值：是、否 -->
-      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金：" name="isDeposit" input-align="right">
+      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isDeposit" />
         </template>
       </van-field>
-      <van-field v-show-field="['amount', includeFields]" label="金额：" name="amount" input-align="right">
+      <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
         <template #input>
           <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
           <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
         </template>
       </van-field>
-      <van-field v-show-field="['realAmount', includeFields]" label="实际金额：" name="amount" input-align="right">
+      <van-field v-show-field="['realAmount', includeFields]" label="实际金额" name="amount" input-align="right">
         <template #input>
           <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
           <span v-if="form.realAmount" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
         </template>
       </van-field>
-      <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算：" name="isOwnerSettlement" input-align="right">
+      <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算" name="isOwnerSettlement" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isOwnerSettlement" />
         </template>
       </van-field>
-      <van-field v-show-field="['description', includeFields]" label="采购说明：" name="description" input-align="right">
+      <van-field v-show-field="['description', includeFields]" label="采购说明" name="description" input-align="right">
         <template #input>
           <TextareaView :value="form.description" />
         </template>
       </van-field>
-      <van-field v-show-field="['file', includeFields]" label="申购内容附件：" name="file" input-align="right">
+      <van-field v-show-field="['file', includeFields]" label="申购内容附件" name="file" input-align="right">
         <template #input>
           <UploadFile v-model="form.file" readonly :card-size="60" />
         </template>
       </van-field>
-      <van-field v-show-field="['remark', includeFields]" label="备注：" name="remark" input-align="right">
+      <van-field v-show-field="['remark', includeFields]" label="备注" name="remark" input-align="right">
         <template #input>
           <TextareaView :value="form.remark" />
         </template>
@@ -195,13 +195,13 @@
     </div>
 
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同：" name="purchaseContractIds" input-align="right">
+      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同" name="purchaseContractIds" input-align="right">
         <template #input>
           <ContractSelect v-model="form.purchaseContractIds" readonly multiple />
         </template>
       </van-field>
 
-      <van-field v-show-field="['checkFiles', includeFields]" label="验收附件：" name="checkFiles" input-align="right">
+      <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="right">
         <template #input>
           <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
         </template>

@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['contractCategory', includeFields]" label="销售合同类别：" name="contractCategory" input-align="right">
+  <van-field v-show-field="['contractCategory', includeFields]" label="销售合同类别" name="contractCategory" input-align="right">
     <template #input>
       <DictSelect v-model="form.contractCategory" dict-type="oa_contract_category_in" multiple readonly />
     </template>

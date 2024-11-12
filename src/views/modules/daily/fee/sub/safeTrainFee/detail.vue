@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['certificateType', includeFields]" label="证件类型：" name="certificateType" input-align="right">
+  <van-field v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="right">
     <template #input>
       <DictSelect v-model="form.certificateType" dict-type="oa_security_train_certificate_type" multiple readonly />
     </template>

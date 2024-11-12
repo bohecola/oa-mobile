@@ -1,23 +1,23 @@
 <template>
-  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人：" name="customizeApprover" input-align="right">
+  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="right">
     <template #input>
       <UserSelect v-model="form.customizeApprover" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['customizeTransactor', includeFields]" label="办理人：" input-align="right">
+  <van-field v-show-field="['customizeTransactor', includeFields]" label="办理人" input-align="right">
     <template #input>
       <UserSelect v-model="form.customizeTransactor" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型：" input-align="right">
+  <van-field v-show-field="['fileType', includeFields]" label="资料类型" input-align="right">
     <template #input>
       <DictSelect v-model="form.fileType" dict-type="oa_file_type" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章：" input-align="right">
+  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isSeal" readonly />
     </template>

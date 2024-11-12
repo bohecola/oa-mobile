@@ -1,51 +1,51 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em" :colon="true">
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['parentId', includeFields]" name="parentId" label="上级部门名称：" input-align="right">
+      <van-field v-show-field="['parentId', includeFields]" name="parentId" label="上级部门名称" input-align="right">
         <template #input>
           <DeptSelect v-model="form.parentId" readonly />
         </template>
       </van-field>
 
-      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称：" input-align="right">
+      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="部门类型：" input-align="right">
+      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="部门类型" input-align="right">
         <template #input>
           <dict-tag :options="sys_dept_type" :value="form.type" />
         </template>
       </van-field>
 
-      <van-field v-model="form.deptCategory" v-show-field="['deptCategory', includeFields]" name="deptCategory" label="类型编码：" input-align="right" />
+      <van-field v-model="form.deptCategory" v-show-field="['deptCategory', includeFields]" name="deptCategory" label="类型编码" input-align="right" />
 
-      <van-field v-show-field="['leader', includeFields]" name="leader" label="负责人：" input-align="right">
+      <van-field v-show-field="['leader', includeFields]" name="leader" label="负责人" input-align="right">
         <template #input>
           <UserSelect v-model="form.leader" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.redFile" v-show-field="['redFile', includeFields]" name="redFile" label="红头文件：" input-align="right">
+      <van-field v-model="form.redFile" v-show-field="['redFile', includeFields]" name="redFile" label="红头文件" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.redFile" />
         </template>
       </van-field>
 
-      <van-field v-model="form.responsibility" v-show-field="['responsibility', includeFields]" name="responsibility" label="部门职能：" input-align="right">
+      <van-field v-model="form.responsibility" v-show-field="['responsibility', includeFields]" name="responsibility" label="部门职能" input-align="right">
         <template #input>
           <TextareaView :value="form.responsibility" />
         </template>
       </van-field>
 
-      <van-field v-model="form.purview" v-show-field="['purview', includeFields]" name="purview" label="部门权限：" input-align="right">
+      <van-field v-model="form.purview" v-show-field="['purview', includeFields]" name="purview" label="部门权限" input-align="right">
         <template #input>
           <TextareaView :value="form.purview" />
         </template>
       </van-field>
 
-      <van-field v-model="form.adress" v-show-field="['adress', includeFields]" name="adress" label="地址：" input-align="right">
+      <van-field v-model="form.adress" v-show-field="['adress', includeFields]" name="adress" label="地址" input-align="right">
         <template #input>
           <TextareaView :value="form.adress" />
         </template>

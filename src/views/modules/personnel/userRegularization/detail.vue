@@ -1,29 +1,29 @@
 <template>
   <van-form ref="Form" v-loading="isLoading" readonly label-width="8em">
     <van-cell-group inset class="!my-3">
-      <van-field v-model="form.userName" v-show-field="['userId', includeFields]" name="userName" label="员工：" input-align="right" />
+      <van-field v-model="form.userName" v-show-field="['userId', includeFields]" name="userName" label="员工" input-align="right" />
 
-      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称：" input-align="right">
+      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.postId" v-show-field="['userId', includeFields]" name="postName" label="岗位名称：" input-align="right" />
+      <van-field v-model="form.postId" v-show-field="['userId', includeFields]" name="postName" label="岗位名称" input-align="right" />
 
-      <van-field v-show-field="['type', includeFields]" name="type" label="提前转正：" input-align="right">
+      <van-field v-show-field="['type', includeFields]" name="type" label="提前转正" input-align="right">
         <template #input>
           <dict-tag :options="sysYesNo" :value="form.type" />
         </template>
       </van-field>
 
-      <van-cell v-show-field="['files', includeFields]" title="附件：" input-align="right">
+      <van-cell v-show-field="['files', includeFields]" title="附件" input-align="right">
         <template #value>
           <UploadFile v-model="form.files" readonly :card-size="60" />
         </template>
       </van-cell>
 
-      <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="描述：" input-align="right">
+      <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="描述" input-align="right">
         <template #input>
           <TextareaView :value="form.description" />
         </template>

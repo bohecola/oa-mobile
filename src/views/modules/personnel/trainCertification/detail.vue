@@ -11,40 +11,40 @@
           </van-checkbox>
         </div>
         <div v-if="form.userTrainBo">
-          <van-field v-show-field="['userId', includeFields]" name="userTrainBo.userId" label="员工：" input-align="right">
+          <van-field v-show-field="['userId', includeFields]" name="userTrainBo.userId" label="员工" input-align="right">
             <template #input>
               <UserSelect v-model="form.userTrainBo.userId" :multiple="true" />
             </template>
           </van-field>
-          <van-field v-show-field="['commander', includeFields]" name="userTrainBo.commander" label="负责人：" input-align="right">
+          <van-field v-show-field="['commander', includeFields]" name="userTrainBo.commander" label="负责人" input-align="right">
             <template #input>
               <UserSelect v-model="form.userTrainBo.commander" :multiple="true" />
             </template>
           </van-field>
 
-          <van-field v-show-field="['trainDate', includeFields]" name="userTrainBo.trainDate" label="培训日期：" input-align="right">
+          <van-field v-show-field="['trainDate', includeFields]" name="userTrainBo.trainDate" label="培训日期" input-align="right">
             <template #input>
               <span> {{ parseTime(form.userTrainBo.startDate, '{y}-{m}-{d}') }} - {{ parseTime(form.userTrainBo.endDate, '{y}-{m}-{d}') }}</span>
             </template>
           </van-field>
-          <van-field v-show-field="['result', includeFields]" name="userTrainBo.result" label="培训结果：" input-align="right">
+          <van-field v-show-field="['result', includeFields]" name="userTrainBo.result" label="培训结果" input-align="right">
             <template #input>
               <dict-tag :options="task_pass" :value="form.userTrainBo.result" />
             </template>
           </van-field>
 
-          <van-field v-show-field="['amout', includeFields]" name="userTrainBo.amout" label="费用：" input-align="right">
+          <van-field v-show-field="['amout', includeFields]" name="userTrainBo.amout" label="费用" input-align="right">
             <template #input>
               <span class="mr-3">{{ Number(form.userTrainBo.amout).toFixed(2) }}</span>
             </template>
           </van-field>
 
-          <van-field v-show-field="['content', includeFields]" name="userTrainBo.content" label="培训内容：" input-align="right">
+          <van-field v-show-field="['content', includeFields]" name="userTrainBo.content" label="培训内容" input-align="right">
             <template #input>
               <TextareaView :value="form.userTrainBo.content" />
             </template>
           </van-field>
-          <van-field v-show-field="['remark', includeFields]" name="userTrainBo.remark" label="备注：" input-align="right">
+          <van-field v-show-field="['remark', includeFields]" name="userTrainBo.remark" label="备注" input-align="right">
             <template #input>
               <TextareaView :value="form.userTrainBo.remark" />
             </template>
