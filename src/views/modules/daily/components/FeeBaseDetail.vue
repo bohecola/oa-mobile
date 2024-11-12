@@ -23,8 +23,10 @@
 
   <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
     <template #input>
-      <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
-      <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+      <div class="flex items-baseline">
+        <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
+        <span v-if="isNumber(form.amount)" class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+      </div>
     </template>
   </van-field>
 
@@ -33,6 +35,7 @@
 
 <script setup lang="ts">
 import nzh from 'nzh'
+import { isNumber } from 'lodash-es'
 import BaseDetail from './BaseDetail.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

@@ -57,14 +57,18 @@
       </van-field>
       <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
         <template #input>
-          <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
-          <span class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+          <div class="flex items-baseline">
+            <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
+            <span v-if="isNumber(form.amount)" class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+          </div>
         </template>
       </van-field>
       <van-field v-show-field="['realAmount', includeFields]" label="实际金额" name="amount" input-align="right">
         <template #input>
-          <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
-          <span v-if="form.realAmount" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
+          <div class="flex items-baseline">
+            <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
+            <span v-if="isNumber(form.realAmount)" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
+          </div>
         </template>
       </van-field>
       <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算" name="isOwnerSettlement" input-align="right">
@@ -216,7 +220,7 @@
 
 <script setup lang="ts">
 import nzh from 'nzh'
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNumber } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ContractSelect from '../components/ContractSelect.vue'
 import { useForm } from './form'
