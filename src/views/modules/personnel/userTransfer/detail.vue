@@ -21,7 +21,7 @@
 
       <van-field v-model="form.oldDeptId" v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门" input-align="right">
         <template #input>
-          <DeptSelect v-model="form.oldDeptId" readonly />
+          <DeptCascader v-model="form.oldDeptId" :company-id="form.oldCompanyId" readonly />
         </template>
       </van-field>
       <van-field v-model="form.oldPostId" v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原岗位" input-align="right">
@@ -37,7 +37,7 @@
       </van-field>
       <van-field v-model="form.newDeptId" v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门" input-align="right">
         <template #input>
-          <DeptSelect v-model="form.newDeptId" readonly />
+          <DeptCascader v-model="form.newDeptId" :company-id="form.newCompanyId" readonly />
         </template>
       </van-field>
 
@@ -79,6 +79,7 @@
 <script setup name="userTransferDetail" lang="ts">
 import { isEmpty } from 'lodash-es'
 import CompanySelect from '../components/ComanySelect.vue'
+import DeptCascader from '../components/DeptCascader.vue'
 import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

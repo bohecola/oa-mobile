@@ -1,6 +1,7 @@
 import type { AxiosPromise } from 'axios'
 import request from '@/service/request'
 import type { UserTransferForm, UserTransferQuery, UserTransferVO } from '@/api/oa/personnel/userTransfer/types'
+import type { DeptVO } from '@/api/system/dept/types'
 
 /**
  * 查询员工调动列表
@@ -73,7 +74,7 @@ export function getUserInfoAll(userId: string | number) {
 }
 
 // 根据公司id获取对应的部门
-export function getCompanyDept(deptId: string | number) {
+export function getCompanyDept(deptId: string | number): AxiosPromise<DeptVO[]> {
   return request({
     url: `/system/dept/getCompanyDept/${deptId}`,
     method: 'get',

@@ -92,6 +92,10 @@ function serialize(value: PostSelectValue) {
 function deserialize(value: string | number) {
   if (value) {
     if (props.multiple) {
+      // 如果是多选，只有一个值是数字时返回原值
+      if (isNumber(value)) {
+        return value as number
+      }
       // 兼容 id 为 100、101 这种 number 类型的情况
       return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
     }
