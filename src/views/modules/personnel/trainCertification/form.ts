@@ -13,8 +13,7 @@ export type ViewOptions = Options
 
 type _UserTrainBoForm = Override<UserTrainBoForm, { trainDate: string[] }>
 
-export type _TrainCertificateForm = Override<TrainCertificateForm, { outTrain: boolean, holdCertification: boolean, amout: number }>
-
+export type _TrainCertificateForm = Override<TrainCertificateForm, { categories: string[], amout: number }>
 // 表单
 export function useForm() {
   // 实例
@@ -46,9 +45,9 @@ export function useForm() {
     batchId: undefined,
     userCertificateBo: [{ ...userCertificateBo }], // 持证
     userTrainBo: { amout: 0 } as UserTrainBoForm, // 培训
-    outTrain: true, // 外部培训状态
-    holdCertification: true, // 持证状态
+    categories: ['0', '1'], // 外部培训,持有证件状态
     amout: undefined, // 费用
+    ossIdList: [],
   }
 
   const userTrainBo: _UserTrainBoForm = {

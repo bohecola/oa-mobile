@@ -2,15 +2,12 @@
   <div class="p-2">
     <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
       <van-cell-group inset class="!my-3">
-        <div class="flex justify-start items-center mt-3">
-          <van-checkbox v-model="form.outTrain" class="ml-4" icon-size="14px" shape="square" name="outTrain" disabled>
-            <span class="text-[14px]">外部培训</span>
+        <van-checkbox-group v-model="form.categories" direction="horizontal" class="mt-3 ml-4 text-[14px]" disabled>
+          <van-checkbox v-for="item in categoryOptions" :key="item.value" :name="item.value" :label="item.label" :value="item.value" icon-size="16px">
+            {{ item.label }}
           </van-checkbox>
-          <van-checkbox v-model="form.holdCertification" class="ml-4" icon-size="14px" shape="square" name="holdCertification" disabled>
-            <span class="text-[14px]"> 持有证件</span>
-          </van-checkbox>
-        </div>
-        <div v-if="form.userTrainBo">
+        </van-checkbox-group>
+        <div v-if="form.categories.includes('0')">
           <van-field v-show-field="['userId', includeFields]" name="userTrainBo.userId" label="员工" input-align="right">
             <template #input>
               <UserSelect v-model="form.userTrainBo.userId" :multiple="true" />
@@ -24,7 +21,7 @@
 
           <van-field v-show-field="['trainDate', includeFields]" name="userTrainBo.trainDate" label="培训日期" input-align="right">
             <template #input>
-              <span> {{ parseTime(form.userTrainBo.startDate, '{y}-{m}-{d}') }} - {{ parseTime(form.userTrainBo.endDate, '{y}-{m}-{d}') }}</span>
+              <span> {{ parseTime(form.userTrainBo.startDate, '{y}-{m}-{d}') }} ~ {{ parseTime(form.userTrainBo.endDate, '{y}-{m}-{d}') }}</span>
             </template>
           </van-field>
           <van-field v-show-field="['result', includeFields]" name="userTrainBo.result" label="培训结果" input-align="right">
@@ -52,7 +49,7 @@
         </div>
       </van-cell-group>
 
-      <div v-if="form.userCertificateBo">
+      <div v-if="form.categories.includes('1')">
         <div class="px-6 py-2 text-sm text-gray-500">
           持有证件
         </div>
@@ -181,6 +178,11 @@ const { oa_training_type, task_pass, sys_normal_disable } = toRefs<any>(
 const { Form, form, isLoading, updateLoading, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserTrainBoForm>()
+
+const categoryOptions = [
+  { label: '外部培训', value: '0' },
+  { label: '持有证件', value: '1' },
+]
 
 defineExpose({
   isLoading,

@@ -47,6 +47,8 @@ export interface TrainCertificateForm {
    * 员工培训ID
    */
   userTrainId?: number
+
+  ossIdList?: []
 }
 
 /**
