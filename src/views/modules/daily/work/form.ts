@@ -35,6 +35,7 @@ export function useForm() {
     administrationFileType: undefined,
     isUseSeal: undefined,
     isExistRegulations: undefined,
+    recipient: undefined,
     reason: undefined,
     remark: undefined,
     no: undefined,
@@ -58,6 +59,7 @@ export function useForm() {
     isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onChange' }],
     needDepts: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
     isExistRegulations: [{ required: true, message: '是否存在违章不能为空', trigger: 'onChange' }],
+    recipient: [{ required: true, message: '接收人不能为空', trigger: 'onChange' }],
     isSeal: [{ required: true, message: '是否加盖公章不能为空', trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
   }

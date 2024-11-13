@@ -5,6 +5,12 @@
     </template>
   </van-field>
 
+  <van-field v-show-field="['recipient', includeFields]" name="recipient" label="接收人" input-align="right">
+    <template #input>
+      <UserSelect v-model="form.recipient" readonly />
+    </template>
+  </van-field>
+
   <van-field v-show-field="['isExistRegulations', includeFields]" label="是否存在违章" name="isExistRegulations" input-align="right">
     <template #input>
       <YesNoSwitch v-model="form.isExistRegulations" readonly />
@@ -25,7 +31,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['needDepts', 'isExistRegulations', 'reason', 'ossIdList'],
+    includeFields: () => ['needDepts', 'recipient', 'isExistRegulations', 'reason', 'ossIdList'],
   },
 )
 

@@ -192,6 +192,11 @@ export interface DailyWorkForm extends BaseEntity {
   isExistRegulations?: string
 
   /**
+   * 行政类：车辆移交申请，选择接收人
+   */
+  recipient?: string
+
+  /**
    * 销售合同类别
    */
   contractCategory?: string
