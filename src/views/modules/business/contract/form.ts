@@ -210,7 +210,7 @@ export function useForm() {
   // }
 
   // 工作流中回显
-  async function workflowView(entity: any, options?: ViewOptions) {
+  function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
     try {
       reset()
