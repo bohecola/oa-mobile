@@ -2,7 +2,6 @@ import { cloneDeep } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { getPurchase } from '@/api/oa/business/purchase'
-import { useWorkflowViewData } from '@/hooks'
 import { useStore } from '@/store'
 
 export interface Options<T = any> {
@@ -194,16 +193,10 @@ export function useForm() {
   // }
 
   // 工作流中回显
-  async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
+  async function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
-    let res: any
-
     try {
       reset()
-      isLoading.value = true
-      res = await useWorkflowViewData({ taskId, processInstanceId })
-      const { entity } = res.data
-
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
@@ -214,10 +207,7 @@ export function useForm() {
       console.error(err)
       fail?.(err)
     }
-    finally {
-      isLoading.value = false
-    }
-    success?.(res.data)
+    success?.(entity)
   }
 
   return {

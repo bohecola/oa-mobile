@@ -2,7 +2,6 @@ import type { FormInstance } from 'vant'
 import { showFailToast } from 'vant'
 import { getContract } from '@/api/oa/business/contract'
 import type { ContractForm } from '@/api/oa/business/contract/types'
-import { useWorkflowViewData } from '@/hooks'
 
 export type _ContractForm = Override<ContractForm, { taxRate: { amount?: number, taxRate?: number }[] }>
 export type ContractMode = 'two' | 'three' | 'four'
@@ -211,15 +210,10 @@ export function useForm() {
   // }
 
   // 工作流中回显
-  async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
+  async function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
-    let res: any
-
     try {
-      isLoading.value = true
       reset()
-      res = await useWorkflowViewData({ taskId, processInstanceId })
-      const { entity } = res.data
       setContractMode(entity.partyD ? 'four' : entity.partyC ? 'three' : 'two')
       nextTick(() => {
         Object.assign(form.value, {
@@ -233,10 +227,7 @@ export function useForm() {
       console.error(err)
       fail?.(err)
     }
-    finally {
-      isLoading.value = false
-    }
-    success?.(res.data)
+    success?.(entity)
   }
 
   return {

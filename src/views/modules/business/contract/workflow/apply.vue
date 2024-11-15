@@ -179,44 +179,41 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
-  loading.value = true
-  const res = await useWorkflowViewData({ taskId, processInstanceId })
-  const { entity, task } = res.data
+  if (taskId || processInstanceId) {
+    loading.value = true
+    const res = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task } = res.data
 
-  submitFormData.value.variables.entity = entity
-  taskDefinitionKey.value = task.taskDefinitionKey
+    submitFormData.value.variables.entity = entity
+    taskDefinitionKey.value = task.taskDefinitionKey
 
-  proxy?.$router.replace({
-    query: {
-      ...proxy?.$route.query,
-      taskDefinitionKey: taskDefinitionKey.value,
-      isEditNode: (taskDefinitionKey.value === 'Activity_0bj6sxt') ? 'true' : 'false',
-    },
-  })
+    proxy?.$router.replace({
+      query: {
+        ...proxy?.$route.query,
+        taskDefinitionKey: taskDefinitionKey.value,
+        isEditNode: (taskDefinitionKey.value === 'Activity_0bj6sxt') ? 'true' : 'false',
+      },
+    })
 
-  nextTick(async () => {
-    try {
-      switch (type as string) {
-        case 'update':
-        case 'approval': {
-          await Upsert.value?.workflowView({ taskId, processInstanceId })
-
-          await Upsert2.value?.workflowView({ taskId, processInstanceId })
-
-          await Detail2.value?.workflowView({ taskId, processInstanceId })
-
-          await DetailOther.value?.workflowView({ taskId, processInstanceId })
-
-          break
-        }
-        case 'view': {
-          await Detail.value?.workflowView?.({ taskId, processInstanceId })
+    nextTick(() => {
+      try {
+        switch (type as string) {
+          case 'update':
+          case 'approval':
+            Upsert.value?.workflowView(entity)
+            Upsert2.value?.workflowView(entity)
+            Detail2.value?.workflowView(entity)
+            DetailOther.value?.workflowView(entity)
+            break
+          case 'view':
+            Detail.value?.workflowView?.(entity)
+            break
         }
       }
-    }
-    finally {
-      loading.value = false
-    }
-  })
+      finally {
+        loading.value = false
+      }
+    })
+  }
 })
 </script>

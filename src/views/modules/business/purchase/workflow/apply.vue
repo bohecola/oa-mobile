@@ -272,9 +272,8 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy!.$route.query
 
-  loading.value = true
-
   if (taskId || processInstanceId) {
+    loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
 
@@ -288,37 +287,30 @@ onMounted(async () => {
         isEditNode: (['Activity_11sjm5p', 'Activity_0qbyt2w', 'Activity_0ccirhe'].includes(taskDefinitionKey.value as string) ? 'true' : 'false'),
       },
     })
-  }
 
-  nextTick(async () => {
-    try {
-      switch (type as string) {
-        case 'update':
-        case 'approval': {
-          await Upsert.value?.workflowView({ taskId, processInstanceId })
-
-          await AttachmentListDetail.value?.workflowView({ taskId, processInstanceId })
-
-          await ExecuteDetail.value?.workflowView({ taskId, processInstanceId })
-          await ExecuteUpsert.value?.workflowView({ taskId, processInstanceId })
-
-          await CheckDetail.value?.workflowView({ taskId, processInstanceId })
-          await CheckUpsert.value?.workflowView({ taskId, processInstanceId })
-
-          await ReCheckDetail.value?.workflowView({ taskId, processInstanceId })
-
-          await CommonDetail.value?.workflowView({ taskId, processInstanceId })
-
-          break
-        }
-        case 'view': {
-          await Detail.value?.workflowView({ taskId, processInstanceId })
+    nextTick(() => {
+      try {
+        switch (type as string) {
+          case 'update':
+          case 'approval':
+            Upsert.value?.workflowView({ taskId, processInstanceId })
+            AttachmentListDetail.value?.workflowView({ taskId, processInstanceId })
+            ExecuteDetail.value?.workflowView({ taskId, processInstanceId })
+            ExecuteUpsert.value?.workflowView({ taskId, processInstanceId })
+            CheckDetail.value?.workflowView({ taskId, processInstanceId })
+            CheckUpsert.value?.workflowView({ taskId, processInstanceId })
+            ReCheckDetail.value?.workflowView({ taskId, processInstanceId })
+            CommonDetail.value?.workflowView({ taskId, processInstanceId })
+            break
+          case 'view':
+            Detail.value?.workflowView({ taskId, processInstanceId })
+            break
         }
       }
-    }
-    finally {
-      loading.value = false
-    }
-  })
+      finally {
+        loading.value = false
+      }
+    })
+  }
 })
 </script>
