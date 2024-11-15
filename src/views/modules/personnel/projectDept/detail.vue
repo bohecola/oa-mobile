@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em" :colon="true">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['parentId', includeFields]" name="parentId" label="上级部门名称" input-align="right">
         <template #input>

@@ -77,10 +77,10 @@ const list = computed(() => {
 
 function handleView(row: TaskVO) {
   const routerJumpVo = reactive<RouterJumpVo>({
-    wfDefinitionConfigVo: row.wfDefinitionConfigVo!,
-    wfNodeConfigVo: row.wfNodeConfigVo!,
-    businessKey: row.businessKey!,
-    businessStatus: row.businessStatus!,
+    wfDefinitionConfigVo: row.wfDefinitionConfigVo,
+    wfNodeConfigVo: row.wfNodeConfigVo,
+    businessKey: row.businessKey,
+    businessStatus: row.businessStatus,
     taskId: row.id as string,
     processInstanceId: '',
     type: 'approval',

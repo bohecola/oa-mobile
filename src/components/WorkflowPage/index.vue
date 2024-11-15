@@ -36,17 +36,17 @@
           />
 
           <van-cell-group inset class="!mt-3">
-            <van-field label="发起人：" input-align="right">
+            <van-field label="发起人" input-align="right">
               <template #input>
                 <span>{{ entityVariables?.initiator?.nickName }}</span>
               </template>
             </van-field>
-            <van-field label="部门：" input-align="right">
+            <van-field label="部门" input-align="right">
               <template #input>
                 <span>{{ entityVariables?.initiator?.deptName }}</span>
               </template>
             </van-field>
-            <van-field label="发起时间：" input-align="right">
+            <van-field label="发起时间" input-align="right">
               <template #input>
                 <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
               </template>
