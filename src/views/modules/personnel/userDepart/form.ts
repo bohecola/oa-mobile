@@ -1,7 +1,6 @@
 import type { FormInstance } from 'vant'
 import { getUserDepart } from '@/api/oa/personnel/userDepart'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
-import { useWorkflowViewData } from '@/hooks'
 // import useUserStore from '@/store/user'
 
 export interface Options<T = any> {
@@ -71,16 +70,10 @@ export function useForm() {
   }
 
   // 工作流中回显
-  async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
+  async function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
-    let res: any
-
     try {
       reset()
-      isLoading.value = true
-      res = await useWorkflowViewData({ taskId, processInstanceId })
-      const { entity } = res.data
-      console.log(entity, 'entity')
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
@@ -92,10 +85,7 @@ export function useForm() {
       console.error(err)
       fail?.(err)
     }
-    finally {
-      isLoading.value = false
-    }
-    success?.(res.data)
+    success?.(entity)
   }
 
   return {

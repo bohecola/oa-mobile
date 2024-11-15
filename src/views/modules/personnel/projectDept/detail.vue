@@ -7,11 +7,7 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
-        <template #input>
-          <DeptSelect v-model="form.deptId" readonly />
-        </template>
-      </van-field>
+      <van-field v-model="form.deptName" v-show-field="['deptName', includeFields]" name="deptName" label="部门名称" input-align="right" />
 
       <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="部门类型" input-align="right">
         <template #input>
@@ -21,9 +17,9 @@
 
       <van-field v-model="form.deptCategory" v-show-field="['deptCategory', includeFields]" name="deptCategory" label="类型编码" input-align="right" />
 
-      <van-field v-show-field="['leader', includeFields]" name="leader" label="负责人" input-align="right">
+      <van-field v-model="form.leader" v-show-field="['leader', includeFields]" name="leader" label="负责人" input-align="right">
         <template #input>
-          <UserSelect v-model="form.leader" readonly />
+          <UserSelect v-model="form.leader" :multiple="false" />
         </template>
       </van-field>
 

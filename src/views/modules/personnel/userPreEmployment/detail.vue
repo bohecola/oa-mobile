@@ -48,14 +48,11 @@
 
       <van-field v-if="form.status !== '3'" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)" input-align="right" />
 
-      <div class="pt-2 pl-4 text-sm">
-        <h4>持证情况</h4>
-        <van-checkbox-group v-model="form.certificates" icon-size="14px">
-          <van-checkbox v-for="item in oa_document_type" :key="item.value" :name="item.value" class="m-2" disabled>
-            {{ item.label }}
-          </van-checkbox>
-        </van-checkbox-group>
-      </div>
+      <van-field v-model="form.certificates" v-show-field="['certificates', includeFields]" name="certificates" label="持证情况" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.certificates" dict-type="oa_document_type" readonly />
+        </template>
+      </van-field>
     </van-cell-group>
     <div class="px-6 py-2 text-sm text-gray-500">
       面试评价项

@@ -159,9 +159,9 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
-  loading.value = true
 
   if (taskId || processInstanceId) {
+    loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
@@ -173,34 +173,29 @@ onMounted(async () => {
         isEditNode: (taskDefinitionKey.value === 'Activity_1qpajzq' || taskDefinitionKey.value === 'Activity_05cxsln' || taskDefinitionKey.value === 'Activity_0zx1e0l') ? 'true' : 'false',
       },
     })
-  }
 
-  nextTick(async () => {
-    try {
-      switch (type as string) {
-        case 'update':
-        case 'approval': {
+    nextTick(() => {
+      try {
+        switch (type as string) {
+          case 'update':
+          case 'approval':
           // 部门经理人审批节点
-          await Detail1.value?.workflowView({ taskId, processInstanceId })
-
-          // 归档节点
-          await Detail2.value?.workflowView({ taskId, processInstanceId })
-
-          // 工作交接节点
-          await Detail3.value?.workflowView({ taskId, processInstanceId })
-
-          await DetailOther.value?.workflowView({ taskId, processInstanceId })
-
-          break
-        }
-        case 'view': {
-          await Detail.value?.workflowView?.({ taskId, processInstanceId })
+            Detail1.value?.workflowView(entity)
+            // 归档节点
+            Detail2.value?.workflowView(entity)
+            // 工作交接节点
+            Detail3.value?.workflowView(entity)
+            DetailOther.value?.workflowView(entity)
+            break
+          case 'view':
+            Detail.value?.workflowView?.(entity)
+            break
         }
       }
-    }
-    finally {
-      loading.value = false
-    }
-  })
+      finally {
+        loading.value = false
+      }
+    })
+  }
 })
 </script>

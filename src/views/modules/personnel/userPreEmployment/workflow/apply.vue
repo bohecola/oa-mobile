@@ -92,8 +92,8 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
-  loading.value = true
   if (taskId || processInstanceId) {
+    loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
@@ -105,27 +105,24 @@ onMounted(async () => {
         isEditNode: 'false',
       },
     })
-  }
 
-  nextTick(async () => {
-    try {
-      switch (type as string) {
-        case 'update':
-        case 'approval': {
-          await Detail.value?.workflowView({ taskId, processInstanceId })
-
-          await DetailOther.value?.workflowView({ taskId, processInstanceId })
-
-          break
-        }
-        case 'view': {
-          await Detail.value?.workflowView?.({ taskId, processInstanceId })
+    nextTick(() => {
+      try {
+        switch (type as string) {
+          case 'update':
+          case 'approval':
+            Detail.value?.workflowView({ taskId, processInstanceId })
+            DetailOther.value?.workflowView({ taskId, processInstanceId })
+            break
+          case 'view':
+            Detail.value?.workflowView?.({ taskId, processInstanceId })
+            break
         }
       }
-    }
-    finally {
-      loading.value = false
-    }
-  })
+      finally {
+        loading.value = false
+      }
+    })
+  }
 })
 </script>

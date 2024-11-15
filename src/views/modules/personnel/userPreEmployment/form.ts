@@ -1,7 +1,6 @@
 import type { FormInstance } from 'vant'
 import { getUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 import type { UserPreEmploymentEvaluateBo, UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
-import { useWorkflowViewData } from '@/hooks'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -9,9 +8,6 @@ export interface Options<T = any> {
 }
 export type SubmitOptions = Options<string | number>
 export type ViewOptions = Options
-
-// 覆盖表单类型
-type _UserPreEmploymentForm = Override<UserPreEmploymentForm, { certificates: string[] }>
 
 // 表单
 export function useForm() {
@@ -22,7 +18,7 @@ export function useForm() {
   const Form = ref<FormInstance>()
 
   // 初始数据
-  const initFormData: _UserPreEmploymentForm = {
+  const initFormData: UserPreEmploymentForm = {
     id: undefined,
     recruitPostId: undefined,
     deptId: undefined,
@@ -30,7 +26,7 @@ export function useForm() {
     name: undefined,
     sex: undefined,
     phonenumber: undefined,
-    certificates: [],
+    certificates: undefined,
     interviewWay: undefined,
     interviewDate: undefined,
     isOwnerInterview: undefined,
@@ -43,7 +39,7 @@ export function useForm() {
   }
 
   // 表单数据
-  const data = reactive<Omit<PageData<_UserPreEmploymentForm, object>, 'queryParams'>>({
+  const data = reactive<Omit<PageData<UserPreEmploymentForm, object>, 'queryParams'>>({
     form: { ...initFormData },
     rules: {
       deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
@@ -85,14 +81,6 @@ export function useForm() {
     reset()
     const res = await getUserPreEmployment(id)
     Object.assign(form.value, res.data)
-    // 回显持证时是字符串
-    if (form.value.certificates && typeof form.value.certificates === 'string') {
-      form.value.certificates = (form.value.certificates as string).split(',')
-      console.log(form.value.certificates, 'form.value.certificates')
-    }
-    else if (!form.value.certificates) {
-      form.value.certificates = []
-    }
     // 回显返回的Vo给Bo
     form.value.userPreEmploymentEvaluateBoList = form.value.userPreEmploymentEvaluateVoList
     isLoading.value = false
@@ -183,19 +171,13 @@ export function useForm() {
   // }
 
   // 工作流中回显
-  async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
+  async function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
-    let res: any
-
     try {
       reset()
-      isLoading.value = true
-      res = await useWorkflowViewData({ taskId, processInstanceId })
-      const { entity } = res.data
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
-          certificates: entity.certificates.split(','),
         })
       })
     }
@@ -203,10 +185,7 @@ export function useForm() {
       console.error(err)
       fail?.(err)
     }
-    finally {
-      isLoading.value = false
-    }
-    success?.(res.data)
+    success?.(entity)
   }
 
   return {

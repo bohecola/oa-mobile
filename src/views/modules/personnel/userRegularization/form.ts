@@ -1,6 +1,5 @@
 import type { FormInstance } from 'vant'
 import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'
-import { useWorkflowViewData } from '@/hooks'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -56,15 +55,10 @@ export function useForm() {
   const isLoading = ref(false)
 
   // 工作流中回显
-  async function workflowView({ taskId, processInstanceId }: any, options?: ViewOptions) {
+  async function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
-    let res: any
-
     try {
       reset()
-      isLoading.value = true
-      res = await useWorkflowViewData({ taskId, processInstanceId })
-      const { entity } = res.data
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
@@ -75,10 +69,7 @@ export function useForm() {
       console.error(err)
       fail?.(err)
     }
-    finally {
-      isLoading.value = false
-    }
-    success?.(res.data)
+    success?.(entity)
   }
   return {
     Form,

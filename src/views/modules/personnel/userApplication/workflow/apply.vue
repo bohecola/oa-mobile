@@ -203,9 +203,8 @@ onMounted(async () => {
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
-  loading.value = true
-
   if (taskId || processInstanceId) {
+    loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
@@ -218,37 +217,27 @@ onMounted(async () => {
         isEditNode: (taskDefinitionKey.value === 'Activity_1gtf30k') ? 'true' : 'false',
       },
     })
-  }
 
-  nextTick(async () => {
-    try {
-      switch (type as string) {
-        case 'update':
-        case 'approval': {
-          try {
-            await Detail.value?.workflowView({ taskId, processInstanceId })
-
-            await Detail2.value?.workflowView({ taskId, processInstanceId })
-
-            await Upsert2.value?.workflowView({ taskId, processInstanceId })
-
-            await Detail3.value?.workflowView({ taskId, processInstanceId })
-
-            await DetailOther.value?.workflowView({ taskId, processInstanceId })
-          }
-          finally {
-            loading.value = false
-          }
-          break
-        }
-        case 'view': {
-          await Detail.value?.workflowView?.({ taskId, processInstanceId })
+    nextTick(() => {
+      try {
+        switch (type as string) {
+          case 'update':
+          case 'approval':
+            Detail.value?.workflowView(entity)
+            Detail2.value?.workflowView(entity)
+            Upsert2.value?.workflowView(entity)
+            Detail3.value?.workflowView(entity)
+            DetailOther.value?.workflowView(entity)
+            break
+          case 'view':
+            Detail.value?.workflowView?.(entity)
+            break
         }
       }
-    }
-    finally {
-      loading.value = false
-    }
-  })
+      finally {
+        loading.value = false
+      }
+    })
+  }
 })
 </script>

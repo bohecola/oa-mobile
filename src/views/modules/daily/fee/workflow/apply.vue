@@ -150,9 +150,8 @@ async function handleApproval({ open }: ApprovalPayload) {
 onMounted(async () => {
   const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
 
-  isLoading.value = true
-
   if (taskId || processInstanceId) {
+    isLoading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
     submitFormData.value.variables.entity = entity
@@ -165,18 +164,18 @@ onMounted(async () => {
         isEditNode: 'false',
       },
     })
-  }
 
-  nextTick(async () => {
-    switch (type as string) {
-      case 'update':
-      case 'approval':
-      case 'view': {
-        await workflowView({ taskId, processInstanceId })
+    nextTick(() => {
+      switch (type as string) {
+        case 'update':
+        case 'approval':
+        case 'view':
+          workflowView(entity)
+          break
       }
-    }
 
-    isLoading.value = false
-  })
+      isLoading.value = false
+    })
+  }
 })
 </script>
