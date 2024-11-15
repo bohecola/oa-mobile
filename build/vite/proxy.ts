@@ -6,7 +6,7 @@ type ProxyEnvList = ProxyEnvItem[]
 
 const httpsRE = /^https:\/\//
 
-export function createProxy(list: ProxyEnvList) {
+export function createProxy(list: ProxyEnvList = []) {
   const proxy: Record<string, ProxyOptions> = {}
   for (const [prefix, target] of list) {
     const isHttps = httpsRE.test(target)
