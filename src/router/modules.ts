@@ -36,6 +36,15 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/dashboard/approval/index.vue'),
   },
+  // 审批查询
+  {
+    path: '/approval-search',
+    meta: {
+      title: '搜索',
+      innerPage: true,
+    },
+    component: () => import('@/views/dashboard/approval/search.vue'),
+  },
   // {
   //   path: '/example',
   //   component: Layout,

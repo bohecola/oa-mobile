@@ -2,29 +2,39 @@
   <div>
     <NavBar :title="title" />
 
-    <van-tabs v-model:active="active" lazy-render @click-tab="handleTabClick">
+    <van-tabs v-model:active="active" lazy-render @change="handleTabChange">
       <van-tab
         v-for="item in tabs"
         :key="item.title"
         :title="item.title"
         :name="item.category"
       >
-        <component :is="item.component" />
+        <form action="/">
+          <van-search
+            placeholder="搜索"
+            readonly
+            @focus="onFocus()"
+          />
+        </form>
+        <div class="h-[calc(100dvh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto">
+          <component :is="item.component" :ref="setSubCompRef(item.category)" />
+        </div>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script setup lang='ts'>
+import { isEmpty } from 'lodash-es'
 import MyInitiated from './components/my-initiated.vue'
 import MyToDo from './components/my-to-do.vue'
 import MyCompleted from './components/my-completed.vue'
 import MyCc from './components/my-cc.vue'
 import NavBar from '@/components/NavBar/index.vue'
 
-const route = useRoute()
-const router = useRouter()
-const active = ref(route.query.category as string ?? 'my-initiated')
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const active = ref(proxy.$route.query.category as string ?? 'my-initiated')
+const componentRefs = ref<Record<string, any>>({})
 
 const tabs = [
   { title: '我发起的', category: 'my-initiated', component: MyInitiated },
@@ -35,12 +45,41 @@ const tabs = [
 
 const title = computed(() => tabs.find(tab => tab.category === active.value)?.title)
 
-function handleTabClick({ name }: any) {
-  router.replace({
-    path: route.path,
+function setSubCompRef(category: string) {
+  return (el: any) => {
+    if (el) {
+      componentRefs.value[category] = el
+    }
+  }
+}
+
+function handleTabChange(name: string) {
+  proxy.$router.replace({
+    path: proxy.$route.path,
     query: {
       category: name,
     },
   })
+
+  if (isEmpty(componentRefs.value[name])) {
+    nextTick(() => {
+      componentRefs.value[name]?.refetch()
+    })
+  }
 }
+
+function onFocus() {
+  proxy.$router.push({
+    path: '/approval-search',
+    query: {
+      category: active.value,
+    },
+  })
+}
+
+onMounted(() => {
+  nextTick(() => {
+    componentRefs.value[active.value]?.refetch()
+  })
+})
 </script>

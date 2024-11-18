@@ -1,26 +1,24 @@
 <template>
-  <div class="h-[calc(100dvh-var(--van-tabs-line-height)-var(--van-nav-bar-height))] overflow-y-auto">
-    <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
-      <van-cell v-for="row in list" :key="row.id" @click="handleView(row)">
-        <!-- 标题 -->
-        <template #title>
-          <span class="mr-2">{{ row.procinstName }}</span>
-        </template>
+  <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
+    <van-cell v-for="row in list" :key="row.id" @click="handleView(row)">
+      <!-- 标题 -->
+      <template #title>
+        <span class="mr-2">{{ row.procinstName }}</span>
+      </template>
 
-        <!-- 描述 -->
-        <template #label>
-          <div class="flex flex-col gap-1">
-            <span>办理人：<van-tag type="success">{{ row.assigneeName }}</van-tag></span>
-            <div class="flex gap-2 text-xs">
-              <span>流程状态：</span>
-              <dict-tag :options="wf_business_status" :value="row.businessStatus" />
-            </div>
+      <!-- 描述 -->
+      <template #label>
+        <div class="flex flex-col gap-1">
+          <span>办理人：<van-tag type="success">{{ row.assigneeName }}</van-tag></span>
+          <div class="flex gap-2 text-xs">
+            <span>流程状态：</span>
+            <dict-tag :options="wf_business_status" :value="row.businessStatus" />
           </div>
-        </template>
-      </van-cell>
-    </van-list>
-    <bottom-line v-if="!hasNextPage && !isFetching" />
-  </div>
+        </div>
+      </template>
+    </van-cell>
+  </van-list>
+  <bottom-line v-if="!hasNextPage && !isFetching" />
 </template>
 
 <script setup lang='ts'>
@@ -29,6 +27,10 @@ import type { TaskQuery, TaskVO } from '@/api/workflow/task/types'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 import { service } from '@/service'
 import workflowCommon from '@/api/workflow/workflowCommon'
+
+const props = defineProps<{
+  keywords?: string
+}>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { wf_business_status } = toRefs<any>(proxy?.useDict('wf_business_status'))
@@ -42,8 +44,12 @@ const queryParams = ref<TaskQuery>({
   processDefinitionKey: undefined,
 })
 
-const { isFetching, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-  queryKey: ['my-cc'],
+watch(() => props.keywords, (val) => {
+  queryParams.value.processDefinitionName = val
+})
+
+const { isFetching, data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
+  queryKey: ['my-cc', queryParams, proxy.$route.path],
   queryFn: async (ctx) => {
     const { pageParam } = ctx
     const { rows, total } = await service.workflow.task.getPageByTaskCopy(pageParam)
@@ -52,18 +58,20 @@ const { isFetching, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     return {
       rows,
       total,
-      pageNum: pageParam.pageNum,
-      pageSize: queryParams.value.pageSize,
+      ...pageParam,
+      processDefinitionName: proxy.$route.query.keywords,
     }
   },
-  initialPageParam: queryParams as any,
+  enabled: false,
+  initialPageParam: queryParams,
   getNextPageParam: (lastPage) => {
-    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-    const query = {
-      ...queryParams.value,
-      pageNum: lastPage.pageNum + 1,
-    }
-    return lastPage.pageNum < totalPages ? query : undefined
+    const { total, pageNum, pageSize } = lastPage
+    const totalPages = Math.ceil(total / pageSize)
+
+    // 生成下一页查询参数
+    return pageNum < totalPages
+      ? { ...queryParams.value, pageNum: pageNum + 1 }
+      : undefined
   },
 })
 
@@ -85,4 +93,8 @@ function handleView(row: any) {
   })
   workflowCommon.routerJump(routerJumpVo, proxy)
 }
+
+defineExpose({
+  refetch,
+})
 </script>
