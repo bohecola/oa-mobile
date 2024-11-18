@@ -116,7 +116,7 @@ router.register = async function (path: string) {
     const list: any[] = []
 
     // TODO 待优化，刷新后重新请求配置数据
-    if (user.info === null) {
+    if (user.info === null && user.token) {
       await user.get()
       await menu.get()
     }

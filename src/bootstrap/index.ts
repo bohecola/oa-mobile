@@ -1,14 +1,14 @@
 import type { App } from 'vue'
 import { setToastDefaultOptions } from 'vant'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import DLUI from '@xuanmo/dl-ui'
+// import DLUI from '@xuanmo/dl-ui'
 import { plugin as vueTransitionsPlugin } from '@morev/vue-transitions'
 import { setupStore } from '@/store'
 import { setupRouter } from '@/router'
 import { setupDirective } from '@/directive'
 import plugins from '@/plugins'
 
-import '@xuanmo/dl-ui/dist/index.css'
+// import '@xuanmo/dl-ui/dist/index.css'
 import '@morev/vue-transitions/styles'
 
 export async function bootstrap(app: App) {
@@ -39,5 +39,5 @@ export async function bootstrap(app: App) {
   app.mount('#app')
 
   // DLUI
-  app.use(DLUI)
+  // app.use(DLUI)
 }
