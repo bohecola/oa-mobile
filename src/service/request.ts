@@ -6,6 +6,7 @@ import { checkStatus, useRequstCanceller } from './hepler'
 import { useGlobSettings } from '@/hooks'
 import { ContentTypeEnum, ResultCodeEnum } from '@/enums/httpEnum'
 import { useMixedEncrypt } from '@/utils/security'
+import { tansParams } from '@/utils/ruoyi'
 import { useStore } from '@/store'
 
 const { apiUrlPrefix, appClientId } = useGlobSettings()
@@ -29,6 +30,14 @@ axiosInstance.interceptors.request.use(
 
     if (user.token) {
       config.headers.Authorization = `Bearer ${user.token}`
+    }
+
+    // Get 请求映射 params 参数
+    if (config.method === 'get' && config.params) {
+      let url = `${config.url}?${tansParams(config.params)}`
+      url = url.slice(0, -1)
+      config.params = {}
+      config.url = url
     }
 
     // 文件上传
