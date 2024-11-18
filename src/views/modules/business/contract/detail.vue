@@ -32,9 +32,9 @@
         <DeptSelect v-model="form.deptId" readonly />
       </template>
     </van-field>
-    <van-field v-model="form.projectName" v-show-field="['projectName', includeFields]" name="projectName" label="项目" input-align="right">
+    <van-field v-show-field="['projectId', includeFields]" name="projectId" label="项目" input-align="right">
       <template #input>
-        <dict-tag :options="projectOptions" :value="form.projectName" />
+        <dict-tag :options="projectOptions" :value="form.projectId" />
       </template>
     </van-field>
     <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="合同类型" input-align="right">
