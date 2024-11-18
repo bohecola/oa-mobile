@@ -293,17 +293,17 @@ onMounted(async () => {
         switch (type as string) {
           case 'update':
           case 'approval':
-            Upsert.value?.workflowView({ taskId, processInstanceId })
-            AttachmentListDetail.value?.workflowView({ taskId, processInstanceId })
-            ExecuteDetail.value?.workflowView({ taskId, processInstanceId })
-            ExecuteUpsert.value?.workflowView({ taskId, processInstanceId })
-            CheckDetail.value?.workflowView({ taskId, processInstanceId })
-            CheckUpsert.value?.workflowView({ taskId, processInstanceId })
-            ReCheckDetail.value?.workflowView({ taskId, processInstanceId })
-            CommonDetail.value?.workflowView({ taskId, processInstanceId })
+            Upsert.value?.workflowView(entity)
+            AttachmentListDetail.value?.workflowView(entity)
+            ExecuteDetail.value?.workflowView(entity)
+            ExecuteUpsert.value?.workflowView(entity)
+            CheckDetail.value?.workflowView(entity)
+            CheckUpsert.value?.workflowView(entity)
+            ReCheckDetail.value?.workflowView(entity)
+            CommonDetail.value?.workflowView(entity)
             break
           case 'view':
-            Detail.value?.workflowView({ taskId, processInstanceId })
+            Detail.value?.workflowView(entity)
             break
         }
       }

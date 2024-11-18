@@ -87,11 +87,11 @@ onMounted(async () => {
         switch (type as string) {
           case 'update':
           case 'approval':
-            Detail.value?.workflowView({ taskId, processInstanceId })
-            DetailOther.value?.workflowView({ taskId, processInstanceId })
+            Detail.value?.workflowView(entity)
+            DetailOther.value?.workflowView(entity)
             break
           case 'view':
-            Detail.value?.workflowView?.({ taskId, processInstanceId })
+            Detail.value?.workflowView?.(entity)
             break
         }
       }
