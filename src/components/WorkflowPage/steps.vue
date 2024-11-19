@@ -21,7 +21,7 @@
             </van-tag>
           </div>
           <div v-if="index > 0" class="flex gap2">
-            <TextareaView :value="`审批意见：${item.comment}`" />
+            <TextareaView :value="`审批意见：${item.comment ?? ''}`" />
           </div>
         </div>
       </van-step>
