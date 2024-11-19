@@ -115,17 +115,21 @@ import UserCell from './user-cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
 
+type UserSelectValue = SysUserMobileVO['userId'] | SysUserMobileVO['userId'][]
+
 const props = withDefaults(
   defineProps<{
     modelValue?: SysUserMobileVO['userId'] | SysUserMobileVO['userId'][] | SysUserMobileVO | SysUserMobileVO[]
     multiple?: boolean
     valueType?: 'value' | 'object'
     popupOnly?: boolean
+    enableDataTransform?: boolean
   }>(),
   {
     multiple: false,
     popupOnly: false,
     valueType: 'value',
+    enableDataTransform: true,
   },
 )
 
@@ -221,10 +225,39 @@ function handleRemoveUser(user: SysUserMobileVO) {
 // 确定
 function confirm() {
   visible.value = false
-  const payload = getValues()
-  // TODO 序列化与反序列化
+  const values = getValues()
+  const payload = props.enableDataTransform && props.valueType === 'value' ? serialize(values as UserSelectValue) : values
   emit('confirm', payload)
   emit('update:modelValue', payload)
+}
+
+function serialize(value: UserSelectValue) {
+  if (!isEmpty(value) || isNumber(value)) {
+    if (props.multiple) {
+      return (value as (string | number)[]).join(',')
+    }
+    else {
+      return value as string | number
+    }
+  }
+  else {
+    return undefined
+  }
+}
+
+function deserialize(value: string | number) {
+  if (value) {
+    if (props.multiple) {
+      // 兼容 id 为 100、101 这种 number 类型的情况
+      return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
+    }
+    else {
+      return value
+    }
+  }
+  else {
+    return undefined
+  }
 }
 
 // 判断是否为字符串或数字类型数组
@@ -305,11 +338,15 @@ async function getSeletedList(value: typeof props.modelValue) {
 watch(
   () => props.modelValue,
   async (value) => {
-    if (isEmpty(value)) {
-      selectedList.value = []
+    if (!isEmpty(value) || isNumber(value)) {
+      selectedList.value = await getSeletedList(
+        props.enableDataTransform && props.valueType === 'value'
+          ? deserialize(value as (string | number))
+          : value,
+      )
     }
     else {
-      selectedList.value = await getSeletedList(value)
+      selectedList.value = []
     }
   },
   {

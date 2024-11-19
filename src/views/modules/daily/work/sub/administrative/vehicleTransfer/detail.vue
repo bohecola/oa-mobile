@@ -7,7 +7,7 @@
 
   <van-field v-show-field="['recipient', includeFields]" name="recipient" label="接收人" input-align="right">
     <template #input>
-      <UserSelect v-model="form.recipient" readonly />
+      <UserSelect v-model="form.recipient" />
     </template>
   </van-field>
 
