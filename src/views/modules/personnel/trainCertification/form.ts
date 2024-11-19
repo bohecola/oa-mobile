@@ -107,8 +107,8 @@ export function useForm() {
     try {
       reset()
       // 移动端userTrainBo?.userId需要转成数组才可以回显    还有负责人是一样的
-      entity.userTrainBo.userId = entity.userTrainBo?.userId.split(',')
-      entity.userTrainBo.commander = entity.userTrainBo?.commander.split(',')
+      // entity.userTrainBo.userId = entity.userTrainBo?.userId.split(',')
+      // entity.userTrainBo.commander = entity.userTrainBo?.commander.split(',')
       nextTick(async () => {
         Object.assign(form.value, {
           ...entity,
