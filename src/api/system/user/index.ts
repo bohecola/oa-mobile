@@ -144,12 +144,8 @@ export function updateUserPwd(oldPassword: string, newPassword: string) {
   return request({
     url: '/system/user/profile/updatePwd',
     method: 'put',
-    headers: {
-      isEncrypt: true,
-      repeatSubmit: false,
-    },
     data,
-  })
+  }, { isEncrypt: true, withCancel: true })
 }
 
 /**

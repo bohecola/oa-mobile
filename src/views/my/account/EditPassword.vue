@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import type { FieldRule } from 'vant'
-import { showLoadingToast } from 'vant'
+import { showLoadingToast, showSuccessToast } from 'vant'
 import type { FieldItem } from '@/components/EditField/index.vue'
 import EditField from '@/components/EditField/index.vue'
 import { service } from '@/service'
+import { useStore } from '@/store'
 
-// 路由器
-const router = useRouter()
+const { user } = useStore()
 
 // 引用
 const EFRef = ref<InstanceType<typeof EditField> | null>(null)
@@ -57,8 +57,10 @@ async function handleSubmit(values: any) {
   await service.system.user.updateUserPwd(oldPassword, newPassword)
   // 关闭加载
   loadingToast.close()
-  // 返回
-  router.back()
+  // 提示成功
+  showSuccessToast('修改密码成功请重新登录')
+  // 退出
+  user.logout({ quiet: true })
 }
 </script>
 

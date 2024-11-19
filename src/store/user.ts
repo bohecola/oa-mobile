@@ -38,12 +38,15 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 退出登录
-  async function logout() {
+  async function logout(options?: { quiet?: boolean }) {
     clear()
     router.clear()
     await service.comm.userLogout()
     await router.push('/login')
-    showToast('退出成功')
+
+    if (!options?.quiet) {
+      showToast('退出成功')
+    }
   }
 
   // 获取用户信息
