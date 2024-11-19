@@ -51,7 +51,7 @@ watch(() => props.keywords, (val) => {
 })
 
 const { isFetching, data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
-  queryKey: ['my-to-do', queryParams, proxy.$route.path],
+  queryKey: ['my-to-do', queryParams, proxy.$route.path, Date.now],
   queryFn: async (ctx) => {
     const { pageParam } = ctx
     const { rows, total } = await service.workflow.task.getPageByTaskWait(pageParam)

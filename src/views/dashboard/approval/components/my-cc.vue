@@ -49,7 +49,7 @@ watch(() => props.keywords, (val) => {
 })
 
 const { isFetching, data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
-  queryKey: ['my-cc', queryParams, proxy.$route.path],
+  queryKey: ['my-cc', queryParams, proxy.$route.path, Date.now],
   queryFn: async (ctx) => {
     const { pageParam } = ctx
     const { rows, total } = await service.workflow.task.getPageByTaskCopy(pageParam)

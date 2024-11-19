@@ -73,7 +73,7 @@ watch(() => props.keywords, (val) => {
 })
 
 const { isFetching, data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
-  queryKey: ['my-initiate', queryParams, proxy.$route.path],
+  queryKey: ['my-initiate', queryParams, proxy.$route.path, Date.now],
   queryFn: async (ctx) => {
     const { pageParam } = ctx
 
