@@ -16,7 +16,7 @@
             @focus="onFocus()"
           />
         </form>
-        <div class="h-[calc(var(--fdvh,100vh)-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto">
+        <div class="approval-list-wrapper-height overflow-y-auto">
           <component :is="item.component" :ref="setSubCompRef(item.category)" />
         </div>
       </van-tab>
@@ -83,3 +83,10 @@ onMounted(() => {
   })
 })
 </script>
+
+<style lang="scss" scoped>
+.approval-list-wrapper-height {
+  height: calc(var(--1dvh, 1vh) * 100 - var(--van-tabs-line-height) - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px);
+  height: calc(100dvh - var(--van-tabs-line-height) - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px);
+}
+</style>

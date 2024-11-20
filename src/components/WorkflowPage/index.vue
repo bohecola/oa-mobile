@@ -25,7 +25,7 @@
     <van-tabs v-model:active="active" lazy-render @change="onTabChange">
       <div
         id="TabsContainer"
-        class="flex flex-col gap-2 overflow-y-auto h-[calc(var(--fdvh,100vh)-var(--van-nav-bar-height)-var(--van-tabs-line-height))]"
+        class="flex flex-col gap-2 overflow-y-auto tabs-container-height"
       >
         <!-- -var(--van-button-small-height)-16px-2px -->
         <van-tab v-loading="loading" title="审批表单" name="form">
@@ -222,3 +222,10 @@ function onTabChange(val: any) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.tabs-container-height {
+  height: calc(var(--1dvh, 1vh) * 100 - var(--van-nav-bar-height) - var(--van-tabs-line-height));
+  height: calc(100dvh - var(--van-nav-bar-height) - var(--van-tabs-line-height));
+}
+</style>

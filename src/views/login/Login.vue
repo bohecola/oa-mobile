@@ -7,7 +7,7 @@ const { appTitle } = useGlobSettings()
 </script>
 
 <template>
-  <div class="h-[var(--fdvh,100vh)] flex justify-center p-8">
+  <div class="h-full-dvh flex justify-center p-8">
     <div class="w-full flex flex-col">
       <div class="flex flex-col items-center justify-center">
         <Logo class="mb-8 mt-8" />
