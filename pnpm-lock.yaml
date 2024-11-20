@@ -41,6 +41,9 @@ importers:
       jsencrypt:
         specifier: ^3.3.2
         version: 3.3.2
+      large-small-dynamic-viewport-units-polyfill:
+        specifier: ^0.1.1
+        version: 0.1.1
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2566,6 +2569,9 @@ packages:
 
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
+
+  large-small-dynamic-viewport-units-polyfill@0.1.1:
+    resolution: {integrity: sha512-98hOXouuWWcWGXaFwztU/LyGjwe8QNYAXRwuGiO3eI2bmDv+pvDNN5G9udP8CQldhyRcJ0gQzFigjHteTLvyQQ==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -6458,6 +6464,8 @@ snapshots:
   knitwork@1.1.0: {}
 
   kolorist@1.8.0: {}
+
+  large-small-dynamic-viewport-units-polyfill@0.1.1: {}
 
   levn@0.4.1:
     dependencies:
