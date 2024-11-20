@@ -7,9 +7,10 @@
         v-model.trim="keywords"
         show-action
         placeholder="搜索标题"
+        @search="search"
       >
         <template #action>
-          <div @click="onClickButton">
+          <div @click="search">
             搜索
           </div>
         </template>
@@ -53,7 +54,7 @@ function setSubCompRef(category: string) {
   }
 }
 
-function onClickButton() {
+function search() {
   if (isEmpty(keywords.value)) {
     return
   }
