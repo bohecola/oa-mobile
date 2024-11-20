@@ -9,7 +9,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.postId" v-show-field="['userId', includeFields]" name="postName" label="岗位名称" input-align="right" />
+      <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
 
       <van-field v-show-field="['type', includeFields]" name="type" label="提前转正" input-align="right">
         <template #input>
