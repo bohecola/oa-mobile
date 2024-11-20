@@ -45,7 +45,7 @@
           @cancel="handleSearchCancel"
         />
       </form>
-      <div v-show="!isSearchFocused" class="index-bar-wrapper-height overflow-y-auto">
+      <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
         <van-index-bar
           class="pb-28"
           :sticky="true"
@@ -66,7 +66,7 @@
       <!-- 搜索列表 -->
       <div
         v-show="isSearchFocused"
-        class="search-list-height overflow-y-auto"
+        class="h-[calc(100vh-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
       >
         <div class="pb-28">
           <UserCell
@@ -357,17 +357,3 @@ defineExpose({
   open,
 })
 </script>
-
-<style lang="scss" scoped>
-$space-14: 56px;
-
-.index-bar-wrapper-height {
-  height: calc(var(--1dvh, 1vh) * 100 - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px - #{$space-14});
-  height: calc(100dvh - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px - #{$space-14});
-}
-
-.search-list-height {
-  height: calc(var(--1dvh, 1vh) * 100 - var(--van-search-input-height) - 20px - #{$space-14});
-  height: calc(100dvh - var(--van-search-input-height) - 20px - #{$space-14});
-}
-</style>

@@ -29,7 +29,7 @@
       </template>
     </NavBar>
 
-    <div v-loading="doc.loading" class="w-full doc-wrapper-height overflow-y-auto">
+    <div v-loading="doc.loading" class="w-full h-[calc(100vh-var(--van-nav-bar-height))] overflow-y-auto">
       <iframe ref="docIframe" :src="doc.url" class="border-none w-full h-full" />
     </div>
   </van-popup>
@@ -116,10 +116,3 @@ defineExpose({
   open,
 })
 </script>
-
-<style lang="scss" scoped>
-.doc-wrapper-height {
-  height: calc(var(--1dvh, 1vh) * 100 - var(--van-nav-bar-height));
-  height: calc(100dvh - var(--van-nav-bar-height));
-}
-</style>

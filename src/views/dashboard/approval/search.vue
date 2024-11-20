@@ -16,7 +16,7 @@
       </van-search>
     </form>
 
-    <div class="approval-search-list-wrapper-height overflow-y-auto">
+    <div class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto">
       <component :is="currentTab.component" :ref="setSubCompRef(currentTab.category)" :keywords="keywords" />
     </div>
   </div>
@@ -63,10 +63,3 @@ function onClickButton() {
   })
 }
 </script>
-
-<style lang="scss" scoped>
-.approval-search-list-wrapper-height {
-  height: calc(var(--1dvh, 1vh) * 100 - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px);
-  height: calc(100dvh - var(--van-nav-bar-height) - var(--van-search-input-height) - 20px);
-}
-</style>
