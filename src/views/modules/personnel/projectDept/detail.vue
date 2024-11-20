@@ -19,7 +19,7 @@
 
       <van-field v-model="form.leader" v-show-field="['leader', includeFields]" name="leader" label="负责人" input-align="right">
         <template #input>
-          <UserSelect v-model="form.leader" :multiple="false" />
+          <UserSelect v-model="form.leader" :multiple="false" readonly />
         </template>
       </van-field>
 

@@ -17,7 +17,7 @@
         {{ selected.nickName }}
       </van-tag>
     </div>
-    <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
+    <span v-if="!existSelectedList && !readonly" class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
   </van-skeleton>
   <!-- 弹窗 -->
   <van-popup
@@ -123,6 +123,7 @@ const props = withDefaults(
     multiple?: boolean
     valueType?: 'value' | 'object'
     popupOnly?: boolean
+    readonly?: boolean
     enableDataTransform?: boolean
   }>(),
   {
@@ -167,6 +168,10 @@ const indexList = computed(() => Object.keys(userListMap.value))
 
 // 打开
 function open() {
+  if (props.readonly) {
+    return console.warn('the readonly property is set')
+  }
+
   userListMap.value = {}
   visible.value = true
   getList()

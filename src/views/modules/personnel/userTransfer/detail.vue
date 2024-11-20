@@ -3,7 +3,7 @@
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['userId', includeFields]" name="userId" label="员工" input-align="right">
         <template #input>
-          <UserSelect v-model="form.userId" />
+          <UserSelect v-model="form.userId" readonly />
         </template>
       </van-field>
 

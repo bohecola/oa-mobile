@@ -1,13 +1,13 @@
 <template>
   <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="right">
     <template #input>
-      <UserSelect v-model="form.customizeApprover" />
+      <UserSelect v-model="form.customizeApprover" readonly />
     </template>
   </van-field>
 
   <van-field v-show-field="['customizeTransactor', includeFields]" label="办理人" input-align="right">
     <template #input>
-      <UserSelect v-model="form.customizeTransactor" />
+      <UserSelect v-model="form.customizeTransactor" readonly />
     </template>
   </van-field>
 

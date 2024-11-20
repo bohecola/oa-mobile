@@ -10,12 +10,12 @@
         <div v-if="form.categories.includes('0')">
           <van-field v-show-field="['userId', includeFields]" name="userTrainBo.userId" label="员工" input-align="right">
             <template #input>
-              <UserSelect v-model="form.userTrainBo.userId" :multiple="true" />
+              <UserSelect v-model="form.userTrainBo.userId" :multiple="true" readonly />
             </template>
           </van-field>
           <van-field v-show-field="['commander', includeFields]" name="userTrainBo.commander" label="负责人" input-align="right">
             <template #input>
-              <UserSelect v-model="form.userTrainBo.commander" :multiple="true" />
+              <UserSelect v-model="form.userTrainBo.commander" :multiple="true" readonly />
             </template>
           </van-field>
 
@@ -68,7 +68,7 @@
             input-align="right"
           >
             <template #input>
-              <UserSelect v-model="item.userId" />
+              <UserSelect v-model="item.userId" readonly />
             </template>
           </van-field>
           <van-field
