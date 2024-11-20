@@ -61,11 +61,16 @@
       v-model="state.roleNames"
       label="所属角色"
       readonly
+      class="!items-baseline"
       label-class="font-bold"
       input-align="right"
       :center="true"
       :border="false"
-    />
+    >
+      <template #input>
+        <TextareaView :value="state.roleNames.replace(/,/g, '、')" />
+      </template>
+    </van-field>
 
     <!-- Gender Picker -->
     <van-popup

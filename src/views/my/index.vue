@@ -50,12 +50,12 @@ const logoutActions = [
         :src="avatar"
       />
 
-      <div class="mt-12 flex flex-col items-center">
+      <div class="mt-12 px-6 flex flex-col items-center">
         <div class="mb-2 text-xl font-black">
           {{ user.info?.nickName }}
         </div>
-        <div class="text-base">
-          {{ user.info?.roles.map((e: any) => e.roleName).join(',') }}
+        <div class="text-xs">
+          {{ user.info?.roles.map((e: any) => e.roleName).join('、') }}
         </div>
       </div>
 
