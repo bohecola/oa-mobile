@@ -1,5 +1,13 @@
 <template>
-  <van-popup v-model:show="popup.visible" position="bottom" round class="h-30vh" :before-close="cancel" :close-on-click-overlay="false">
+  <van-popup
+    v-model:show="popup.visible"
+    :before-close="cancel"
+    :close-on-click-overlay="false"
+    position="bottom"
+    class="h-30vh"
+    round
+    safe-area-inset-bottom
+  >
     <van-form v-loading="loading" label-width="120px">
       <van-field
         v-model="form.message"
@@ -74,7 +82,13 @@
         placeholder="请选择"
         @click="showNodePicker = true"
       />
-      <van-popup v-model:show="showNodePicker" round position="bottom" teleport="body">
+      <van-popup
+        v-model:show="showNodePicker"
+        position="bottom"
+        teleport="body"
+        round
+        safe-area-inset-bottom
+      >
         <van-picker
           :columns="computedTaskNodeList"
           @confirm="onRejectNodeConfirm"

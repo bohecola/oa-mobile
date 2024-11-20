@@ -12,6 +12,7 @@
         teleport="body"
         :lazy-render="false"
         round
+        safe-area-inset-bottom
       >
         <van-cascader
           v-model="id"

@@ -33,6 +33,7 @@ const menus = clientModuleRoutes.filter(item => !item.meta?.innerPage)
     <van-tabbar
       :fixed="false"
       route
+      safe-area-inset-bottom
     >
       <van-tabbar-item
         v-for="menu in menus"

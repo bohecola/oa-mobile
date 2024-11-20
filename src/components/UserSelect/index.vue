@@ -25,6 +25,7 @@
     position="bottom"
     class="h-full w-full"
     teleport="body"
+    safe-area-inset-bottom
     @closed="popupClosed"
   >
     <NavBar
@@ -45,7 +46,7 @@
           @cancel="handleSearchCancel"
         />
       </form>
-      <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
+      <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-bottom))] overflow-y-auto">
         <van-index-bar
           class="pb-28"
           :sticky="true"
@@ -66,7 +67,7 @@
       <!-- 搜索列表 -->
       <div
         v-show="isSearchFocused"
-        class="h-[calc(100vh-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
+        class="h-[calc(100vh-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-bottom))] overflow-y-auto"
       >
         <div class="pb-28">
           <UserCell

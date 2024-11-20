@@ -68,7 +68,12 @@
     />
 
     <!-- Gender Picker -->
-    <van-popup v-model:show="genderPickerVisible" position="bottom" round>
+    <van-popup
+      v-model:show="genderPickerVisible"
+      position="bottom"
+      round
+      safe-area-inset-bottom
+    >
       <van-picker
         v-model="state.gender"
         visible-option-num="3"
