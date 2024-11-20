@@ -5,9 +5,9 @@
     <van-tabs v-model:active="active" lazy-render @change="handleTabChange">
       <van-tab
         v-for="item in tabs"
-        :key="item.title"
-        :title="item.title"
+        :key="item.category"
         :name="item.category"
+        :title="item.title"
       >
         <form action="/">
           <van-search
@@ -16,8 +16,8 @@
             @focus="onFocus()"
           />
         </form>
-        <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto">
-          <component :is="item.component" :ref="setSubCompRef(item.category)" />
+        <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto approval-list-wrapper">
+          <component :is="item.component" v-if="active === item.category" :ref="setSubCompRef(item.category)" />
         </div>
       </van-tab>
     </van-tabs>
@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang='ts'>
-import { isEmpty } from 'lodash-es'
 import MyInitiated from './components/my-initiated.vue'
 import MyToDo from './components/my-to-do.vue'
 import MyCompleted from './components/my-completed.vue'
@@ -61,11 +60,9 @@ function handleTabChange(name: string) {
     },
   })
 
-  if (isEmpty(componentRefs.value[name])) {
-    nextTick(() => {
-      componentRefs.value[name]?.refetch()
-    })
-  }
+  nextTick(() => {
+    componentRefs.value[name]?.refetch()
+  })
 }
 
 function onFocus() {
