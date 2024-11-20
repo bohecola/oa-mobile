@@ -15,7 +15,7 @@ const menus = clientModuleRoutes.filter(item => !item.meta?.innerPage)
 </script>
 
 <template>
-  <div class="h-dvh flex flex-col">
+  <div class="h-[var(--fdvh,100vh)] flex flex-col">
     <!-- 导航条 -->
     <van-nav-bar
       v-if="showTopbar"

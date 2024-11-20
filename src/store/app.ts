@@ -8,7 +8,7 @@ const data = storage.info()
 
 // 默认色彩模式
 const { mode } = useSystemColorMode()
-const defaultColorMode: ColorMode = data.colorMode ?? 'auto'
+const defaultColorMode: ColorMode = data.colorMode ?? 'light'
 if (!data.colorMode) {
   storage.set('colorMode', defaultColorMode)
 }

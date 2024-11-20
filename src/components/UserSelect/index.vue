@@ -45,8 +45,7 @@
           @cancel="handleSearchCancel"
         />
       </form>
-      <!-- 索引栏 -->
-      <div v-show="!isSearchFocused" class="h-[calc(100dvh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
+      <div v-show="!isSearchFocused" class="h-[calc(var(--fdvh,100vh)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto">
         <van-index-bar
           class="pb-28"
           :sticky="true"
@@ -67,7 +66,7 @@
       <!-- 搜索列表 -->
       <div
         v-show="isSearchFocused"
-        class="h-[calc(100dvh-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
+        class="h-[calc(var(--fdvh,100vh)-var(--van-search-input-height)-20px-theme(space.14))] overflow-y-auto"
       >
         <div class="pb-28">
           <UserCell
