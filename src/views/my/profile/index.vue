@@ -17,7 +17,7 @@
             class="h-16 w-16"
             fit="cover"
             round
-            :src="user.info?.avatar"
+            :src="user.info?.avatar ?? defaultAvatar"
           />
         </ImageUploader>
       </template>
@@ -96,6 +96,7 @@ import ImageUploader from '../components/ImageUploader.vue'
 import { genderOptions } from '../options'
 import { useStore } from '@/store'
 import { service } from '@/service'
+import defaultAvatar from '@/assets/images/user-avatar.png'
 
 // 状态类型
 interface ProfileState {
