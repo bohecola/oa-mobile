@@ -23,8 +23,9 @@ export function useForm() {
     parentId: undefined,
     deptName: undefined,
     deptCategory: undefined,
-    responsibility: undefined,
-    purview: undefined,
+    responsibility: undefined, // 部门职能
+    purview: undefined, // 部门权限
+    address: undefined, // 地址
     orderNum: 0,
     leader: undefined,
     phone: undefined,

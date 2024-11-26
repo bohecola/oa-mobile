@@ -41,9 +41,9 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.adress" v-show-field="['adress', includeFields]" name="adress" label="地址" input-align="right">
+      <van-field v-model="form.address" v-show-field="['address', includeFields]" name="address" label="地址" input-align="right">
         <template #input>
-          <TextareaView :value="form.adress" />
+          <TextareaView :value="form.address" />
         </template>
       </van-field>
     </van-cell-group>

@@ -46,7 +46,7 @@ export interface DeptForm {
   deptCategory?: string
   responsibility?: string // 部门职能
   purview?: string // 部门权限
-  adress?: string // 地址
+  address?: string // 地址
   type?: string
   orderNum?: number
   leader?: string
