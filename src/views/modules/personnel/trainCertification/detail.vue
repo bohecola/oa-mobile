@@ -78,7 +78,7 @@
             input-align="right"
           >
             <template #input>
-              <dict-tag :options="oa_training_type" :value="item.type" />
+              <dict-tag :options="oa_document_type" :value="item.type" />
             </template>
           </van-field>
           <van-field
@@ -171,8 +171,8 @@ withDefaults(
 )
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_training_type, task_pass, sys_normal_disable } = toRefs<any>(
-  proxy?.useDict('oa_training_type', 'task_pass', 'sys_normal_disable'),
+const { oa_document_type, task_pass, sys_normal_disable } = toRefs<any>(
+  proxy?.useDict('oa_document_type', 'task_pass', 'sys_normal_disable'),
 )
 // 表单
 const { Form, form, isLoading, updateLoading, reset, workflowView } = useForm()
