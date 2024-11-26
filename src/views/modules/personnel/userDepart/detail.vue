@@ -7,7 +7,12 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.deptName" v-show-field="['deptName', includeFields]" name="deptName" label="部门名称" input-align="right" />
+      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
+        <template #input>
+          <DeptSelect v-model="form.deptId" readonly />
+        </template>
+      </van-field>
+
       <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
 
       <van-field v-model="form.handoverPerson" name="handoverPerson" label="交接人" input-align="right">
@@ -27,11 +32,13 @@
           <TextareaView :value="form.reason" />
         </template>
       </van-field>
+
       <van-field v-model="form.handoverContent" v-show-field="['handoverContent', includeFields]" name="handoverContent" label="交接内容" input-align="right">
         <template #input>
           <TextareaView :value="form.handoverContent" />
         </template>
       </van-field>
+
       <van-field v-model="form.documentContent" v-show-field="['documentContent', includeFields]" name="documentContent" label="归档内容" input-align="right">
         <template #input>
           <TextareaView :value="form.documentContent" />

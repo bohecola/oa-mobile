@@ -60,7 +60,7 @@ const Detail3 = ref<InstanceType<typeof detail> | null>()
 const includeFields = ref(
   filterTruthyKeys<UserDepartForm>({
     userId: true,
-    deptName: true,
+    deptId: true,
     postName: true,
     departDate: true,
     handoverPerson: true,
@@ -75,7 +75,7 @@ const includeFields = ref(
 const includeFields1 = ref(
   filterTruthyKeys<UserDepartForm>({
     userId: true,
-    deptName: true,
+    deptId: true,
     postName: true,
     departDate: true,
     handoverPerson: false,
@@ -88,7 +88,7 @@ const includeFields1 = ref(
 const includeFields2 = ref(
   filterTruthyKeys<UserDepartForm>({
     userId: true,
-    deptName: true,
+    deptId: true,
     postName: true,
     departDate: true,
     handoverPerson: true,
@@ -102,7 +102,7 @@ const includeFields2 = ref(
 const includeFields3 = ref(
   filterTruthyKeys<UserDepartForm>({
     userId: true,
-    deptName: true,
+    deptId: true,
     postName: true,
     departDate: false,
     handoverPerson: true,
