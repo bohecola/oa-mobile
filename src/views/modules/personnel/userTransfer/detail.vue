@@ -24,6 +24,7 @@
           <DeptCascader v-model="form.oldDeptId" :company-id="form.oldCompanyId" readonly />
         </template>
       </van-field>
+
       <van-field v-model="form.oldPostId" v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原岗位" input-align="right">
         <template #input>
           <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple readonly />
@@ -35,6 +36,7 @@
           <CompanySelect v-model="form.newCompanyId" readonly />
         </template>
       </van-field>
+
       <van-field v-model="form.newDeptId" v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门" input-align="right">
         <template #input>
           <DeptCascader v-model="form.newDeptId" :company-id="form.newCompanyId" readonly />
@@ -52,17 +54,21 @@
           {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
+
       <van-field v-model="form.endDate" v-show-field="['endDate', includeFields]" name="endDate" label="截止日期" input-align="right">
         <template #input>
           {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
+      <van-field v-model="form.newSalary" v-show-field="['newSalary', includeFields]" name="newSalary" label="薪资情况" input-align="right" />
+
       <van-field v-model="form.reason" v-show-field="['reason', includeFields]" name="reason" label="调用原因" input-align="right">
         <template #input>
           <TextareaView :value="form.reason" />
         </template>
       </van-field>
+
       <van-field v-model="form.remark" v-show-field="['remark', includeFields]" name="remark" label="备注" input-align="right">
         <template #input>
           <TextareaView :value="form.remark" />
