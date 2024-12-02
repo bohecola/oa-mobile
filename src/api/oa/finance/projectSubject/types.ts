@@ -49,6 +49,32 @@ export interface ProjectSubjectItemTreeVO {
    * 金额
    */
   amount?: number
+
+  // /**
+  //  * 金额输入框引用
+  //  */
+  // amountRef?: ElInputNumberInstance
+
+  /**
+   * 期初金额
+   */
+  beginAmount?: number
+
+  // /**
+  //  * 期初金额输入框引用
+  //  */
+  // beginAmountRef?: ElInputNumberInstance
+
+  /**
+   * 支出金额
+   */
+  expendAmount?: number
+
+  /**
+   * 剩余金额
+   */
+  availableAmount?: number
+
   /**
    * 部门id
    */
@@ -57,6 +83,11 @@ export interface ProjectSubjectItemTreeVO {
    * 项目部名称
    */
   deptName?: string
+  /**
+   * 部门按钮引用
+   */
+  deptRef?: HTMLSpanElement
+
   /**
    * ID
    */
@@ -109,6 +140,7 @@ export interface ProjectSubjectItemTreeVO {
    * 子级
    */
   children?: ProjectSubjectItemTreeVO[]
+  editable?: boolean
   [property: string]: any
 }
 
@@ -119,9 +151,34 @@ export interface ProjectSubjectVO {
   id: string | number
 
   /**
+   * 预算类型（项目预算、部门预算）
+   */
+  type?: string
+
+  /**
+   * 名称
+   */
+  name?: string
+
+  /**
    * 项目id
    */
-  projectId: string | number
+  projectId?: string | number
+
+  /**
+   * 项目名称
+   */
+  projectName?: string
+
+  /**
+   * 部门id
+   */
+  deptId?: string | number
+
+  /**
+   * 部门名称
+   */
+  deptName?: string
 
   /**
    * 开始日期
@@ -151,6 +208,16 @@ export interface ProjectSubjectForm extends BaseEntity {
   id?: string | number
 
   /**
+   * 预算类型（项目预算、部门预算）
+   */
+  type?: string
+
+  /**
+   * 名称
+   */
+  name?: string
+
+  /**
    * 项目id
    */
   projectId?: string | number
@@ -159,6 +226,21 @@ export interface ProjectSubjectForm extends BaseEntity {
    * 项目名称
    */
   projectName?: string
+
+  /**
+   * 部门id
+   */
+  deptId?: string | number
+
+  /**
+   * 部门名称
+   */
+  deptName?: string
+
+  /**
+   * 合同编号
+   */
+  contractNo?: string
 
   /**
    * 开始日期
@@ -201,6 +283,21 @@ export interface ProjectSubjectQuery extends PageQuery {
    * 状态
    */
   status?: string
+
+  /**
+   * 状态数组
+   */
+  statusList?: string[]
+
+  /**
+   * 部门 id
+   */
+  deptId?: string | number
+
+  /**
+   * 预算类型
+   */
+  type?: string
 
   /**
    * 日期范围参数

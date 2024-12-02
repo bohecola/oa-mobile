@@ -11,11 +11,53 @@ import type {
 import request from '@/service/request'
 
 /**
+ * 查询当前登录用户 预算项
+ */
+export function getProjectSubjectByLoginUser(psId: string | number): AxiosPromise<ProjectSubjectForm> {
+  return request({
+    url: `/oa/finance/projectSubject/queryByLoginUser/${psId}`,
+    method: 'get',
+  })
+}
+
+/**
+ * 预算填报接口
+ */
+export function updateBatchFill(data: ProjectSubjectForm['itemList']) {
+  return request({
+    url: `/oa/finance/projectSubject/updateBatchFill`,
+    method: 'put',
+    data,
+  })
+}
+
+/**
+ * 预算详情接口
+ */
+export function getSelfInfo(id: string | number): AxiosPromise<ProjectSubjectForm> {
+  return request({
+    url: `/oa/finance/projectSubject/getSelfInfo/${id}`,
+    method: 'get',
+  })
+}
+
+/**
+ * 修改项目预算项金额
+ */
+export function updateItemAmount(data: ProjectSubjectItemTreeVO) {
+  return request({
+    url: `/oa/finance/projectSubject/updateItemAmount`,
+    method: 'put',
+    data,
+  })
+}
+
+/**
  * 根据项目业务类型查询科目核算项目（tree）
  */
-export function getItemTreeByProjectId(projectId: string | number): AxiosPromise<ProjectSubjectItemTreeVO[]> {
+export function getItemTree(businessType: string): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
-    url: `/oa/finance/projectSubject/getItemTreeByProjectId/${projectId}`,
+    url: `/oa/finance/projectSubject/getItemTree/${businessType}`,
     method: 'get',
   })
 }

@@ -97,3 +97,10 @@ export interface SubjectCalculateItemAddForm {
   subjectFeeType?: string
   subjectIdList?: string[]
 }
+
+export interface GetItemTreeListBySubjectIdsParams {
+  businessType: string
+  feeType: string
+  feeTypeList?: string[]
+  subjectIds?: string[]
+}

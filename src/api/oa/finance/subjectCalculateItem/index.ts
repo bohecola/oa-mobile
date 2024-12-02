@@ -1,11 +1,35 @@
 import type { AxiosPromise } from 'axios'
+import type { ProjectSubjectItemTreeVO } from '../projectSubject/types'
 import type {
+  GetItemTreeListBySubjectIdsParams,
   SubjectCalculateItemAddForm,
   SubjectCalculateItemForm,
   SubjectCalculateItemQuery,
   SubjectCalculateItemVO,
 } from '@/api/oa/finance/subjectCalculateItem/types'
+import type { DictDataVO } from '@/api/system/dict/data/types'
 import request from '@/service/request'
+
+/**
+ * 根据项目业务类型查询可用费用类型(数据字典)
+ */
+export function getUseFeeTypeBybusinessType(businessType: string): AxiosPromise<DictDataVO[]> {
+  return request({
+    url: `/oa/finance/subjectCalculateItem/getUseFeeTypeBybusinessType/${businessType}`,
+    method: 'get',
+  })
+}
+
+/**
+ *  根据业务类型-费用类型-会计科目id查询组装会计核算项目
+ */
+export function getItemTreeListBySubjectIds(params: GetItemTreeListBySubjectIdsParams): AxiosPromise {
+  return request({
+    url: `/oa/finance/subjectCalculateItem/getItemTreeListBySubjectIds`,
+    method: 'get',
+    params,
+  })
+}
 
 /**
  * 根据项目业务类型查询科目核算项目
@@ -13,7 +37,7 @@ import request from '@/service/request'
  * @returns {*}
  */
 
-export function getTreeByBusinessType(businessType: string): AxiosPromise<SubjectCalculateItemVO[]> {
+export function getTreeByBusinessType(businessType: string): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
     url: `/oa/finance/subjectCalculateItem/getTreeByBusinessType/${businessType}`,
     method: 'get',
