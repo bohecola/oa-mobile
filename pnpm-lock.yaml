@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@he-tree/vue':
+        specifier: ^2.9.2
+        version: 2.9.2(vue@3.4.31(typescript@5.5.4))
       '@morev/vue-transitions':
         specifier: ^3.0.2
         version: 3.0.2(rollup@4.18.1)(vue@3.4.31(typescript@5.5.4))(webpack-sources@3.2.3)
@@ -428,6 +431,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
+  '@babel/runtime@7.26.0':
+    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/standalone@7.25.8':
     resolution: {integrity: sha512-UvRanvLCGPRscJ5Rw9o6vUBS5P+E+gkhl6eaokrIN+WM1kUkmj254VZhyihFdDZVDlI3cPcZoakbJJw24QPISw==}
     engines: {node: '>=6.9.0'}
@@ -722,6 +729,22 @@ packages:
 
   '@gitmoji/parser-opts@1.4.0':
     resolution: {integrity: sha512-zzmx/vtpdB/ijjUm7u9OzHNCXWKpSbzVEgVzOzhilMgoTBlUDyInZFUtiCTV+Wf4oCP9nxGa/kQGQFfN+XLH1g==}
+
+  '@he-tree/dnd-utils@0.1.0-alpha.4':
+    resolution: {integrity: sha512-DuxkFOQ8eztoHrX1/VelqOnQphQbRszemfMKSKlAEEhVjqR/IkaOE2QSRlAdj6OC6AfMvHDPvIZOiEPFwP6/ZQ==}
+
+  '@he-tree/tree-utils@0.1.0-alpha.6':
+    resolution: {integrity: sha512-TIH1iIRLpn3sjd4EuIfKQzFd6ToY8GLYk3i5bfK1njCW7lBBDHLqSyK0mlJPbCPk4PfkZBC4K+sMcYyH4hokyg==}
+
+  '@he-tree/vue@2.9.2':
+    resolution: {integrity: sha512-un8lCyORvIaJ57P7zzM4pxnsaXTuQNm8Jp7Sk16gOsW8LvEyWQK98wZ/gi/Avwoi5hyqWvauqxACva5TQfvnsw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.6
+      vue: ^2.0.0 || >=3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -1160,6 +1183,16 @@ packages:
     resolution: {integrity: sha512-PHHxeAASgiOpSmMjceweIrv2AxDZIkWXyaczksMoWvKV2YAYEhoizRuk/xFnKF+emUIi46TsQ+rvlm/t2BBCfA==}
     peerDependencies:
       vue: ^3.0.0
+
+  '@virtual-list/vue@1.2.0':
+    resolution: {integrity: sha512-sTWCJAIU6NoRWU+6Nzw6TDJcwxnFgK3NmwGu4iDgV6Nhh/iaCEZDDhmChTV+CoXbShLfsgasQRhaVyC7SmkDDg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.6
+      vue: ^2.0.0 || >=3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   '@vitejs/plugin-vue-jsx@4.0.1':
     resolution: {integrity: sha512-7mg9HFGnFHMEwCdB6AY83cVK4A6sCqnrjFYF4WIlebYAQVVJ/sC/CiTruVdrRlhrFoeZ8rlMxY9wYpPTIRhhAg==}
@@ -1763,6 +1796,9 @@ packages:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
 
+  drag-event-service@2.0.0:
+    resolution: {integrity: sha512-JVEnOEbbNDS3RrWd+tVVIDu2SHQZ9luhEFGSQ1hXMjl+ABw0PxhHmnkGjzPVE836Tsg+k7rkm5GM9Ln/UgbYpA==}
+
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -2308,6 +2344,9 @@ packages:
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  helper-js@3.1.5:
+    resolution: {integrity: sha512-CQ56onWqmWwJRUK55/aJ6EeJUV/eqoRiayG6bk2i0Bhs79U94M+aRdA2QLOUGXp/Hy5yAos+YQK1LQHRWiSOHw==}
 
   homedir-polyfill@1.0.3:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
@@ -3126,6 +3165,9 @@ packages:
   refa@0.12.1:
     resolution: {integrity: sha512-J8rn6v4DBb2nnFqkqwy6/NnTYMcgLA+sLr0iIO41qpv0n+ngb7ksag2tMRl0inb1bbO/esUwzW1vbJi7K0sI0g==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+
+  regenerator-runtime@0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
   regexp-ast-analysis@0.7.1:
     resolution: {integrity: sha512-sZuz1dYW/ZsfG17WSAG7eS85r5a0dDsvg+7BiiYR5o6lKCAtUrEwdmRmaGF6rwVj3LcmAeYkOWKEPlbPzN3Y3A==}
@@ -4088,6 +4130,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/runtime@7.26.0':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/standalone@7.25.8': {}
 
   '@babel/template@7.25.0':
@@ -4399,6 +4445,27 @@ snapshots:
   '@gitmoji/parser-opts@1.4.0':
     dependencies:
       '@gitmoji/gitmoji-regex': 1.0.0
+
+  '@he-tree/dnd-utils@0.1.0-alpha.4':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      drag-event-service: 2.0.0
+      helper-js: 3.1.5
+
+  '@he-tree/tree-utils@0.1.0-alpha.6':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      drag-event-service: 2.0.0
+      helper-js: 3.1.5
+
+  '@he-tree/vue@2.9.2(vue@3.4.31(typescript@5.5.4))':
+    dependencies:
+      '@he-tree/dnd-utils': 0.1.0-alpha.4
+      '@he-tree/tree-utils': 0.1.0-alpha.6
+      '@virtual-list/vue': 1.2.0(vue@3.4.31(typescript@5.5.4))
+      helper-js: 3.1.5
+      vue: 3.4.31(typescript@5.5.4)
+      vue-demi: 0.14.10(vue@3.4.31(typescript@5.5.4))
 
   '@humanwhocodes/module-importer@1.0.1': {}
 
@@ -4910,6 +4977,12 @@ snapshots:
     dependencies:
       vue: 3.4.31(typescript@5.5.4)
 
+  '@virtual-list/vue@1.2.0(vue@3.4.31(typescript@5.5.4))':
+    dependencies:
+      helper-js: 3.1.5
+      vue: 3.4.31(typescript@5.5.4)
+      vue-demi: 0.14.10(vue@3.4.31(typescript@5.5.4))
+
   '@vitejs/plugin-vue-jsx@4.0.1(vite@5.3.3(@types/node@20.14.10)(sass@1.77.8)(terser@5.31.3))(vue@3.4.31(typescript@5.5.4))':
     dependencies:
       '@babel/core': 7.25.2
@@ -5082,7 +5155,7 @@ snapshots:
 
   '@vueuse/shared@10.11.0(vue@3.4.31(typescript@5.5.4))':
     dependencies:
-      vue-demi: 0.14.8(vue@3.4.31(typescript@5.5.4))
+      vue-demi: 0.14.10(vue@3.4.31(typescript@5.5.4))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5576,6 +5649,11 @@ snapshots:
   dotenv-expand@8.0.3: {}
 
   dotenv@16.4.5: {}
+
+  drag-event-service@2.0.0:
+    dependencies:
+      '@babel/runtime': 7.26.0
+      helper-js: 3.1.5
 
   eastasianwidth@0.2.0: {}
 
@@ -6247,6 +6325,10 @@ snapshots:
       function-bind: 1.1.2
 
   he@1.2.0: {}
+
+  helper-js@3.1.5:
+    dependencies:
+      '@babel/runtime': 7.26.0
 
   homedir-polyfill@1.0.3:
     dependencies:
@@ -7000,6 +7082,8 @@ snapshots:
   refa@0.12.1:
     dependencies:
       '@eslint-community/regexpp': 4.11.0
+
+  regenerator-runtime@0.14.1: {}
 
   regexp-ast-analysis@0.7.1:
     dependencies:
