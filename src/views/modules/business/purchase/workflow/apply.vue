@@ -39,9 +39,9 @@
 // import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
-import { useWorkflowViewData } from '@/hooks'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
+import { useWorkflowViewData } from '@/hooks'
 import { filterTruthyKeys } from '@/utils'
 
 type Entity = PurchaseForm & { initiator: Initiator }

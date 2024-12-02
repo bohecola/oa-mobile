@@ -97,6 +97,7 @@
       <div class="px-6 py-2 text-sm text-gray-500 dark:text-gray-200">
         采购清单
       </div>
+
       <TableCard v-for="(item, index) in form.itemList" :key="item.id" :title="item.name" class="mx-4 mb-2" :default-collapse="true">
         <van-field
           v-model="item.psiId"

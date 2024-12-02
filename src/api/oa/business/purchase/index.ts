@@ -10,6 +10,7 @@ export function getItemTreeByProjectOrDept(params: {
   type: string
   projectId?: string | number
   deptId: string | number
+  psStatus?: string
 }): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
     url: `/oa/finance/projectSubject/getItemTreeByProjectOrDept`,

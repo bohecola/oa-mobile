@@ -64,11 +64,13 @@ const PurchaseCategorySelectParams = computed(() => {
   const type = form.value.subjectType
   const projectId = form.value.projectId
   const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
+  const psStatus = '5' // 查询执行中的预算
 
   if (type === 'dept') {
     return {
       type,
       deptId,
+      psStatus,
     }
   }
 
@@ -76,6 +78,7 @@ const PurchaseCategorySelectParams = computed(() => {
     type,
     projectId,
     deptId,
+    psStatus,
   }
 })
 </script>

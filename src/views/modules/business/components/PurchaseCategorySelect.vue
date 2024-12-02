@@ -43,6 +43,7 @@ const props = defineProps<{
     type: string
     projectId?: string | number
     deptId: string | number
+    psStatus?: string
   }
 }>()
 
