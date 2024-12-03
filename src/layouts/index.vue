@@ -15,13 +15,14 @@ const menus = clientModuleRoutes.filter(item => !item.meta?.innerPage)
 </script>
 
 <template>
-  <div class="h-screen flex flex-col">
+  <div :class="`h-screen flex flex-col ${showTopbar ? '' : 'pt-safe'}`">
     <!-- 导航条 -->
     <van-nav-bar
       v-if="showTopbar"
       :title="navbarTitle"
       fixed
       placeholder
+      safe-area-inset-top
     />
 
     <!-- 视图 -->

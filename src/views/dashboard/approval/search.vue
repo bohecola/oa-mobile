@@ -17,7 +17,7 @@
       </van-search>
     </form>
 
-    <div class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto">
+    <div class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)-env(safe-area-inset-top)] overflow-y-auto">
       <component :is="currentTab.component" :ref="setSubCompRef(currentTab.category)" :keywords="keywords" />
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <van-nav-bar :fixed="fixed" :placeholder="placeholder" z-index="10" @click-left="handleLeftClick">
+  <van-nav-bar :fixed="fixed" :placeholder="placeholder" z-index="10" safe-area-inset-top @click-left="handleLeftClick">
     <template #title>
       <span class="w-full text-ellipsis overflow-hidden">{{ title }}</span>
     </template>

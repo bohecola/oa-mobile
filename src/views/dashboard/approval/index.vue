@@ -16,7 +16,7 @@
             @focus="onFocus()"
           />
         </form>
-        <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px)] overflow-y-auto approval-list-wrapper">
+        <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-env(safe-area-inset-top))] overflow-y-auto approval-list-wrapper">
           <component :is="item.component" v-if="active === item.category" :ref="setSubCompRef(item.category)" />
         </div>
       </van-tab>
