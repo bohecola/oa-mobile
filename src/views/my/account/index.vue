@@ -56,7 +56,7 @@
       :border="false"
     />
     <!-- 调试使用、生产删除 -->
-  <!-- <van-cell
+    <!-- <van-cell
     title="人员选择"
     title-class="font-bold"
     is-link
@@ -69,17 +69,17 @@
     </template>
   </van-cell> -->
 
-  <!-- 文件上传 -->
-  <!-- <van-cell
-    title="文件上传"
-    title-class="font-bold"
-    is-link
-    value-class="!flex-[2]"
-  >
-    <template #value>
-      <UploadFile v-model="ids" is-multiple :limit="8" :card-size="60" :is-show-tip="true" />
-    </template>
-  </van-cell> -->
+    <!-- 文件上传 -->
+    <!-- <van-cell
+      title="文件上传"
+      title-class="font-bold"
+      is-link
+      value-class="!flex-[2]"
+    >
+      <template #value>
+        <UploadFile v-model="ids" is-multiple :limit="8" :card-size="60" :is-show-tip="true" />
+      </template>
+    </van-cell> -->
   </div>
 </template>
 

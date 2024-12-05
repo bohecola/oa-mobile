@@ -1,5 +1,5 @@
 <template>
-  <div class="w-24 h-24 flex items-center justify-center rounded bg-[var(--bg-color)]">
+  <div class="w-24 h-24 flex items-center justify-center rounded bg-[--bg-card]">
     <img :src="logo" class="object-contain" alt="Logo">
   </div>
 </template>

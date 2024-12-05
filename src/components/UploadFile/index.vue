@@ -21,7 +21,7 @@
       <!-- 文件上传按钮 -->
       <div
         v-if="!readonly"
-        class="flex items-center justify-center border bg-[--bg-secondary-color]"
+        class="flex items-center justify-center border bg-[--bg-color]"
         :style="{
           width: `${cardSize}px`,
           height: `${cardSize}px`,
@@ -38,7 +38,7 @@
               <!-- 视频 -->
               <div
                 v-if="isVideoType(getFilenameExt(item.name ?? item.file!.name))"
-                class="relative w-full h-full bg-[--bg-secondary-color]"
+                class="relative w-full h-full bg-[--bg-color]"
                 @click="() => { fileActionEnum?.handler?.(item) }"
               >
                 <video :src="item.url" class="w-full h-full" preload="metadata" />
@@ -52,7 +52,7 @@
               <!-- 其他 -->
               <div
                 v-else-if="!isImageType(getFilenameExt(item.name ?? item.file!.name))"
-                class="relative w-full h-full flex items-center justify-center bg-[--bg-secondary-color]"
+                class="relative w-full h-full flex items-center justify-center bg-[--bg-color]"
                 @click="() => { fileActionEnum?.handler?.(item) }"
               >
                 <img :src="fileActionEnum.icon" class="w-8 h-8 object-contain" :alt="item.name">
