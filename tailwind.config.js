@@ -22,6 +22,8 @@ export default {
         'solar',
         'material-symbols',
         'ant-design',
+        'lucide',
+        'ic',
       ]),
     }),
     remToPx(),
