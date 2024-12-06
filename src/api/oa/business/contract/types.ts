@@ -280,6 +280,13 @@ export interface ContractQuery extends PageQuery {
 
   ids?: (string | number)[]
 
+  status?: string
+
+  statusList?: (string | number)[]
+  /**
+   * 预算id
+   */
+  psId?: string
   /**
    * 日期范围参数
    */

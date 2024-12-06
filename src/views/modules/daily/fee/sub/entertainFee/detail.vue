@@ -18,7 +18,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'projectId', 'deptId', 'subjectItemId', 'amount', 'isAdministration', 'reason', 'ossIdList'],
+    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'amount', 'isAdministration', 'reason', 'ossIdList'],
   },
 )
 

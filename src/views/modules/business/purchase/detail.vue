@@ -6,9 +6,22 @@
           <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
         </template>
       </van-field>
-      <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目" name="projectId" input-align="right">
+      <van-field
+        v-show-field="['psId', includeFields]"
+        label="预算"
+        name="psId"
+        input-align="right"
+      >
         <template #input>
-          <dict-tag :options="projectOptions" :value="form.projectId" />
+          <ProjectSubjectSelect
+            v-model="form.psId"
+            :params="{
+              type: form.subjectType,
+              deptId: form.deptId,
+              status: '5',
+            }"
+            readonly
+          />
         </template>
       </van-field>
       <van-field v-show-field="['contractId', includeFields]" label="收入合同" name="contractId" input-align="right">
@@ -18,39 +31,39 @@
       </van-field>
       <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
         <template #input>
-          <dict-tag :options="oa_contract_execute_situation" :value="form.contractExecute" />
+          <dict-select v-model="form.contractExecute" dict-type="oa_contract_execute_situation" readonly />
         </template>
       </van-field>
       <van-field v-show-field="['type', includeFields]" label="采购类型" name="type" input-align="right">
         <template #input>
-          <dict-tag :options="oa_purchase_type" :value="form.type" />
+          <dict-select v-model="form.type" dict-type="oa_purchase_type" readonly />
         </template>
       </van-field>
       <van-field v-show-field="['businessCategory', includeFields]" label="业务类别" name="businessCategory" input-align="right">
         <!-- 如果选择了项目，则默认项目的业务类型，如果没有项目则可选：管理、销售、研发 -->
         <template #input>
-          <dict-tag :options="form.projectId ? oa_project_business_type : oa_purchase_business_type" :value="form.businessCategory" />
+          <dict-tag :options="isProject ? oa_project_business_type : oa_purchase_business_type" :value="form.businessCategory" />
         </template>
       </van-field>
       <van-field v-show-field="['objectCategory', includeFields]" label="物品类别" name="objectCategory" input-align="right">
         <template #input>
-          <dict-tag :options="oa_purchase_object_category" :value="form.objectCategory" />
+          <dict-select v-model="form.objectCategory" dict-type="oa_purchase_object_category" readonly />
         </template>
       </van-field>
       <!-- 项目为空时显示，可选值有：工程施工、劳务外包、技术支持、租赁、其他 -->
-      <van-field v-if="!form.projectId" v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
+      <van-field v-if="!isProject" v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
         <template #input>
-          <dict-tag :options="oa_purchase_service_category" :value="form.serviceCategory" />
+          <dict-select v-model="form.serviceCategory" dict-type="oa_purchase_service_category" readonly />
         </template>
       </van-field>
       <!-- 项目为空 并且 服务类别为租赁时显示，可选值有：房屋租赁、车辆租赁、其他 -->
-      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
+      <van-field v-if="!isProject && form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
         <template #input>
-          <dict-tag :options="oa_purchase_lease_type" :value="form.leaseType" />
+          <dict-select v-model="form.leaseType" dict-type="oa_purchase_lease_type" readonly />
         </template>
       </van-field>
       <!-- 项目为空 并且 服务类别为租赁时显示，可选值：是、否 -->
-      <van-field v-if="!form.projectId && form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
+      <van-field v-if="!isProject && form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isDeposit" />
         </template>
@@ -200,7 +213,7 @@
     </div>
 
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同" name="purchaseContractIds" input-align="right">
+      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
         <template #input>
           <ContractSelect v-model="form.purchaseContractIds" readonly multiple />
         </template>
@@ -224,10 +237,10 @@ import nzh from 'nzh'
 import { isEmpty, isNumber } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ContractSelect from '../components/ContractSelect.vue'
+import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import { useProjectOptions } from '@/hooks'
 
 withDefaults(
   defineProps<{
@@ -245,20 +258,10 @@ withDefaults(
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// 采购类型
-const { oa_purchase_type } = toRefs(proxy!.useDict('oa_purchase_type'))
 // 采购 - 业务类型
 const { oa_purchase_business_type } = toRefs(proxy!.useDict('oa_purchase_business_type'))
 // 项目 - 业务类型
 const { oa_project_business_type } = toRefs(proxy!.useDict('oa_project_business_type'))
-// 采购物品类别
-const { oa_purchase_object_category } = toRefs(proxy!.useDict('oa_purchase_object_category'))
-// 采购服务类别
-const { oa_purchase_service_category } = toRefs(proxy!.useDict('oa_purchase_service_category'))
-// 采购租赁类型
-const { oa_purchase_lease_type } = toRefs(proxy!.useDict('oa_purchase_lease_type'))
-// 合同执行情况
-const { oa_contract_execute_situation } = toRefs(proxy!.useDict('oa_contract_execute_situation'))
 // 系统是否
 const { sys_yes_no } = toRefs(proxy!.useDict('sys_yes_no'))
 
@@ -268,25 +271,16 @@ const { Form, form, isLoading, reset, view, workflowView } = useForm()
 // 指令
 const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 
-// 项目列表
-const { projectOptions } = useProjectOptions()
+// 是否是项目预算
+const isProject = computed(() => form.value.subjectType === 'project')
 
 // 预算类别查询条件
 const PurchaseCategorySelectParams = computed(() => {
-  const type = form.value.subjectType
-  const projectId = form.value.projectId
+  const psId = form.value.psId
   const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
 
-  if (type === 'dept') {
-    return {
-      type,
-      deptId,
-    }
-  }
-
   return {
-    type,
-    projectId,
+    psId,
     deptId,
   }
 })

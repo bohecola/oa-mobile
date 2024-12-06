@@ -17,6 +17,17 @@ export function listContract(query?: Partial<ContractQuery>): AxiosPromise<Contr
 }
 
 /**
+ * 没有绑定项目的合同
+ */
+export function noRelListContract(query?: Partial<ContractQuery>): AxiosPromise<ContractVO[]> {
+  return request({
+    url: '/oa/business/contract/noRelList',
+    method: 'get',
+    params: query,
+  })
+}
+
+/**
  * 查询合同详细
  * @param id
  */

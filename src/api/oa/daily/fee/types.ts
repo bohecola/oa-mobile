@@ -62,9 +62,9 @@ export interface DailyFeeForm extends BaseEntity {
   id?: string | number
 
   /**
-   * 项目
+   * 预算id
    */
-  projectId?: number
+  psId?: string
 
   /**
    *预算类型(项目预算、部门预算)
@@ -74,7 +74,7 @@ export interface DailyFeeForm extends BaseEntity {
   /**
    * 部门id
    */
-  deptId?: string
+  deptId?: string | number
 
   /**
    * 费用类型
@@ -116,6 +116,7 @@ export interface DailyFeeForm extends BaseEntity {
    * 流程中申请事由备注
    */
   wfRemark?: string
+
   /**
    * 事务编码
    */
@@ -125,9 +126,7 @@ export interface DailyFeeForm extends BaseEntity {
    * 根事务编码
    */
   rootNo?: string
-  /**
-   * 附件列表
-   */
+
   ossIdList?: string[]
 }
 

@@ -53,9 +53,6 @@ const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect> | null>()
 // 表单
 const { Form, form, rules, isLoading, reset, workflowView } = useForm()
 
-// 日常类型根节点编码
-const rootNo = ref('')
-
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 // 是否查看

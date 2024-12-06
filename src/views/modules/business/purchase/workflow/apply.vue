@@ -83,7 +83,7 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   id: true,
   no: true,
   subjectType: true,
-  projectId: true,
+  psId: true,
   projectName: true,
   deptId: true,
   type: true,

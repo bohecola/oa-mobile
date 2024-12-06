@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
-import request from '@/service/request'
 import type { DailyFeeForm, DailyFeeQuery, DailyFeeVO } from '@/api/oa/daily/fee/types'
+import request from '@/service/request'
 
 /**
  * 查询日常费用管理列表

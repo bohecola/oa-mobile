@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { getDailyFee } from '@/api/oa/daily/fee/index'
+import { useStore } from '@/store'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -12,6 +13,7 @@ export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
 
 export function useForm() {
+  const { user } = useStore()
   // 实例
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
 
@@ -21,26 +23,26 @@ export function useForm() {
   // 表单初始值
   const initFormData: DailyFeeForm = {
     id: undefined,
-    projectId: undefined,
-    subjectType: 'project',
-    deptId: undefined,
+    psId: undefined,
     feeType: undefined,
+    subjectType: 'project',
+    deptId: user.info.deptId,
     subjectItemId: undefined,
-    amount: undefined,
+    amount: 0,
     reason: undefined,
     isAdministration: undefined,
     certificateType: undefined,
-    no: undefined,
-    rootNo: undefined,
     remark: undefined,
     wfRemark: undefined,
+    no: undefined,
+    rootNo: undefined,
     ossIdList: undefined,
   }
 
   const initRules: Record<string, FieldRule[]> = {
     subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
     feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
-    projectId: [{ required: true, message: '项目不能为空', trigger: 'onChange' }],
+    psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],
     subjectItemId: [{ required: true, message: '预算类别不能为空', trigger: 'onChange' }],
     isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
     certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],

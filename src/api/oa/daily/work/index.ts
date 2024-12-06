@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
-import request from '@/service/request'
 import type { DailyWorkForm, DailyWorkQuery, DailyWorkVO } from '@/api/oa/daily/work/types'
+import request from '@/service/request'
 
 /**
  * 查询日常事务记录列表

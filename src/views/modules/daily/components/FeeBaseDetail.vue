@@ -5,9 +5,22 @@
     </template>
   </van-field>
 
-  <van-field v-if="form.subjectType === 'project'" v-show-field="['projectId', includeFields]" label="项目" name="projectId" input-align="right">
+  <van-field
+    v-show-field="['psId', includeFields]"
+    label="预算"
+    name="psId"
+    input-align="right"
+  >
     <template #input>
-      <dict-tag :options="projectOptions" :value="form.projectId" />
+      <ProjectSubjectSelect
+        v-model="form.psId"
+        :params="{
+          type: form.subjectType,
+          deptId: form.deptId,
+          status: '5',
+        }"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -36,10 +49,10 @@
 <script setup lang="ts">
 import nzh from 'nzh'
 import { isNumber } from 'lodash-es'
+import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import BaseDetail from './BaseDetail.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import { useProjectOptions } from '@/hooks'
 import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
 
 withDefaults(
@@ -47,7 +60,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'projectId', 'deptId', 'subjectItemId', 'amount', 'reason', 'ossIdList'],
+    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'amount', 'reason', 'ossIdList'],
   },
 )
 
@@ -56,29 +69,14 @@ const form = inject<Ref<DailyFeeForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 
-// 项目列表
-const { projectOptions } = useProjectOptions()
-
 // 预算类别查询条件
 const PurchaseCategorySelectParams = computed(() => {
-  const type = form.value.subjectType
-  const projectId = form.value.projectId
+  const psId = form.value.psId
   const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
-  const psStatus = '5' // 查询执行中的预算
-
-  if (type === 'dept') {
-    return {
-      type,
-      deptId,
-      psStatus,
-    }
-  }
 
   return {
-    type,
-    projectId,
+    psId,
     deptId,
-    psStatus,
   }
 })
 </script>

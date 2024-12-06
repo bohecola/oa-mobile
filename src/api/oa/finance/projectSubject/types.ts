@@ -220,7 +220,7 @@ export interface ProjectSubjectForm extends BaseEntity {
   /**
    * 项目id
    */
-  projectId?: string | number
+  projectIds?: string
 
   /**
    * 项目名称
@@ -284,6 +284,7 @@ export interface ProjectSubjectQuery extends PageQuery {
    */
   status?: string
 
+  ids?: string[]
   /**
    * 状态数组
    */

@@ -106,10 +106,15 @@ export interface PurchaseForm extends BaseEntity {
    */
   subjectType?: string
 
+  // /**
+  //  * 项目id
+  //  */
+  // projectId?: string | number
+
   /**
-   * 项目id
+   * 预算id
    */
-  projectId?: string | number
+  psId?: string
 
   /**
    * 项目名称
@@ -273,6 +278,8 @@ export interface PurchaseQuery extends PageQuery {
    * 合同执行情况; 合同内  合同外
    */
   contractExecute?: string
+
+  queryType?: string
 
   /**
    * 状态

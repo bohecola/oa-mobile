@@ -4,6 +4,16 @@ import type { PurchaseForm, PurchaseQuery, PurchaseVO } from '@/api/oa/business/
 import request from '@/service/request'
 
 /**
+ * 预算类别下拉选择器列表
+ */
+export function getItemByPsIdAndDeptId(params: { psId: string, deptId: string | number }): AxiosPromise {
+  return request({
+    url: `/oa/finance/projectSubject/getItemByPsIdAndDeptId/${params.psId}/${params.deptId}`,
+    method: 'get',
+  })
+}
+
+/**
  * 预算类别列表
  */
 export function getItemTreeByProjectOrDept(params: {

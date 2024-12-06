@@ -89,7 +89,7 @@ export function getNoBindSubjectFeeTypes(params: getNoBindSubjectFeeTypesParams)
  * @param query
  * @returns {*}
  */
-export function listProjectSubject(query?: ProjectSubjectQuery): AxiosPromise<ProjectSubjectVO[]> {
+export function listProjectSubject(query?: Partial<ProjectSubjectQuery>): AxiosPromise<ProjectSubjectVO[]> {
   return request({
     url: '/oa/finance/projectSubject/list',
     method: 'get',
