@@ -116,6 +116,7 @@ export interface SupplierCustomerQuery extends PageQuery {
    */
   status?: string
 
+  ids?: string[]
   /**
    * 日期范围参数
    */

@@ -25,6 +25,11 @@ export interface ProjectVO {
   businessType: string
 
   /**
+   * 合同编号
+   */
+  contractNo?: string
+
+  /**
    * 项目负责人
    */
   projectLeader: string
@@ -87,6 +92,11 @@ export interface ProjectForm extends BaseEntity {
   name?: string
 
   /**
+   * 合同编号
+   */
+  contractNo?: string
+
+  /**
    * 业务类型;运维类项目 工程类项目
    */
   businessType?: string
@@ -124,7 +134,7 @@ export interface ProjectForm extends BaseEntity {
   /**
    * 合同ID
    */
-  contractId?: string
+  contractIds?: string
 
   /**
    * 合同名称
@@ -132,7 +142,7 @@ export interface ProjectForm extends BaseEntity {
   contractName?: string
 
   /**
-   * 状态;0 草稿1审批中2执行中 3 已结束 4 终止 9 作废
+   * 状态
    */
   status?: string
 
@@ -162,6 +172,14 @@ export interface ProjectQuery extends PageQuery {
    * 业务类型;运维类项目 工程类项目
    */
   businessType?: string
+
+  queryType?: string
+
+  ids?: (string | number)[]
+
+  status?: string
+
+  statusList?: (string | number)[]
 
   /**
    * 日期范围参数

@@ -5,24 +5,23 @@
 
     <van-field v-model="form.partyA" v-show-field="['partyA', includeFields]" name="partyA" label="甲方" input-align="right">
       <template #input>
-        <dict-tag :options="scOptions" :value="form.partyA" />
+        <SCSelect v-model="form.partyA" readonly />
       </template>
     </van-field>
     <van-field v-model="form.partyB" v-show-field="['partyB', includeFields]" name="partyB" label="乙方" input-align="right">
       <template #input>
-        <dict-tag :options="scOptions" :value="form.partyB" />
+        <SCSelect v-model="form.partyB" readonly />
       </template>
     </van-field>
-
     <template v-if="contractMode !== 'two'">
       <van-field v-if="contractMode === 'three' || contractMode === 'four'" v-model="form.partyC" v-show-field="['partyC', includeFields]" name="partyC" label="丙方" input-align="right">
         <template #input>
-          <dict-tag :options="scOptions" :value="form.partyC" />
+          <SCSelect v-model="form.partyC" readonly />
         </template>
       </van-field>
       <van-field v-if="contractMode === 'four'" v-model="form.partyD" v-show-field="['partyD', includeFields]" name="partyD" label="丁方" input-align="right">
         <template #input>
-          <dict-tag :options="scOptions" :value="form.partyD" />
+          <SCSelect v-model="form.partyD" readonly />
         </template>
       </van-field>
     </template>
@@ -34,12 +33,12 @@
     </van-field>
     <van-field v-show-field="['projectId', includeFields]" name="projectId" label="项目" input-align="right">
       <template #input>
-        <dict-tag :options="projectOptions" :value="form.projectId" />
+        <ProjectSelect v-model="form.projectId" readonly />
       </template>
     </van-field>
     <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="合同类型" input-align="right">
       <template #input>
-        <dict-tag :options="oa_contract_type" :value="form.type" />
+        <dict-select v-model="form.type" dict-type="oa_contract_type" readonly />
       </template>
     </van-field>
     <van-field v-model="form.category" v-show-field="['category', includeFields]" name="category" label="合同类别" input-align="right">
@@ -57,14 +56,21 @@
     </van-field>
     <van-field v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
       <template #input>
-        <dict-tag :options="oa_contract_review_way" :value="form.reviewWay" />
+        <dict-select v-model="form.reviewWay" dict-type="oa_contract_review_way" readonly />
       </template>
     </van-field>
 
-    <van-field v-model="form.amount" v-show-field="['amount', includeFields]" name="amount" label="合同金额" input-align="right" />
+    <van-field v-model="form.amount" v-show-field="['amount', includeFields]" name="amount" label="合同金额" input-align="right">
+      <template #input>
+        <div class="flex flex-col">
+          <span>{{ form.amount }}</span>
+          <span v-if="!isNil(form.amount)" class="text-red-400">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+        </div>
+      </template>
+    </van-field>
     <van-field v-model="form.invoiceType" v-show-field="['invoiceType', includeFields]" name="invoiceType" label="发票类型" input-align="right">
       <template #input>
-        <dict-tag :options="oa_contract_invoice_type" :value="form.invoiceType" />
+        <dict-select v-model="form.invoiceType" dict-type="oa_contract_invoice_type" readonly />
       </template>
     </van-field>
     <van-field v-model="form.paymentWay" v-show-field="['paymentWay', includeFields]" name="paymentWay" label="付款方式" input-align="right" />
@@ -106,10 +112,12 @@
 </template>
 
 <script setup lang='ts'>
+import { isNil } from 'lodash-es'
+import nzh from 'nzh'
+import ProjectSelect from '../components/ProjectSelect.vue'
+import SCSelect from '../components/SCSelect.vue'
 import { useForm } from './form'
 import type { ContractForm } from '@/api/oa/business/contract/types'
-import { listProject } from '@/api/oa/business/project'
-import { listSupplierCustomer } from '@/api/oa/business/supplierCustomer'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 withDefaults(
@@ -127,36 +135,14 @@ withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_contract_type } = toRefs(proxy!.useDict('oa_contract_type'))
+
 const { oa_contract_category_in } = toRefs(proxy!.useDict('oa_contract_category_in'))
 const { oa_contract_category_out } = toRefs(proxy!.useDict('oa_contract_category_out'))
 const { oa_contract_category_agreement } = toRefs(proxy!.useDict('oa_contract_category_agreement'))
-const { oa_contract_review_way } = toRefs(proxy!.useDict('oa_contract_review_way'))
-const { oa_contract_invoice_type } = toRefs(proxy!.useDict('oa_contract_invoice_type'))
 
 const { Form, form, contractMode, isLoading, reset, view, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<ContractForm>()
-
-// 供应商/客户选项数据
-const scOptions = ref<DictDataOption[]>([])
-async function getSCOptions() {
-  const res = await listSupplierCustomer()
-  scOptions.value = res.rows.map(item => ({ label: item.name, value: item.id }))
-}
-
-// 项目列表
-const projectOptions = ref<DictDataOption[]>([])
-async function getProjectOptions() {
-  const res = await listProject()
-  projectOptions.value = res.rows.map(item => ({ label: item.name, value: item.id as string }))
-}
-
-// 挂载
-onMounted(async () => {
-  await getSCOptions()
-  await getProjectOptions()
-})
 
 // 输出
 defineExpose({

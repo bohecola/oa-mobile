@@ -3,12 +3,22 @@ import type { ProjectForm, ProjectQuery, ProjectVO } from '@/api/oa/business/pro
 import request from '@/service/request'
 
 /**
+ * 根据预算查询项目业务类型
+ */
+export function getBusinessTypeByPsId(psId: string): AxiosPromise<string> {
+  return request({
+    url: `oa/business/project/getBusinessTypeByPsId/${psId}`,
+    method: 'get',
+  })
+}
+
+/**
  * 查询项目列表
  * @param query
  * @returns {*}
  */
 
-export function listProject(query?: ProjectQuery): AxiosPromise<ProjectVO[]> {
+export function listProject(query?: Partial<ProjectQuery>): AxiosPromise<ProjectVO[]> {
   return request({
     url: '/oa/business/project/list',
     method: 'get',

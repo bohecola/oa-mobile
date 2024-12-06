@@ -8,7 +8,7 @@ import request from '@/service/request'
  * @returns {*}
  */
 
-export function listSupplierCustomer(query?: SupplierCustomerQuery): AxiosPromise<SupplierCustomerVO[]> {
+export function listSupplierCustomer(query?: Partial<SupplierCustomerQuery>): AxiosPromise<SupplierCustomerVO[]> {
   return request({
     url: '/oa/business/supplierCustomer/list',
     method: 'get',
