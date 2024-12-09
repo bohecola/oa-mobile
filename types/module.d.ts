@@ -1,5 +1,6 @@
 import type { useDict } from '@/utils/dict'
 import type { addDateRange, handleTree, parseTime, selectDictLabel, selectDictLabels } from '@/utils/base'
+import type { formatCurrencyUtil, toCnMoney } from '@/utils/finance'
 import type { getConfigKey, updateConfigByKey } from '@/api/system/config'
 import type modal from '@/plugins/modal'
 import type download from '@/plugins/download'
@@ -20,5 +21,7 @@ declare module 'vue' {
     selectDictLabel: typeof selectDictLabel
     selectDictLabels: typeof selectDictLabels
     parseTime: typeof parseTime
+    formatCurrency: typeof formatCurrencyUtil
+    toCnMoney: typeof toCnMoney
   }
 }
