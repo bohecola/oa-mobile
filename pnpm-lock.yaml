@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@automattic/format-currency':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@he-tree/vue':
         specifier: ^2.9.2
         version: 2.9.2(vue@3.4.31(typescript@5.5.4))
@@ -266,6 +269,9 @@ packages:
 
   '@antfu/utils@0.7.10':
     resolution: {integrity: sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==}
+
+  '@automattic/format-currency@2.0.0':
+    resolution: {integrity: sha512-9A+oKRUm+n4f+cT4FHsDkCpo4mVRa/zBAvsXXq5vZpwfOWskAyDjdxA03Jl8A+z7pHYRimysG4WLM3jMRJutLw==}
 
   '@babel/code-frame@7.24.7':
     resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
@@ -3900,6 +3906,10 @@ snapshots:
       '@jsdevtools/ez-spawn': 3.0.4
 
   '@antfu/utils@0.7.10': {}
+
+  '@automattic/format-currency@2.0.0':
+    dependencies:
+      tslib: 2.6.3
 
   '@babel/code-frame@7.24.7':
     dependencies:
