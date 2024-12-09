@@ -5,37 +5,27 @@
 
     <van-field v-model="form.partyA" v-show-field="['partyA', includeFields]" name="partyA" label="甲方" input-align="right">
       <template #input>
-        <SCSelect v-model="form.partyA" readonly />
+        <SCSelect v-model="form.partyA" multiple readonly />
       </template>
     </van-field>
     <van-field v-model="form.partyB" v-show-field="['partyB', includeFields]" name="partyB" label="乙方" input-align="right">
       <template #input>
-        <SCSelect v-model="form.partyB" readonly />
+        <SCSelect v-model="form.partyB" multiple readonly />
       </template>
     </van-field>
     <template v-if="contractMode !== 'two'">
       <van-field v-if="contractMode === 'three' || contractMode === 'four'" v-model="form.partyC" v-show-field="['partyC', includeFields]" name="partyC" label="丙方" input-align="right">
         <template #input>
-          <SCSelect v-model="form.partyC" readonly />
+          <SCSelect v-model="form.partyC" multiple readonly />
         </template>
       </van-field>
       <van-field v-if="contractMode === 'four'" v-model="form.partyD" v-show-field="['partyD', includeFields]" name="partyD" label="丁方" input-align="right">
         <template #input>
-          <SCSelect v-model="form.partyD" readonly />
+          <SCSelect v-model="form.partyD" multiple readonly />
         </template>
       </van-field>
     </template>
 
-    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门" input-align="right">
-      <template #input>
-        <DeptSelect v-model="form.deptId" readonly />
-      </template>
-    </van-field>
-    <van-field v-show-field="['projectId', includeFields]" name="projectId" label="项目" input-align="right">
-      <template #input>
-        <ProjectSelect v-model="form.projectId" readonly />
-      </template>
-    </van-field>
     <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="合同类型" input-align="right">
       <template #input>
         <dict-select v-model="form.type" dict-type="oa_contract_type" readonly />
@@ -60,11 +50,22 @@
       </template>
     </van-field>
 
+    <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门" input-align="right">
+      <template #input>
+        <DeptSelect v-model="form.deptId" readonly />
+      </template>
+    </van-field>
+    <van-field v-show-field="['projectId', includeFields]" name="projectId" label="项目" input-align="right">
+      <template #input>
+        <ProjectSelect v-model="form.projectId" readonly />
+      </template>
+    </van-field>
+
     <van-field v-model="form.amount" v-show-field="['amount', includeFields]" name="amount" label="合同金额" input-align="right">
       <template #input>
         <div class="flex flex-col">
-          <span>{{ form.amount }}</span>
-          <span v-if="!isNil(form.amount)" class="text-red-400">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+          <span>{{ formatCurrency(form.amount) }}</span>
+          <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
     </van-field>
@@ -73,14 +74,13 @@
         <dict-select v-model="form.invoiceType" dict-type="oa_contract_invoice_type" readonly />
       </template>
     </van-field>
-    <van-field v-model="form.paymentWay" v-show-field="['paymentWay', includeFields]" name="paymentWay" label="付款方式" input-align="right" />
 
     <div v-show-field="['taxRate', includeFields]" class="mb-6">
       <van-cell-group title="金额/增值税率">
         <div class="py-2 px-4">
           <div v-for="(item, index) in form.taxRate" :key="index">
             <div class="text-sm flex gap-6 opacity-60">
-              <span>金额(元)：{{ item.amount }}</span>
+              <span>金额(元)：{{ formatCurrency(item.amount) }}</span>
               <span>增值税率(%)：{{ item.taxRate }}</span>
             </div>
           </div>
@@ -103,6 +103,7 @@
         {{ parseTime(form.signDate, '{y}-{m}-{d}') }}
       </template>
     </van-field>
+    <van-field v-model="form.paymentWay" v-show-field="['paymentWay', includeFields]" name="paymentWay" label="付款方式" input-align="right" />
     <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="合同描述" input-align="right">
       <template #input>
         <TextareaView :value="form.description" />
@@ -113,7 +114,6 @@
 
 <script setup lang='ts'>
 import { isNil } from 'lodash-es'
-import nzh from 'nzh'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import { useForm } from './form'

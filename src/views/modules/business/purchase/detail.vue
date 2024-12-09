@@ -71,16 +71,16 @@
       <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
         <template #input>
           <div class="flex items-baseline">
-            <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
-            <span v-if="isNumber(form.amount)" class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+            <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
+            <span v-if="isNumber(form.amount)" class="text-red">{{ toCnMoney(form.amount) }}</span>
           </div>
         </template>
       </van-field>
       <van-field v-show-field="['realAmount', includeFields]" label="实际金额" name="amount" input-align="right">
         <template #input>
           <div class="flex items-baseline">
-            <span class="mr-3">{{ form.realAmount?.toFixed(2) }} </span>
-            <span v-if="isNumber(form.realAmount)" class="text-red">{{ nzh.cn.toMoney(Number(form.realAmount), { outSymbol: false }) }}</span>
+            <span class="mr-3">{{ formatCurrency(form.realAmount) }} </span>
+            <span v-if="isNumber(form.realAmount)" class="text-red">{{ toCnMoney(form.realAmount) }}</span>
           </div>
         </template>
       </van-field>
@@ -233,7 +233,6 @@
 </template>
 
 <script setup lang="ts">
-import nzh from 'nzh'
 import { isEmpty, isNumber } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ContractSelect from '../components/ContractSelect.vue'

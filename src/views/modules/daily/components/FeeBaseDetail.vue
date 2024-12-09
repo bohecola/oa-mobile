@@ -44,7 +44,7 @@
   <van-field v-show-field="['availableAmount', includeFields]" label="剩余金额" name="availableAmount" input-align="right">
     <template #input>
       <div class="flex items-baseline">
-        <span class="mr-3 text-red">{{ form.availableAmount?.toFixed(2) }}</span>
+        <span class="mr-3 text-red">{{ formatCurrency(form.availableAmount) }}</span>
       </div>
     </template>
   </van-field>
@@ -52,8 +52,8 @@
   <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
     <template #input>
       <div class="flex items-baseline">
-        <span class="mr-3">{{ form.amount?.toFixed(2) }}</span>
-        <span v-if="isNumber(form.amount)" class="text-red">{{ nzh.cn.toMoney(Number(form.amount), { outSymbol: false }) }}</span>
+        <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
+        <span v-if="isNumber(form.amount)" class="text-red">{{ toCnMoney(form.amount) }}</span>
       </div>
     </template>
   </van-field>
@@ -62,7 +62,6 @@
 </template>
 
 <script setup lang="ts">
-import nzh from 'nzh'
 import { isNumber } from 'lodash-es'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import BaseDetail from './BaseDetail.vue'
