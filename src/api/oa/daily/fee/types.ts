@@ -87,6 +87,11 @@ export interface DailyFeeForm extends BaseEntity {
   subjectItemId?: string | number
 
   /**
+   * 剩余金额
+   */
+  availableAmount?: number
+
+  /**
    * 金额
    */
   amount?: number

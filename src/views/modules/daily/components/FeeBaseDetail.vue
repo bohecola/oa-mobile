@@ -1,5 +1,11 @@
 <template>
-  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" prop="subjectType" input-align="right">
+  <van-field v-show-field="['deptId', includeFields]" label="预算部门" name="deptId" input-align="right">
+    <template #input>
+      <DeptSelect v-model="form.deptId" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
     <template #input>
       <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
     </template>
@@ -29,8 +35,17 @@
       <PurchaseCategorySelect
         v-model="form.subjectItemId"
         :params="PurchaseCategorySelectParams"
+        multiple
         readonly
       />
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['availableAmount', includeFields]" label="剩余金额" name="availableAmount" input-align="right">
+    <template #input>
+      <div class="flex items-baseline">
+        <span class="mr-3 text-red">{{ form.availableAmount?.toFixed(2) }}</span>
+      </div>
     </template>
   </van-field>
 
@@ -60,7 +75,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'amount', 'reason', 'ossIdList'],
+    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'availableAmount', 'amount', 'reason', 'ossIdList'],
   },
 )
 
@@ -72,7 +87,7 @@ const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 // 预算类别查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
-  const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
+  const deptId = form.value.deptId
 
   return {
     psId,

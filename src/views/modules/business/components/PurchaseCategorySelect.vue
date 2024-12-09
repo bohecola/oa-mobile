@@ -1,11 +1,14 @@
 <template>
-  <van-skeleton :loading="isLoading" animated class="h-6 flex items-center">
+  <van-skeleton :loading="isLoading" animated class="h-8 flex items-center">
     <template #template>
-      <van-skeleton-paragraph class="!h-[60%]" />
+      <van-skeleton-paragraph variant="rect" class="!h-[60%] min-w-[180px]" />
     </template>
     <template #default>
-      <div v-if="readonly">
-        {{ selectedLabel }}
+      <div v-if="readonly" class="flex gap-2 flex-wrap">
+        <div v-for="(label, index) in selectedLabels" :key="index" class="mr-1">
+          <span>{{ label }}</span>
+          <span v-if="index !== selectedLabels.length - 1">{{ '，' }}</span>
+        </div>
       </div>
       <!-- <el-tree-select
         v-if="component === 'tree-select'"
@@ -20,7 +23,7 @@
         :props="{
           value: 'id',
           label: 'sciName',
-          children: 'children',
+          children: 'children'
         }"
         :multiple="multiple"
         :disabled="disabled"
@@ -31,9 +34,9 @@
           <span>{{ sciName }}</span>
           <span v-if="treeType === 'item'" style="color: gray">（{{ availableAmount }}）</span>
         </template>
-      </el-tree-select>
+      </el-tree-select> -->
 
-      <div v-if="component === 'cascader'" v-show="!readonly" class="w-full">
+      <!-- <div v-if="component === 'cascader'" v-show="!readonly" class="w-full">
         <el-cascader
           ref="CascaderRef"
           v-model="ids"
@@ -45,7 +48,7 @@
             value: 'id',
             label: 'sciName',
             children: 'children',
-            multiple,
+            multiple
           }"
           :disabled="disabled"
           clearable
@@ -62,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import Big from 'big.js'
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { getItemByPsIdAndDeptId } from '@/api/oa/business/purchase'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
@@ -87,7 +91,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:nodes', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:availableAmount', 'change'])
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -98,19 +102,21 @@ const ids = ref<PurchaseCategorySelectValue>(deserialize(props.modelValue))
 
 const isLoading = ref(false)
 const rawData = ref<ProjectSubjectItemTreeVO[]>([])
-
 const treeData = computed(() => proxy?.handleTree<ProjectSubjectItemTreeVO>(rawData.value, 'uuid'))
-const selectedLabel = computed(() => {
-  if (props.modelValue && !isEmpty(rawData.value)) {
-    const idsArr = isArray(ids.value) ? ids.value : [ids.value]
-    const itemsPathNodes = idsArr.reduce((prev, curr) => {
-      const nodes = findPathNodes<ProjectSubjectItemTreeVO>(treeData.value, curr)
-      prev.push(nodes)
 
+// 选中项的 labels 集合
+const selectedLabels = computed(() => {
+  if (props.modelValue && !isEmpty(rawData.value)) {
+    // 选中的预算类别项 id 集合
+    const idsArr = isArray(ids.value) ? ids.value : !isNil(ids.value) ? [ids.value] : []
+    // 选中的预算类别项的 pathNodes
+    const pathNodesArr = idsArr.reduce<ProjectSubjectItemTreeVO[][]>((prev, curr) => {
+      const nodes = findPathNodes(treeData.value, curr)
+      prev.push(nodes)
       return prev
     }, [])
 
-    return itemsPathNodes.map(e => e.map((item: any) => item.sciName).join(' / ')).join('，')
+    return pathNodesArr.map(e => e.map(item => item.sciName).join(' / '))
   }
   return ''
 })
@@ -150,17 +156,19 @@ function onChange(value?: PurchaseCategorySelectValue) {
   emit('update:modelValue', payload)
   emit('change', payload)
 
-  let updateNodePayload: ProjectSubjectItemTreeVO[]
+  // 选中的预算类别项 id 集合
+  const idsArr = isArray(value) ? value : !isNil(value) ? [value] : []
+  // 选中的预算类别项
+  const items = !isEmpty(value) ? rawData.value.filter(item => idsArr.includes(item.id as string)) : []
+  // 计算选中的预算类别的剩余金额总和
+  const availableAmount = items.reduce((prev, curr) => {
+    if (!isNil(curr.availableAmount)) {
+      return prev.add(curr.availableAmount)
+    }
 
-  if (!isEmpty(value)) {
-    const idsArr = isArray(ids.value) ? ids.value : [ids.value]
-    updateNodePayload = rawData.value.filter(item => idsArr.includes(item.id as string))
-  }
-  else {
-    updateNodePayload = []
-  }
-
-  emit('update:nodes', updateNodePayload)
+    return prev.add(0)
+  }, new Big(0))
+  emit('update:availableAmount', availableAmount.toNumber())
 }
 
 async function getTree() {

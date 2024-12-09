@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, isNil } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { getDailyFee } from '@/api/oa/daily/fee/index'
@@ -28,6 +28,7 @@ export function useForm() {
     subjectType: 'project',
     deptId: user.info.deptId,
     subjectItemId: undefined,
+    availableAmount: 0,
     amount: 0,
     reason: undefined,
     isAdministration: undefined,
@@ -41,12 +42,13 @@ export function useForm() {
 
   const initRules: Record<string, FieldRule[]> = {
     subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
+    deptId: [{ required: true, message: '预算部门不能为空', trigger: 'onChange' }],
     feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
     psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],
     subjectItemId: [{ required: true, message: '预算类别不能为空', trigger: 'onChange' }],
     isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
     certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
-    amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
+    amount: [{ validator: checkAmount, trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
   }
 
@@ -71,6 +73,16 @@ export function useForm() {
     Form.value?.resetValidation()
     // 重置规则
     rules.value = cloneDeep(initRules)
+  }
+
+  // 金额校验
+  function checkAmount(value: any, rule: any) {
+    if (isNil(value)) {
+      return '请输入金额'
+    }
+    else if (value > form.value.availableAmount) {
+      return '输入金额不能大于剩余金额'
+    }
   }
 
   // 回显
