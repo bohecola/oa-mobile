@@ -53,7 +53,7 @@
     <template #input>
       <div class="flex items-baseline">
         <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
-        <span v-if="isNumber(form.amount)" class="text-red">{{ toCnMoney(form.amount) }}</span>
+        <span v-if="!isNil(form.amount)" class="text-red">{{ toCnMoney(form.amount) }}</span>
       </div>
     </template>
   </van-field>
@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { isNumber } from 'lodash-es'
+import { isNil } from 'lodash-es'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import BaseDetail from './BaseDetail.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
