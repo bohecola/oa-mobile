@@ -89,7 +89,15 @@
     <van-divider>其他登录方式</van-divider>
 
     <div class="flex justify-center gap-2">
-      <span class="i-ant-design-dingtalk-circle-filled w-6 h-6 rounded-full" title="钉钉登录" @click="doSocialLogin('dingtalk')" />
+      <span
+        class="
+          i-ant-design-dingtalk-circle-filled
+          w-6 h-6 rounded-full
+          active:bg-[--van-primary-color]
+        "
+        title="钉钉登录"
+        @click="doSocialLogin('dingtalk')"
+      />
     </div>
   </van-form>
 </template>
