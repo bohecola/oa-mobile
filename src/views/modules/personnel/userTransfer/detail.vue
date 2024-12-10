@@ -61,7 +61,11 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.newSalary" v-show-field="['newSalary', includeFields]" name="newSalary" label="薪资情况" input-align="right" />
+      <van-field v-model="form.newSalary" v-show-field="['newSalary', includeFields]" name="newSalary" label="薪资情况" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(form.newSalary) }} </span>
+        </template>
+      </van-field>
 
       <van-field v-model="form.reason" v-show-field="['reason', includeFields]" name="reason" label="调用原因" input-align="right">
         <template #input>

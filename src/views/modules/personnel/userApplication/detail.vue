@@ -34,10 +34,26 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.wages" v-show-field="['wages', includeFields]" name="wages" label="工资" input-align="right" />
-      <van-field v-model="form.baseWages" v-show-field="['baseWages', includeFields]" name="baseWages" label="基本工资" input-align="right" />
-      <van-field v-model="form.postWages" v-show-field="['postWages', includeFields]" name="postWages" label="岗位工资" input-align="right" />
-      <van-field v-model="form.performanceWages" v-show-field="['performanceWages', includeFields]" name="performanceWages" label="绩效工资" input-align="right" />
+      <van-field v-model="form.wages" v-show-field="['wages', includeFields]" name="wages" label="工资" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(form.wages) }} </span>
+        </template>
+      </van-field>
+      <van-field v-model="form.baseWages" v-show-field="['baseWages', includeFields]" name="baseWages" label="基本工资" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(form.baseWages) }} </span>
+        </template>
+      </van-field>
+      <van-field v-model="form.postWages" v-show-field="['postWages', includeFields]" name="postWages" label="岗位工资" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(form.postWages) }} </span>
+        </template>
+      </van-field>
+      <van-field v-model="form.performanceWages" v-show-field="['performanceWages', includeFields]" name="performanceWages" label="绩效工资" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(form.performanceWages) }} </span>
+        </template>
+      </van-field>
       <van-field v-model="form.probationWagesRate" v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right" />
 
       <van-field v-model="form.realDate" v-show-field="['realDate', includeFields]" name="realDate" label="实际到岗日期" input-align="right">

@@ -55,24 +55,22 @@
         label="招聘人数"
         input-align="right"
       />
-      <van-field
-        v-model="item.subsidyAmount"
-        :name="`itemList.${index}.subsidyAmount`"
-        label="驻勤补助标准"
-        input-align="right"
-      />
+      <van-field v-model="item.subsidyAmount" :name="`itemList.${index}.subsidyAmount`" label="驻勤补助标准" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(item.subsidyAmount) }} </span>
+        </template>
+      </van-field>
       <van-field
         v-model="item.ridingStandards"
         :name="`itemList.${index}.ridingStandards`"
         label="乘坐标准"
         input-align="right"
       />
-      <van-field
-        v-model="item.transportationFeeStandard"
-        :name="`itemList.${index}.transportationFeeStandard`"
-        label="交通费标准"
-        input-align="right"
-      />
+      <van-field v-model="item.transportationFeeStandard" :name="`itemList.${index}.transportationFeeStandard`" label="交通费标准" input-align="right">
+        <template #input>
+          <span class="mr-3">{{ formatCurrency(item.transportationFeeStandard) }} </span>
+        </template>
+      </van-field>
       <van-field
         v-model="item.responsibility"
         :name="`itemList.${index}.responsibility`"

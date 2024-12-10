@@ -32,7 +32,7 @@
 
           <van-field v-show-field="['amout', includeFields]" name="userTrainBo.amout" label="费用" input-align="right">
             <template #input>
-              <span class="mr-3">{{ Number(form.userTrainBo.amout).toFixed(2) }}</span>
+              <span class="mr-3">{{ formatCurrency(form.userTrainBo.amout) }}</span>
             </template>
           </van-field>
 
