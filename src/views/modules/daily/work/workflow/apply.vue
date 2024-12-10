@@ -18,6 +18,16 @@
             />
           </template>
         </van-field>
+        <van-field
+          v-if="form.dailyWorkType"
+          prop="companyId"
+          label="公司"
+          input-align="right"
+        >
+          <template #input>
+            <ComanySelect v-model="form.companyId" readonly />
+          </template>
+        </van-field>
 
         <component :is="SubComponent[form.no]" :key="form.no" />
       </van-cell-group>
@@ -30,11 +40,13 @@ import type { FieldRule } from 'vant'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
+import ComanySelect from '../../../personnel/components/ComanySelect.vue'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { useWorkflowViewData } from '@/hooks'
 import { useStore } from '@/store'
+import { getDept } from '@/api/system/dept'
 
 type Entity = DailyWorkForm & { initiator: Initiator }
 
@@ -55,18 +67,23 @@ const isView = computed(() => proxy.$route.query.type === 'view')
 const dailyTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
 
 function getBaseFields() {
-  return dailyTypeSelectReadOnly.value ? [] : (['dailyWorkType'] as KeysOfArray<DailyWorkForm>)
+  return dailyTypeSelectReadOnly.value ? [] : (['dailyWorkType', 'companyId'] as KeysOfArray<DailyWorkForm>)
 }
 
 // 跟踪字段
 const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
 
+const { user } = useStore()
+
 // 类型选择点击
-function handleDailyTypeClick() {
+async function handleDailyTypeClick() {
   if (dailyTypeSelectReadOnly.value) {
     return false
   }
   DailyTypeSelectRef.value?.open()
+  // 根据当前登录用户的部门deptid获取公司id
+  const { data } = await getDept(user.info.deptId)
+  form.value.companyId = data.parentId
 }
 
 // 类型选择完成
@@ -135,8 +152,6 @@ async function handleApproval({ open }: ApprovalPayload) {
   // 打开审批弹窗
   open(taskId as string)
 }
-
-const { user } = useStore()
 
 const isEditNode = computed(() => {
   if (taskDefinitionKey.value === 'Activity_09pmxwl' && user.info.userId === form.value.customizeApprover) {

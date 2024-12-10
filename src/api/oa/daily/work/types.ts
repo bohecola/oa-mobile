@@ -112,6 +112,11 @@ export interface DailyWorkForm extends BaseEntity {
   id?: string | number
 
   /**
+   * 公司
+   */
+  companyId?: string | number
+
+  /**
    * 自定义审批人
    */
   customizeApprover?: string

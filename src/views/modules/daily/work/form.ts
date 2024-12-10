@@ -22,6 +22,7 @@ export function useForm() {
   const initFormData: DailyWorkForm = {
     id: undefined,
     dailyWorkType: undefined,
+    companyId: undefined,
     fileType: undefined,
     fileUseType: undefined,
     isSeal: undefined,
@@ -44,6 +45,7 @@ export function useForm() {
 
   const initRules: Record<string, FieldRule[]> = {
     dailyWorkType: [{ required: true, message: '日常事务申请类型不能为空', trigger: 'onChange' }],
+    companyId: [{ required: true, message: '公司不能为空', trigger: 'onChange' }],
     fileType: [{ required: true, message: '资料类型不能为空', trigger: 'onChange' }],
     fileUseType: [{ required: true, message: '使用方式不能为空', trigger: 'onChange' }],
     isYwlProject: [{ required: true, message: '是否运维类项目不能为空', trigger: 'onChange' }],
