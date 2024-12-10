@@ -27,16 +27,16 @@
       <DateBoard />
     </div>
 
-    <div>
+    <!-- <div>
       <Weather />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup lang='ts'>
 import DateBoard from './components/DateBoard.vue'
 import Swipe from './components/Swipe.vue'
-import Weather from './components/Weather.vue'
+// import Weather from './components/Weather.vue'
 
 const menus = [
   { name: '我发起的', path: '/approval', icon: 'i-lucide-send', category: 'my-initiated' },

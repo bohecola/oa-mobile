@@ -20,39 +20,42 @@
           <div class="text-sm mb-1">
             距离周五还有几天？
           </div>
-          <div class="flex items-baseline justify-center">
-            <van-rolling-text
-              ref="RollingText"
-              class="mr-[2px] !text-2xl"
-              direction="up"
-              :duration="2"
-              :start-num="0"
-              :target-num="daysUntilFriday"
-              :auto-start="false"
-            />
-
-            <span class="text-sm font-normal">天{{ modalParticle }}</span>
-          </div>
+          <van-rolling-text
+            ref="RollingText"
+            class="my-rolling-text !text-3xl"
+            direction="up"
+            :start-num="0"
+            :target-num="daysUntilFriday"
+            :duration="rollingTextDuration"
+            :auto-start="false"
+          />
+          <span class="text-sm font-normal">天{{ modalParticle }}</span>
         </template>
 
-        <template v-else>
-          <div clas="text-sm mb-1">
-            <span>当前是 2024 年第 </span>
-            <van-rolling-text
-              ref="RollingText"
-              class="mr-[2px] !text-2xl"
-              direction="up"
-              :duration="2"
-              :start-num="0"
-              :target-num="currentWeek"
-              :auto-start="false"
-            />
-            <span>周</span>
+        <div v-else clas="text-sm mb-1 ">
+          <div>
+            当前是
+            <span class="text-lg">{{ currentYear }}</span>
+            年第
           </div>
-        </template>
+          <van-rolling-text
+            ref="RollingText"
+            class="my-rolling-text !text-3xl"
+            direction="up"
+            :duration="rollingTextDuration"
+            :start-num="0"
+            :target-num="currentWeek"
+            :auto-start="false"
+          />
+          <span>周</span>
+        </div>
       </div>
     </div>
-    <div class="flex-1 bg-[--bg-color] rounded" />
+    <div class="relative flex-1 bg-gradient-to-br from-[--van-primary-color] rounded">
+      <span class="absolute right-2 bottom-2 font-bold text-4xl text-[--bg-color]">
+        {{ currentYear }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -66,10 +69,12 @@ dayjs.extend(weekOfYear)
 dayjs.locale('zh-cn')
 
 const RollingText = ref<RollingTextInstance>()
+const rollingTextDuration = ref(0)
 
+// 年份
+const currentYear = computed(() => dayjs().year())
 // 月份
 const currentMonth = computed(() => dayjs().month() + 1)
-
 // 日期
 const currentDate = computed(() => {
   const day = dayjs().date()
@@ -79,21 +84,22 @@ const currentDate = computed(() => {
   return day
 })
 
+// 第几周
+const currentWeek = computed(() => dayjs().week())
 // 星期
 const weekDay = computed(() => dayjs().format('dddd'))
-
 // 距离周五还有几天
 const daysUntilFriday = computed(() => {
   const today = dayjs().day()
   return (5 - today + 7) % 7
 })
 
-// 第几周
-const currentWeek = computed(() => dayjs().week())
-
 // 语气助词
 const modalParticle = computed(() => {
-  if (daysUntilFriday.value > 2) {
+  if (daysUntilFriday.value > 3) {
+    return '呐'
+  }
+  else if (daysUntilFriday.value > 2) {
     return '哦'
   }
   else if (daysUntilFriday.value > 1) {
@@ -103,14 +109,15 @@ const modalParticle = computed(() => {
 })
 
 function handleClick() {
+  rollingTextDuration.value = 2
   RollingText.value?.reset()
-
   setTimeout(() => {
     RollingText.value?.start()
   }, 0)
 }
 
 onMounted(() => {
+  rollingTextDuration.value = 0
   RollingText.value?.start()
 })
 </script>
