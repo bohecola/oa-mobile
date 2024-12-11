@@ -25,8 +25,9 @@
             />
           </template>
         </van-field>
-
-        <component :is="SubComponent[form.rootNo]" :key="form.no" />
+        <template v-if="!isNil(form.rootNo)">
+          <component :is="SubComponent[form.rootNo]" :key="form.no" />
+        </template>
       </van-cell-group>
     </van-form>
   </WorkflowPage>
@@ -34,6 +35,7 @@
 
 <script setup lang="ts">
 import type { FieldRule } from 'vant'
+import { isNil } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'

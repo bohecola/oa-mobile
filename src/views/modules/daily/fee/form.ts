@@ -106,11 +106,7 @@ export function useForm() {
     const { success, fail } = options ?? {}
     try {
       reset()
-      nextTick(() => {
-        Object.assign(form.value, {
-          ...entity,
-        })
-      })
+      Object.assign(form.value, entity)
     }
     catch (err) {
       console.error(err)
