@@ -14,20 +14,23 @@
 </template>
 
 <script setup lang='ts'>
-const props = withDefaults(defineProps<{
-  title?: string
-  fixed?: boolean
-  placeholder?: boolean
-  isLeftClickBack?: boolean
-}>(), {
-  title: () => {
-    const route = useRoute()
-    return route.meta.title as string ?? ''
+const props = withDefaults(
+  defineProps<{
+    title?: string
+    fixed?: boolean
+    placeholder?: boolean
+    isLeftClickBack?: boolean
+  }>(),
+  {
+    title: () => {
+      const route = useRoute()
+      return route.meta.title as string ?? ''
+    },
+    fixed: false,
+    placeholder: true,
+    isLeftClickBack: true,
   },
-  fixed: false,
-  placeholder: true,
-  isLeftClickBack: true,
-})
+)
 
 const emit = defineEmits(['click-left'])
 

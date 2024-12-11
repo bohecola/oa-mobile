@@ -3,7 +3,7 @@
     <div class="flex-1 flex flex-wrap gap-2">
       <span
         class="
-          flex items-center justify-center
+          flex items-center justify-center select-none
           text-2xl p-2 w-[4ch] bg-[--bg-color] rounded
           active:bg-[--van-primary-color] active:text-[--bg-color]
         "

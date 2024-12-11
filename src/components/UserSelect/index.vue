@@ -25,7 +25,6 @@
     position="bottom"
     class="h-full w-full"
     teleport="body"
-    safe-area-inset-top
     safe-area-inset-bottom
     @closed="popupClosed"
   >
@@ -36,7 +35,7 @@
       @click-left="close"
     />
 
-    <div v-loading="listLoading">
+    <div v-loading="listLoading" :class="`${isSearchFocused ? 'pt-safe' : ''}`">
       <!-- 搜索 注: form[action="/"] 作用：IOS 键盘显示搜索按钮 -->
       <form action="/">
         <van-search
@@ -47,7 +46,7 @@
           @cancel="handleSearchCancel"
         />
       </form>
-      <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-bottom))] overflow-y-auto">
+      <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-top)-env(safe-area-inset-bottom))] overflow-y-auto">
         <van-index-bar
           class="pb-28"
           :sticky="true"
@@ -68,7 +67,7 @@
       <!-- 搜索列表 -->
       <div
         v-show="isSearchFocused"
-        class="h-[calc(100vh-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-bottom))] overflow-y-auto"
+        class="h-[calc(100vh-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-bottom)-env(safe-area-inset-top))] overflow-y-auto"
       >
         <div class="pb-28">
           <UserCell
