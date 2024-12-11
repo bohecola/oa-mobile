@@ -27,13 +27,14 @@ export function useForm() {
   const initFormData: ProjectSubjectForm = {
     id: undefined,
     type: 'project',
-    projectId: undefined,
+    projectIds: undefined,
     deptId: undefined,
     contractNo: undefined,
     startDate: undefined,
     endDate: undefined,
     status: undefined,
     itemList: [],
+    ossIdList: undefined,
   }
 
   // 表单数据
@@ -156,16 +157,33 @@ export function useForm() {
   //   return submitResult
   // }
 
+  // // 流程提交
+  // async function workflowSubmit(options?: SubmitOptions) {
+  //   const { success } = options ?? {}
+
+  //   let data: ProjectSubjectForm
+
+  //   const valid = await Form.value?.validate(async (valid: boolean) => {
+  //     data = {
+  //       ...form.value,
+  //     }
+  //     if (valid) {
+  //       success?.()
+  //     }
+  //   })
+
+  //   return {
+  //     valid,
+  //     data,
+  //   }
+  // }
+
   // 流程回显
   function workflowView(entity: any, options?: ViewOptions) {
     const { success, fail } = options ?? {}
     try {
       reset()
-      nextTick(() => {
-        Object.assign(form.value, {
-          ...entity,
-        })
-      })
+      Object.assign(form.value, entity)
     }
     catch (err) {
       console.error(err)

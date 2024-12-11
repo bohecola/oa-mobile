@@ -81,6 +81,7 @@ const overFields: PartialBooleanRecord<ProjectSubjectForm> = {
   startDate: true,
   endDate: true,
   itemList: true,
+  ossIdList: true,
 }
 
 // 总览字段
@@ -121,22 +122,34 @@ function onPsIdChange(val: string) {
 
 // // 暂存
 // async function handleTempSave({ load, done, initiator }: TempSavePayload) {
-//   load()
-//   const entity = { initiator }
-//   const next = () => {
-//     proxy?.$modal.msgSuccess('暂存成功')
-//     proxy.$tab.closePage(proxy.$route)
-//     proxy.$router.go(-1)
+//   const { valid, data } = await ApplyUpsert.value?.workflowSubmit()
+
+//   if (valid) {
+//     load()
+//     const entity = { ...data, initiator }
+
+//     const next = () => {
+//       proxy?.$modal.msgSuccess('暂存成功')
+//       proxy.$tab.closePage(proxy.$route)
+//       proxy.$router.go(-1)
+//     }
+
+//     await handleStartWorkflow(entity, next).finally(done)
 //   }
-//   await handleStartWorkflow(entity, next).finally(done)
 // }
 
 // // 提交
 // async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
-//   load()
-//   const entity = { initiator }
-//   const next = (res: any) => open(res.data?.taskId)
-//   await handleStartWorkflow(entity, next).finally(done)
+//   const { valid, data } = await ApplyUpsert.value?.workflowSubmit()
+
+//   if (valid) {
+//     load()
+//     const entity = { ...data, initiator }
+
+//     const next = (res: any) => open(res.data?.taskId)
+
+//     await handleStartWorkflow(entity, next).finally(done)
+//   }
 // }
 
 // 审批

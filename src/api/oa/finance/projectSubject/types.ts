@@ -266,6 +266,11 @@ export interface ProjectSubjectForm extends BaseEntity {
    * 项目预算项
    */
   itemList?: ProjectSubjectItemTreeVO[]
+
+  /**
+   * 附件
+   */
+  ossIdList?: string[]
 }
 
 export interface ProjectSubjectQuery extends PageQuery {
