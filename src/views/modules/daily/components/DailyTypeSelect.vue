@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+import { isEmpty } from 'lodash-es'
 import type { CascaderOption } from 'vant'
 import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
 import { queryByParentDaily } from '@/api/oa/daily/category'
@@ -103,16 +104,15 @@ function updateVars(value: string | number) {
 
 watch(
   () => props.modelValue,
-  (val) => {
+  async (val) => {
     id.value = val
+    if (isEmpty(data.value)) {
+      await getData()
+    }
 
     nextTick(() => updateVars(val))
   },
 )
-
-onMounted(async () => {
-  await getData()
-})
 
 function open() {
   show.value = true
