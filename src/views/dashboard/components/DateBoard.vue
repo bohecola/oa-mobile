@@ -1,7 +1,15 @@
 <template>
   <div class="flex gap-2 px-3 py-5 bg-[--bg-card] rounded">
     <div class="flex-1 flex flex-wrap gap-2">
-      <span class="flex items-center justify-center text-2xl p-2 w-[4ch] bg-[--bg-color] rounded active:bg-[--van-primary-color] active:text-[--bg-color] select-none" @click="handleClick">
+      <span
+        class="
+          flex items-center justify-center
+          text-2xl p-2 w-[4ch] bg-[--bg-color] rounded
+          active:bg-[--van-primary-color] active:text-[--bg-color]
+        "
+        @click="handleClick"
+        @touchend="handleClick"
+      >
         <span class="i-ic-outline-self-improvement" />
         <!-- <span class="i-lucide-smile" /> -->
       </span>
