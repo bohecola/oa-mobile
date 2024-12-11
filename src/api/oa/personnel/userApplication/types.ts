@@ -86,11 +86,7 @@ export interface UserEmploymentForm extends BaseEntity {
 
   deptId?: string | number
 
-  deptName?: string // 部门名称
-
   postId?: string | number
-
-  postName?: string // 岗位名称
 
   sex?: string // 性别
 

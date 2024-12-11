@@ -39,12 +39,11 @@ export function useForm() {
     description: undefined,
     remark: undefined,
     deptId: undefined,
-    deptName: undefined,
     postId: undefined,
-    postName: undefined,
+    level: undefined, // 岗位级别
     sex: undefined,
     phonenumber: undefined,
-    isProbation: undefined,
+    isProbation: 'N',
     probationCycle: undefined,
     checked: undefined,
     ossIdList: undefined,
@@ -101,6 +100,14 @@ export function useForm() {
     form.value.preEmploymentId = id as string
     const res = await listUserEmployment({ preEmploymentId: id, pageNum: 1, pageSize: 10 })
     Object.assign(form.value, res.rows[0])
+    // 业务列表点击名字查看，部门岗位电话是否试用期显示
+    const { data: preUser } = await getUserPreEmployment(id)
+    form.value.deptId = preUser.deptId
+    form.value.postId = preUser.postId
+    form.value.sex = preUser.sex
+    form.value.phonenumber = preUser.phonenumber
+    form.value.isProbation = preUser.isProbation
+    form.value.probationCycle = Number(preUser.probationCycle)
     isLoading.value = false
   }
 
