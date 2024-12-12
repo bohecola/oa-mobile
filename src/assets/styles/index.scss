@@ -53,4 +53,25 @@ body {
   --van-rolling-text-item-width: 20px;
 }
 
+#nprogress {
+  .bar {
+    background: var(--van-primary-color) !important;
+    top: env(safe-area-inset-top, 0) !important;
+    overflow: hidden;
+  }
+
+  .spinner {
+    top: calc(env(safe-area-inset-top, 0) + 15px) !important;
+  }
+
+  .peg {
+    box-shadow: 0 0 10px var(--van-primary-color), 0 0 5px var(--van-primary-color) !important;
+  }
+
+  .spinner-icon {
+    border-top-color: var(--van-primary-color) !important;
+    border-left-color: var(--van-primary-color) !important;
+  }
+}
+
 @import './theme.scss';

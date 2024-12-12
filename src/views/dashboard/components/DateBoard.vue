@@ -10,8 +10,9 @@
         @click="handleClick"
         @touchend="handleClick"
       >
-        <span class="i-ic-outline-self-improvement" />
-        <!-- <span class="i-lucide-smile" /> -->
+
+        <img :src="logo" class="object-cover pointer-events-none" alt="Logo">
+        <!-- <span class="i-ic-outline-self-improvement" /> -->
       </span>
       <div class="flex-1 text-center p-2 bg-[--bg-color] rounded">
         <div class="text-lg font-bold">
@@ -71,6 +72,7 @@
 import type { RollingTextInstance } from 'vant'
 import dayjs from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
+import logo from '@/assets/images/logo.png'
 import 'dayjs/locale/zh-cn'
 
 dayjs.extend(weekOfYear)
