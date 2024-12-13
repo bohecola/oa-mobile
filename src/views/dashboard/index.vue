@@ -45,13 +45,3 @@ const menus = [
   { name: '我的抄送', path: '/approval', icon: 'i-lucide-clipboard-copy', category: 'my-cc' },
 ]
 </script>
-
-<style>
-  .my-swipe .van-swipe-item {
-    color: #fff;
-    font-size: 20px;
-    line-height: 150px;
-    text-align: center;
-    background-color: #39a9ed;
-  }
-</style>

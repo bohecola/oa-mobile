@@ -15,3 +15,13 @@ const items = [
   { url: banner2 },
 ]
 </script>
+
+<style>
+  .my-swipe .van-swipe-item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 150px;
+    text-align: center;
+    background-color: var(--van-primary-color);
+  }
+</style>
