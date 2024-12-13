@@ -24,40 +24,61 @@
           {{ weekDay }}
         </div>
       </div>
-      <div class="w-full bg-[--bg-color] text-center font-[500] rounded p-2">
+      <div class="w-full bg-[--bg-color] text-center text-sm font-[500] rounded p-2">
         <template v-if="daysUntilFriday !== 0">
-          <div class="text-sm mb-1">
+          <div class="mb-1">
             距离周五还有几天？
           </div>
           <van-rolling-text
             ref="RollingText"
-            class="my-rolling-text !text-3xl"
+            class="!text-2xl"
             direction="up"
             :start-num="0"
             :target-num="daysUntilFriday"
             :duration="rollingTextDuration"
             :auto-start="false"
           />
-          <span class="text-sm font-normal">天{{ modalParticle }}</span>
+          <span class="ml-1">天{{ modalParticle }}</span>
         </template>
 
-        <div v-else clas="text-sm mb-1 ">
-          <div>
-            当前是
-            <span class="text-lg">{{ currentYear }}</span>
-            年第
-          </div>
-          <van-rolling-text
-            ref="RollingText"
-            class="my-rolling-text !text-3xl"
-            direction="up"
-            :duration="rollingTextDuration"
-            :start-num="0"
-            :target-num="currentWeek"
-            :auto-start="false"
-          />
-          <span>周</span>
-        </div>
+        <template v-else>
+          <template v-if="daysUntilFriday === 0">
+            <div class="mb-1">
+              周五了
+            </div>
+            <div>
+              当前是第
+              <van-rolling-text
+                ref="RollingText"
+                class="!text-2xl"
+                direction="up"
+                :duration="rollingTextDuration"
+                :start-num="0"
+                :target-num="currentWeek"
+                :auto-start="false"
+              />
+              周
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="mb-1">
+              当前是
+              <span>{{ currentYear }}</span>
+              年第
+            </div>
+            <van-rolling-text
+              ref="RollingText"
+              class="!text-2xl"
+              direction="up"
+              :duration="rollingTextDuration"
+              :start-num="0"
+              :target-num="currentWeek"
+              :auto-start="false"
+            />
+            <span class="ml-1">周</span>
+          </template>
+        </template>
       </div>
     </div>
     <div class="relative flex-1 bg-gradient-to-br from-[--van-primary-color] rounded">
