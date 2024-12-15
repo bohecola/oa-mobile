@@ -25,24 +25,23 @@
         </div>
       </div>
       <div class="w-full bg-[--bg-color] text-center text-sm font-[500] rounded p-2">
-        <template v-if="daysUntilFriday !== 0">
-          <div class="mb-1">
-            距离周五还有几天？
-          </div>
-          <van-rolling-text
-            ref="RollingText"
-            class="!text-2xl"
-            direction="up"
-            :start-num="0"
-            :target-num="daysUntilFriday"
-            :duration="rollingTextDuration"
-            :auto-start="false"
-          />
-          <span class="ml-1">天{{ modalParticle }}</span>
-        </template>
-
-        <template v-else>
-          <template v-if="daysUntilFriday === 0">
+        <template v-if="isWorkday">
+          <template v-if="daysUntilFriday !== 0">
+            <div class="mb-1">
+              距离周五还有几天？
+            </div>
+            <van-rolling-text
+              ref="RollingText"
+              class="!text-2xl"
+              direction="up"
+              :start-num="0"
+              :target-num="daysUntilFriday"
+              :duration="rollingTextDuration"
+              :auto-start="false"
+            />
+            <span class="ml-1">天{{ modalParticle }}</span>
+          </template>
+          <template v-else>
             <div class="mb-1">
               周五了
             </div>
@@ -60,24 +59,23 @@
               周
             </div>
           </template>
-
-          <template v-else>
-            <div class="mb-1">
-              当前是
-              <span>{{ currentYear }}</span>
-              年第
-            </div>
-            <van-rolling-text
-              ref="RollingText"
-              class="!text-2xl"
-              direction="up"
-              :duration="rollingTextDuration"
-              :start-num="0"
-              :target-num="currentWeek"
-              :auto-start="false"
-            />
-            <span class="ml-1">周</span>
-          </template>
+        </template>
+        <template v-else>
+          <div class="mb-1">
+            当前是
+            <span>{{ currentYear }}</span>
+            年第
+          </div>
+          <van-rolling-text
+            ref="RollingText"
+            class="!text-2xl"
+            direction="up"
+            :duration="rollingTextDuration"
+            :start-num="0"
+            :target-num="currentWeek"
+            :auto-start="false"
+          />
+          <span class="ml-1">周</span>
         </template>
       </div>
     </div>
@@ -117,8 +115,14 @@ const currentDate = computed(() => {
 
 // 第几周
 const currentWeek = computed(() => dayjs().week())
-// 星期
+// 星期几
 const weekDay = computed(() => dayjs().format('dddd'))
+// 是否是工作日
+const isWorkday = computed(() => {
+  const day = dayjs().day()
+  return day >= 1 && day <= 5
+})
+
 // 距离周五还有几天
 const daysUntilFriday = computed(() => {
   const today = dayjs().day()
@@ -139,6 +143,7 @@ const modalParticle = computed(() => {
   return '耶'
 })
 
+// 数字动画
 function handleClick() {
   rollingTextDuration.value = 2
   RollingText.value?.reset()
@@ -147,6 +152,7 @@ function handleClick() {
   }, 0)
 }
 
+// 挂载时初始化动画
 onMounted(() => {
   rollingTextDuration.value = 0
   RollingText.value?.start()
