@@ -16,7 +16,6 @@
     position="bottom"
     class="h-full w-full"
     teleport="body"
-    safe-area-inset-top
     safe-area-inset-bottom
   >
     <NavBar

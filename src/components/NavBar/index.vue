@@ -20,6 +20,7 @@ const props = withDefaults(
     fixed?: boolean
     placeholder?: boolean
     isLeftClickBack?: boolean
+    safeAreaInsetTop?: boolean
   }>(),
   {
     title: () => {
@@ -29,6 +30,7 @@ const props = withDefaults(
     fixed: false,
     placeholder: true,
     isLeftClickBack: true,
+    safeAreaInsetTop: true,
   },
 )
 
