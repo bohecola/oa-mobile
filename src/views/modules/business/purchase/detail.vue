@@ -72,7 +72,7 @@
         <template #input>
           <div class="flex items-baseline">
             <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
-            <span v-if="!isNil(form.amount)" class="text-red">{{ toCnMoney(form.amount) }}</span>
+            <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
           </div>
         </template>
       </van-field>
@@ -80,7 +80,7 @@
         <template #input>
           <div class="flex items-baseline">
             <span class="mr-3">{{ formatCurrency(form.realAmount) }} </span>
-            <span v-if="!isNil(form.realAmount)" class="text-red">{{ toCnMoney(form.realAmount) }}</span>
+            <span v-if="!isNil(form.realAmount)" class="text-red-400">{{ toCnMoney(form.realAmount) }}</span>
           </div>
         </template>
       </van-field>
