@@ -3,7 +3,7 @@
     <NavBar />
 
     <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600"> -->
-    <!-- <van-button v-if="submitVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
+    <!-- <van-button v-if="saveVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
     暂存
   </van-button>
   <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
@@ -119,16 +119,26 @@ const submitLoading = ref(false)
 // 按钮禁用
 const actionBtnDisabled = computed(() => active.value === 'record')
 
+// 暂存可见
+const saveVisible = computed(() => {
+  const { type, wfStatus } = proxy.$route.query
+  return type === 'add' || (type === 'update' && wfStatus && (wfStatus === 'draft' || wfStatus === 'cancel'))
+})
+
 // 提交可见
 const submitVisible = computed(() => {
-  const { type, wfStatus } = proxy?.$route.query ?? {}
-  return type === 'add' || (type === 'update' && wfStatus && (wfStatus === 'draft' || wfStatus === 'cancel' || wfStatus === 'back'))
+  const { type, wfStatus } = proxy.$route.query
+  return (
+    type === 'add'
+    || (type === 'update' && wfStatus && (wfStatus === 'draft' || wfStatus === 'cancel' || wfStatus === 'back'))
+    || (type === 'approval' && wfStatus && wfStatus === 'back')
+  )
 })
 
 // 审批可见
 const approvalVisible = computed(() => {
-  const { type, wfStatus, isEditNode } = proxy?.$route.query ?? {}
-  return type === 'approval' && wfStatus && (wfStatus === 'waiting' || wfStatus === 'back') && isEditNode === 'false'
+  const { type, wfStatus } = proxy.$route.query
+  return type === 'approval' && wfStatus && wfStatus === 'waiting'
 })
 
 // 流程可见
@@ -156,9 +166,15 @@ function handleTempSave() {
   const initiator = createInitiator()
   const load = () => (tempSaveLoading.value = true)
   const done = () => (tempSaveLoading.value = false)
+  const next = () => {
+    // proxy?.$modal.msgSuccess('暂存成功')
+    // proxy.$tab.closePage(proxy.$route)
+    // proxy.$router.go(-1)
+  }
   const payload = {
     load,
     done,
+    next,
     initiator,
   }
   emit('temp-save', payload)

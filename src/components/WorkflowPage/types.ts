@@ -10,6 +10,7 @@ export interface Initiator {
 export interface TempSavePayload {
   done: () => void
   load: () => void
+  next: () => void
   initiator: Initiator
 }
 
