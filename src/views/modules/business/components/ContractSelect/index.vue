@@ -4,18 +4,14 @@
       <div v-if="showType === 'input'" class="w-full">
         <template v-if="!isEmpty(selectedList)">
           <!-- 单选回显 -->
-          <div v-if="!multiple">
-            {{ selectedList[0].name }}
-          </div>
+          <span v-if="!multiple">{{ selectedList[0].name }}</span>
 
           <!-- 多选回显 -->
           <template v-else>
-            <div class="py-1 flex flex-wrap gap-1">
-              <SelectTag v-for="(selected, index) in selectedList" :key="selected.id" readonly>
-                <span>{{ selected.name }}</span>
-                <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
-              </SelectTag>
-            </div>
+            <template v-for="(selected, index) in selectedList" :key="selected.id">
+              <span>{{ selected.name }}</span>
+              <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
+            </template>
           </template>
         </template>
       </div>

@@ -1,8 +1,8 @@
 <template>
-  <div :class="`py-1 flex items-center text-xs ${readonly ? '' : 'px-1 border border-solid border-[var(--el-border-color)]'}`">
-    <span v-if="readonly" class="mr-1">
+  <div :class="`flex items-center gap-1 ${readonly ? '' : 'text-xs py-1 px-1 border border-solid border-[var(--el-border-color)]'}`">
+    <template v-if="readonly">
       <slot />
-    </span>
+    </template>
 
     <span v-else class="w-15ch text-truncate mr-1">
       <slot />
