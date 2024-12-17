@@ -235,7 +235,7 @@
 <script setup lang="ts">
 import { isEmpty, isNil } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
-import ContractSelect from '../components/ContractSelect.vue'
+import ContractSelect from '../components/ContractSelect/index.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'

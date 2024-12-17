@@ -113,6 +113,11 @@ export interface ContractVO {
    * 备注
    */
   remark: string
+
+  /**
+   * 合同中项目的业务类型
+   */
+  businessType: string
 }
 
 export interface ContractForm extends BaseEntity {

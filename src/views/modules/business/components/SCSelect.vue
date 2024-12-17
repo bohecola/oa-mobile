@@ -74,7 +74,7 @@
           </div>
         </div>
       </template>
-      <el-dialog v-model="dialogVisible" title="项目/部门预算选择" width="70%" append-to-body>
+      <el-dialog v-model="dialogVisible" title="供应商选择" width="70%" append-to-body>
         <el-form ref="queryFormRef" :model="queryParams" :inline="true">
           <el-form-item label="名称" prop="name">
             <el-input v-model.trim="queryParams.name" placeholder="请输入名称" clearable @keyup.enter="handleQuery" />
