@@ -10,6 +10,7 @@ export interface Options<T = any> {
 
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+interface SuccessData { id: DailyWorkForm['id'] }
 
 export function useForm() {
   // 实例
@@ -39,8 +40,18 @@ export function useForm() {
     reason: undefined,
     remark: undefined,
     no: undefined,
+    needDepts: undefined,
     wfRemark: undefined,
     ossIdList: undefined,
+    contentJson: undefined,
+
+    a_contractId: undefined,
+    a_deptId: undefined,
+    a_contractNo: undefined,
+    a_businessType: undefined,
+    a_partyA: undefined,
+    a_assessmentAmount: undefined,
+    a_rewardAmount: undefined,
   }
 
   const initRules: Record<string, FieldRule[]> = {
@@ -63,6 +74,10 @@ export function useForm() {
     recipient: [{ required: true, message: '接收人不能为空', trigger: 'onChange' }],
     isSeal: [{ required: true, message: '是否加盖公章不能为空', trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
+
+    a_contractId: [{ required: true, message: '合同名称不能为空', trigger: 'onBlur' }],
+    a_assessmentAmount: [{ required: true, message: '考核金额不能为空', trigger: 'onBlur' }],
+    a_rewardAmount: [{ required: true, message: '奖励金不能为空', trigger: 'onBlur' }],
   }
 
   // 表单数据
@@ -98,10 +113,6 @@ export function useForm() {
       Object.assign(form.value, data)
       isLoading.value = false
     })
-  }
-
-  interface SuccessData {
-    id: DailyWorkForm['id']
   }
 
   // 工作流中回显

@@ -19,6 +19,8 @@ import SWHTJSZL from './business/contractSettlementData/workflow/apply.vue'
 import SWXSHTBH from './business/salesContractNumber/workflow/apply.vue'
 // 项目续签意向调研
 import SWXMXQYXDY from './business/projectRenewalIntentSurvey/workflow/apply.vue'
+// 项目考核奖励确认单
+import SWXMKHJLQRD from './business/projectAssessmentReward/workflow/apply.vue'
 
 // 行政类
 // 营业执照借用申请
@@ -56,6 +58,7 @@ export default {
   SWHTJSZL,
   SWXSHTBH,
   SWXMXQYXDY,
+  SWXMKHJLQRD,
   XZYYZZJY,
   XZYZ,
   XZYY,
