@@ -49,8 +49,6 @@ export interface UserRecruitVO {
    */
   status: string
 
-  userRecruitPostBoList: UserRecruitPostBo[]
-
   userRecruitPostVoList: UserRecruitPostBo[]
 }
 
@@ -70,6 +68,9 @@ export interface UserRecruitForm extends BaseEntity {
    */
   deptId?: string | number
 
+  /**
+   * 部门类型
+   */
   deptType?: string
 
   deptName?: string
@@ -83,6 +84,11 @@ export interface UserRecruitForm extends BaseEntity {
    * 申请原因
    */
   applyReason?: string
+
+  /**
+   * 项目部地址
+   */
+  address?: string
 
   /**
    * 招聘开始日期
@@ -106,8 +112,6 @@ export interface UserRecruitForm extends BaseEntity {
 
   userRecruitPostBoList?: UserRecruitPostBo[]
 
-  userRecruitPostVoList?: UserRecruitPostBo[]
-
   ossIdList?: string[]
 }
 export interface UserRecruitPostBo {
@@ -123,18 +127,12 @@ export interface UserRecruitPostBo {
    * 创建时间
    */
   createTime?: Date
-  /**
-   * 任职要求(新增)
-   */
-  demand: string
+
   /**
    * ID
    */
   id: string | number
-  /**
-   * 请求参数
-   */
-  params?: { [key: string]: { [key: string]: any } }
+
   /**
    * 岗位id
    */
@@ -142,27 +140,12 @@ export interface UserRecruitPostBo {
   /**
    * 招聘id
    */
-  recruitId: string
+  recruitId?: string
   /**
    * 备注
    */
   remark?: string
-  /**
-   * 岗位职责(新增)
-   */
-  responsibility: string
-  /**
-   * 乘坐标准
-   */
-  ridingStandards: string
-  /**
-   * 驻勤补助标准（元/天）
-   */
-  subsidyAmount: number
-  /**
-   * 交通费标准
-   */
-  transportationFeeStandard: number
+
   /**
    * 更新者
    */
@@ -175,7 +158,27 @@ export interface UserRecruitPostBo {
    * 招聘人数
    */
   userNum: number
-  [property: string]: any
+
+  /**
+   * 学历要求
+   */
+  educationalRequire: string
+
+  /**
+   * 建议薪资（元/月）
+   */
+  suggestSalary: number
+
+  /**
+   * 工作经验
+   */
+  workExperience: string
+
+  /**
+   * 其他要求
+   */
+  otherRequire: string
+
 }
 
 export interface UserRecruitQuery extends PageQuery {

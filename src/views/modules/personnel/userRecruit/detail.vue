@@ -31,10 +31,22 @@
           {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
+      <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到达日期" input-align="right">
+        <template #input>
+          {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
+        </template>
+      </van-field>
+      <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="right" />
 
       <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="right">
         <template #input>
           <TextareaView :value="form.applyReason" />
+        </template>
+      </van-field>
+
+      <van-field v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
+        <template #input>
+          <TextareaView :value="form.address" />
         </template>
       </van-field>
     </van-cell-group>
@@ -42,53 +54,28 @@
     <div class="px-6 py-2 text-sm text-gray-500">
       招聘岗位
     </div>
-    <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" :title="item.postName" class="mx-4 mb-2" :default-collapse="true">
-      <van-field
-        v-model="item.postName"
-        :name="`itemList.${index}.postName`"
-        label="岗位名称"
-        input-align="right"
-      />
-      <van-field
-        v-model="item.userNum"
-        :name="`itemList.${index}.userNum`"
-        label="招聘人数"
-        input-align="right"
-      />
-      <van-field v-model="item.subsidyAmount" :name="`itemList.${index}.subsidyAmount`" label="驻勤补助标准" input-align="right">
+    <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" class="mx-4 mb-2" :default-collapse="true">
+      <van-field :name="`itemList.${index}.postId`" label="岗位名称" input-align="right">
         <template #input>
-          <span class="mr-3">{{ formatCurrency(item.subsidyAmount) }} </span>
+          <PostSelect v-model="item.postId" :dept-id="form.deptId" multiple readonly />
         </template>
       </van-field>
-      <van-field
-        v-model="item.ridingStandards"
-        :name="`itemList.${index}.ridingStandards`"
-        label="乘坐标准"
-        input-align="right"
-      />
-      <van-field v-model="item.transportationFeeStandard" :name="`itemList.${index}.transportationFeeStandard`" label="交通费标准" input-align="right">
+
+      <van-field v-model="item.userNum" :name="`itemList.${index}.userNum`" label="招聘人数" input-align="right" />
+
+      <van-field v-if="form.deptType !== '2'" v-model="item.educationalRequire" :name="`itemList.${index}.educationalRequire`" label="学历要求" input-align="right" />
+
+      <van-field v-if="form.deptType !== '2'" v-model="item.suggestSalary" :name="`itemList.${index}.suggestSalary`" label="建议薪资(元/月)" input-align="right" />
+
+      <van-field v-if="form.deptType !== '2'" v-model="item.workExperience" :name="`itemList.${index}.workExperience`" label="工作经验" input-align="right">
         <template #input>
-          <span class="mr-3">{{ formatCurrency(item.transportationFeeStandard) }} </span>
+          <TextareaView :value="item.workExperience" />
         </template>
       </van-field>
-      <van-field
-        v-model="item.responsibility"
-        :name="`itemList.${index}.responsibility`"
-        label="岗位职责"
-        input-align="right"
-      >
+
+      <van-field v-if="form.deptType !== '2'" v-model="item.otherRequire" :name="`itemList.${index}.otherRequire`" label="其他要求" input-align="right">
         <template #input>
-          <TextareaView :value="item.responsibility" />
-        </template>
-      </van-field>
-      <van-field
-        v-model="item.demand"
-        :name="`itemList.${index}.demand`"
-        label="任职要求"
-        input-align="right"
-      >
-        <template #input>
-          <TextareaView :value="item.demand" />
+          <TextareaView :value="item.otherRequire" />
         </template>
       </van-field>
     </TableCard>
@@ -102,6 +89,7 @@
 
 <script setup lang='ts'>
 import { isEmpty } from 'lodash-es'
+import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'

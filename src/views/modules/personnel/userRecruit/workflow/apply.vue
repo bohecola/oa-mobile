@@ -6,6 +6,10 @@
       <div v-if="taskDefinitionKey === 'Activity_0g08l2m'">
         <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
+      <!-- 归档节点 输入招聘编号 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_0jk4xkf'">
+        <detail ref="Detail2" :include-fields="includeFields" :show-loading="false" />
+      </div>
       <!-- 其他审批通用节点 -->
       <!-- 查看需要编号，编号后端在新增时处理 -->
       <div v-else>
@@ -36,6 +40,8 @@ const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
 const DetailOther = ref<InstanceType<typeof detail> | null>()
+// 归档
+const Detail2 = ref<InstanceType<typeof detail> | null>()
 
 // 字段
 const includeFields = ref(
@@ -47,6 +53,7 @@ const includeFields = ref(
     recruitEndDate: false,
     hopeArriveDate: true,
     applyReason: true,
+    address: true,
     remark: false,
     userRecruitPostBoList: true,
     ossIdList: true,
@@ -106,6 +113,7 @@ onMounted(async () => {
           case 'update':
           case 'approval':
             Detail.value?.workflowView(entity)
+            Detail2.value?.workflowView(entity)
             DetailOther.value?.workflowView(entity)
             break
           case 'view':
