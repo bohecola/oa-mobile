@@ -31,10 +31,27 @@ export interface UserRegularizationForm {
    * 岗位级别
    */
   level?: number
+
   /**
-   * 转正类型（是、否）
+   * 入职时间
    */
-  type?: string
+  entryCompanyDate?: string
+
+  /**
+   * 试用期时长
+   */
+  probationPeriod?: number
+
+  /**
+   * 转正日期
+   */
+  formalDate?: string
+
+  /**
+   * 用人单位意见（0正常、1提前，）
+   */
+  formalType?: string
+
   /**
    * 部门类型（公司、部门、项目部）
    */

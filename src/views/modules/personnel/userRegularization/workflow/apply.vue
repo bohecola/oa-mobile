@@ -4,11 +4,11 @@
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_16orier'">
-        <!-- <upsert ref="Upsert" :show-loading="false" /> -->
+        <!-- <upsert ref="Upsert" :show-loading="false" :include-fields="includeFields" /> -->
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>
-        <detail ref="DetailOther" :show-loading="false" />
+        <detail ref="DetailOther" :show-loading="false" :include-fields="includeFields" />
       </div>
     </template>
   </WorkflowPage>
@@ -20,6 +20,7 @@ import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
 import { useWorkflowViewData } from '@/hooks'
 import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'
+import { filterTruthyKeys } from '@/utils'
 
 type Entity = UserRegularizationForm & { initiator: Initiator }
 
@@ -34,6 +35,25 @@ const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
 const DetailOther = ref<InstanceType<typeof detail> | null>()
+
+// 字段
+const includeFields = ref(
+  filterTruthyKeys<UserRegularizationForm>({
+    userId: true,
+    userName: true,
+    deptId: true,
+    deptName: true,
+    postId: true,
+    postName: true,
+    entryCompanyDate: true,
+    probationPeriod: true,
+    formalDate: true,
+    formalType: true,
+    files: true,
+    description: true,
+    ossIdList: true,
+  }),
+)
 
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({

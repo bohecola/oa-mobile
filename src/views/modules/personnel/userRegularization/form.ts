@@ -25,7 +25,10 @@ export function useForm() {
     deptName: undefined,
     postId: undefined,
     postName: undefined,
-    type: '0',
+    entryCompanyDate: undefined,
+    probationPeriod: undefined,
+    formalType: '1',
+    formalDate: undefined,
     level: undefined,
     deptType: undefined,
     files: undefined,
@@ -38,8 +41,8 @@ export function useForm() {
     form: { ...initFormData },
     rules: {
       userId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
-      type: [{ required: true, message: '提前转正不能为空', trigger: 'onBlur' }],
-      description: [{ required: true, message: '描述不能为空', trigger: 'onBlur' }],
+      formalDate: [{ required: true, message: '转正时间不能为空', trigger: 'onChange' }],
+      formalType: [{ required: true, message: '用人单位意见不能为空', trigger: 'onChange' }],
     },
   })
   // 响应式解构

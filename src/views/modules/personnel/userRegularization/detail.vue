@@ -11,9 +11,23 @@
 
       <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
 
-      <van-field v-show-field="['type', includeFields]" name="type" label="提前转正" input-align="right">
+      <van-field v-model="form.entryCompanyDate" v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="入职日期" input-align="right">
         <template #input>
-          <dict-tag :options="sysYesNo" :value="form.type" />
+          {{ parseTime(form.entryCompanyDate, '{y}-{m}-{d}') }}
+        </template>
+      </van-field>
+
+      <van-field v-model="form.probationPeriod" v-show-field="['probationPeriod', includeFields]" name="probationPeriod" label="试用期时长(月)" input-align="right" />
+
+      <van-field v-model="form.formalDate" v-show-field="['formalDate', includeFields]" name="formalDate" label="转正日期" input-align="right">
+        <template #input>
+          {{ parseTime(form.formalDate, '{y}-{m}-{d}') }}
+        </template>
+      </van-field>
+
+      <van-field v-model="form.formalType" v-show-field="['formalType', includeFields]" name="formalType" label="用人单位意见" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.formalType" dict-type="oa_formal_type" readonly />
         </template>
       </van-field>
 
@@ -23,7 +37,7 @@
         </template>
       </van-cell>
 
-      <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="描述" input-align="right">
+      <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="原因说明" input-align="right">
         <template #input>
           <TextareaView :value="form.description" />
         </template>
@@ -40,37 +54,27 @@
 import { isEmpty } from 'lodash-es'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
+import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'
 
 withDefaults(
   defineProps<{
-    includeFields?: (keyof UserRecruitForm)[]
+    includeFields?: (keyof UserRegularizationForm)[]
     showLoading?: boolean
   }>(),
   {
     includeFields: () => {
       const { form } = useForm()
-      return Object.keys(form.value) as (keyof UserRecruitForm)[]
+      return Object.keys(form.value) as (keyof UserRegularizationForm)[]
     },
     showLoading: true,
   },
 )
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { sys_yes_no } = toRefs<any>(proxy?.useDict('sys_yes_no'))
 
 const { Form, form, isLoading, reset, workflowView } = useForm()
 
-const vShowField = createFieldVisibilityDirective<UserRecruitForm>()
-
-const sysYesNo = computed(() => {
-  return sys_yes_no.value.map((item: any) => {
-    return {
-      label: item.label,
-      value: item.value === 'Y' ? '1' : '0',
-    }
-  })
-})
+const vShowField = createFieldVisibilityDirective<UserRegularizationForm>()
 
 defineExpose({
   reset,
