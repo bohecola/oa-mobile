@@ -107,8 +107,14 @@ export interface UserPreEmploymentForm extends BaseEntity {
 
   deptName?: string
 
+  /**
+   * 部门类型
+   */
   deptType?: string
 
+  /**
+   * 招聘编号
+   */
   recruitNo?: string
 
   /**
@@ -118,6 +124,9 @@ export interface UserPreEmploymentForm extends BaseEntity {
 
   postName?: string
 
+  /**
+   * 岗位级别
+   */
   level?: number
 
   /**
@@ -134,6 +143,19 @@ export interface UserPreEmploymentForm extends BaseEntity {
    * 手机号码
    */
   phonenumber?: string
+
+  /**
+   * 是否推荐
+   */
+  isRecommend?: string
+  /**
+   * 推荐人
+   */
+  reference?: string
+  /**
+   * 是否实习生
+   */
+  isIntern?: string
 
   /**
    * 持证情况
