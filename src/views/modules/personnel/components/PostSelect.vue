@@ -120,6 +120,9 @@ watch(
   (val) => {
     getData(val)
   },
+  {
+    immediate: true,
+  },
 )
 
 defineExpose({
