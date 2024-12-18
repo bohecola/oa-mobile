@@ -29,6 +29,13 @@
         </template>
       </van-field>
 
+      <van-field v-if="form.type === '2'" v-model="form.specialCommercialInsurance" v-show-field="['specialCommercialInsurance', includeFields]" name="specialCommercialInsurance" label="购买商业保险" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
+        </template>
+      </van-field>
+      <van-field v-if="form.specialCommercialInsurance === 'Y'" v-model="form.insuranceLimit" v-show-field="['insuranceLimit', includeFields]" name="insuranceLimit" label="保险额度" input-align="right" />
+
       <van-field v-model="form.responsibility" v-show-field="['responsibility', includeFields]" name="responsibility" label="部门职能" input-align="right">
         <template #input>
           <TextareaView :value="form.responsibility" />

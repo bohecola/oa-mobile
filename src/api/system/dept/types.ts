@@ -52,6 +52,8 @@ export interface DeptForm {
   leader?: string
   phone?: string
   email?: string
+  specialCommercialInsurance?: string // 购买特殊商业保险
+  insuranceLimit?: number
   status?: string
   delFlag?: string
   ancestors?: string
