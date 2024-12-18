@@ -2,12 +2,12 @@
   <detail v-if="isView" />
   <template v-else>
     <!-- 合同结算资料申请 -->
-    <div v-if="taskDefinitionKey === 'Activity_14a8d37'">
+    <div v-if="taskDefinitionKey === 'Activity_1laam19'">
       <detail :include-fields="applyFields" />
     </div>
 
     <!-- 自定义审核人审核 -->
-    <div v-else-if="taskDefinitionKey === 'Activity_09pmxwl'">
+    <div v-else-if="taskDefinitionKey === 'Activity_1p4ss2n'">
       <detail :include-fields="['customizeApprover']" />
       <detail :include-fields="['customizeTransactor']" />
       <detail :include-fields="baseFields" />

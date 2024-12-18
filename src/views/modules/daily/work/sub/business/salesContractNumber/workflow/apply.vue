@@ -2,7 +2,7 @@
   <detail v-if="isView" />
   <template v-else>
     <!-- 销售合同编号申请 -->
-    <div v-if="taskDefinitionKey === 'Activity_14a8d37'">
+    <div v-if="taskDefinitionKey === 'Activity_1laam19'">
       <detail />
     </div>
 
