@@ -82,19 +82,27 @@ export interface UserEmploymentForm extends BaseEntity {
 
   checked?: boolean
 
-  level?: number // 岗位级别
+  /**
+   * 岗位级别
+   */
+  level?: number
+
+  /**
+   * 面试评价
+   */
+  employmentEvaluate?: string
 
   deptId?: string | number
 
   postId?: string | number
 
-  sex?: string // 性别
+  sex?: string
 
-  phonenumber?: string // 手机号
+  phonenumber?: string
 
-  isProbation?: string // 是否有试用期
+  isProbation?: string
 
-  probationCycle?: number // 试用期时长
+  probationCycle?: number
 
   /**
    * 民族
@@ -145,6 +153,19 @@ export interface UserEmploymentForm extends BaseEntity {
    * 试用期薪资发放标准
    */
   probationWagesRate?: number
+
+  /**
+   * 是否推荐
+   */
+  isRecommend?: string
+  /**
+   * 推荐人
+   */
+  reference?: string
+  /**
+   * 是否实习生
+   */
+  isIntern?: string
 
   /**
    * 描述
