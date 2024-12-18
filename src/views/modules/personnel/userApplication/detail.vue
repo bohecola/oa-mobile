@@ -75,6 +75,24 @@
 
       <van-field v-model="form.probationWagesRate" v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right" />
 
+      <van-field v-show-field="['isRecommend', includeFields]" name="isRecommend" label="是否推荐" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.isRecommend" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-show-field="['reference', includeFields]" name="reference" label="推荐人" input-align="right">
+        <template #input>
+          <UserSelect v-model="form.reference" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-model="form.isIntern" v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.isIntern" readonly />
+        </template>
+      </van-field>
+
       <van-field v-model="form.realDate" v-show-field="['realDate', includeFields]" name="realDate" label="实际到岗日期" input-align="right">
         <template #input>
           {{ parseTime(form.realDate, '{y}-{m}-{d}') }}
@@ -88,6 +106,13 @@
           <TextareaView :value="form.description" />
         </template>
       </van-field>
+
+      <van-field v-model="form.employmentEvaluate" v-show-field="['employmentEvaluate', includeFields]" name="employmentEvaluate" label="面试评价" input-align="right">
+        <template #input>
+          <TextareaView :value="form.employmentEvaluate" />
+        </template>
+      </van-field>
+
     </van-cell-group>
     <!-- 附件列表 -->
     <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">

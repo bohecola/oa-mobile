@@ -70,6 +70,10 @@ const includeFields = ref(
     phonenumber: true,
     isProbation: true,
     probationCycle: true,
+    isRecommend: true,
+    reference: true,
+    isIntern: true,
+    employmentEvaluate: true,
     checked: true,
     ossIdList: true,
   }),
@@ -96,6 +100,10 @@ const includeFieldsDetail = ref(
     phonenumber: true,
     isProbation: true,
     probationCycle: true,
+    isRecommend: true,
+    reference: true,
+    isIntern: true,
+    employmentEvaluate: true,
     ossIdList: true,
   }),
 )
@@ -121,6 +129,10 @@ const includeFieldsOther = ref(
     phonenumber: true,
     isProbation: true,
     probationCycle: true,
+    isRecommend: true,
+    reference: true,
+    isIntern: true,
+    employmentEvaluate: true,
     ossIdList: true,
   }),
 )
@@ -158,6 +170,10 @@ const includeFieldsDetail2 = filterTruthyKeys<UserEmploymentForm>({
   phonenumber: true,
   isProbation: true,
   probationCycle: true,
+  isRecommend: true,
+  reference: true,
+  isIntern: true,
+  employmentEvaluate: true,
   ossIdList: false,
 })
 
