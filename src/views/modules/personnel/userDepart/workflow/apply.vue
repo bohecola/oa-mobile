@@ -7,12 +7,8 @@
       <div v-if="taskDefinitionKey === 'Activity_1npxmwc'">
         <!-- <Upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
       </div>
-      <!-- 部门经理会签需要选择交接人 详情--交接人--附件列表 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_1qpajzq'">
-        <detail ref="Detail1" :include-fields="includeFields1" :show-loading="false" />
-      </div>
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_05cxsln'">
+      <div v-else-if="taskDefinitionKey === 'Activity_0qv4t1b'">
         <detail ref="Detail3" :include-fields="includeFields2" :show-loading="false" />
       </div>
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
@@ -68,19 +64,6 @@ const includeFields = ref(
     handoverContent: true,
     ossIdList: true,
     documentContent: true,
-  }),
-)
-
-// 部门经理节点详情
-const includeFields1 = ref(
-  filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postName: true,
-    departDate: true,
-    handoverPerson: false,
-    reason: true,
-    handoverContent: false,
   }),
 )
 
@@ -170,7 +153,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: (taskDefinitionKey.value === 'Activity_1qpajzq' || taskDefinitionKey.value === 'Activity_05cxsln' || taskDefinitionKey.value === 'Activity_0zx1e0l') ? 'true' : 'false',
+        isEditNode: (taskDefinitionKey.value === 'Activity_0qv4t1b' || taskDefinitionKey.value === 'Activity_0zx1e0l') ? 'true' : 'false',
       },
     })
 

@@ -43,9 +43,28 @@ export interface UserDepartForm extends BaseEntity {
 
   userName?: string
 
+  /**
+   * 部门id
+   */
   deptId?: string | number
 
+  /**
+   * 部门类型
+   */
   deptType?: string
+
+  /**
+   * 入职时间
+   */
+  entryCompanyDate: string
+  /**
+   * 购买特殊商业保险
+   */
+  specialCommercialInsurance: string
+  /**
+   * 是否登录过项目部邮箱
+   */
+  isLoginCompanyEmail: string
 
   deptName?: string
 
