@@ -24,6 +24,9 @@ export function useForm() {
   const initFormData: UserDepartForm = {
     id: undefined,
     userId: undefined,
+    entryCompanyDate: undefined,
+    specialCommercialInsurance: undefined,
+    isLoginCompanyEmail: 'N',
     departDate: undefined,
     reason: undefined,
     handoverPerson: undefined,
@@ -37,9 +40,10 @@ export function useForm() {
     form: { ...initFormData },
     rules: {
       userId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
-      departDate: [{ required: true, message: '实际离职日期不能为空', trigger: 'onBlur' }],
+      departDate: [{ required: true, message: '实际离职日期不能为空', trigger: 'onChange' }],
+      isLoginCompanyEmail: [{ required: true, message: '是否登录过项目部公司邮箱不能为空', trigger: 'onChange' }],
       reason: [{ required: true, message: '离职原因不能为空', trigger: 'onBlur' }],
-      handoverPerson: [{ required: true, message: '交接人不能为空', trigger: 'onBlur' }],
+      handoverPerson: [{ required: true, message: '交接人不能为空', trigger: 'onChange' }],
       handoverContent: [{ required: true, message: '交接内容不能为空', trigger: 'onBlur' }],
       documentContent: [{ required: true, message: '归档内容不能为空', trigger: 'onBlur' }],
     },

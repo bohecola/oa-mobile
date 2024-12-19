@@ -15,17 +15,35 @@
 
       <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
 
+      <van-field v-model="form.entryCompanyDate" v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="入职时间">
+        <template #input>
+          {{ parseTime(form.entryCompanyDate, '{y}-{m}-{d}') }}
+        </template>
+      </van-field>
+
+      <van-field v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="购买特殊商业保险">
+        <template #input>
+          <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-show-field="['isLoginCompanyEmail', includeFields]" name="isLoginCompanyEmail" label="是否登录过项目部公司邮箱">
+        <template #input>
+          <YesNoSwitch v-model="form.isLoginCompanyEmail" readonly />
+        </template>
+      </van-field>
+
       <van-field v-model="form.handoverPerson" name="handoverPerson" label="交接人" input-align="right">
         <template #input>
           <UserSelect v-model="form.handoverPerson" readonly />
         </template>
       </van-field>
 
-      <!-- <van-field v-model="form.departDate" v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期">
-      <template #input>
-        {{ parseTime(form.departDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field> -->
+      <van-field v-model="form.departDate" v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期">
+        <template #input>
+          {{ parseTime(form.departDate, '{y}-{m}-{d}') }}
+        </template>
+      </van-field>
 
       <van-field v-model="form.reason" v-show-field="['reason', includeFields]" name="reason" label="离职原因" input-align="right">
         <template #input>
