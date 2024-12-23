@@ -28,12 +28,18 @@
 </template>
 
 <script setup lang="ts">
-import { isArray, isEmpty, isNumber } from 'lodash-es'
-import type { DeptTreeOption } from '@/api/system/role/types'
-import { deptTreeSelect } from '@/api/system/user'
-import { treeToArray } from '@/utils'
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
+import { listDept } from '@/api/system/dept'
+import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
 
 type DeptTreeSelectValue = string | number | (string | number)[]
+type _DeptVO = DeptVO & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
+
+interface DataConfig {
+  disabledKey: string
+  disabledValue: string
+  enabled: boolean
+}
 
 const props = withDefaults(
   defineProps<{
@@ -42,27 +48,63 @@ const props = withDefaults(
     readonly?: boolean
     clearable?: boolean
     multiple?: boolean
+    withDefaultRootNode?: boolean
+    defaultExpandedKeys?: Array<string | number>
+    dataConfig?: DataConfig
+    params?: Partial<DeptQuery>
   }>(),
   {
-    placeholder: '请选择部门',
+    placeholder: '请选择',
+    withDefaultRootNode: false,
+    defaultExpandedKeys: () => [0],
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:value', 'change', 'nodeClick'])
+
+// 实例
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 // 节点数据加载状态
 const isLoading = ref(false)
 
 const ids = ref<DeptTreeSelectValue>(deserialize(props.modelValue))
 
-// 节点数据
-const data = ref([])
+// 原始数据
+const rawData = ref<_DeptVO[]>([])
+
+// 参数
+const queryParams: DeptQuery = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  deptName: undefined,
+  deptCategory: undefined,
+  status: '0', // 默认显示状态是正常的部门
+  type: undefined,
+})
+
+const treeData = computed(() => {
+  const dataConfig = props.dataConfig
+  const raw = rawData.value
+
+  const data = dataConfig
+    ? raw.map(e => ({
+      ...e,
+      disabled: e[dataConfig.disabledKey] === dataConfig.disabledValue ? dataConfig.enabled : e.disabled,
+    }))
+    : raw
+
+  const options = proxy?.handleTree<_DeptVO>(data)
+  if (props.withDefaultRootNode) {
+    return [{ label: '根节点', id: 0, children: options }]
+  }
+  return options
+})
 
 // 选中文字
 const selectedLabel = computed(() => {
   if (props.modelValue) {
-    const dataArr = treeToArray<DeptTreeOption>(data.value)
-    const nodes = dataArr.filter(e => (isArray(ids.value) ? ids.value.includes(e.id) : e.id === ids.value))
+    const nodes = rawData.value.filter(e => (isArray(ids.value) ? ids.value.includes(e.id) : e.id === ids.value))
 
     return nodes.map(e => e.label).join('、')
   }
@@ -70,31 +112,48 @@ const selectedLabel = computed(() => {
 })
 
 // 筛选函数
-const filterNodeMethod = (value: string, data: DeptTreeOption) => data.label.includes(value)
+const filterNodeMethod = (value: string, data: _DeptVO) => data.label.includes(value)
 
 // 获取部门数据
 async function getData() {
   isLoading.value = true
-  const res = await deptTreeSelect().finally(() => (isLoading.value = false))
-  data.value = res.data
+
+  if (!isNil(props.params)) {
+    Object.assign(queryParams, props.params)
+  }
+
+  const { data } = await listDept(queryParams).finally(() => (isLoading.value = false))
+  rawData.value = data.map((e) => {
+    return {
+      ...e,
+      id: !isNil(e.deptId) ? String(e.deptId) : e.deptId,
+      label: e.deptName,
+    }
+  })
 }
 
 // change 事件
-function onChange(value: (string | number) | (string | number)[]) {
+function onChange(value: string | string[]) {
   const payload = serialize(value)
 
   emit('update:modelValue', payload)
   emit('change', payload)
+
+  emit('update:value', payload)
+}
+
+// node-click 事件
+function nodeClick(deptVO: _DeptVO) {
+  emit('nodeClick', deptVO)
 }
 
 function serialize(value: DeptTreeSelectValue) {
-  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
   if (!isEmpty(value) || isNumber(value)) {
     if (props.multiple) {
-      return (value as (string | number)[]).join(',')
+      return (value as string[]).join(',')
     }
     else {
-      return value as string | number
+      return value as string
     }
   }
   else {
@@ -103,10 +162,10 @@ function serialize(value: DeptTreeSelectValue) {
 }
 
 function deserialize(value: string | number) {
-  if (value) {
+  if (!isNil(value)) {
+    value = isNumber(value) ? String(value) : value
     if (props.multiple) {
-      // 兼容 id 为 100、101 这种 number 类型的情况
-      return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
+      return (value as string).split(',').map(e => e)
     }
     else {
       return value
@@ -130,7 +189,7 @@ onMounted(() => {
 
 defineExpose({
   isLoading,
-  data,
+  data: treeData,
   selectedLabel,
 })
 </script>
