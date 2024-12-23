@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { isArray, isEmpty, isNumber } from 'lodash-es'
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { listSysDeptPost } from '@/api/system/deptPost'
 import type { SysDeptPostVO } from '@/api/system/deptPost/types'
 
@@ -48,7 +48,7 @@ async function getData(deptId: string | number) {
   isLoading.value = true
   if (props.deptId) {
     const res = await listSysDeptPost({ deptId, pageNum: undefined, pageSize: undefined })
-    data.value = res.rows
+    data.value = res.rows.map(e => ({ ...e, postId: !isNil(e.postId) ? String(e.postId) : e.postId }))
   }
   else {
     data.value = []
@@ -67,7 +67,7 @@ const selectedLabel = computed(() => {
 })
 
 // change 事件
-function onChange(value: (string | number) | (string | number)[]) {
+function onChange(value: string | string[]) {
   const payload = serialize(value)
 
   emit('update:modelValue', payload)
@@ -75,13 +75,12 @@ function onChange(value: (string | number) | (string | number)[]) {
 }
 
 function serialize(value: PostSelectValue) {
-  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
-  if (!isEmpty(value) || isNumber(value)) {
+  if (!isEmpty(value)) {
     if (props.multiple) {
-      return (value as (string | number)[]).join(',')
+      return (value as string[]).join(',')
     }
     else {
-      return value as string | number
+      return value as string
     }
   }
   else {
@@ -90,14 +89,10 @@ function serialize(value: PostSelectValue) {
 }
 
 function deserialize(value: string | number) {
-  if (value) {
+  if (!isNil(value)) {
+    value = isNumber(value) ? String(value) : value
     if (props.multiple) {
-      // 如果是多选，只有一个值是数字时返回原值
-      if (isNumber(value)) {
-        return value as number
-      }
-      // 兼容 id 为 100、101 这种 number 类型的情况
-      return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
+      return (value as string).split(',').map(e => e)
     }
     else {
       return value
