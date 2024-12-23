@@ -3,7 +3,7 @@ import type { DeptForm, DeptQuery, DeptVO } from './types'
 import request from '@/service/request'
 
 // 查询部门列表
-export function listDept(query?: DeptQuery) {
+export function listDept(query?: DeptQuery): AxiosPromise<DeptVO[]> {
   return request({
     url: '/system/dept/list',
     method: 'get',

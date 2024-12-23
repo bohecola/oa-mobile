@@ -4,7 +4,7 @@
 export interface DeptQuery extends PageQuery {
   deptName?: string
   deptCategory?: string
-  status?: number
+  status?: string
   type?: string
 }
 

@@ -23,14 +23,6 @@
 
       <van-field v-model="form.phonenumber" v-show-field="['phonenumber', includeFields]" name="phonenumber" label="手机号" input-align="right" />
 
-      <van-field v-model="form.isProbation" v-show-field="['isProbation', includeFields]" name="isProbation" label="是否有试用期" input-align="right">
-        <template #input>
-          <DictSelect v-model="form.isProbation" dict-type="sys_yes_no" readonly />
-        </template>
-      </van-field>
-
-      <van-field v-if="form.probationCycle" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)" input-align="right" />
-
       <van-field v-model="form.nation" v-show-field="['nation', includeFields]" name="nation" label="民族" input-align="right">
         <template #input>
           <DictSelect v-model="form.nation" dict-type="oa_nation" readonly />
@@ -73,7 +65,40 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.probationWagesRate" v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right" />
+      <van-field v-model="form.isIntern" v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.isIntern" readonly />
+        </template>
+      </van-field>
+
+      <van-field
+        v-model="form.isProbation"
+        v-show-field="['isProbation', includeFields]"
+        name="isProbation"
+        :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
+        input-align="right"
+      >
+        <template #input>
+          <DictSelect v-model="form.isProbation" dict-type="sys_yes_no" readonly />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.probationCycle"
+        v-model="form.probationCycle"
+        v-show-field="['probationCycle', includeFields]"
+        name="probationCycle"
+        :label="form.isIntern !== 'Y' ? '试用期时长(月)' : '实习期时长(月)'"
+        input-align="right"
+      />
+
+      <van-field
+        v-model="form.probationWagesRate"
+        v-show-field="['probationWagesRate', includeFields]"
+        name="probationWagesRate"
+        :label="form.isIntern !== 'Y' ? '试用期薪资发放标准' : '实习期期薪资发放标准'"
+        input-align="right"
+      />
 
       <van-field v-show-field="['isRecommend', includeFields]" name="isRecommend" label="是否推荐" input-align="right">
         <template #input>
@@ -81,15 +106,9 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['reference', includeFields]" name="reference" label="推荐人" input-align="right">
+      <van-field v-if="form.isRecommend === 'Y'" v-show-field="['reference', includeFields]" name="reference" label="推荐人" input-align="right">
         <template #input>
           <UserSelect v-model="form.reference" readonly />
-        </template>
-      </van-field>
-
-      <van-field v-model="form.isIntern" v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
-        <template #input>
-          <YesNoSwitch v-model="form.isIntern" readonly />
         </template>
       </van-field>
 
@@ -112,7 +131,6 @@
           <TextareaView :value="form.employmentEvaluate" />
         </template>
       </van-field>
-
     </van-cell-group>
     <!-- 附件列表 -->
     <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">

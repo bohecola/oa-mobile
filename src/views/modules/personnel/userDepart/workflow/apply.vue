@@ -42,8 +42,6 @@ const loading = ref(false)
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
 // 引用
-// 部门经理
-const Detail1 = ref<InstanceType<typeof detail> | null>()
 // 归档节点
 const Detail2 = ref<InstanceType<typeof detail> | null>()
 // 详情
@@ -162,8 +160,6 @@ onMounted(async () => {
         switch (type as string) {
           case 'update':
           case 'approval':
-          // 部门经理人审批节点
-            Detail1.value?.workflowView(entity)
             // 归档节点
             Detail2.value?.workflowView(entity)
             // 工作交接节点
