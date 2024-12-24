@@ -1,5 +1,6 @@
 import { cloneDeep } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
+import { extraInitFormData, extraInitRules } from './extraForm'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { getDailyWork } from '@/api/oa/daily/work/index'
 
@@ -45,13 +46,7 @@ export function useForm() {
     ossIdList: undefined,
     contentJson: undefined,
 
-    a_contractId: undefined,
-    a_deptId: undefined,
-    a_contractNo: undefined,
-    a_businessType: undefined,
-    a_partyA: undefined,
-    a_assessmentAmount: undefined,
-    a_rewardAmount: undefined,
+    ...extraInitFormData,
   }
 
   const initRules: Record<string, FieldRule[]> = {
@@ -75,9 +70,7 @@ export function useForm() {
     isSeal: [{ required: true, message: '是否加盖公章不能为空', trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
 
-    a_contractId: [{ required: true, message: '合同名称不能为空', trigger: 'onBlur' }],
-    a_assessmentAmount: [{ required: true, message: '考核金额不能为空', trigger: 'onBlur' }],
-    a_rewardAmount: [{ required: true, message: '奖励金不能为空', trigger: 'onBlur' }],
+    ...extraInitRules,
   }
 
   // 表单数据

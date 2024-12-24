@@ -1,3 +1,5 @@
+import type { ExtraForm } from './extraTypes'
+
 export interface DailyWorkVO {
   /**
    * ID
@@ -105,7 +107,7 @@ export interface DailyWorkVO {
   remark: string
 }
 
-export interface DailyWorkForm extends BaseEntity, SWXMKHJLQRD {
+export interface DailyWorkForm extends BaseEntity, ExtraForm {
   /**
    * ID
    */
@@ -239,16 +241,6 @@ export interface DailyWorkForm extends BaseEntity, SWXMKHJLQRD {
    * 申请业务内容
    */
   contentJson?: string
-}
-
-export interface SWXMKHJLQRD {
-  a_deptId?: string | number
-  a_contractId?: string
-  a_contractNo?: string
-  a_businessType?: string
-  a_partyA?: string
-  a_assessmentAmount?: number
-  a_rewardAmount?: number
 }
 
 export interface DailyWorkQuery extends PageQuery {
