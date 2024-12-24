@@ -44,6 +44,7 @@ export interface DeptForm {
   deptId?: number | string
   deptName?: string
   deptCategory?: string
+  businessType?: string // 业务类型
   responsibility?: string // 部门职能
   purview?: string // 部门权限
   address?: string // 地址

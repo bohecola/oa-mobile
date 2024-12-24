@@ -9,13 +9,19 @@
 
       <van-field v-model="form.deptName" v-show-field="['deptName', includeFields]" name="deptName" label="部门名称" input-align="right" />
 
-      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="部门类型" input-align="right">
+      <van-field v-show-field="['type', includeFields]" name="type" label="部门类型" input-align="right">
         <template #input>
-          <dict-tag :options="sys_dept_type" :value="form.type" />
+          <DictSelect v-model="form.type" dict-type="sys_dept_type" readonly />
         </template>
       </van-field>
 
       <van-field v-model="form.deptCategory" v-show-field="['deptCategory', includeFields]" name="deptCategory" label="类型编码" input-align="right" />
+
+      <van-field v-show-field="['businessType', includeFields]" name="businessType" label="业务类型" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.businessType" dict-type="oa_project_business_type" readonly />
+        </template>
+      </van-field>
 
       <van-field v-model="form.leader" v-show-field="['leader', includeFields]" name="leader" label="负责人" input-align="right">
         <template #input>
@@ -25,7 +31,7 @@
 
       <van-field v-model="form.redFile" v-show-field="['redFile', includeFields]" name="redFile" label="红头文件" input-align="right">
         <template #input>
-          <dict-tag :options="sys_yes_no" :value="form.redFile" />
+          <YesNoSwitch v-model="form.redFile" readonly />
         </template>
       </van-field>
 
@@ -84,7 +90,6 @@ withDefaults(
 )
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { sys_dept_type, sys_yes_no } = toRefs<any>(proxy?.useDict('sys_dept_type', 'sys_yes_no'))
 
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
 

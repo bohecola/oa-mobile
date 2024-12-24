@@ -23,6 +23,7 @@ export function useForm() {
     parentId: undefined,
     deptName: undefined,
     deptCategory: undefined,
+    businessType: undefined,
     responsibility: undefined, // 部门职能
     purview: undefined, // 部门权限
     address: undefined, // 地址
@@ -45,6 +46,7 @@ export function useForm() {
       deptName: [{ required: true, message: '部门名称不能为空', trigger: 'onBlur' }],
       type: [{ required: true, message: '部门类型不能为空', trigger: 'onBlur' }],
       // deptCategory: [{ required: true, message: '类别编号不能为空', trigger: 'onBlur' }],
+      // businessType: [{ required: true, message: '业务类型不能为空', trigger: 'onChange' }],
       // leader: [{ required: true, message: '负责人不能为空', trigger: 'onBlur' }],
       redFile: [{ required: true, message: '是否发布红头文件不能为空', trigger: 'onBlur' }],
       responsibility: [{ required: true, message: '部门职能不能为空', trigger: 'onBlur' }],
