@@ -4,7 +4,7 @@
       <van-cell @click="handleView(row)">
         <!-- 标题 -->
         <template #title>
-          <span class="mr-2">{{ row.processDefinitionName }}</span>
+          <span class="mr-2">{{ row.name }}</span>
         </template>
 
         <!-- 描述 -->
