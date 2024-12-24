@@ -18,4 +18,6 @@ export interface StartProcessBo<T = any> {
     entity?: T
     [k: string]: any
   }
+  // 流程实例名称拼接
+  processInstanceName?: string
 }

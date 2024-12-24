@@ -53,30 +53,54 @@ import { getDept } from '@/api/system/dept'
 
 type Entity = DailyWorkForm & { initiator: Initiator }
 
+const { user } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
 // 引用
 const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect> | null>()
-
 // 表单
 const { Form, form, rules, isLoading, reset, workflowView } = useForm()
 
+// 流程表单
+const submitFormData = ref<StartProcessBo<Entity>>({
+  businessKey: '',
+  tableName: '',
+  variables: {},
+  processInstanceName: '',
+})
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
+
 // 是否查看
 const isView = computed(() => proxy.$route.query.type === 'view')
 // 日常事务类型选择器只读
 const dailyTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
 
+// 跟踪字段
+const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
+// // 动态规则
+// const computedRules = computed(() => {
+//   const newRules = {};
+//   for (const [key, value] of Object.entries(rules.value)) {
+//     if (trackedFields.value.includes(key as any)) {
+//       newRules[key] = value;
+//     }
+//   }
+
+//   return newRules;
+// });
+
+provide('form', form)
+
+provide('isView', isView)
+provide('taskDefinitionKey', taskDefinitionKey)
+
+provide('trackFields', trackFields)
+provide('updateRuleRequired', updateRuleRequired)
+
 function getBaseFields() {
   return dailyTypeSelectReadOnly.value ? [] : (['dailyWorkType', 'companyId'] as KeysOfArray<DailyWorkForm>)
 }
-
-// 跟踪字段
-const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
-
-const { user } = useStore()
 
 // 类型选择点击
 async function handleDailyTypeClick() {
@@ -112,30 +136,6 @@ function trackFields(fields: KeysOfArray<DailyWorkForm>) {
     return prev
   }, trackedFields.value)
 }
-
-// 规则
-// const computedRules = computed(() => {
-//   const newRules = {}
-//   for (const [key, value] of Object.entries(rules.value)) {
-//     if (trackedFields.value.includes(key as any)) {
-//       newRules[key] = value
-//     }
-//   }
-//   return newRules
-// })
-
-provide('form', form)
-provide('isView', isView)
-provide('taskDefinitionKey', taskDefinitionKey)
-provide('trackFields', trackFields)
-provide('updateRuleRequired', updateRuleRequired)
-
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-})
 
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
