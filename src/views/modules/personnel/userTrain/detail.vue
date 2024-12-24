@@ -129,7 +129,9 @@
           <TextareaView :value="form.remark" />
         </template>
       </van-field>
+    </van-cell-group>
 
+    <van-cell-group inset class="!my-3">
       <van-cell v-for="(item, index) in form.ossMessageAllBoList" :key="index" :name="item.type" input-align="right">
         <template #title>
           <DictSelect v-model="item.type" dict-type="oa_train_oss_type" readonly />

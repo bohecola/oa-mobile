@@ -35,7 +35,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:postName', 'change'])
 
 type PostSelectValue = string | number | (string | number)[]
 
@@ -72,6 +72,8 @@ function onChange(value: string | string[]) {
 
   emit('update:modelValue', payload)
   emit('change', payload)
+
+  emit('update:postName', selectedLabel.value)
 }
 
 function serialize(value: PostSelectValue) {
