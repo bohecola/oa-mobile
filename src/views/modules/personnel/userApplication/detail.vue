@@ -96,7 +96,7 @@
         v-model="form.probationWagesRate"
         v-show-field="['probationWagesRate', includeFields]"
         name="probationWagesRate"
-        :label="form.isIntern !== 'Y' ? '试用期薪资发放标准' : '实习期期薪资发放标准'"
+        label="薪资发放标准"
         input-align="right"
       />
 
