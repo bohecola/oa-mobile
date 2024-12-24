@@ -18,10 +18,12 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['j_amount', includeFields]" label="应发工资总额（元）" name="j_amount" input-align="right">
+  <van-field v-show-field="['j_amount', includeFields]" label="应发工资总额（元）" name="j_amount" input-align="right" class="!items-baseline">
     <template #input>
-      <span>{{ form.j_amount }}</span>
-      <span v-if="!isNil(form.j_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.j_amount) }}</span>
+      <div class="items-baseline">
+        <span>{{ form.j_amount }}</span>
+        <span v-if="!isNil(form.j_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.j_amount) }}</span>
+      </div>
     </template>
   </van-field>
 

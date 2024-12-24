@@ -39,7 +39,7 @@
               <card-cell label="核算项目" :value="node.sciName" />
               <card-cell label="责任部门" :value="node.deptName" />
               <card-cell label="预算金额" :value="formatCurrency(node.amount)" />
-              <card-cell label="期初金额" :value="formatCurrency(node.beginAmount)" />
+              <card-cell label="期初支出金额" :value="formatCurrency(node.beginAmount)" />
               <card-cell label="支出金额" :value="formatCurrency(node.expendAmount)" />
               <card-cell label="剩余金额" :value="formatCurrency(node.availableAmount)" />
             </div>

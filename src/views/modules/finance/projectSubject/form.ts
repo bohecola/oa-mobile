@@ -123,11 +123,11 @@ export function useForm() {
   //         return proxy.$modal.msgWarning('请完成先保存预算金额')
   //       }
 
-  //       // 新增时校验期初金额不能超过剩余金额且不能为空
+  //       // 新增时校验期初支出金额不能超过剩余金额且不能为空
   //       if (!isNil(node.amount) && !isNil(node.beginAmount)) {
   //         if (Big(node.beginAmount).gt(Big(node.amount).minus(node.expendAmount))) {
   //           node.beginAmountRef?.focus()
-  //           return proxy.$modal.msgWarning('期初金额不能超过预算金额减去支出金额')
+  //           return proxy.$modal.msgWarning('期初支出金额不能超过预算金额减去支出金额')
   //         }
   //       }
   //     }

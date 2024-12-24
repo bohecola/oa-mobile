@@ -56,12 +56,12 @@ export interface ProjectSubjectItemTreeVO {
   // amountRef?: ElInputNumberInstance
 
   /**
-   * 期初金额
+   * 期初支出金额
    */
   beginAmount?: number
 
   // /**
-  //  * 期初金额输入框引用
+  //  * 期初支出金额输入框引用
   //  */
   // beginAmountRef?: ElInputNumberInstance
 
