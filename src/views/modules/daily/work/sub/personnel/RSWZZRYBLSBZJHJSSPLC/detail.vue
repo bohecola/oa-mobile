@@ -16,13 +16,13 @@
 
   <van-field v-show-field="['cc_socialSecurityProcessingCategory', includeFields]" name="cc_socialSecurityProcessingCategory" label="社保办理类别" input-align="right">
     <template #input>
-      <DictSelect v-model="form.cc_socialSecurityProcessingCategory" dict-type="oa_daily_work_wzzryblsbzjhjssplc_ss_type" readonly />
+      <DictSelect v-model="form.cc_socialSecurityProcessingCategory" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type" readonly />
     </template>
   </van-field>
 
   <van-field v-show-field="['cc_insuranceType', includeFields]" name="cc_insuranceType" label="险种" input-align="right">
     <template #input>
-      <DictSelect v-model="form.cc_insuranceType" dict-type="oa_daily_work_wzzryblsbzjhjssplc_insurance_type" :multiple="true" readonly />
+      <DictSelect v-model="form.cc_insuranceType" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type" :multiple="true" readonly />
     </template>
   </van-field>
 

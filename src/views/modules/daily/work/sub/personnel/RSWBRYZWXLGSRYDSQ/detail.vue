@@ -11,7 +11,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['aa_effectiveDate', includeFields]" name="aa_effectiveDate" label="变更生效日期" input-align="right">
+  <van-field v-show-field="['aa_effectiveDate', includeFields]" name="aa_effectiveDate" label="生效日期" input-align="right">
     <template #input>
       {{ parseTime(form.aa_effectiveDate, '{y}-{m}-{d}') }}
     </template>

@@ -27,7 +27,7 @@ export function useForm() {
     companyId: undefined,
     fileType: undefined,
     fileUseType: undefined,
-    isSeal: undefined,
+    isSeal: 'N',
     isYwlProject: undefined,
     isPersonnelTransfer: undefined,
     sealType: undefined,
