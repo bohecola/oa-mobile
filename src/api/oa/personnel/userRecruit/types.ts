@@ -137,6 +137,11 @@ export interface UserRecruitPostBo {
    * 岗位id
    */
   postId: number | string
+
+  /**
+   * 岗位名称
+   */
+  postName: string
   /**
    * 招聘id
    */

@@ -54,7 +54,7 @@
     <div class="px-6 py-2 text-sm text-gray-500">
       招聘岗位
     </div>
-    <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" class="mx-4 mb-2" :default-collapse="true">
+    <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" :title="item.postName" class="mx-4 mb-2" :default-collapse="true">
       <van-field :name="`itemList.${index}.postId`" label="岗位名称" input-align="right">
         <template #input>
           <PostSelect v-model="item.postId" :dept-id="form.deptId" multiple readonly />
