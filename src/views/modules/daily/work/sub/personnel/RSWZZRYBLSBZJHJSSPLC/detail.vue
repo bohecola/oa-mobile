@@ -45,7 +45,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['g_userId', 'g_deptId', 'g_postIds', 'reason', 'ossIdList'],
+    includeFields: () => ['cc_socialSecurityProcessingCategory', 'cc_insuranceType', 'cc_effectiveMonth', 'reason', 'ossIdList'],
   },
 )
 

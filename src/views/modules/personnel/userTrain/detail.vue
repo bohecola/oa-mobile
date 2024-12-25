@@ -28,7 +28,7 @@
 
         <van-field v-show-field="['trainType', includeFields]" name="trainType" label="外部培训类型" input-align="right">
           <template #input>
-            <DictSelect v-model="form.trainType" dict-type="oa_train_enroll_type" readonly />
+            <DictSelect v-model="form.trainType" dict-type="oa_training_type" readonly />
           </template>
         </van-field>
 

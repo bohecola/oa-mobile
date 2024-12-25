@@ -161,7 +161,7 @@ const isEditNode = computed(() => {
   if (key === 'Activity_1p4ss2n' && user.info.userId === form.value.customizeApprover) {
     return 'true'
   }
-  else if (['Activity_171tryh'].includes(key)) {
+  else if (['Activity_171tryh'].includes(key) && form.value.no === 'RSXMBPYQWBRYSQ') {
     return 'true'
   }
   else {
