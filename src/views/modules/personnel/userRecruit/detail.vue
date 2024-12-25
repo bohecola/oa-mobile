@@ -1,8 +1,6 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
     <van-cell-group inset class="!my-3">
-      <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="编号" input-align="right" />
-
       <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
@@ -44,7 +42,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
+      <van-field v-if="form.deptType === '2'" v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
         <template #input>
           <TextareaView :value="form.address" />
         </template>

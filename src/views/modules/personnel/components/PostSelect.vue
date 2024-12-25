@@ -73,7 +73,12 @@ function onChange(value: string | string[]) {
   emit('update:modelValue', payload)
   emit('change', payload)
 
-  emit('update:postName', selectedLabel.value)
+  const postName = data.value
+    .filter(item => (isArray(value) ? value.includes(item.postId as string) : item.postId === value))
+    .map(e => e.postName)
+    .join('、')
+
+  emit('update:postName', postName)
 }
 
 function serialize(value: PostSelectValue) {

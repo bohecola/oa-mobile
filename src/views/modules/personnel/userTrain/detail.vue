@@ -131,6 +131,9 @@
       </van-field>
     </van-cell-group>
 
+    <div class="px-6 text-sm text-gray-500">
+      附件列表
+    </div>
     <van-cell-group inset class="!my-3">
       <van-cell v-for="(item, index) in form.ossMessageAllBoList" :key="index" :name="item.type" input-align="right">
         <template #title>
