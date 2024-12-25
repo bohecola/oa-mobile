@@ -60,7 +60,7 @@ const extraInitFormData: DailyWorkForm = {
   j_amount: undefined,
   j_scAmount: undefined,
 
-  // 项目部聘用全外包人员申请
+  // 项目部聘用外包人员申请
   k_deptId: undefined,
 
   // 开具个人相关证明申请
@@ -207,9 +207,9 @@ const extraInitRules: Record<string, FieldRule[]> = {
   j_deptIds: [{ required: true, message: `项目部名称${baseMsg}`, trigger: 'onBlur' }],
   j_month: [{ required: true, message: `所发工资月份${baseMsg}`, trigger: 'onBlur' }],
   j_amount: [{ required: true, message: `应发工资总额${baseMsg}`, trigger: 'onBlur' }],
-  j_scAmount: [{ required: true, message: `社保总额${baseMsg}`, trigger: 'onBlur' }],
+  j_scAmount: [{ required: true, message: `单位社保总额${baseMsg}`, trigger: 'onBlur' }],
 
-  // 项目部聘用全外包人员申请
+  // 项目部聘用外包人员申请
   k_deptId: [{ required: true, message: `申请部门${baseMsg}`, trigger: 'onBlur' }],
 
   // 开具个人相关证明申请

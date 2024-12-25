@@ -1,7 +1,7 @@
 <template>
   <detail v-if="isView" />
   <template v-else>
-    <!-- 项目部聘用全外包人员申请 -->
+    <!-- 项目部聘用外包人员申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
       <!-- <upsert /> -->
     </div>

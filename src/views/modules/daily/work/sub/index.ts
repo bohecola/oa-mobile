@@ -69,7 +69,7 @@ import RSGYXGXYDDRSXGSPLCDSQ from './personnel/RSGYXGXYDDRSXGSPLCDSQ/workflow/ap
 import RSXMBLWRYGZSP from './personnel/RSXMBLWRYGZSP/workflow/apply.vue'
 // 辽宁华能业主人员代发工资及五险一金费用审批
 import RSLNHNYZRYDFGZJWXYJFYSP from './personnel/RSLNHNYZRYDFGZJWXYJFYSP/workflow/apply.vue'
-// 项目部聘用全外包人员申请
+// 项目部聘用外包人员申请
 import RSXMBPYQWBRYSQ from './personnel/RSXMBPYQWBRYSQ/workflow/apply.vue'
 // 开具个人相关证明申请
 import RSKJGRXGZMSQ from './personnel/RSKJGRXGZMSQ/workflow/apply.vue'

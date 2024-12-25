@@ -27,7 +27,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['j_scAmount', includeFields]" label="社保总额（元）" name="j_scAmount" input-align="right">
+  <van-field v-show-field="['j_scAmount', includeFields]" label="单位社保总额（元）" name="j_scAmount" input-align="right">
     <template #input>
       <span>{{ form.j_scAmount }}</span>
       <span v-if="!isNil(form.j_scAmount)" class="ml-3 text-red">{{ toCnMoney(form.j_scAmount) }}</span>

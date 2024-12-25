@@ -114,7 +114,7 @@ export interface RSLNHNYZRYDFGZJWXYJFYSP {
   j_scAmount?: number
 }
 
-// 项目部聘用全外包人员申请
+// 项目部聘用外包人员申请
 export interface RSXMBPYQWBRYSQ {
   k_deptId?: string
   k_belongDeptIds?: string
