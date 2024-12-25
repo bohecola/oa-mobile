@@ -305,6 +305,13 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // 发薪审批
   dd_month: [{ required: true, message: `所发工资月份${baseMsg}`, trigger: 'onBlur' }],
   dd_totalAmount: [{ required: true, message: `总金额${baseMsg}`, trigger: 'onBlur' }],
+
+  // 项目部其他费用申请
+  ee_deptId: [{ required: true, message: `项目部${baseMsg}`, trigger: 'onBlur' }],
+  ee_salesContractNo: [{ required: true, message: `销售合同编号${baseMsg}`, trigger: 'onBlur' }],
+
+  // 全外包生产人员入职申请表
+  ff_deptId: [{ required: true, message: `项目部${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

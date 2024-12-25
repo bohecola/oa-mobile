@@ -109,6 +109,12 @@ import RSTXSP from './personnel/RSTXSP/workflow/apply.vue'
 import RSFXSP from './personnel/RSFXSP/workflow/apply.vue'
 // 为资质人员办理社保增加或减少审批流程
 import RSWZZRYBLSBZJHJSSPLC from './personnel/RSWZZRYBLSBZJHJSSPLC/workflow/apply.vue'
+// 项目部其他费用申请
+import RSXMBQTFYSQ from './personnel/RSXMBQTFYSQ/workflow/apply.vue'
+// 全外包生产人员入职申请表
+import RSQWBSCRYRZSQB from './personnel/RSQWBSCRYRZSQB/workflow/apply.vue'
+// 生产人员招聘工作奖励费用核算审批表
+import RSSCRYZPGZJLFYHSSPB from './personnel/RSSCRYZPGZJLFYHSSPB/workflow/apply.vue'
 
 export default {
   CWQQZH,
@@ -163,4 +169,7 @@ export default {
   RSTXSP,
   RSFXSP,
   RSWZZRYBLSBZJHJSSPLC,
+  RSXMBQTFYSQ,
+  RSQWBSCRYRZSQB,
+  RSSCRYZPGZJLFYHSSPB,
 }

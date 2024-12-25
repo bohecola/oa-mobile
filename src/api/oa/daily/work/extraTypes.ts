@@ -29,7 +29,10 @@ export interface ExtraForm
   RSWZZRYBLSBZJHJSSPLC,
   RSGSRYZGZSZCSQ,
   RSYGKQZSBTSQ,
-  RSYGKQZCJZSZSJLSQ {}
+  RSYGKQZCJZSZSJLSQ,
+  RSXMBQTFYSQ,
+  RSQWBSCRYRZSQB,
+  RSSCRYZPGZJLFYHSSPB {}
 
 // 商务
 // 项目考核奖励确认单
@@ -255,3 +258,16 @@ export interface RSFXSP {
   dd_month?: string
   dd_totalAmount?: number
 }
+
+// 项目部其他费用申请
+export interface RSXMBQTFYSQ {
+  ee_deptId?: string
+  ee_salesContractNo?: string
+}
+// 全外包生产人员入职申请表
+export interface RSQWBSCRYRZSQB {
+  ff_deptId?: string
+}
+
+// 生产人员招聘工作奖励费用核算审批表
+export interface RSSCRYZPGZJLFYHSSPB {}
