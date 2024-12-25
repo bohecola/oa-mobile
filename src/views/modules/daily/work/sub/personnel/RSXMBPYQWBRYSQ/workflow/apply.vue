@@ -3,7 +3,13 @@
   <template v-else>
     <!-- 项目部聘用外包人员申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <!-- <upsert /> -->
+      <!-- <upsert :include-fields="['k_deptId', 'reason', 'ossIdList']" /> -->
+    </div>
+
+    <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
+      <detail :include-fields="['k_deptId']" />
+      <detail :include-fields="['k_userType']" />
+      <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 
     <!-- 其他审批通用节点 -->

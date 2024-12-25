@@ -157,7 +157,11 @@ async function handleApproval({ open }: ApprovalPayload) {
 }
 
 const isEditNode = computed(() => {
-  if (taskDefinitionKey.value === 'Activity_1p4ss2n' && user.info.userId === form.value.customizeApprover) {
+  const key = taskDefinitionKey.value as string
+  if (key === 'Activity_1p4ss2n' && user.info.userId === form.value.customizeApprover) {
+    return 'true'
+  }
+  else if (['Activity_171tryh'].includes(key)) {
     return 'true'
   }
   else {

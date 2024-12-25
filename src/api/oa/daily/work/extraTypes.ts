@@ -118,6 +118,7 @@ export interface RSLNHNYZRYDFGZJWXYJFYSP {
 export interface RSXMBPYQWBRYSQ {
   k_deptId?: string
   k_belongDeptIds?: string
+  k_userType?: string
 }
 
 // 开具个人相关证明申请

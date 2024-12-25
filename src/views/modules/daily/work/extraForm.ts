@@ -62,6 +62,7 @@ const extraInitFormData: DailyWorkForm = {
 
   // 项目部聘用外包人员申请
   k_deptId: undefined,
+  k_userType: undefined,
 
   // 开具个人相关证明申请
   l_userId: undefined,
@@ -211,6 +212,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 项目部聘用外包人员申请
   k_deptId: [{ required: true, message: `申请部门${baseMsg}`, trigger: 'onBlur' }],
+  k_userType: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
 
   // 开具个人相关证明申请
   l_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],

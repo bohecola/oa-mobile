@@ -5,6 +5,12 @@
     </template>
   </van-field>
 
+  <van-field v-show-field="['k_userType', includeFields]" name="k_userType" label="人员类别" input-align="right">
+    <template #input>
+      {{ form.k_userType }}
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -18,7 +24,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['k_deptId', 'reason', 'ossIdList'],
+    includeFields: () => ['k_deptId', 'k_userType', 'reason', 'ossIdList'],
   },
 )
 
