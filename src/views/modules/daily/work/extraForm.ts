@@ -324,7 +324,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   ff_deptId: [{ required: true, message: `项目部${baseMsg}`, trigger: 'onBlur' }],
 
   // 招聘需求变更申请
-  gg_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
+  gg_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

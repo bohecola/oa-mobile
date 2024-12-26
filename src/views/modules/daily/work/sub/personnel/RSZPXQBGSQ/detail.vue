@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['gg_deptId', includeFields]" label="部门" name="gg_deptId" input-align="right">
+  <van-field v-show-field="['gg_deptId', includeFields]" label="部门/项目部" name="gg_deptId" input-align="right">
     <template #input>
       <DeptSelect v-model="form.gg_deptId" readonly />
     </template>
