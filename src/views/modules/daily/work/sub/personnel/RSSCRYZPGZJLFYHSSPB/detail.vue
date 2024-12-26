@@ -1,4 +1,10 @@
 <template>
+  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="right">
+    <template #input>
+      <UserSelect v-model="form.customizeApprover" multiple readonly />
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -12,7 +18,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['reason', 'ossIdList'],
+    includeFields: () => ['customizeApprover', 'reason', 'ossIdList'],
   },
 )
 
