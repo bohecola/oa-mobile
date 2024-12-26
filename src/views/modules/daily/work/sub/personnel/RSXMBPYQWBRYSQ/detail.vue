@@ -11,6 +11,12 @@
     </template>
   </van-field>
 
+  <van-field v-show-field="['k_isUniform', includeFields]" name="k_isUniform" label="是否配备公司工作服" input-align="right">
+    <template #input>
+      <YesNoSwitch v-model="form.k_isUniform" readonly />
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -24,7 +30,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['k_deptId', 'k_userType', 'reason', 'ossIdList'],
+    includeFields: () => ['k_deptId', 'k_userType', 'k_isUniform', 'reason', 'ossIdList'],
   },
 )
 

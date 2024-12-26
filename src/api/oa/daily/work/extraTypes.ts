@@ -123,6 +123,7 @@ export interface RSXMBPYQWBRYSQ {
   k_deptId?: string
   k_belongDeptIds?: string
   k_userType?: string
+  k_isUniform?: string
 }
 
 // 开具个人相关证明申请
