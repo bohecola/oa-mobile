@@ -115,6 +115,8 @@ import RSXMBQTFYSQ from './personnel/RSXMBQTFYSQ/workflow/apply.vue'
 import RSQWBSCRYRZSQB from './personnel/RSQWBSCRYRZSQB/workflow/apply.vue'
 // 生产人员招聘工作奖励费用核算审批表
 import RSSCRYZPGZJLFYHSSPB from './personnel/RSSCRYZPGZJLFYHSSPB/workflow/apply.vue'
+// 招聘需求变更申请
+import RSZPXQBGSQ from './personnel/RSZPXQBGSQ/workflow/apply.vue'
 
 export default {
   CWQQZH,
@@ -172,4 +174,5 @@ export default {
   RSXMBQTFYSQ,
   RSQWBSCRYRZSQB,
   RSSCRYZPGZJLFYHSSPB,
+  RSZPXQBGSQ,
 }

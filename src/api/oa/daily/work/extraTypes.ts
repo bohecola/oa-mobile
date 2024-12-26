@@ -32,7 +32,8 @@ export interface ExtraForm
   RSYGKQZCJZSZSJLSQ,
   RSXMBQTFYSQ,
   RSQWBSCRYRZSQB,
-  RSSCRYZPGZJLFYHSSPB {}
+  RSSCRYZPGZJLFYHSSPB,
+  RSZPXQBGSQ {}
 
 // 商务
 // 项目考核奖励确认单
@@ -271,3 +272,8 @@ export interface RSQWBSCRYRZSQB {
 
 // 生产人员招聘工作奖励费用核算审批表
 export interface RSSCRYZPGZJLFYHSSPB {}
+
+// 招聘需求变更申请
+export interface RSZPXQBGSQ {
+  gg_deptId?: string
+}

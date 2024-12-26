@@ -157,6 +157,16 @@ const extraInitFormData: DailyWorkForm = {
   // 发薪审批
   dd_totalAmount: undefined,
   dd_month: undefined,
+
+  // 项目部其他费用申请
+  ee_deptId: undefined,
+  ee_salesContractNo: undefined,
+
+  // 全外包生产人员入职申请表
+  ff_deptId: undefined,
+
+  // 招聘需求变更申请
+  gg_deptId: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -312,6 +322,9 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 全外包生产人员入职申请表
   ff_deptId: [{ required: true, message: `项目部${baseMsg}`, trigger: 'onBlur' }],
+
+  // 招聘需求变更申请
+  gg_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }
