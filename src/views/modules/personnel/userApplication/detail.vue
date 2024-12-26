@@ -1,7 +1,12 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="10em">
     <van-cell-group inset class="!my-3">
-      <van-field v-model="form.name" name="name" label="姓名" input-align="right" />
+      <van-field v-show-field="['preEmploymentId', includeFields]" name="name" label="姓名" input-align="right">
+        <template #input>
+          <span v-if="form.name">{{ form.name }}</span>
+          <PreUserSelect v-else v-model="form.preEmploymentId" readonly />
+        </template>
+      </van-field>
 
       <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
         <template #input>
@@ -79,7 +84,7 @@
         input-align="right"
       >
         <template #input>
-          <DictSelect v-model="form.isProbation" dict-type="sys_yes_no" readonly />
+          <YesNoSwitch v-model="form.isProbation" readonly />
         </template>
       </van-field>
 
@@ -93,6 +98,7 @@
       />
 
       <van-field
+        v-if="form.isProbation === 'Y'"
         v-model="form.probationWagesRate"
         v-show-field="['probationWagesRate', includeFields]"
         name="probationWagesRate"
@@ -142,6 +148,7 @@
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
+import PreUserSelect from './components/PreUserSelect.vue'
 import { useForm } from './form'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userApplication/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -169,7 +176,6 @@ const vShowField = createFieldVisibilityDirective<UserEmploymentForm>()
 // 如果当前节点包含在这个数组中，不显示工资、基本工资、岗位工资、绩效工资
 const taskDefinitionKeyList = [
   'Activity_1jpbu3r',
-  // 'Activity_0yzeioh',
   'Activity_0392raa',
   'Activity_0y0yd2k',
   'Activity_09rizb5',
