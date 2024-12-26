@@ -277,4 +277,6 @@ export interface RSSCRYZPGZJLFYHSSPB {}
 // 招聘需求变更申请
 export interface RSZPXQBGSQ {
   gg_deptId?: string
+  gg_changeType?: string
+  gg_changeDetails?: string
 }

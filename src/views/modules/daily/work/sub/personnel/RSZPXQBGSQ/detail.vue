@@ -5,6 +5,22 @@
     </template>
   </van-field>
 
+  <el-row :gutter="20">
+    <el-col v-show-field="['gg_changeType', includeFields]" :span="24">
+      <el-form-item prop="changeType" label="变更类型">
+        <dict-select v-model="form.gg_changeType" dict-type="oa_daily_work_rszpxqbgsq_change_type" readonly />
+      </el-form-item>
+    </el-col>
+  </el-row>
+
+  <el-row :gutter="20">
+    <el-col v-show-field="['gg_changeDetails', includeFields]" :span="24">
+      <el-form-item prop="gg_changeDetails" label="变更明细">
+        <dict-select v-model="form.gg_changeDetails" dict-type="oa_daily_work_rszpxqbgsq_change_details" multiple readonly />
+      </el-form-item>
+    </el-col>
+  </el-row>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -18,7 +34,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['gg_deptId', 'reason', 'ossIdList'],
+    includeFields: () => ['gg_deptId', 'gg_changeType', 'gg_changeDetails', 'reason', 'ossIdList'],
   },
 )
 

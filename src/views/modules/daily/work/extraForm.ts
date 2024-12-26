@@ -327,6 +327,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 招聘需求变更申请
   gg_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
+  gg_changeType: [{ required: true, message: `变更类型${baseMsg}`, trigger: 'onBlur' }],
+  gg_changeDetails: [{ required: true, message: `变更明细${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }
