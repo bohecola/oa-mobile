@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="auto">
     <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="名称" input-align="right" />
     <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="合同编号" input-align="right" />
 

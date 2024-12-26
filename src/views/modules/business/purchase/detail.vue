@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="9em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="auto">
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
         <template #input>
