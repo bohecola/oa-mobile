@@ -2,7 +2,7 @@
   <WorkflowPage
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
-    :group="false"
+
     @approval="handleApproval"
   >
     <detail v-if="isView" ref="Detail" :include-fields="includeFieldsDetail" :show-loading="false" />
@@ -15,20 +15,20 @@
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0qv4t1b'">
         <detail ref="Detail3" :include-fields="includeFields5" :show-loading="false" />
-        <upsert ref="Upsert3" :include-fields="includeFields4" :show-loading="false" />
+        <detail ref="Upsert3" :include-fields="includeFields4" :show-loading="false" />
       </div>
 
       <!-- 人力扣款节点 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0jjf8i3'">
         <detail ref="HRDeductionDetail1" :include-fields="HRDeductionDetail1Fields1" :show-loading="false" />
-        <upsert ref="HRDeductionUpsert" :include-fields="['userType']" :show-loading="false" />
+        <detail ref="HRDeductionUpsert" :include-fields="['userType']" :show-loading="false" />
         <detail ref="HRDeductionDetail2" :include-fields="HRDeductionDetail1Fields2" :show-loading="false" />
       </div>
 
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'">
         <detail ref="Detail2" :include-fields="includeFields8" :show-loading="false" />
-        <upsert ref="Upsert2" :include-fields="includeFields2" :show-loading="false" />
+        <detail ref="Upsert2" :include-fields="includeFields2" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>

@@ -27,36 +27,37 @@
         id="TabsContainer"
         class="flex flex-col gap-2 overflow-y-auto h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height)-env(safe-area-inset-top))]"
       >
-        <!-- -var(--van-button-small-height)-16px-2px -->
         <van-tab v-loading="loading" title="审批表单" name="form">
-          <van-notice-bar
-            v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
-            :scrollable="false"
-            text="当前节点存在需要填写的字段，请暂时在PC端审批"
-          />
+          <div id="AFC">
+            <van-notice-bar
+              v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
+              :scrollable="false"
+              text="当前节点存在需要填写的字段，请暂时在PC端审批"
+            />
 
-          <van-cell-group inset class="!mt-3">
-            <van-field label="发起人" input-align="right">
-              <template #input>
-                <span>{{ entityVariables?.initiator?.nickName }}</span>
-              </template>
-            </van-field>
-            <van-field label="部门" input-align="right">
-              <template #input>
-                <span>{{ entityVariables?.initiator?.deptName }}</span>
-              </template>
-            </van-field>
-            <van-field label="发起时间" input-align="right">
-              <template #input>
-                <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
-              </template>
-            </van-field>
-          </van-cell-group>
+            <van-cell-group inset class="!mt-3">
+              <van-field label="发起人" input-align="right">
+                <template #input>
+                  <span>{{ entityVariables?.initiator?.nickName }}</span>
+                </template>
+              </van-field>
+              <van-field label="部门" input-align="right">
+                <template #input>
+                  <span>{{ entityVariables?.initiator?.deptName }}</span>
+                </template>
+              </van-field>
+              <van-field label="发起时间" input-align="right">
+                <template #input>
+                  <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
+                </template>
+              </van-field>
+            </van-cell-group>
 
-          <van-cell-group v-if="group" inset class="!my-3">
-            <slot />
-          </van-cell-group>
-          <slot v-else />
+            <van-cell-group v-if="group" inset class="!my-3">
+              <slot />
+            </van-cell-group>
+            <slot v-else />
+          </div>
           <bottom-line />
         </van-tab>
 
