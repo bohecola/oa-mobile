@@ -6,6 +6,11 @@
           <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
         </template>
       </van-field>
+      <van-field v-show-field="['deptId', includeFields]" label="预算部门" name="deptId" input-align="right">
+        <template #input>
+          <DeptSelect v-model="form.deptId" readonly />
+        </template>
+      </van-field>
       <van-field
         v-show-field="['psId', includeFields]"
         label="预算"
@@ -92,11 +97,6 @@
       <van-field v-show-field="['description', includeFields]" label="采购说明" name="description" input-align="right">
         <template #input>
           <TextareaView :value="form.description" />
-        </template>
-      </van-field>
-      <van-field v-show-field="['file', includeFields]" label="申购内容附件" name="file" input-align="right">
-        <template #input>
-          <UploadFile v-model="form.file" readonly :card-size="60" />
         </template>
       </van-field>
       <van-field v-show-field="['remark', includeFields]" label="备注" name="remark" input-align="right">

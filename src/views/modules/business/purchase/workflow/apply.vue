@@ -99,7 +99,6 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   amount: true,
   realAmount: true,
   description: true,
-  file: true,
   remark: true,
   itemList: true,
   ossIdList: true,
