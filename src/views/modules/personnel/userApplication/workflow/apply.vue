@@ -40,6 +40,8 @@ const loading = ref(false)
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 
+provide('taskDefinitionKey', taskDefinitionKey)
+
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
 const Upsert2 = ref<InstanceType<typeof detail> | null>()

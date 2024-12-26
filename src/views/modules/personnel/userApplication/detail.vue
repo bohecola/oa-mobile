@@ -29,37 +29,37 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.education" v-show-field="['education', includeFields]" name="education" label="学历" input-align="right">
-        <template #input>
-          <DictSelect v-model="form.education" dict-type="oa_education_type" readonly />
-        </template>
-      </van-field>
-
       <van-field v-model="form.hopeDate" v-show-field="['hopeDate', includeFields]" name="hopeDate" label="预计到岗日期" input-align="right">
         <template #input>
           {{ parseTime(form.hopeDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-model="form.wages" v-show-field="['wages', includeFields]" name="wages" label="工资" input-align="right">
+      <van-field v-model="form.education" v-show-field="['education', includeFields]" name="education" label="学历" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.education" dict-type="oa_education_type" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="!taskDefinitionKeyList.includes(taskDefinitionKey)" v-model="form.wages" v-show-field="['wages', includeFields]" name="wages" label="工资" input-align="right">
         <template #input>
           <span class="mr-3">{{ formatCurrency(form.wages) }} </span>
         </template>
       </van-field>
 
-      <van-field v-model="form.baseWages" v-show-field="['baseWages', includeFields]" name="baseWages" label="基本工资" input-align="right">
+      <van-field v-if="!taskDefinitionKeyList.includes(taskDefinitionKey)" v-model="form.baseWages" v-show-field="['baseWages', includeFields]" name="baseWages" label="基本工资" input-align="right">
         <template #input>
           <span class="mr-3">{{ formatCurrency(form.baseWages) }} </span>
         </template>
       </van-field>
 
-      <van-field v-model="form.postWages" v-show-field="['postWages', includeFields]" name="postWages" label="岗位工资" input-align="right">
+      <van-field v-if="!taskDefinitionKeyList.includes(taskDefinitionKey)" v-model="form.postWages" v-show-field="['postWages', includeFields]" name="postWages" label="岗位工资" input-align="right">
         <template #input>
           <span class="mr-3">{{ formatCurrency(form.postWages) }} </span>
         </template>
       </van-field>
 
-      <van-field v-model="form.performanceWages" v-show-field="['performanceWages', includeFields]" name="performanceWages" label="绩效工资" input-align="right">
+      <van-field v-if="!taskDefinitionKeyList.includes(taskDefinitionKey)" v-model="form.performanceWages" v-show-field="['performanceWages', includeFields]" name="performanceWages" label="绩效工资" input-align="right">
         <template #input>
           <span class="mr-3">{{ formatCurrency(form.performanceWages) }} </span>
         </template>
@@ -165,6 +165,18 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserEmploymentForm>()
+
+// 如果当前节点包含在这个数组中，不显示工资、基本工资、岗位工资、绩效工资
+const taskDefinitionKeyList = [
+  'Activity_1jpbu3r',
+  // 'Activity_0yzeioh',
+  'Activity_0392raa',
+  'Activity_0y0yd2k',
+  'Activity_09rizb5',
+  'Activity_1j1bqbt',
+]
+
+const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey')
 
 defineExpose({
   reset,

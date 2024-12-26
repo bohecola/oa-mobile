@@ -14,8 +14,10 @@
       </div>
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0qv4t1b'">
-        <detail ref="Detail3" :include-fields="includeFields5" :show-loading="false" />
-        <detail ref="Upsert3" :include-fields="includeFields4" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="includeFields4" :show-loading="false" />
+        <detail ref="Upsert3" :include-fields="['departDate', 'handoverContent']" :show-loading="false" />
+        <detail ref="Detail4" :include-fields="['reason']" :show-loading="false" />
+        <detail ref="Upsert4" :include-fields="['ossIdList']" :show-loading="false" />
       </div>
 
       <!-- 人力扣款节点 -->
@@ -28,7 +30,7 @@
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'">
         <detail ref="Detail2" :include-fields="includeFields8" :show-loading="false" />
-        <detail ref="Upsert2" :include-fields="includeFields2" :show-loading="false" />
+        <detail ref="Upsert2" :include-fields="['documentContent', 'ossIdList']" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>
@@ -70,6 +72,8 @@ const DetailOther = ref<InstanceType<typeof detail> | null>()
 // 工作交接
 const Upsert3 = ref<InstanceType<typeof detail> | null>()
 const Detail3 = ref<InstanceType<typeof detail> | null>()
+const Upsert4 = ref<InstanceType<typeof detail> | null>()
+const Detail4 = ref<InstanceType<typeof detail> | null>()
 
 // 人力扣款
 const HRDeductionUpsert = ref<InstanceType<typeof detail> | null>()
@@ -112,17 +116,8 @@ const includeFieldsDetail = ref(
   }),
 )
 
-//  工作交接节点编辑
-const includeFields4 = ref(
-  filterTruthyKeys<UserDepartForm>({
-    handoverContent: true,
-    ossIdList: true,
-    departDate: true,
-  }),
-)
-
 // 工作交接详情
-const includeFields5 = ref(
+const includeFields4 = ref(
   filterTruthyKeys<UserDepartForm>({
     userId: true,
     deptId: true,
@@ -131,11 +126,7 @@ const includeFields5 = ref(
     entryCompanyDate: true,
     specialCommercialInsurance: true,
     isLoginCompanyEmail: true,
-    departDate: false,
     handoverPerson: true,
-    reason: true,
-    handoverContent: false,
-    ossIdList: false,
   }),
 )
 
@@ -162,13 +153,6 @@ const HRDeductionDetail1Fields2 = ref(
   }),
 )
 
-//  归档的节点编辑
-const includeFields2 = ref(
-  filterTruthyKeys<UserDepartForm>({
-    documentContent: true,
-    ossIdList: true,
-  }),
-)
 // 归档的节点详情
 const includeFields8 = ref(
   filterTruthyKeys<UserDepartForm>({
@@ -336,11 +320,14 @@ onMounted(async () => {
             // 工作交接节点
             Detail3.value?.workflowView(entity)
             Upsert3.value?.workflowView(entity)
-            DetailOther.value?.workflowView(entity)
+            Detail4.value?.workflowView(entity)
+            Upsert4.value?.workflowView(entity)
             // 人力扣款
             HRDeductionDetail1.value?.workflowView(entity)
             HRDeductionUpsert.value?.workflowView(entity)
             HRDeductionDetail2.value?.workflowView(entity)
+            // 其他节点
+            DetailOther.value?.workflowView(entity)
             break
           case 'view':
             Detail.value?.workflowView(entity)
