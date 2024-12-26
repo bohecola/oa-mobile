@@ -109,11 +109,18 @@
         <TextareaView :value="form.description" />
       </template>
     </van-field>
+
+    <!-- 附件列表 -->
+    <Teleport defer to="#AFC">
+      <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
+        <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
+      </TableCard>
+    </Teleport>
   </van-form>
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import { useForm } from './form'
