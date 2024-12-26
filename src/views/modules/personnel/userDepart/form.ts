@@ -1,6 +1,6 @@
 import type { FormInstance } from 'vant'
-import { getUserDepart } from '@/api/oa/personnel/userDepart'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
+import { getUserDepart } from '@/api/oa/personnel/userDepart'
 // import useUserStore from '@/store/user'
 
 export interface Options<T = any> {
@@ -24,6 +24,9 @@ export function useForm() {
   const initFormData: UserDepartForm = {
     id: undefined,
     userId: undefined,
+    deptId: undefined,
+    postId: undefined,
+    userType: undefined,
     entryCompanyDate: undefined,
     specialCommercialInsurance: undefined,
     isLoginCompanyEmail: 'N',
@@ -40,10 +43,13 @@ export function useForm() {
     form: { ...initFormData },
     rules: {
       userId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
-      departDate: [{ required: true, message: '实际离职日期不能为空', trigger: 'onChange' }],
-      isLoginCompanyEmail: [{ required: true, message: '是否登录过项目部公司邮箱不能为空', trigger: 'onChange' }],
+      deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
+      postId: [{ required: true, message: '岗位不能为空', trigger: 'onBlur' }],
+      userType: [{ required: false, message: '人员类别不能为空', trigger: 'onChange' }],
+      isLoginCompanyEmail: [{ required: true, message: '是否登录过项目部公司邮箱不能为空', trigger: 'onBlur' }],
+      departDate: [{ required: true, message: '实际离职日期不能为空', trigger: 'onBlur' }],
       reason: [{ required: true, message: '离职原因不能为空', trigger: 'onBlur' }],
-      handoverPerson: [{ required: true, message: '交接人不能为空', trigger: 'onChange' }],
+      handoverPerson: [{ required: true, message: '交接人不能为空', trigger: 'onBlur' }],
       handoverContent: [{ required: true, message: '交接内容不能为空', trigger: 'onBlur' }],
       documentContent: [{ required: true, message: '归档内容不能为空', trigger: 'onBlur' }],
     },

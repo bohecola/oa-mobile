@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="auto">
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['userId', includeFields]" name="userId" label="员工" input-align="right">
         <template #input>
@@ -7,27 +7,37 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
+      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门" input-align="right">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
+      <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" input-align="right">
+        <template #input>
+          <PostSelect v-model="form.postId" :dept-id="form.deptId" readonly />
+        </template>
+      </van-field>
 
-      <van-field v-model="form.entryCompanyDate" v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="入职时间">
+      <van-field v-show-field="['userType', includeFields]" name="userType" label="人员类别" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.userType" dict-type="oa_user_type" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-model="form.entryCompanyDate" v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="入职时间" input-align="right">
         <template #input>
           {{ parseTime(form.entryCompanyDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="购买特殊商业保险">
+      <van-field v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="购买特殊商业保险" input-align="right">
         <template #input>
           <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
         </template>
       </van-field>
 
-      <van-field v-show-field="['isLoginCompanyEmail', includeFields]" name="isLoginCompanyEmail" label="是否登录过项目部公司邮箱">
+      <van-field v-show-field="['isLoginCompanyEmail', includeFields]" name="isLoginCompanyEmail" label="是否登录过项目部公司邮箱" input-align="right">
         <template #input>
           <YesNoSwitch v-model="form.isLoginCompanyEmail" readonly />
         </template>
@@ -39,7 +49,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.departDate" v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期">
+      <van-field v-model="form.departDate" v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期" input-align="right">
         <template #input>
           {{ parseTime(form.departDate, '{y}-{m}-{d}') }}
         </template>
@@ -72,6 +82,7 @@
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
+import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
