@@ -92,16 +92,30 @@ export function useForm() {
     reset()
     const res = await getUserTrain(id)
     Object.assign(form.value, res.data)
-    const list = res.data.ossMessageAllVoList
-    form.value.ossMessageAllBoList = list.map((e) => {
-      return {
-        type: e.type,
-        files: list
-          .filter(file => file.type === e.type)
-          .map(file => file.files)
-          .join(','),
-      }
-    })
+    // 如果申请类型是培训，附件列表的子表展示五条类型
+    if (form.value.applicationType === '0') {
+      form.value.ossMessageAllBoList = oa_train_oss_type.value.map((e) => {
+        return {
+          type: e.value,
+          files: res.data.ossMessageAllVoList
+            .filter(file => file.type === e.value)
+            .map(file => file.files)
+            .join(','),
+        }
+      })
+    }
+    else {
+      // 如果申请类型是考试和报名，附件列表的子表展示两条条类型
+      form.value.ossMessageAllBoList = [initOssMessageList[0], initOssMessageList[initOssMessageList.length - 1]].map((e) => {
+        return {
+          type: e.type,
+          files: res.data.ossMessageAllVoList
+            .filter(file => file.type === e.type)
+            .map(file => file.files)
+            .join(','),
+        }
+      })
+    }
     isLoading.value = false
   }
 

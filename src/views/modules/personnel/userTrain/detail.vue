@@ -28,7 +28,7 @@
 
         <van-field v-show-field="['trainType', includeFields]" name="trainType" label="外部培训类型" input-align="right">
           <template #input>
-            <DictSelect v-model="form.trainType" dict-type="oa_training_type" readonly />
+            <DictSelect v-model="form.trainType" dict-type="oa_train_type" readonly />
           </template>
         </van-field>
 
@@ -89,12 +89,14 @@
             <DictSelect v-model="form.trainType" dict-type="oa_train_enroll_type" readonly />
           </template>
         </van-field>
+
         <van-field v-show-field="['content', includeFields]" name="content" label="名称" input-align="right">
           <template #input>
             <DictSelect v-model="form.content" dict-type="oa_train_content_type" readonly />
           </template>
         </van-field>
-        <van-field v-show-field="['attendNumber', includeFields]" name="attendNumber" label="参加人数" input-align="right" />
+
+        <van-field v-model="form.attendNumber" v-show-field="['attendNumber', includeFields]" name="attendNumber" label="参加人数" input-align="right" />
 
         <van-field v-show-field="['isProduceCost', includeFields]" name="isProduceCost" label="是否产生费用" input-align="right">
           <template #input>
@@ -109,11 +111,6 @@
             <DictSelect v-model="form.trainType" dict-type="oa_train_enroll_type" readonly />
           </template>
         </van-field>
-        <van-field v-show-field="['isProduceCost', includeFields]" name="isProduceCost" label="是否产生费用" input-align="right">
-          <template #input>
-            <YesNoSwitch v-model="form.isProduceCost" readonly />
-          </template>
-        </van-field>
 
         <van-field v-show-field="['content', includeFields]" name="content" label="名称" input-align="right">
           <template #input>
@@ -121,7 +118,7 @@
           </template>
         </van-field>
 
-        <van-field v-show-field="['attendNumber', includeFields]" name="attendNumber" label="参加人数" input-align="right" />
+        <van-field v-model="form.attendNumber" v-show-field="['attendNumber', includeFields]" name="attendNumber" label="参加人数" input-align="right" />
       </div>
 
       <van-field v-show-field="['remark', includeFields]" name="remark" label="备注" input-align="right">
