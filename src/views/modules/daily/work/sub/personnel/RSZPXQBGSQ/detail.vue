@@ -5,21 +5,17 @@
     </template>
   </van-field>
 
-  <el-row :gutter="20">
-    <el-col v-show-field="['gg_changeType', includeFields]" :span="24">
-      <el-form-item prop="changeType" label="变更类型">
-        <dict-select v-model="form.gg_changeType" dict-type="oa_daily_work_rszpxqbgsq_change_type" readonly />
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <van-field v-show-field="['gg_changeType', includeFields]" name="gg_changeType" label="变更类型" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.gg_changeType" dict-type="oa_daily_work_rszpxqbgsq_change_type" readonly />
+    </template>
+  </van-field>
 
-  <el-row :gutter="20">
-    <el-col v-show-field="['gg_changeDetails', includeFields]" :span="24">
-      <el-form-item prop="gg_changeDetails" label="变更明细">
-        <dict-select v-model="form.gg_changeDetails" dict-type="oa_daily_work_rszpxqbgsq_change_details" multiple readonly />
-      </el-form-item>
-    </el-col>
-  </el-row>
+  <van-field v-show-field="['gg_changeDetails', includeFields]" name="gg_changeDetails" label="变更明细" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.gg_changeDetails" dict-type="oa_daily_work_rszpxqbgsq_change_details" multiple readonly />
+    </template>
+  </van-field>
 
   <BaseDetail :include-fields="includeFields" />
 </template>
