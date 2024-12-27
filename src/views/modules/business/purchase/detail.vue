@@ -29,7 +29,7 @@
           />
         </template>
       </van-field>
-      <van-field v-show-field="['contractId', includeFields]" label="收入合同" name="contractId" input-align="right">
+      <van-field v-show-field="['contractId', includeFields]" label="销售合同" name="contractId" input-align="right">
         <template #input>
           <ContractSelect v-model="form.contractId" readonly />
         </template>

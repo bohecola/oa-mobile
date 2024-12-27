@@ -35,7 +35,7 @@ export interface ContractVO {
   partyD: string
 
   /**
-   * 合同类型（收入、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
    */
   type: string
 
@@ -167,7 +167,7 @@ export interface ContractForm extends BaseEntity {
   partyD?: string
 
   /**
-   * 合同类型（收入、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
    */
   type?: 'in' | 'out' | 'agreement'
 
@@ -270,7 +270,7 @@ export interface ContractQuery extends PageQuery {
   name?: string
 
   /**
-   * 合同类型（收入、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
    */
   type?: string
 

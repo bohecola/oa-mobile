@@ -74,7 +74,7 @@ export function useForm() {
       subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
       psId: [{ required: true, message: '预算不能为空', trigger: 'onBlur' }],
       // projectId: [{ required: true, message: '项目id不能为空', trigger: 'onBlur' }],
-      contractId: [{ required: false, message: '关联收入合同不能为空', trigger: 'onBlur' }],
+      contractId: [{ required: false, message: '关联销售合同不能为空', trigger: 'onBlur' }],
       contractExecute: [{ required: false, message: '合同执行情况不能为空', trigger: 'onBlur' }],
       type: [{ required: true, message: '采购类型不能为空', trigger: 'onChange' }],
       businessCategory: [{ required: true, message: '业务类别不能为空', trigger: 'onBlur' }],

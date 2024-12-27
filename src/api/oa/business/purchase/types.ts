@@ -45,7 +45,7 @@ export interface PurchaseVO {
   isDeposit: string
 
   /**
-   * 关联收入合同
+   * 关联销售合同
    */
   contractId: string | number
 
@@ -162,7 +162,7 @@ export interface PurchaseForm extends BaseEntity {
   isDeposit?: string
 
   /**
-   * 关联收入合同
+   * 关联销售合同
    */
   contractId?: string | number
 
@@ -270,7 +270,7 @@ export interface PurchaseQuery extends PageQuery {
   isDeposit?: string
 
   /**
-   * 关联收入合同
+   * 关联销售合同
    */
   contractId?: string | number
 
