@@ -18,7 +18,7 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['userType', includeFields]" name="userType" label="人员类别" input-align="right">
+    <van-field v-if="userTypeVisible" v-show-field="['userType', includeFields]" name="userType" label="人员类别" input-align="right">
       <template #input>
         <DictSelect v-model="form.userType" dict-type="oa_user_type" readonly />
       </template>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
@@ -105,6 +105,19 @@ withDefaults(
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserDepartForm>()
+
+const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey')
+const userTypeVisible = computed(() => {
+  if (taskDefinitionKey.value === 'Activity_0jjf8i3') {
+    return true
+  }
+  else if (!isNil(form.value.userType) && taskDefinitionKey.value !== 'Activity_0jjf8i3') {
+    return true
+  }
+  else {
+    return false
+  }
+})
 
 defineExpose({
   view,
