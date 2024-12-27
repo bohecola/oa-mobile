@@ -38,7 +38,7 @@
 
 <script setup lang='ts'>
 import CryptoJS from 'crypto-js'
-import { isDocType, isTxtType, isVideoType } from './helper'
+import { isDocType, isOtherType, isTxtType, isVideoType } from './helper'
 import { encryptBase64 } from '@/utils/security'
 import { useGlobSettings } from '@/hooks'
 
@@ -87,7 +87,7 @@ function open(options: { file: any, ext: string }) {
   }
 
   // 文档预览
-  if (isDocType(ext) || isTxtType(ext)) {
+  if (isDocType(ext) || isTxtType(ext) || isOtherType(ext)) {
     // if (doc.ossId === ossId) {
     //   doc.visible = true
     //   return true
@@ -97,9 +97,7 @@ function open(options: { file: any, ext: string }) {
     doc.loading = true
     doc.name = name
     doc.ossId = ossId
-    doc.url = isTxtType(ext)
-      ? `${url}?t=${Date.now()}`
-      : `${previewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}&t=${Date.now()}`
+    doc.url = `${previewUrl}?url=${encodeURIComponent(encryptBase64(CryptoJS.enc.Utf8.parse(url)))}&t=${Date.now()}`
 
     nextTick(() => {
       docIframe.value.onload = () => {
