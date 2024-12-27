@@ -130,6 +130,9 @@ watch(
   (val) => {
     getData(val)
   },
+  {
+    immediate: true,
+  },
 )
 
 // onMounted(() => {

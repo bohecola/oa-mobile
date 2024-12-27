@@ -50,7 +50,12 @@ const data = ref<DeptVO[]>([])
 async function getData() {
   isLoading.value = true
   const res = await getCompany('0')
-  data.value = res.data
+  if (props.readonly) {
+    data.value = res.data
+  }
+  else {
+    data.value = res.data.filter(e => e.status === '0')
+  }
   isLoading.value = false
 }
 
