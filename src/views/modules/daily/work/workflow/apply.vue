@@ -15,6 +15,7 @@
               v-model:no="form.no"
               v-model:wf-remark="form.wfRemark"
               @before-finish="onDailyTypeBeforeFinish"
+              @update:no="onNoChange"
             />
           </template>
         </van-field>
@@ -117,6 +118,12 @@ async function handleDailyTypeClick() {
 function onDailyTypeBeforeFinish() {
   reset()
   trackedFields.value = getBaseFields()
+}
+
+// 事务编码变更
+function onNoChange(value?: string) {
+  // 部门人事主管权限更换审批 || 项目部其他费用申请 => 资料类型默认值 0
+  form.value.fileType = ['RSXMBRSZGQXGHSP', 'RSXMBQTFYSQ'].includes(value) ? '0' : undefined
 }
 
 // 更新规则
