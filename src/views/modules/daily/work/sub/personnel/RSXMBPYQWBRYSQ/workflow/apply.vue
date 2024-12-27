@@ -8,7 +8,7 @@
 
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
       <detail :include-fields="['k_deptId']" />
-      <upsert :include-fields="['k_userType']" />
+      <detail :include-fields="['k_userType']" />
       <detail :include-fields="['k_isUniform', 'reason', 'ossIdList']" />
     </div>
 
