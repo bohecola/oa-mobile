@@ -177,7 +177,7 @@ const isEditNode = computed(() => {
 })
 
 // 自定义审核人展示在PC端编辑提示
-watch(isEditNode, () => {
+watch([isEditNode, taskDefinitionKey], () => {
   proxy?.$router.replace({
     query: {
       ...proxy?.$route.query,
