@@ -79,7 +79,7 @@ const queryParams: DeptQuery = reactive({
   pageSize: 10,
   deptName: undefined,
   deptCategory: undefined,
-  status: '0', // 默认显示状态是正常的部门
+  status: '0',
   type: undefined,
 })
 
@@ -117,6 +117,10 @@ const filterNodeMethod = (value: string, data: _DeptVO) => data.label.includes(v
 // 获取部门数据
 async function getData() {
   isLoading.value = true
+
+  if (props.readonly) {
+    queryParams.status = undefined // 回显时示全部状态的部门
+  }
 
   if (!isNil(props.params)) {
     Object.assign(queryParams, props.params)
