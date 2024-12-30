@@ -16,7 +16,7 @@
   <van-field v-show-field="['o_amount', includeFields]" name="o_amount" label="总金额（元）" input-align="right">
     <template #input>
       {{ form.o_amount }}
-      <span v-if="!isNil(form.o_amount)" class="ml-3 text-red">{{ toCnMoney(form.o_amount) }}</span>
+      <span v-if="!isNil(form.o_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.o_amount) }}</span>
     </template>
   </van-field>
 
