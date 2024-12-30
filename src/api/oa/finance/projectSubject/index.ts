@@ -10,6 +10,13 @@ import type {
 } from '@/api/oa/finance/projectSubject/types'
 import request from '@/service/request'
 
+export function getItemTreeByPsId(params: { psId: string }): AxiosPromise<ProjectSubjectItemTreeVO[]> {
+  return request({
+    url: `/oa/finance/projectSubject/getItemTreeByPsId/${params.psId}`,
+    method: 'get',
+  })
+}
+
 /**
  * 查询当前登录用户 预算项
  */

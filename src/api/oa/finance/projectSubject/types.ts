@@ -301,9 +301,19 @@ export interface ProjectSubjectQuery extends PageQuery {
   deptId?: string | number
 
   /**
+   * 新参数
+   */
+  projectDeptId?: string | number
+
+  /**
    * 预算类型
    */
   type?: string
+
+  /**
+   * 关键词
+   */
+  keyword?: string
 
   /**
    * 日期范围参数

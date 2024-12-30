@@ -18,15 +18,7 @@
         input-align="right"
       >
         <template #input>
-          <ProjectSubjectSelect
-            v-model="form.psId"
-            :params="{
-              type: form.subjectType,
-              deptId: form.deptId,
-              status: '5',
-            }"
-            readonly
-          />
+          <ProjectSubjectSelect v-model="form.psId" readonly />
         </template>
       </van-field>
       <van-field v-show-field="['contractId', includeFields]" label="销售合同" name="contractId" input-align="right">
@@ -276,11 +268,9 @@ const isProject = computed(() => form.value.subjectType === 'project')
 // 预算类别查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
-  const deptId = form.value.deptId ?? (form.value as any)?.initiator?.deptId ?? form.value?.createDept
 
   return {
     psId,
-    deptId,
   }
 })
 

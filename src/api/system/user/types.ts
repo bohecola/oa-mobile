@@ -29,6 +29,7 @@ export interface UserVO extends BaseEntity {
   userId: string | number
   tenantId: string
   deptId: string | number
+  deptType: string // 0 公司 1 部门 2 项目部
   userName: string
   nickName: string
   userType: string
@@ -49,6 +50,7 @@ export interface UserVO extends BaseEntity {
   roleId: any
   admin: boolean
   maxPostLevel?: number
+  postIdStr?: string
   [key: string]: any
 }
 

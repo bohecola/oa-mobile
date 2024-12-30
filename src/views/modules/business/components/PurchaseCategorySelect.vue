@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import Big from 'big.js'
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { getItemByPsIdAndDeptId } from '@/api/oa/business/purchase'
+import { getItemTreeByPsId } from '@/api/oa/finance/projectSubject'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
 import { findPathNodes } from '@/utils'
 
@@ -82,7 +82,6 @@ const props = withDefaults(
     component?: 'tree-select' | 'cascader'
     params: {
       psId: string
-      deptId: string | number
     }
   }>(),
   {
@@ -179,7 +178,7 @@ async function getTree() {
     }
 
     isLoading.value = true
-    const { data } = (await getItemByPsIdAndDeptId(props.params).finally(() => (isLoading.value = false))) ?? {}
+    const { data } = (await getItemTreeByPsId(props.params).finally(() => (isLoading.value = false))) ?? {}
     rawData.value = data ?? []
   }
 }

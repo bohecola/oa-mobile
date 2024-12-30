@@ -79,14 +79,12 @@
       </template>
       <el-dialog v-model="dialogVisible" title="项目/部门预算选择" width="70%" append-to-body>
         <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-          <el-form-item label="开始日期" prop="startDate">
-            <el-date-picker v-model="queryParams.startDate" value-format="YYYY-MM-DD" placeholder="请选择开始日期" clearable />
+          <el-form-item label="名称" prop="keyword">
+            <el-input v-model.trim="queryParams.keyword" placeholder="请输入" clearable />
           </el-form-item>
-          <el-form-item label="截至日期" prop="endDate">
-            <el-date-picker v-model="queryParams.endDate" value-format="YYYY-MM-DD" placeholder="请选择截至日期" clearable />
-          </el-form-item>
+
           <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">
+            <el-button type="primary" icon="Search" @click="handleQuery({ projectDeptId: undefined })">
               搜索
             </el-button>
             <el-button icon="Refresh" @click="resetQuery">
@@ -95,7 +93,12 @@
           </el-form-item>
         </el-form>
 
-        <el-table v-loading="loading" :data="tableData">
+        <el-table
+          v-loading="loading"
+          :data="tableData"
+          :row-class-name="(data) => (selectedIdList.includes(data.row.id) ? '!bg-[#ecf5ff] dark:!bg-[#18222c]' : '')"
+          @row-click="handleSelect"
+        >
           <el-table-column label="名称" align="left" prop="name" width="460" show-overflow-tooltip>
             <template #default="scope">
               <span>{{ scope.row.name }}</span>
@@ -115,7 +118,7 @@
                 icon="Select"
                 :type="`${selectedIdList.includes(scope.row.id) ? 'primary' : ''}`"
                 :disabled="exclude.includes(scope.row.id)"
-                @click.stop="handleSelectClick(scope.row)"
+                @click.stop="handleSelect(scope.row)"
               />
             </template>
           </el-table-column>
@@ -142,8 +145,8 @@
 import { isEmpty, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import SelectTag from './SelectTag.vue'
-import type { ProjectSubjectQuery, ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 import { listProjectSubject } from '@/api/oa/finance/projectSubject'
+import type { ProjectSubjectQuery, ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 
 // 属性
 const props = withDefaults(
@@ -198,16 +201,22 @@ const queryParams: ProjectSubjectQuery = reactive({
   endDate: undefined,
   type: undefined,
   deptId: undefined,
+  projectDeptId: undefined,
   status: undefined,
+  keyword: undefined,
   params: {},
 })
 
 // 查询
-async function getList() {
+async function getList(query?: Partial<ProjectSubjectQuery>) {
   loading.value = true
 
   if (!isNil(props.params)) {
     Object.assign(queryParams, props.params)
+  }
+
+  if (!isNil(query)) {
+    Object.assign(queryParams, query)
   }
 
   const res = await listProjectSubject(queryParams)
@@ -217,9 +226,9 @@ async function getList() {
 }
 
 // 搜索
-function handleQuery() {
+function handleQuery(query?: Partial<ProjectSubjectQuery>) {
   queryParams.pageNum = 1
-  getList()
+  getList(query)
 }
 
 // 重置
@@ -237,7 +246,7 @@ function open() {
 }
 
 // 选择
-function handleSelectClick(row: ProjectSubjectVO) {
+function handleSelect(row: ProjectSubjectVO) {
   const index = selectedIdList.value.findIndex(e => e === row.id)
   const isSelected = index !== -1
 

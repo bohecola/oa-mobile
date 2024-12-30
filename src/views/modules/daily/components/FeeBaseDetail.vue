@@ -1,9 +1,9 @@
 <template>
-  <van-field v-show-field="['deptId', includeFields]" label="预算部门" name="deptId" input-align="right">
+  <!-- <van-field v-show-field="['deptId', includeFields]" label="预算部门" name="deptId" input-align="right">
     <template #input>
       <DeptSelect v-model="form.deptId" readonly />
     </template>
-  </van-field>
+  </van-field> -->
 
   <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
     <template #input>
@@ -18,15 +18,7 @@
     input-align="right"
   >
     <template #input>
-      <ProjectSubjectSelect
-        v-model="form.psId"
-        :params="{
-          type: form.subjectType,
-          deptId: form.deptId,
-          status: '5',
-        }"
-        readonly
-      />
+      <ProjectSubjectSelect v-model="form.psId" readonly />
     </template>
   </van-field>
 
@@ -86,11 +78,10 @@ const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 // 预算类别查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
-  const deptId = form.value.deptId
 
   return {
     psId,
-    deptId,
+
   }
 })
 </script>
