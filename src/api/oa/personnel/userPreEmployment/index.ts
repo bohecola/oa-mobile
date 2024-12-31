@@ -1,6 +1,7 @@
 import type { AxiosPromise } from 'axios'
 import request from '@/service/request'
 import type { UserPreEmploymentForm, UserPreEmploymentQuery, UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
+import type { CheckUserNameAndPhoneUnique } from '@/api/system/user/types'
 
 /**
  * 查询预入职员工列表
@@ -59,5 +60,17 @@ export function delUserPreEmployment(id: string | number | Array<string | number
   return request({
     url: `/oa/personnel/userPreEmployment/${id}`,
     method: 'delete',
+  })
+}
+
+/**
+ * 校验手机号唯一（未走完流程的预入职员工手机号）
+ * @param id
+ */
+export function checkPrePhoneUnique(query?: CheckUserNameAndPhoneUnique) {
+  return request({
+    url: '/oa/personnel/userPreEmployment/checkPhoneUnique',
+    method: 'post',
+    params: query,
   })
 }

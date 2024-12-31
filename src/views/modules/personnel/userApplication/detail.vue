@@ -1,7 +1,7 @@
 <template>
   <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="10em">
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['preEmploymentId', includeFields]" name="preEmploymentId" label="姓名" input-align="right">
+      <van-field v-show-field="['preEmploymentId', includeFields]" name="name" label="姓名" input-align="right">
         <template #input>
           <span v-if="form.name">{{ form.name }}</span>
           <PreUserSelect v-else v-model="form.preEmploymentId" readonly />

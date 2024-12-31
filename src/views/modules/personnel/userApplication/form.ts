@@ -127,10 +127,6 @@ export function useForm() {
         Object.assign(form.value, {
           ...entity,
         })
-        if (entity.preEmploymentId) {
-          const res = await getUserPreEmployment(entity.preEmploymentId)
-          form.value.name = res.data.name
-        }
       })
     }
     catch (err) {

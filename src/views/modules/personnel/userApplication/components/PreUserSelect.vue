@@ -10,18 +10,18 @@
     <!-- <div class="pl-2 flex gap-2 items-center h-full w-55 hover:cursor-text group">
       <template v-if="selected">
         <span class="text-[var(--el-input-text-color)]">{{ selected?.label }}</span>
-        <span class="flex-1"></span>
+        <span class="flex-1" />
         <span v-if="clearable" class="mr-1 cursor-pointer opacity-30 hidden group-hover:flex" @click.stop="handleClear">
           <el-icon><Close /></el-icon>
         </span>
       </template>
-      <input v-else :placeholder="placeholder" class="el-input__inner" readonly />
+      <input v-else :placeholder="placeholder" class="el-input__inner" readonly>
       <span class="flex mr-1 opacity-30">
         <el-icon><Search /></el-icon>
       </span>
-    </div>
+    </div> -->
 
-    <el-dialog v-model="dialogVisible" title="预入职员工选择" width="75%" append-to-body>
+    <!-- <el-dialog v-model="dialogVisible" title="预入职员工选择" width="75%" append-to-body>
       <el-form ref="queryFormRef" :model="queryParams" :inline="true" class="mb-4">
         <el-row :gutter="15">
           <el-form-item label="部门名称" prop="deptId">
@@ -36,12 +36,21 @@
             <el-input v-model.trim="queryParams.name" placeholder="请输入姓名" clearable style="width: 120px" @keyup.enter="handleQuery" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">
+              搜索
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">
+              重置
+            </el-button>
           </el-form-item>
         </el-row>
       </el-form>
-      <el-table v-loading="loading" :data="tableData">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        :row-class-name="(data) => (selected?.value === data.row.id ? '!bg-[#ecf5ff] dark:!bg-[#18222c]' : '')"
+        @row-click="handleSelect"
+      >
         <el-table-column label="部门名称" align="center" prop="deptName" />
         <el-table-column label="岗位名称" align="center" prop="postName" />
         <el-table-column label="姓名" align="center" prop="name" width="100" />
@@ -78,8 +87,8 @@
               :type="selected?.value === scope.row.id ? 'primary' : ''"
               icon="Select"
               :disabled="exclude.includes(scope.row.id)"
-              @click.stop="handleSelectClick(scope.row)"
-            ></el-button>
+              @click.stop="handleSelect(scope.row)"
+            />
           </template>
         </el-table-column>
       </el-table>
@@ -111,10 +120,10 @@ const props = withDefaults(
     placeholder: '请选择',
     clearable: false,
     exclude: () => [],
-    options: async () => {
-      const { rows } = await listUserPreEmployment({ status: '2', pageNum: undefined, pageSize: undefined })
-      return (rows ?? []).map(item => ({ label: item.name, value: item.id }))
-    },
+    // options: async () => {
+    //   const { rows } = await listUserPreEmployment({ status: '2', pageNum: undefined, pageSize: undefined })
+    //   return (rows ?? []).map(item => ({ label: item.name, value: item.id }))
+    // },
     readonly: false,
   },
 )
@@ -194,7 +203,7 @@ function handleFocusClick() {
 }
 
 // 选择
-function handleSelectClick(row: UserPreEmploymentVO) {
+function handleSelect(row: UserPreEmploymentVO) {
   emit('update:modelValue', row.id)
   emit('update:name', row.name)
   emit('change', row.id)
