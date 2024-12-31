@@ -31,12 +31,6 @@
         </template>
       </van-field>
 
-      <van-cell v-show-field="['files', includeFields]" title="附件" input-align="right">
-        <template #value>
-          <UploadFile v-model="form.files" readonly :card-size="60" />
-        </template>
-      </van-cell>
-
       <van-field v-model="form.description" v-show-field="['description', includeFields]" name="description" label="原因说明" input-align="right">
         <template #input>
           <TextareaView :value="form.description" />

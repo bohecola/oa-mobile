@@ -6,7 +6,7 @@
           <DeptSelect v-model="form.deptId" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.recruitNo" v-show-field="['recruitNo', includeFields]" name="recruitNo" label="招聘申请" input-align="right" />
+      <van-field v-if="form.recruitNo" v-model="form.recruitNo" v-show-field="['recruitNo', includeFields]" name="recruitNo" label="招聘申请" input-align="right" />
       <van-field v-model="form.postName" v-show-field="['postName', includeFields]" name="postName" label="岗位名称" input-align="right" />
       <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="姓名" input-align="right" />
       <van-field v-model="form.sex" v-show-field="['sex', includeFields]" name="sex" label="用户性别" input-align="right">
