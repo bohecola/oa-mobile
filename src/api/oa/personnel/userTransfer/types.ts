@@ -157,9 +157,33 @@ export interface UserTransferForm extends BaseEntity {
   endDate?: string
 
   /**
-   * 薪资情况
+   * 是否具有主管权限
    */
-  newSalary?: number
+  iscommander?: string
+
+  /**
+   * 主管权限交接人
+   */
+  commanderPowerHandover?: string
+
+  /**
+   * 原部门购买特殊商业保险
+   */
+  oldSpecialCommercialInsurance: string
+
+  /**
+   * 新部门购买特殊商业保险
+   */
+  newSpecialCommercialInsurance: string
+
+  /**
+   * 新部门类型
+   */
+  newDeptType?: string
+  /**
+   * 旧部门类型
+   */
+  oldDeptType?: string
 
   /**
    * 调用原因

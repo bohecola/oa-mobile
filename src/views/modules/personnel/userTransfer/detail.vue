@@ -1,5 +1,5 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="auto">
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['userId', includeFields]" name="userId" label="员工" input-align="right">
         <template #input>
@@ -7,43 +7,43 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="类型" input-align="right">
+      <van-field v-show-field="['type', includeFields]" name="type" label="类型" input-align="right">
         <template #input>
-          <dict-tag :options="oa_transfer_type" :value="form.type" />
+          <DictSelect v-model="form.type" dict-type="oa_transfer_type" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.oldCompanyId" v-show-field="['oldCompanyId', includeFields]" name="oldCompanyId" label="原公司" input-align="right">
+      <van-field v-show-field="['oldCompanyId', includeFields]" name="oldCompanyId" label="原公司" input-align="right">
         <template #input>
           <CompanySelect v-model="form.oldCompanyId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.oldDeptId" v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门" input-align="right">
+      <van-field v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门" input-align="right">
         <template #input>
           <DeptCascader v-model="form.oldDeptId" :company-id="form.oldCompanyId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.oldPostId" v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原岗位" input-align="right">
+      <van-field v-show-field="['oldPostId', includeFields]" name="oldPostId" label="原岗位" input-align="right">
         <template #input>
           <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.newCompanyId" v-show-field="['newCompanyId', includeFields]" name="newCompanyId" label="新公司" input-align="right">
+      <van-field v-show-field="['newCompanyId', includeFields]" name="newCompanyId" label="新公司" input-align="right">
         <template #input>
           <CompanySelect v-model="form.newCompanyId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.newDeptId" v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门" input-align="right">
+      <van-field v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门" input-align="right">
         <template #input>
           <DeptCascader v-model="form.newDeptId" :company-id="form.newCompanyId" readonly />
         </template>
       </van-field>
 
-      <van-field v-model="form.newPostId" v-show-field="['newPostId', includeFields]" name="newPostId" label="新岗位" input-align="right">
+      <van-field v-show-field="['newPostId', includeFields]" name="newPostId" label="新岗位" input-align="right">
         <template #input>
           <PostSelect v-model="form.newPostId" :dept-id="form.newDeptId" multiple readonly />
         </template>
@@ -61,9 +61,27 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.newSalary" v-show-field="['newSalary', includeFields]" name="newSalary" label="薪资情况" input-align="right">
+      <van-field v-show-field="['iscommander', includeFields]" name="iscommander" label="是否具有主管权限" input-align="right">
         <template #input>
-          <span class="mr-3">{{ formatCurrency(form.newSalary) }} </span>
+          <YesNoSwitch v-model="form.iscommander" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="form.iscommander === 'Y'" v-show-field="['commanderPowerHandover', includeFields]" name="commanderPowerHandover" label="主管权限交接人" input-align="right">
+        <template #input>
+          <UserSelect v-model="form.commanderPowerHandover" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="!isNil(form.oldSpecialCommercialInsurance) && form.oldDeptType === '2'" v-show-field="['oldSpecialCommercialInsurance', includeFields]" name="oldSpecialCommercialInsurance" label="原部门购买特殊商业保险" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.oldSpecialCommercialInsurance" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="!isNil(form.newSpecialCommercialInsurance) && form.newDeptType === '2'" v-show-field="['newSpecialCommercialInsurance', includeFields]" name="newSpecialCommercialInsurance" label="新部门购买特殊商业保险" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.newSpecialCommercialInsurance" readonly />
         </template>
       </van-field>
 
@@ -87,7 +105,7 @@
 </template>
 
 <script setup name="userTransferDetail" lang="ts">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import CompanySelect from '../components/ComanySelect.vue'
 import DeptCascader from '../components/DeptCascader.vue'
 import PostSelect from '../components/PostSelect.vue'
@@ -110,15 +128,12 @@ withDefaults(
 )
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// 调动类型类别
-const { oa_transfer_type } = toRefs<any>(proxy?.useDict('oa_transfer_type', 'oa_transfer_status'))
 
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
 
 defineExpose({
-
   view,
   reset,
   workflowView,
