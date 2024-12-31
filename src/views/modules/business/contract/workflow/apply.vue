@@ -78,6 +78,9 @@ const includeFields = ref(
     // originalFile: true,
     // noAmountFile: true,
     // status: true,
+    isUseSeal: true,
+    fileUseType: true,
+    sealUseType: true,
     remark: true,
     ossIdList: true,
   }),
@@ -101,6 +104,9 @@ const includeFieldsDetail2 = filterTruthyKeys<ContractForm>({
   invoiceType: true,
   taxRate: true,
   paymentWay: true,
+  isUseSeal: true,
+  fileUseType: true,
+  sealUseType: true,
 })
 
 // 归档 - 编辑
@@ -145,6 +151,9 @@ const includeFieldsOther = ref(
     originalFile: true,
     noAmountFile: true,
     status: true,
+    isUseSeal: true,
+    fileUseType: true,
+    sealUseType: true,
     remark: true,
     ossIdList: true,
   }),

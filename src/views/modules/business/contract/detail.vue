@@ -44,7 +44,7 @@
         </template>
       </template>
     </van-field>
-    <van-field v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
+    <van-field v-if="form.category === 'out0'" v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
       <template #input>
         <dict-select v-model="form.reviewWay" dict-type="oa_contract_review_way" readonly />
       </template>
@@ -74,6 +74,26 @@
         <dict-select v-model="form.invoiceType" dict-type="oa_contract_invoice_type" readonly />
       </template>
     </van-field>
+
+    <van-field v-model="form.isUseSeal" v-show-field="['isUseSeal', includeFields]" name="isUseSeal" label="是否用印" input-align="right">
+      <template #input>
+        <YesNoSwitch v-model="form.isUseSeal" readonly />
+      </template>
+    </van-field>
+
+    <template v-if="form.isUseSeal === 'Y'">
+      <van-field v-model="form.fileUseType" v-show-field="['fileUseType', includeFields]" name="fileUseType" label="用印方式" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.fileUseType" dict-type="oa_file_use_type" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-model="form.sealUseType" v-show-field="['sealUseType', includeFields]" name="sealUseType" label="用印类型" input-align="right">
+        <template #input>
+          <DictSelect v-model="form.sealUseType" dict-type="oa_seal_use_type" multiple readonly />
+        </template>
+      </van-field>
+    </template>
 
     <div v-show-field="['taxRate', includeFields]" class="mb-6">
       <van-cell-group title="金额/增值税率">

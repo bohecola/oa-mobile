@@ -60,6 +60,9 @@ export function useForm() {
     projectId: undefined,
     projectName: undefined,
     status: undefined,
+    isUseSeal: undefined,
+    fileUseType: undefined,
+    sealUseType: undefined,
     remark: undefined,
     ossIdList: undefined,
   }
@@ -80,12 +83,12 @@ export function useForm() {
         {
           required: true,
           message: '合同类别不能为空',
-          trigger: 'onBlur',
+          trigger: 'onChange',
         },
       ],
       reviewWay: [{ required: true, message: '合同评审方式不能为空', trigger: 'onChange' }],
-      startDate: [{ required: true, message: '合同开始日期不能为空', trigger: 'onBlur' }],
-      endDate: [{ required: true, message: '合同结束日期不能为空', trigger: 'onBlur' }],
+      startDate: [{ required: true, message: '合同开始日期不能为空', trigger: 'onChange' }],
+      endDate: [{ required: true, message: '合同结束日期不能为空', trigger: 'onChange' }],
       description: [{ required: true, message: '合同描述不能为空', trigger: 'onBlur' }],
       amount: [{ required: true, message: '合同金额不能为空', trigger: 'onBlur' }],
       invoiceType: [{ required: true, message: '发票类型不能为空', trigger: 'onChange' }],
@@ -95,6 +98,9 @@ export function useForm() {
       ],
       paymentWay: [{ required: true, message: '付款方式不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onBlur' }],
+      isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onChange' }],
+      fileUseType: [{ required: true, message: '用印方式不能为空', trigger: 'onChange' }],
+      sealUseType: [{ required: true, message: '用印类型不能为空', trigger: 'onChange' }],
     },
   })
 

@@ -247,6 +247,15 @@ export interface ContractForm extends BaseEntity {
    */
   status?: string
 
+  // 是否用印
+  isUseSeal?: string
+
+  // 用印方式
+  fileUseType?: string
+
+  // 用印类型
+  sealUseType?: string
+
   /**
    * 备注
    */
