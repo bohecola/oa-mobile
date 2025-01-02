@@ -132,7 +132,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.employmentEvaluate" v-show-field="['employmentEvaluate', includeFields]" name="employmentEvaluate" label="面试评价" input-align="right">
+      <van-field v-if="form.level >= 38" v-model="form.employmentEvaluate" v-show-field="['employmentEvaluate', includeFields]" name="employmentEvaluate" label="面试评价" input-align="right">
         <template #input>
           <TextareaView :value="form.employmentEvaluate" />
         </template>

@@ -29,11 +29,7 @@
           {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
-      <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到达日期" input-align="right">
-        <template #input>
-          {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
-        </template>
-      </van-field>
+
       <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="right" />
 
       <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="right">
