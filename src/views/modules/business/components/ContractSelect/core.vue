@@ -1,5 +1,6 @@
-<!-- <template>
-  <el-dialog v-model="dialogVisible" title="合同选择" width="80%" append-to-body>
+<template>
+  <div class="hidden clear-warn" />
+  <!-- <el-dialog v-model="dialogVisible" title="合同选择" width="80%" append-to-body>
     <el-form ref="queryFormRef" :model="queryParams" :inline="true" class="mb-4">
       <el-form-item label="名称" prop="name">
         <el-input v-model.trim="queryParams.name" placeholder="请输入名称" clearable @keyup.enter="handleQuery" />
@@ -92,8 +93,8 @@
         </el-button>
       </div>
     </template>
-  </el-dialog>
-</template> -->
+  </el-dialog> -->
+</template>
 
 <script setup lang="ts">
 import { cloneDeep, isEmpty } from 'lodash-es'
