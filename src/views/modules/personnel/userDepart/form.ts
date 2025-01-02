@@ -28,7 +28,7 @@ export function useForm() {
     postId: undefined,
     userType: undefined,
     entryCompanyDate: undefined,
-    specialCommercialInsurance: undefined,
+    specialCommercialInsurance: 'N',
     isLoginCompanyEmail: 'N',
     departDate: undefined,
     reason: undefined,

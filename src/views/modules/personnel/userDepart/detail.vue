@@ -14,7 +14,7 @@
 
     <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" input-align="right">
       <template #input>
-        <PostSelect v-model="form.postId" :dept-id="form.deptId" readonly />
+        <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple readonly />
       </template>
     </van-field>
 
@@ -30,7 +30,7 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['entryCompanyDate', includeFields]" name="entryCompanyDate" label="购买特殊商业保险" input-align="right">
+    <van-field v-show-field="['specialCommercialInsurance', includeFields]" name="specialCommercialInsurance" label="购买特殊商业保险" input-align="right">
       <template #input>
         <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
       </template>
@@ -48,7 +48,7 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期" input-align="right">
+    <van-field v-if="form.departDate" v-show-field="['departDate', includeFields]" name="departDate" label="实际离职日期" input-align="right">
       <template #input>
         {{ parseTime(form.departDate, '{y}-{m}-{d}') }}
       </template>
@@ -60,13 +60,13 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['handoverContent', includeFields]" name="handoverContent" label="交接内容" input-align="right">
+    <van-field v-if="form.handoverContent" v-show-field="['handoverContent', includeFields]" name="handoverContent" label="交接内容" input-align="right">
       <template #input>
         <TextareaView :value="form.handoverContent" />
       </template>
     </van-field>
 
-    <van-field v-show-field="['documentContent', includeFields]" name="documentContent" label="归档内容" input-align="right">
+    <van-field v-if="form.documentContent" v-show-field="['documentContent', includeFields]" name="documentContent" label="归档内容" input-align="right">
       <template #input>
         <TextareaView :value="form.documentContent" />
       </template>
