@@ -103,7 +103,13 @@ const rollingTextDuration = ref(0)
 // 年份
 const currentYear = computed(() => dayjs().year())
 // 月份
-const currentMonth = computed(() => dayjs().month() + 1)
+const currentMonth = computed(() => {
+  const month = dayjs().month() + 1
+  if (month < 10) {
+    return `0${month}`
+  }
+  return month
+})
 // 日期
 const currentDate = computed(() => {
   const day = dayjs().date()
