@@ -130,6 +130,18 @@
       </template>
     </van-field>
 
+    <van-field v-if="$route.query?.queryType !== 'dept'" v-model="form.originalFile" v-show-field="['originalFile', includeFields]" name="originalFile" label="合同原件" input-align="right">
+      <template #input>
+        <UploadFile v-model="form.originalFile" readonly :card-size="60" />
+      </template>
+    </van-field>
+
+    <van-field v-model="form.noAmountFile" v-show-field="['noAmountFile', includeFields]" name="noAmountFile" label="无价合同" input-align="right">
+      <template #input>
+        <UploadFile v-model="form.noAmountFile" readonly :card-size="60" />
+      </template>
+    </van-field>
+
     <!-- 附件列表 -->
     <Teleport defer to="#AFC">
       <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">

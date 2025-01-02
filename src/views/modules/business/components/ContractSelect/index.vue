@@ -4,12 +4,12 @@
       <div v-if="showType === 'input'" class="w-full">
         <template v-if="!isEmpty(selectedList)">
           <!-- 单选回显 -->
-          <span v-if="!multiple">{{ selectedList[0].name }}</span>
+          <span v-if="!multiple">{{ selectedList[0]?.[previewField] }}</span>
 
           <!-- 多选回显 -->
           <template v-else>
-            <template v-for="(selected, index) in selectedList" :key="selected.id">
-              <span>{{ selected.name }}</span>
+            <template v-for="(item, index) in selectedList" :key="item.id">
+              <span>{{ item?.[previewField] }}</span>
               <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
             </template>
           </template>
@@ -33,13 +33,13 @@
         <div class="pl-2 flex items-center min-h-8 hover:cursor-text group">
           <template v-if="!isEmpty(selectedList)">
             <div v-if="!multiple" class="text-truncate">
-              {{ selectedList[0].name }}
+              {{ selectedList[0]?.[previewField] }}
             </div>
 
             <template v-else>
               <div class="py-1 flex flex-wrap gap-1">
-                <SelectTag v-for="selected in selectedList" :key="selected.id" closeable @close="ContractSelectCoreRef?.remove(selected)">
-                  {{ selected.name }}
+                <SelectTag v-for="item in selectedList" :key="item.id" closeable @close="ContractSelectCoreRef?.remove(item)">
+                  {{ item?.[previewField] }}
                 </SelectTag>
               </div>
             </template>
@@ -101,6 +101,7 @@ const props = withDefaults(
     relatedProjectId?: boolean
     isNoRelList?: boolean
     showType?: 'input' | 'table'
+    previewField?: 'name' | 'no'
   }>(),
   {
     placeholder: '请选择',
@@ -112,6 +113,7 @@ const props = withDefaults(
     relatedProjectId: false,
     isNoRelList: false,
     showType: 'input',
+    previewField: 'name',
   },
 )
 

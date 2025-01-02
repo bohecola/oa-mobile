@@ -309,6 +309,8 @@ export interface PurchaseItemVO {
    */
   psiId?: string | number
 
+  availableAmount?: number
+
   /**
    * 物品名称
    */

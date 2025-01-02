@@ -21,9 +21,9 @@
           <ProjectSubjectSelect v-model="form.psId" readonly />
         </template>
       </van-field>
-      <van-field v-show-field="['contractId', includeFields]" label="销售合同" name="contractId" input-align="right">
+      <van-field v-show-field="['contractId', includeFields]" label="合同编号" name="contractId" input-align="right">
         <template #input>
-          <ContractSelect v-model="form.contractId" readonly />
+          <ContractSelect v-model="form.contractId" preview-field="no" readonly />
         </template>
       </van-field>
       <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
@@ -123,6 +123,16 @@
               :params="PurchaseCategorySelectParams"
               readonly
             />
+          </template>
+        </van-field>
+        <van-field
+          v-model="item.availableAmount"
+          :name="`itemList.${index}.availableAmount`"
+          label="剩余金额"
+          input-align="right"
+        >
+          <template #input>
+            {{ !isNil(form.itemList[index].availableAmount) ? formatCurrency(form.itemList[index].availableAmount) : '' }}
           </template>
         </van-field>
         <van-field
