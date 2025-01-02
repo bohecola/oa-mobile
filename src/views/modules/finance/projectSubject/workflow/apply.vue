@@ -2,15 +2,19 @@
   <WorkflowPage
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
-    :group="false"
     @approval="handleApproval"
   >
-    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
+    <template v-if="isView">
+      <detail ref="Detail" :include-fields="overviewFields" :show-loading="false" />
+      <div class="mt-6">
+        <detail ref="OssIdDetail" :include-fields="['ossIdList']" :show-loading="false" />
+      </div>
+    </template>
 
     <template v-else>
       <!-- 预算评审申请节点 -->
       <div v-if="taskDefinitionKey === 'Activity_0kwfbrq'">
-        <!-- <el-form-item label="选择预算：">
+        <el-form-item label="选择预算：">
           <el-select v-model="psId" clearable @change="onPsIdChange">
             <el-option
               v-for="item in options"
@@ -20,17 +24,18 @@
             />
           </el-select>
         </el-form-item>
-        <detail v-if="!isNil(psId)" ref="ApplyDetail" :include-fields="overviewFields" /> -->
-      </div>
-
-      <!-- 部门经理/部门副经理 -->
-      <div v-else-if="['Activity_0iv2mib', 'Activity_1qa8d0k'].includes(taskDefinitionKey as string)">
-        <detail ref="DeptDetail" :include-fields="overviewFields" :show-loading="false" />
+        <detail v-if="!isNil(psId)" ref="ApplyDetail" :include-fields="applyDetailFields" />
+        <div class="mt-6">
+          <upsert v-if="!isNil(psId)" ref="ApplyUpsert" :include-fields="['ossIdList']" />
+        </div>
       </div>
 
       <!-- 其他通用审批节点 -->
       <div v-else>
         <detail ref="CommonDetail" :include-fields="overviewFields" :show-loading="false" />
+        <div class="mt-6">
+          <detail ref="OssIdDetail" :include-fields="['ossIdList']" :show-loading="false" />
+        </div>
       </div>
     </template>
   </WorkflowPage>
@@ -39,12 +44,13 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import detail from '../detail.vue'
+// import upsert from '../upsert.vue'
 import { useProjectSubjectOptions } from './helper'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
-import type { ProjectSubjectForm } from '@/api/oa/finance/projectSubject/types'
 import { useWorkflowViewData } from '@/hooks'
+import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { startWorkFlow } from '@/api/workflow/task'
+import type { ProjectSubjectForm } from '@/api/oa/finance/projectSubject/types'
 import { filterTruthyKeys } from '@/utils'
 
 type Entity = ProjectSubjectForm & { initiator: Initiator }
@@ -55,8 +61,9 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
 const ApplyDetail = ref<InstanceType<typeof detail> | null>()
-const DeptDetail = ref<InstanceType<typeof detail> | null>()
+const ApplyUpsert = ref<InstanceType<typeof detail> | null>()
 const CommonDetail = ref<InstanceType<typeof detail> | null>()
+const OssIdDetail = ref<InstanceType<typeof detail> | null>()
 
 // 加载
 const loading = ref(false)
@@ -69,7 +76,7 @@ const submitFormData = ref<StartProcessBo<Entity>>({
   variables: {},
 })
 
-// const { psId, options } = useProjectSubjectOptions()
+const { psId, options } = useProjectSubjectOptions()
 
 // 是否查看
 const isView = computed(() => proxy.$route.query.type === 'view')
@@ -84,10 +91,19 @@ const overFields: PartialBooleanRecord<ProjectSubjectForm> = {
   ossIdList: true,
 }
 
+// 申请详情字段
+const applyDetailFields = ref(
+  filterTruthyKeys<ProjectSubjectForm>({
+    ...overFields,
+    ossIdList: false,
+  }),
+)
+
 // 总览字段
 const overviewFields = ref(
   filterTruthyKeys<ProjectSubjectForm>({
     ...overFields,
+    ossIdList: false,
   }),
 )
 
@@ -170,6 +186,7 @@ onMounted(async () => {
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    psId.value = entity.id
 
     proxy?.$router.replace({
       query: {
@@ -183,12 +200,19 @@ onMounted(async () => {
       try {
         switch (type as string) {
           case 'update':
+            await ApplyDetail.value?.view(entity.id)
+            ApplyUpsert.value?.workflowView(entity)
+            break
           case 'approval':
-            await DeptDetail.value?.viewByDept(entity.id)
             await CommonDetail.value?.view(entity.id)
+            OssIdDetail.value?.workflowView(entity)
+
+            await ApplyDetail.value?.view(entity.id)
+            ApplyUpsert.value?.workflowView(entity)
             break
           case 'view':
             await Detail.value?.view(entity.id)
+            OssIdDetail.value?.workflowView(entity)
             break
         }
       }
