@@ -47,20 +47,19 @@
           <dict-select v-model="form.objectCategory" dict-type="oa_purchase_object_category" readonly />
         </template>
       </van-field>
-      <!-- 项目为空时显示，可选值有：工程施工、劳务外包、技术支持、租赁、其他 -->
-      <van-field v-if="!isProject" v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
+      <van-field v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
         <template #input>
           <dict-select v-model="form.serviceCategory" dict-type="oa_purchase_service_category" readonly />
         </template>
       </van-field>
-      <!-- 项目为空 并且 服务类别为租赁时显示，可选值有：房屋租赁、车辆租赁、其他 -->
-      <van-field v-if="!isProject && form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
+      <!-- 服务类别为租赁时显示 -->
+      <van-field v-if="form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
         <template #input>
           <dict-select v-model="form.leaseType" dict-type="oa_purchase_lease_type" readonly />
         </template>
       </van-field>
-      <!-- 项目为空 并且 服务类别为租赁时显示，可选值：是、否 -->
-      <van-field v-if="!isProject && form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
+      <!-- 服务类别为租赁时显示 -->
+      <van-field v-if="form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
         <template #input>
           <dict-tag :options="sys_yes_no" :value="form.isDeposit" />
         </template>
