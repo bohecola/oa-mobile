@@ -5,7 +5,7 @@ import nzh from 'nzh'
 
 // 金额格式化
 export function formatCurrencyUtil(amount: number, options: CurrencyObjectOptions = {}) {
-  if (isNil(amount)) {
+  if (isNil(amount) || (amount as any) === '') {
     return amount
   }
 

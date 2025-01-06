@@ -85,8 +85,10 @@ const overFields: PartialBooleanRecord<ProjectSubjectForm> = {
   type: true,
   name: true,
   contractNo: true,
+  businessType: true,
   startDate: true,
   endDate: true,
+  xmbSubjectFeeType: true,
   itemList: true,
   ossIdList: true,
 }

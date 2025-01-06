@@ -258,6 +258,16 @@ export interface ProjectSubjectForm extends BaseEntity {
   status?: string
 
   /**
+   * 预算项目的业务类型
+   */
+  businessType?: string
+
+  /**
+   * 项目部可用费用类型
+   */
+  xmbSubjectFeeType?: string
+
+  /**
    * 备注
    */
   remark?: string
@@ -314,6 +324,11 @@ export interface ProjectSubjectQuery extends PageQuery {
    * 关键词
    */
   keyword?: string
+
+  /**
+   * 合同编号
+   */
+  contractNo?: string
 
   /**
    * 日期范围参数

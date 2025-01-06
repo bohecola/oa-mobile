@@ -1,5 +1,5 @@
 <template>
-  <van-skeleton :loading="isLoading" animated class="h-8 flex items-center">
+  <van-skeleton :loading="isLoading" animated class="w-full h-8 flex items-center">
     <template #template>
       <van-skeleton-paragraph variant="rect" class="!h-[60%] min-w-[180px]" />
     </template>
@@ -14,10 +14,9 @@
         v-if="component === 'tree-select'"
         v-show="!readonly"
         v-model="ids"
-        style="min-width: 185px"
         node-key="uuid"
         value-key="id"
-        placeholder="选择预算类别"
+        placeholder="选择预算科目"
         :data="treeData"
         :render-after-expand="false"
         :props="{
@@ -32,16 +31,16 @@
       >
         <template #default="{ data: { sciName, treeType, availableAmount } }">
           <span>{{ sciName }}</span>
-          <span v-if="treeType === 'item'" style="color: gray">（{{ availableAmount }}）</span>
+          <span v-if="treeType === 'item'" style="color: gray">（{{ formatCurrency(availableAmount) }}）</span>
         </template>
-      </el-tree-select> -->
+      </el-tree-select>
 
-      <!-- <div v-if="component === 'cascader'" v-show="!readonly" class="w-full">
+      <div v-if="component === 'cascader'" v-show="!readonly" class="w-full">
         <el-cascader
           ref="CascaderRef"
           v-model="ids"
           class="w-full"
-          placeholder="请选择预算类别"
+          placeholder="请选择预算科目"
           :options="treeData"
           :props="{
             emitPath: false,
@@ -56,7 +55,7 @@
         >
           <template #default="{ data: { sciName, treeType, availableAmount } }">
             <span>{{ sciName }}</span>
-            <span v-if="treeType === 'item'" style="color: gray">（{{ availableAmount }}）</span>
+            <span v-if="treeType === 'item'" style="color: gray">（{{ formatCurrency(availableAmount) }}）</span>
           </template>
         </el-cascader>
       </div> -->
@@ -67,7 +66,7 @@
 <script setup lang="ts">
 import Big from 'big.js'
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { getItemTreeByPsId } from '@/api/oa/finance/projectSubject'
+import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
 import { findPathNodes } from '@/utils'
 
@@ -82,6 +81,7 @@ const props = withDefaults(
     component?: 'tree-select' | 'cascader'
     params: {
       psId: string
+      applyDeptId: string | number
     }
   }>(),
   {
@@ -90,7 +90,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:availableAmount', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:deptId', 'update:amount', 'update:finishAmount', 'update:availableAmount', 'change'])
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -106,9 +106,9 @@ const treeData = computed(() => proxy?.handleTree<ProjectSubjectItemTreeVO>(rawD
 // 选中项的 labels 集合
 const selectedLabels = computed(() => {
   if (props.modelValue && !isEmpty(rawData.value)) {
-    // 选中的预算类别项 id 集合
+    // 选中的预算科目项 id 集合
     const idsArr = isArray(ids.value) ? ids.value : !isNil(ids.value) ? [ids.value] : []
-    // 选中的预算类别项的 pathNodes
+    // 选中的预算科目项的 pathNodes
     const pathNodesArr = idsArr.reduce<ProjectSubjectItemTreeVO[][]>((prev, curr) => {
       const nodes = findPathNodes(treeData.value, curr)
       prev.push(nodes)
@@ -155,19 +155,45 @@ function onChange(value?: PurchaseCategorySelectValue) {
   emit('update:modelValue', payload)
   emit('change', payload)
 
-  // 选中的预算类别项 id 集合
+  if (!props.multiple) {
+    const item = rawData.value.find(e => e.id === value)
+    emit('update:deptId', item?.deptId)
+  }
+
+  // 选中的预算科目项 id 集合
   const idsArr = isArray(value) ? value : !isNil(value) ? [value] : []
-  // 选中的预算类别项
+  // 选中的预算科目项
   const items = !isEmpty(value) ? rawData.value.filter(item => idsArr.includes(item.id as string)) : []
-  // 计算选中的预算类别的剩余金额总和
-  const availableAmount = items.reduce((prev, curr) => {
-    if (!isNil(curr.availableAmount)) {
-      return prev.add(curr.availableAmount)
+
+  // 计算选中预算科目的 预算金额总和
+  const amount = items.reduce((prev, curr) => {
+    if (!isNil(curr.amount) || curr.amount !== '') {
+      return prev.add(Big(curr.amount))
     }
 
     return prev.add(0)
   }, new Big(0))
+
+  // 计算选中预算科目的 剩余金额总和
+  const availableAmount = items.reduce((prev, curr) => {
+    if (!isNil(curr.availableAmount) || curr.availableAmount !== '') {
+      return prev.add(Big(curr.availableAmount))
+    }
+
+    return prev.add(0)
+  }, new Big(0))
+
+  // 计算选中预算科目的 申请中金额总和
+  const finishAmount = items.reduce((prev, curr) => {
+    const beginAmount = isNil(curr.beginAmount) || (curr.beginAmount as any) === '' ? 0 : curr.beginAmount
+    const expendAmount = isNil(curr.expendAmount) || (curr.expendAmount as any) === '' ? 0 : curr.expendAmount
+
+    return prev.add(Big(beginAmount)).add(expendAmount)
+  }, new Big(0))
+
+  emit('update:amount', amount.toNumber())
   emit('update:availableAmount', availableAmount.toNumber())
+  emit('update:finishAmount', finishAmount.toNumber())
 }
 
 async function getTree() {
@@ -178,7 +204,7 @@ async function getTree() {
     }
 
     isLoading.value = true
-    const { data } = (await getItemTreeByPsId(props.params).finally(() => (isLoading.value = false))) ?? {}
+    const { data } = (await getItemTreeByPsIdAndApplyDeptId(props.params).finally(() => (isLoading.value = false))) ?? {}
     rawData.value = data ?? []
   }
 }

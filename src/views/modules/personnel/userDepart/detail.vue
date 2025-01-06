@@ -73,7 +73,7 @@
     </van-field>
 
     <!-- 附件列表 -->
-    <Teleport defer to="#AFC">
+    <Teleport to="#AFC" defer>
       <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
         <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
       </TableCard>

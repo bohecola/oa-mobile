@@ -15,7 +15,7 @@
     </template>
   </van-field>
 
-  <Teleport to="#DailyWorkFormContainer">
+  <Teleport to="#AFC" defer>
     <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
       <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
     </TableCard>

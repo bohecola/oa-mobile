@@ -30,9 +30,11 @@ export function useForm() {
     projectIds: undefined,
     deptId: undefined,
     contractNo: undefined,
+    businessType: undefined,
     startDate: undefined,
     endDate: undefined,
     status: undefined,
+    xmbSubjectFeeType: '2,4,5,7',
     itemList: [],
     ossIdList: undefined,
   }
@@ -46,6 +48,7 @@ export function useForm() {
       deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
       startDate: [{ required: true, message: '开始日期不能为空', trigger: 'onBlur' }],
       endDate: [{ required: true, message: '截至日期不能为空', trigger: 'onBlur' }],
+      xmbSubjectFeeType: [{ required: true, message: '项目部可用费用类型不能为空', trigger: 'onChange' }],
       status: [{ required: true, message: '状态不能为空', trigger: 'onChange' }],
     },
   })

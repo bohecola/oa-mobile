@@ -6,7 +6,7 @@
           <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
         </template>
       </van-field>
-      <van-field v-show-field="['deptId', includeFields]" label="预算部门" name="deptId" input-align="right">
+      <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId" input-align="right">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
         </template>
@@ -109,11 +109,11 @@
           :rules="[
             {
               required: true,
-              message: '预算类别不能为空',
+              message: '预算科目不能为空',
               trigger: 'onBlur',
             },
           ]"
-          label="预算类别"
+          label="预算科目"
           input-align="right"
         >
           <template #input>
@@ -131,7 +131,39 @@
           input-align="right"
         >
           <template #input>
-            {{ !isNil(form.itemList[index].availableAmount) ? formatCurrency(form.itemList[index].availableAmount) : '' }}
+            {{ formatCurrency(form.itemList[index].availableAmount) }}
+          </template>
+        </van-field>
+        <van-field
+          v-model="item.budgetAmount"
+          :name="`itemList.${index}.budgetAmount`"
+          label="预算金额"
+          input-align="right"
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].budgetAmount) }}
+          </template>
+        </van-field>
+        <!-- TODO 临时隐藏 -->
+        <van-field
+          v-if="false"
+          v-model="item.applyingAmount"
+          :name="`itemList.${index}.applyingAmount`"
+          label="申请中"
+          input-align="right"
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].applyingAmount) }}
+          </template>
+        </van-field>
+        <van-field
+          v-model="item.finishAmount"
+          :name="`itemList.${index}.finishAmount`"
+          label="已申请"
+          input-align="right"
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].finishAmount) }}
           </template>
         </van-field>
         <van-field
@@ -169,25 +201,41 @@
           :name="`itemList.${index}.amount`"
           label="单价(元)"
           input-align="right"
-        />
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].amount) }}
+          </template>
+        </van-field>
         <van-field
           v-model="item.realAmount"
           :name="`itemList.${index}.realAmount`"
           label="实际单价(元)"
           input-align="right"
-        />
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].realAmount) }}
+          </template>
+        </van-field>
         <van-field
           v-model="item.totalAmount"
           :name="`itemList.${index}.totalAmount`"
           label="含税合计(元)"
           input-align="right"
-        />
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].totalAmount) }}
+          </template>
+        </van-field>
         <van-field
           v-model="item.realTotalAmount"
           :name="`itemList.${index}.realTotalAmount`"
           label="实际含税合计(元)"
           input-align="right"
-        />
+        >
+          <template #input>
+            {{ formatCurrency(form.itemList[index].realTotalAmount) }}
+          </template>
+        </van-field>
         <van-field
           v-model="item.inquiryWay"
           :name="`itemList.${index}.inquiryWay`"
@@ -214,9 +262,21 @@
     </div>
 
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['purchaseContractIds', includeFields]" label-width="6em" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
+      <van-field v-show-field="['hasPurchaseContract', includeFields]" label="是否存在采购合同" name="hasPurchaseContract" input-align="right">
         <template #input>
-          <ContractSelect v-model="form.purchaseContractIds" readonly multiple />
+          <DictSelect v-model="form.hasPurchaseContract" dict-type="sys_yes_no" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="form.hasPurchaseContract === 'Y'" v-show-field="['purchaseContractIds', includeFields]" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
+        <template #input>
+          <ContractSelect v-model="form.purchaseContractIds" multiple readonly />
+        </template>
+      </van-field>
+
+      <van-field v-else v-show-field="['purchaseFiles', includeFields]" label="采购附件" name="purchaseFiles" input-align="right">
+        <template #input>
+          <UploadFile v-model="form.purchaseFiles" readonly :card-size="60" />
         </template>
       </van-field>
 
@@ -241,6 +301,7 @@ import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import { useStore } from '@/store'
 
 withDefaults(
   defineProps<{
@@ -255,6 +316,8 @@ withDefaults(
     showLoading: true,
   },
 )
+
+const { user } = useStore()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -274,12 +337,14 @@ const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')
 
-// 预算类别查询条件
+// 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
+  const applyDeptId = (form.value as any)?.initiator?.deptId ?? user.info.deptId
 
   return {
     psId,
+    applyDeptId,
   }
 })
 

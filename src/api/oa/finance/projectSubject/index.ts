@@ -10,9 +10,9 @@ import type {
 } from '@/api/oa/finance/projectSubject/types'
 import request from '@/service/request'
 
-export function getItemTreeByPsId(params: { psId: string }): AxiosPromise<ProjectSubjectItemTreeVO[]> {
+export function getItemTreeByPsIdAndApplyDeptId(params: { psId: string, applyDeptId: string | number }): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
-    url: `/oa/finance/projectSubject/getItemTreeByPsId/${params.psId}`,
+    url: `/oa/finance/projectSubject/getItemTreeByPsIdAndApplyDeptId/${params.psId}/${params.applyDeptId}`,
     method: 'get',
   })
 }

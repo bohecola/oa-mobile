@@ -1,5 +1,9 @@
 <template>
-  <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage
+    :loading="loading"
+    :entity-variables="submitFormData.variables?.entity"
+    @approval="handleApproval"
+  >
     <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
 
     <template v-else>
@@ -12,19 +16,19 @@
       <div v-else-if="taskDefinitionKey === 'Activity_0qbyt2w'">
         <detail ref="ExecuteDetail" :include-fields="executeDetailFields" :show-loading="false" />
         <detail ref="ExecuteUpsert" :include-fields="executeUpsertFields" :show-loading="false" />
-        <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
+        <detail ref="AttachmentListDetail" :include-fields="['ossIdList']" :show-loading="false" />
       </div>
 
       <!-- 验收节点 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0ccirhe'">
         <detail ref="CheckDetail" :include-fields="checkDetailFields" :show-loading="false" />
-        <detail ref="CheckUpsert" :include-fields="checkUpsertFields" :show-loading="false" />
-        <detail ref="AttachmentListDetail" :include-fields="attachementFields" :show-loading="false" />
+        <detail ref="CheckUpsert" :include-fields="['checkFiles']" :show-loading="false" />
+        <detail ref="AttachmentListDetail" :include-fields="['ossIdList']" :show-loading="false" />
       </div>
 
       <!-- 验收确认 -->
       <div v-else-if="taskDefinitionKey === 'Activity_10qfp2k'">
-        <detail ref="ReCheckDetail" :include-fields="recheckFields" :show-loading="false" />
+        <detail ref="ReCheckDetail" :include-fields="overviewFields" :show-loading="false" />
       </div>
 
       <!-- 其他审批通用节点 -->
@@ -38,10 +42,11 @@
 <script setup lang="ts">
 // import upsert from '../upsert.vue'
 import detail from '../detail.vue'
-import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
+import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
+import { useWorkflowViewData } from '@/hooks'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
-import { useWorkflowViewData } from '@/hooks'
+import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
 
 type Entity = PurchaseForm & { initiator: Initiator }
@@ -68,7 +73,7 @@ const CommonDetail = ref<InstanceType<typeof detail> | null>()
 // 加载
 const loading = ref(false)
 // 流程节点 Key
-const taskDefinitionKey = ref(proxy!.$route.query.nodeId ?? '')
+const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({
   businessKey: '',
@@ -77,14 +82,15 @@ const submitFormData = ref<StartProcessBo<Entity>>({
 })
 
 // 是否查看
-const isView = computed(() => proxy!.$route.query.type === 'view')
+const isView = computed(() => proxy.$route.query.type === 'view')
 
 const allFields: PartialBooleanRecord<PurchaseForm> = {
   id: true,
   no: true,
   subjectType: true,
-  psId: true,
+  // projectId: true,
   projectName: true,
+  psId: true,
   deptId: true,
   type: true,
   businessCategory: true,
@@ -102,16 +108,11 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   remark: true,
   itemList: true,
   ossIdList: true,
+  hasPurchaseContract: true,
   purchaseContractIds: true,
+  purchaseFiles: true,
   checkFiles: true,
 }
-
-// 附件列表字段
-const attachementFields = ref(
-  filterTruthyKeys<PurchaseForm>({
-    ossIdList: true,
-  }),
-)
 
 // 总览字段
 const overviewFields = ref(
@@ -125,7 +126,9 @@ const applyFields = ref(
   filterTruthyKeys<PurchaseForm>({
     ...allFields,
     realAmount: false,
+    hasPurchaseContract: false,
     purchaseContractIds: false,
+    purchaseFiles: false,
     checkFiles: false,
   }),
 )
@@ -135,7 +138,9 @@ const commonFields = ref(
   filterTruthyKeys<PurchaseForm>({
     ...allFields,
     realAmount: false,
+    hasPurchaseContract: false,
     purchaseContractIds: false,
+    purchaseFiles: false,
     checkFiles: false,
   }),
 )
@@ -146,7 +151,9 @@ const executeDetailFields = ref(
     ...allFields,
     itemList: false,
     realAmount: false,
+    hasPurchaseContract: false,
     purchaseContractIds: false,
+    purchaseFiles: false,
     checkFiles: false,
     ossIdList: false,
   }),
@@ -155,7 +162,9 @@ const executeUpsertFields = ref(
   filterTruthyKeys<PurchaseForm>({
     itemList: true,
     realAmount: true,
+    hasPurchaseContract: true,
     purchaseContractIds: true,
+    purchaseFiles: true,
   }),
 )
 
@@ -165,18 +174,6 @@ const checkDetailFields = ref(
     ...allFields,
     checkFiles: false,
     ossIdList: false,
-  }),
-)
-const checkUpsertFields = ref(
-  filterTruthyKeys<PurchaseForm>({
-    checkFiles: true,
-  }),
-)
-
-// 验收确认字段
-const recheckFields = ref(
-  filterTruthyKeys<PurchaseForm>({
-    ...allFields,
   }),
 )
 
@@ -195,7 +192,7 @@ const recheckFields = ref(
 //           ...entity,
 //           id,
 //           no,
-//           itemList
+//           itemList,
 //         },
 //       }
 //       // 启动流程
@@ -205,18 +202,12 @@ const recheckFields = ref(
 // }
 
 // // 暂存
-// async function handleTempSave({ load, done, initiator }: TempSavePayload) {
+// async function handleTempSave({ load, done, initiator, next }: TempSavePayload) {
 //   const { valid, data } = await Upsert.value?.workflowSubmit()
 
 //   if (valid) {
 //     load()
 //     const entity = { ...data, initiator }
-
-//     const next = () => {
-//       proxy?.$modal.msgSuccess('暂存成功')
-//       proxy.$tab.closePage(proxy.$route)
-//       proxy.$router.go(-1)
-//     }
 
 //     await handleStartWorkflow(entity, next).finally(done)
 //   }
@@ -238,7 +229,7 @@ const recheckFields = ref(
 
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
-  const { taskId } = proxy!.$route.query
+  const { taskId } = proxy.$route.query
   let res: any
 
   // // 申请节点
@@ -257,7 +248,7 @@ async function handleApproval({ open }: ApprovalPayload) {
   // if (res) {
   //   const { valid, data } = res
   //   if (valid) {
-  //     Object.assign(submitFormData.value.variables.entity!, data)
+  //     Object.assign(submitFormData.value.variables.entity, data)
   //     open(taskId as string)
   //   }
   //   return true
@@ -268,8 +259,7 @@ async function handleApproval({ open }: ApprovalPayload) {
 
 // 挂载
 onMounted(async () => {
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
-  const { type, taskId, processInstanceId } = proxy!.$route.query
+  const { type, taskId, processInstanceId } = proxy.$route.query
 
   if (taskId || processInstanceId) {
     loading.value = true

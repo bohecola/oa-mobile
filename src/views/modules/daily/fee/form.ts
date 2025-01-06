@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
-import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
 import { getDailyFee } from '@/api/oa/daily/fee/index'
 import { useStore } from '@/store'
 
@@ -11,6 +11,20 @@ export interface Options<T = any> {
 
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+
+// 费用明细项
+export const dailyFeeItem: DailyFeeItemVO = {
+  id: undefined,
+  dailyFeeId: undefined,
+  subjectItemId: undefined,
+  subjectItemDeptId: undefined,
+  budgetAmount: undefined,
+  applyingAmount: undefined,
+  finishAmount: undefined,
+  availableAmount: undefined,
+  amount: undefined,
+  remark: undefined,
+}
 
 export function useForm() {
   const { user } = useStore()
@@ -24,12 +38,13 @@ export function useForm() {
   const initFormData: DailyFeeForm = {
     id: undefined,
     psId: undefined,
+    contractId: undefined,
+    contractNo: undefined,
     feeType: undefined,
     subjectType: 'project',
     deptId: user.info.deptId,
-    subjectItemId: undefined,
-    availableAmount: 0,
-    amount: 0,
+    itemList: [{ ...dailyFeeItem }],
+    amount: undefined,
     reason: undefined,
     isAdministration: undefined,
     certificateType: undefined,
@@ -42,10 +57,11 @@ export function useForm() {
 
   const initRules: Record<string, FieldRule[]> = {
     subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
-    deptId: [{ required: true, message: '预算部门不能为空', trigger: 'onChange' }],
+    deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
     feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
     psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],
-    subjectItemId: [{ required: true, message: '预算类别不能为空', trigger: 'onChange' }],
+    contractId: [{ required: true, message: '合同编号不能为空', trigger: 'onChange' }],
+    subjectItemId: [{ required: true, message: '预算科目不能为空', trigger: 'onChange' }],
     isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
     certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
     amount: [{ validator: checkAmount, trigger: 'onChange' }],
@@ -106,7 +122,19 @@ export function useForm() {
     const { success, fail } = options ?? {}
     try {
       reset()
-      Object.assign(form.value, entity)
+      // 兼容旧费用流程（非明细表）
+      if (!isNil(entity?.subjectItemId) && !entity?.subjectItemId.includes(',')) {
+        const item: DailyFeeItemVO = { subjectItemId: entity.subjectItemId, availableAmount: entity.availableAmount, amount: entity.amount }
+        nextTick(() => {
+          Object.assign(form.value, entity)
+          form.value.itemList = [item]
+        })
+      }
+      else {
+        nextTick(() => {
+          Object.assign(form.value, entity)
+        })
+      }
     }
     catch (err) {
       console.error(err)

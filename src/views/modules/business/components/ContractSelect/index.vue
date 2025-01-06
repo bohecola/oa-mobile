@@ -117,7 +117,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:selectedValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:contractNo', 'update:selectedValue', 'change'])
 
 const ContractSelectCoreRef = ref<InstanceType<typeof ContractSelectCore> | null>()
 
@@ -129,6 +129,7 @@ function onChange(val?: string) {
   emit('update:modelValue', val)
   emit('change', val)
 
+  emit('update:contractNo', props.multiple ? selectedList.value.map(e => e.no).join(',') : selectedList.value[0]?.no)
   emit('update:selectedValue', props.multiple ? selectedList.value : selectedList.value[0])
 }
 

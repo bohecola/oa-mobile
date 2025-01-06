@@ -5,10 +5,10 @@
     :group="false"
     @approval="handleApproval"
   >
-    <van-form id="DailyWorkFormContainer" ref="Form" label-width="98">
+    <van-form ref="Form" label-width="auto">
       <van-cell-group inset class="!my-3">
         <van-field
-          prop="dailyWorkType"
+          name="dailyWorkType"
           label="日常费用类型"
           input-align="right"
           @click="handleDailyTypeClick"
@@ -85,8 +85,10 @@ const trackedFields = ref<KeysOfArray<DailyFeeForm>>(getBaseFields())
 // });
 
 provide('form', form)
+
 provide('isView', isView)
 provide('taskDefinitionKey', taskDefinitionKey)
+
 provide('trackFields', trackFields)
 provide('updateRuleRequired', updateRuleRequired)
 

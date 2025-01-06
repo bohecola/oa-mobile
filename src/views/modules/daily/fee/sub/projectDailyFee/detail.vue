@@ -4,6 +4,7 @@
       <DictSelect v-model="form.certificateType" dict-type="oa_project_daily_fee_certificate_type" multiple readonly />
     </template>
   </van-field>
+
   <FeeBaseDetail :include-fields="includeFields" />
 </template>
 
@@ -17,7 +18,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'availableAmount', 'amount', 'certificateType', 'reason', 'ossIdList'],
+    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractId', 'itemList', 'amount', 'certificateType', 'reason', 'ossIdList'],
   },
 )
 

@@ -50,6 +50,11 @@ export interface PurchaseVO {
   contractId: string | number
 
   /**
+   * 合同编号
+   */
+  contractNo?: string
+
+  /**
    * 合同执行情况; 合同内  合同外
    */
   contractExecute: string
@@ -109,7 +114,7 @@ export interface PurchaseForm extends BaseEntity {
   // /**
   //  * 项目id
   //  */
-  // projectId?: string | number
+  // projectId?: string | number;
 
   /**
    * 预算id
@@ -167,6 +172,11 @@ export interface PurchaseForm extends BaseEntity {
   contractId?: string | number
 
   /**
+   * 合同编号
+   */
+  contractNo?: string
+
+  /**
    * 合同名称
    */
   contractName?: string
@@ -212,6 +222,16 @@ export interface PurchaseForm extends BaseEntity {
   itemList?: PurchaseItemVO[]
 
   /**
+   * 是否存在采购合同
+   */
+  hasPurchaseContract?: string
+
+  /**
+   * 采购附件
+   */
+  purchaseFiles?: string
+
+  /**
    * 验收附件
    */
   checkFiles?: string
@@ -231,13 +251,11 @@ export interface PurchaseQuery extends PageQuery {
   /**
    * 项目id
    */
-
   projectId?: string | number
 
   /**
    * 项目名称
    */
-
   projectName?: string
   /**
    * 采购类型; 物资采购 外委采购 框架采购
@@ -284,7 +302,6 @@ export interface PurchaseQuery extends PageQuery {
   /**
    * 状态
    */
-
   status?: string
 
   /**
@@ -309,7 +326,30 @@ export interface PurchaseItemVO {
    */
   psiId?: string | number
 
+  /**
+   * 预算责任部门id
+   */
+  subjectItemDeptId?: string | number
+
+  /**
+   * 剩余金额
+   */
   availableAmount?: number
+
+  /**
+   * 预算金额
+   */
+  budgetAmount: number
+
+  /**
+   * 申请中
+   */
+  applyingAmount: number
+
+  /**
+   * 已申请
+   */
+  finishAmount: number
 
   /**
    * 物品名称

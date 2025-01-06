@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[--bg-card] border" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
     <div class="p-2" :class="{ 'border-b': !isCollapse }" @click="handleCollapse">
-      <div class="flex justify-between">
+      <div class="flex justify-between items-baseline">
         <slot v-if="slots.header" name="header" />
         <span v-else :class="titleClass">{{ title }}</span>
 

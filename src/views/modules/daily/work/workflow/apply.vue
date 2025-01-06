@@ -1,9 +1,9 @@
 <template>
   <WorkflowPage :loading="isLoading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <van-form id="DailyWorkFormContainer" ref="Form" label-width="auto">
+    <van-form ref="Form" label-width="auto">
       <van-cell-group inset class="!my-3">
         <van-field
-          prop="dailyWorkType"
+          name="dailyWorkType"
           label="日常事务类型"
           input-align="right"
           @click="handleDailyTypeClick"

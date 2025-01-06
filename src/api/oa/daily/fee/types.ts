@@ -25,7 +25,7 @@ export interface DailyFeeVO {
   feeType: number
 
   /**
-   * 预算类别
+   * 预算科目
    */
   subjectItemId: string | number
 
@@ -55,6 +55,58 @@ export interface DailyFeeVO {
   remark: string
 }
 
+export interface DailyFeeItemVO {
+  /**
+   * 费用明细
+   */
+  id?: string | number
+
+  /**
+   * 日常费用申请表id
+   */
+  dailyFeeId?: string | number
+
+  /**
+   * 项目预算项id（oa_project_subject_item）
+   */
+  subjectItemId?: string | number
+
+  /**
+   * 预算责任部门
+   */
+  subjectItemDeptId?: string | number
+
+  /**
+   * 预算金额
+   */
+  budgetAmount?: number
+
+  /**
+   * 申请中
+   */
+  applyingAmount?: number
+
+  /**
+   * 已申请
+   */
+  finishAmount?: number
+
+  /**
+   * 剩余金额
+   */
+  availableAmount?: number
+
+  /**
+   * 本次申请金额
+   */
+  amount?: number
+
+  /**
+   * 备注
+   */
+  remark?: string
+}
+
 export interface DailyFeeForm extends BaseEntity {
   /**
    * ID
@@ -65,6 +117,16 @@ export interface DailyFeeForm extends BaseEntity {
    * 预算id
    */
   psId?: string
+
+  /**
+   * 合同id
+   */
+  contractId?: string
+
+  /**
+   * 合同编号
+   */
+  contractNo?: string
 
   /**
    *预算类型(项目预算、部门预算)
@@ -82,9 +144,14 @@ export interface DailyFeeForm extends BaseEntity {
   feeType?: number
 
   /**
-   * 预算类别
+   * 预算科目
    */
   subjectItemId?: string | number
+
+  /**
+   * 预算明细表
+   */
+  itemList?: DailyFeeItemVO[]
 
   /**
    * 剩余金额
@@ -157,7 +224,7 @@ export interface DailyFeeQuery extends PageQuery {
   feeType?: number
 
   /**
-   * 预算类别
+   * 预算科目
    */
   subjectItemId?: string | number
 
