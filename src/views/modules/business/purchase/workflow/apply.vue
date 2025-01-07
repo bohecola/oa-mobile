@@ -13,7 +13,9 @@
       </div>
 
       <!-- 采购执行节点 -->
-      <div v-else-if="taskDefinitionKey === 'Activity_0qbyt2w'">
+      <!-- Activity_0x4xddm 实际单价：必填 -->
+      <!-- Activity_0qbyt2w 实际单价：非必填 -->
+      <div v-else-if="['Activity_0x4xddm', 'Activity_0qbyt2w'].includes(taskDefinitionKey)">
         <detail ref="ExecuteDetail" :include-fields="executeDetailFields" :show-loading="false" />
         <detail ref="ExecuteUpsert" :include-fields="executeUpsertFields" :show-loading="false" />
         <detail ref="AttachmentListDetail" :include-fields="['ossIdList']" :show-loading="false" />
@@ -73,7 +75,7 @@ const CommonDetail = ref<InstanceType<typeof detail> | null>()
 // 加载
 const loading = ref(false)
 // 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
+const taskDefinitionKey = ref<string>(proxy.$route.query.nodeId as string ?? '')
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({
   businessKey: '',
@@ -273,7 +275,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: (['Activity_11sjm5p', 'Activity_0qbyt2w', 'Activity_0ccirhe'].includes(taskDefinitionKey.value as string) ? 'true' : 'false'),
+        isEditNode: (['Activity_11sjm5p', 'Activity_0qbyt2w', 'Activity_0x4xddm', 'Activity_0ccirhe'].includes(taskDefinitionKey.value as string) ? 'true' : 'false'),
       },
     })
 

@@ -207,7 +207,6 @@
           </template>
         </van-field>
         <van-field
-          v-model="item.realAmount"
           :name="`itemList.${index}.realAmount`"
           label="实际单价(元)"
           input-align="right"
@@ -262,23 +261,23 @@
     </div>
 
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['hasPurchaseContract', includeFields]" label="是否存在采购合同" name="hasPurchaseContract" input-align="right">
+      <!-- <van-field v-show-field="['hasPurchaseContract', includeFields]" label="是否存在采购合同" name="hasPurchaseContract" input-align="right">
         <template #input>
           <DictSelect v-model="form.hasPurchaseContract" dict-type="sys_yes_no" readonly />
         </template>
-      </van-field>
+      </van-field> -->
 
-      <van-field v-if="form.hasPurchaseContract === 'Y'" v-show-field="['purchaseContractIds', includeFields]" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
+      <!-- <van-field v-if="form.hasPurchaseContract === 'Y'" v-show-field="['purchaseContractIds', includeFields]" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
         <template #input>
           <ContractSelect v-model="form.purchaseContractIds" multiple readonly />
         </template>
-      </van-field>
+      </van-field> -->
 
-      <van-field v-else v-show-field="['purchaseFiles', includeFields]" label="采购附件" name="purchaseFiles" input-align="right">
+      <!-- <van-field v-else v-show-field="['purchaseFiles', includeFields]" label="采购附件" name="purchaseFiles" input-align="right">
         <template #input>
           <UploadFile v-model="form.purchaseFiles" readonly :card-size="60" />
         </template>
-      </van-field>
+      </van-field> -->
 
       <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="right">
         <template #input>
