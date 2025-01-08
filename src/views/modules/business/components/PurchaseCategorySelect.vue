@@ -225,7 +225,9 @@ watch(
   () => props.params,
   async () => {
     await getTree()
-    updateVars(ids.value)
+    if (!isNil(props.modelValue)) {
+      updateVars(ids.value)
+    }
   },
   {
     immediate: true,
