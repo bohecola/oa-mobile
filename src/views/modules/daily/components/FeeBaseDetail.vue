@@ -69,6 +69,7 @@
               <PurchaseCategorySelect
                 v-model="item.subjectItemId"
                 v-model:amount="item.budgetAmount"
+                v-model:applying-amount="item.applyingAmount"
                 v-model:finish-amount="item.finishAmount"
                 v-model:available-amount="item.availableAmount"
                 :params="PurchaseCategorySelectParams"
@@ -79,7 +80,6 @@
         </template>
 
         <van-field
-          v-model="item.budgetAmount"
           :name="`itemList.${index}.budgetAmount`"
           label="预算金额"
           input-align="right"
@@ -89,10 +89,7 @@
           </template>
         </van-field>
 
-        <!-- TODO 临时隐藏 -->
         <van-field
-          v-if="false"
-          v-model="item.applyingAmount"
           :name="`itemList.${index}.applyingAmount`"
           label="申请中"
           input-align="right"
@@ -103,7 +100,6 @@
         </van-field>
 
         <van-field
-          v-model="item.finishAmount"
           :name="`itemList.${index}.finishAmount`"
           label="已申请"
           input-align="right"
@@ -114,7 +110,6 @@
         </van-field>
 
         <van-field
-          v-model="item.availableAmount"
           :name="`itemList.${index}.availableAmount`"
           label="剩余金额"
           input-align="right"
@@ -125,7 +120,6 @@
         </van-field>
 
         <van-field
-          v-model="item.amount"
           :name="`itemList.${index}.amount`"
           label="申请金额（元）"
           input-align="right"

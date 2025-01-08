@@ -90,7 +90,15 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:deptId', 'update:amount', 'update:finishAmount', 'update:availableAmount', 'change'])
+const emit = defineEmits([
+  'update:modelValue',
+  'update:deptId',
+  'update:amount',
+  'update:applyingAmount',
+  'update:finishAmount',
+  'update:availableAmount',
+  'change',
+])
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -169,35 +177,50 @@ function updateVars(value: PurchaseCategorySelectValue) {
   // 选中的预算科目项
   const items = !isEmpty(value) ? rawData.value.filter(item => idsArr.includes(item.id as string)) : []
 
-  // 计算选中预算科目的 预算金额总和
+  // 预算金额总和
   const amount = items.reduce((prev, curr) => {
-    if (!isNil(curr.amount) || curr.amount !== '') {
+    if (!isNil(curr.amount) && (curr.amount as any) !== '') {
       return prev.add(Big(curr.amount))
     }
 
     return prev.add(0)
   }, new Big(0))
 
-  // 计算选中预算科目的 剩余金额总和
+  // 申请中金额总和
+  const applyingAmount = items.reduce((prev, curr) => {
+    if (!isNil(curr.applyingAmount) && (curr.applyingAmount as any) !== '') {
+      return prev.add(Big(curr.applyingAmount))
+    }
+
+    return prev.add(0)
+  }, new Big(0))
+
+  // 已申请金额总和
+  const finishAmount = items.reduce((prev, curr) => {
+    if (!isNil(curr.finishAmount) && (curr.finishAmount as any) !== '') {
+      return prev.add(Big(curr.finishAmount))
+    }
+
+    return prev.add(0)
+  }, new Big(0))
+
+  // 剩余金额总和
   const availableAmount = items.reduce((prev, curr) => {
-    if (!isNil(curr.availableAmount) || curr.availableAmount !== '') {
+    if (!isNil(curr.availableAmount) && (curr.availableAmount as any) !== '') {
       return prev.add(Big(curr.availableAmount))
     }
 
     return prev.add(0)
   }, new Big(0))
 
-  // 计算选中预算科目的 申请中金额总和
-  const finishAmount = items.reduce((prev, curr) => {
-    const beginAmount = isNil(curr.beginAmount) || (curr.beginAmount as any) === '' ? 0 : curr.beginAmount
-    const expendAmount = isNil(curr.expendAmount) || (curr.expendAmount as any) === '' ? 0 : curr.expendAmount
-
-    return prev.add(Big(beginAmount)).add(expendAmount)
-  }, new Big(0))
-
+  // 预算金额
   emit('update:amount', amount.toNumber())
-  emit('update:availableAmount', availableAmount.toNumber())
+  // 申请中金额
+  emit('update:applyingAmount', applyingAmount.toNumber())
+  // 已申请金额
   emit('update:finishAmount', finishAmount.toNumber())
+  // 剩余金额
+  emit('update:availableAmount', availableAmount.toNumber())
 }
 
 async function getTree() {
