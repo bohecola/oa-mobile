@@ -119,6 +119,9 @@
           <template #input>
             <PurchaseCategorySelect
               v-model="item.psiId"
+              v-model:amount="item.budgetAmount"
+              v-model:finish-amount="item.finishAmount"
+              v-model:available-amount="item.availableAmount"
               :params="PurchaseCategorySelectParams"
               readonly
             />

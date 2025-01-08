@@ -160,6 +160,10 @@ function onChange(value?: PurchaseCategorySelectValue) {
     emit('update:deptId', item?.deptId)
   }
 
+  updateVars(value)
+}
+
+function updateVars(value: PurchaseCategorySelectValue) {
   // 选中的预算科目项 id 集合
   const idsArr = isArray(value) ? value : !isNil(value) ? [value] : []
   // 选中的预算科目项
@@ -219,8 +223,9 @@ watch(
 // 查询参数变化
 watch(
   () => props.params,
-  () => {
-    getTree()
+  async () => {
+    await getTree()
+    updateVars(ids.value)
   },
   {
     immediate: true,
