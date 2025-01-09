@@ -175,6 +175,7 @@ const baseMsg = '不能为空'
 const extraInitRules: Record<string, FieldRule[]> = {
   // 项目考核奖励确认单
   a_contractId: [{ required: true, message: `合同名称${baseMsg}`, trigger: 'onBlur' }],
+  a_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   a_assessmentAmount: [{ required: true, message: `考核金额${baseMsg}`, trigger: 'onBlur' }],
   a_rewardAmount: [{ required: true, message: `奖励金${baseMsg}`, trigger: 'onBlur' }],
 

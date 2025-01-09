@@ -29,6 +29,12 @@
     </template>
   </van-field>
 
+  <van-field v-if="!isNil(form.a_businessType) && form.a_businessType !== '0'" v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="right">
+    <template #input>
+      <UserSelect v-model="form.customizeApprover" multiple readonly />
+    </template>
+  </van-field>
+
   <van-field v-show-field="['a_assessmentAmount', includeFields]" label="考核金额（元）" name="a_assessmentAmount" input-align="right">
     <template #input>
       <span>{{ form.a_assessmentAmount }}</span>
@@ -65,6 +71,7 @@ withDefaults(
       'a_deptId',
       'a_contractNo',
       'a_partyA',
+      'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
       'reason',
