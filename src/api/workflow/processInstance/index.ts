@@ -1,6 +1,16 @@
 import type { AxiosPromise } from 'axios'
-import type { ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
+import type { ActHiProcinstVO, ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
 import request from '@/service/request'
+
+/**
+ * 根据业务id获取流程实例
+ */
+export function getActHiProcinstByBusinessKey(businessKey: string): AxiosPromise<ActHiProcinstVO> {
+  return request({
+    url: `/workflow/processInstance/getActHiProcinstByBusinessKey/${businessKey}`,
+    method: 'get',
+  })
+}
 
 /**
  * 查询运行中实例列表

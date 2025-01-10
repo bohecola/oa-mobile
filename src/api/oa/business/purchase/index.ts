@@ -37,7 +37,7 @@ export function getItemTreeByProjectOrDept(params: {
  * @returns {*}
  */
 
-export function listPurchase(query?: PurchaseQuery): AxiosPromise<PurchaseVO[]> {
+export function listPurchase(query?: Partial<PurchaseQuery>): AxiosPromise<PurchaseVO[]> {
   return request({
     url: '/oa/business/purchase/list',
     method: 'get',

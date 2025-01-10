@@ -2,7 +2,7 @@ export interface PurchaseVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 编号
@@ -303,6 +303,10 @@ export interface PurchaseQuery extends PageQuery {
    * 状态
    */
   status?: string
+
+  statusList?: (string | number)[]
+
+  ids?: string[]
 
   /**
    * 日期范围参数

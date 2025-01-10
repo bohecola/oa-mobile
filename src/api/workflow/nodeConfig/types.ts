@@ -32,6 +32,11 @@ export interface NodeConfigVO {
   definitionId: string | number
 
   /**
+   * 是否为申请人节点 （0是 1否）
+   */
+  applyUserTask: string
+
+  /**
    * 表单管理
    */
   wfFormManageVo: FormManageVO

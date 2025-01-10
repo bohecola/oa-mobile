@@ -1,3 +1,5 @@
+import type { NodeConfigVO } from '../nodeConfig/types'
+import type { DefinitionConfigVO } from '../definitionConfig/types'
 import type { TaskVO } from '@/api/workflow/task/types'
 
 export interface ProcessInstanceQuery extends PageQuery {
@@ -10,7 +12,6 @@ export interface ProcessInstanceQuery extends PageQuery {
 
 export interface ProcessInstanceVO extends BaseEntity {
   id: string
-  name: string
   processDefinitionId: string
   processDefinitionName: string
   processDefinitionKey: string
@@ -25,4 +26,33 @@ export interface ProcessInstanceVO extends BaseEntity {
   businessStatus: string
   businessStatusName: string
   taskVoList: TaskVO[]
+}
+
+export interface ActHiProcinstVO {
+  id: string
+  rev: number
+  procInstId: string
+  businessKey: string
+  procDefId: string
+  startTime: string
+  endTime: string
+  duration: string
+  startUserId: string
+  startActId: string
+  endActId: string
+  superProcessInstanceId: string
+  deleteReason: string
+  tenantId: string
+  name: string
+  callbackId: string
+  callbackType: string
+  referenceId: string
+  referenceType: string
+  propagatedStageInstId: string
+  businessStatus: string
+  /**
+   * 节点配置视图对象
+   */
+  wfNodeConfigVo: NodeConfigVO
+  wfDefinitionConfigVo: DefinitionConfigVO
 }

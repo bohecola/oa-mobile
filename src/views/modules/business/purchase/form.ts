@@ -125,9 +125,9 @@ export function useForm() {
       ...item,
       num: Number(item.num),
       amount: Number(item.amount),
-      realAmount: Number(item.realAmount),
       totalAmount: Number(item.totalAmount),
-      realTotalAmount: Number(item.realTotalAmount),
+      // realAmount: Number(item.realAmount),
+      // realTotalAmount: Number(item.realTotalAmount),
     }))
     nextTick(() => {
       Object.assign(form.value, { ...data, amount: Number(data.amount), realAmount: Number(data.realAmount), itemList })
