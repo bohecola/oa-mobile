@@ -1,4 +1,4 @@
-export interface PurchaseVO {
+export interface PurchaseVO extends BaseEntity {
   /**
    * ID
    */
@@ -8,6 +8,16 @@ export interface PurchaseVO {
    * 编号
    */
   no: string
+
+  /**
+   * 状态
+   */
+  status?: string
+
+  /**
+   * 预算类型（项目预算、部门预算）
+   */
+  subjectType?: string
 
   /**
    * 项目id
