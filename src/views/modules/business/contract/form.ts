@@ -1,7 +1,9 @@
-import type { FormInstance } from 'vant'
+import Big from 'big.js'
 import { showFailToast } from 'vant'
-import { getContract } from '@/api/oa/business/contract'
+import { cloneDeep, isNil } from 'lodash-es'
+import type { FormInstance } from 'vant'
 import type { ContractForm } from '@/api/oa/business/contract/types'
+import { getContract } from '@/api/oa/business/contract'
 
 export type _ContractForm = Override<ContractForm, { taxRate: { amount?: number, taxRate?: number }[] }>
 export type ContractMode = 'two' | 'three' | 'four'
@@ -11,6 +13,10 @@ export interface Options<T = any> {
 }
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+export interface SuccessData {
+  id: ContractForm['id']
+  no?: ContractForm['no']
+}
 
 // 合同模式
 export function useContractMode() {
@@ -65,11 +71,12 @@ export function useForm() {
     sealUseType: undefined,
     remark: undefined,
     ossIdList: undefined,
+    purchaseIds: [],
   }
 
   // 数据
   const data = reactive<Omit<PageData<_ContractForm, any>, 'queryParams'>>({
-    form: { ...initFormData },
+    form: cloneDeep(initFormData),
     rules: {
       id: [{ required: true, message: 'ID不能为空', trigger: 'onBlur' }],
       no: [{ required: true, message: '编号不能为空', trigger: 'onBlur' }],
@@ -114,13 +121,16 @@ export function useForm() {
   const updateLoading = ref(false)
 
   // 税率金额总和
-  const totalTaxRateAmount = computed(() =>
-    form.value.taxRate?.reduce((acc: any, cur: any) => {
-      if (cur.amount === undefined)
-        return acc + 0
-      return acc + cur.amount
-    }, 0),
-  )
+  const totalTaxRateAmount = computed(() => {
+    const totalTaxRateAmount = form.value.taxRate?.reduce<Big.Big>((acc, curr) => {
+      if (isNil(curr.amount)) {
+        acc.add(0)
+      }
+      return acc.add(Big(curr.amount))
+    }, Big(0))
+
+    return totalTaxRateAmount.toNumber()
+  })
 
   // 合同金额校验
   function checkAmountAndTaxRate(value: any, rule: any) {
@@ -136,7 +146,7 @@ export function useForm() {
 
   // 表单重置
   const reset = () => {
-    form.value = { ...initFormData }
+    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
     setContractMode('two')
   }

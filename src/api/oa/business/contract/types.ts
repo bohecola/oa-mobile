@@ -262,6 +262,11 @@ export interface ContractForm extends BaseEntity {
   remark?: string
 
   /**
+   * 合同类别为采购合同时，关联的采购业务 id
+   */
+  purchaseIds?: string[]
+
+  /**
    * 附件列表
    */
   ossIdList?: string[]

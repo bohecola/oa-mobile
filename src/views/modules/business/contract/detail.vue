@@ -44,7 +44,7 @@
         </template>
       </template>
     </van-field>
-    <van-field v-if="form.category === 'out0'" v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
+    <van-field v-if="isPurchaseContract" v-model="form.reviewWay" v-show-field="['reviewWay', includeFields]" name="reviewWay" label="合同评审方式" input-align="right">
       <template #input>
         <dict-select v-model="form.reviewWay" dict-type="oa_contract_review_way" readonly />
       </template>
@@ -130,6 +130,18 @@
       </template>
     </van-field>
 
+    <Teleport to="#AFC" defer>
+      <div class="px-4">
+        <PurchaseProcessSelect
+          v-if="isPurchaseContract"
+          v-model="form.purchaseIds"
+          v-show-field="['purchaseIds', includeFields]"
+          multiple
+          readonly
+        />
+      </div>
+    </Teleport>
+
     <van-field v-if="$route.query?.queryType !== 'dept'" v-model="form.originalFile" v-show-field="['originalFile', includeFields]" name="originalFile" label="合同原件" input-align="right">
       <template #input>
         <UploadFile v-model="form.originalFile" readonly :card-size="60" />
@@ -155,6 +167,7 @@
 import { isEmpty, isNil } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
+import PurchaseProcessSelect from '../components/PurchaseProcessSelect/index.vue'
 import { useForm } from './form'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -182,6 +195,9 @@ const { oa_contract_category_agreement } = toRefs(proxy!.useDict('oa_contract_ca
 const { Form, form, contractMode, isLoading, reset, view, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<ContractForm>()
+
+// 是否是采购合同
+const isPurchaseContract = computed(() => form.value.category === 'out0')
 
 // 输出
 defineExpose({
