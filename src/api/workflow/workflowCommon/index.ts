@@ -2,7 +2,7 @@ import { showFailToast } from 'vant'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 
 export default {
-  routerJump(routerJumpVo: RouterJumpVo, proxy: any) {
+  routerJump(routerJumpVo: RouterJumpVo, proxy: any, closePage: boolean = true) {
     if (routerJumpVo.wfNodeConfigVo && routerJumpVo.wfNodeConfigVo.formType === 'static' && routerJumpVo.wfNodeConfigVo.wfFormManageVo) {
       proxy.$router.push({
         path: `${routerJumpVo.wfNodeConfigVo.wfFormManageVo.router}`,

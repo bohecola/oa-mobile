@@ -17,7 +17,7 @@
       <van-empty v-else image-size="60" description="数据为空" class="!py-2" />
     </div>
 
-    <div v-if="slots.footer" class="p-2">
+    <div v-if="slots.footer" class="border-t p-2">
       <slot name="footer" />
     </div>
   </div>
