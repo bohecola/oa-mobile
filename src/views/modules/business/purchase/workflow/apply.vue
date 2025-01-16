@@ -90,8 +90,6 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   id: true,
   no: true,
   subjectType: true,
-  // projectId: true,
-  projectName: true,
   psId: true,
   deptId: true,
   type: true,
@@ -112,7 +110,8 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   itemList: true,
   ossIdList: true,
   hasPurchaseContract: true,
-  purchaseContractIds: true,
+  // 流程中不展示关联采购合同
+  purchaseContractIds: false,
   purchaseFiles: true,
   checkFiles: true,
 }
@@ -166,7 +165,7 @@ const executeUpsertFields = ref(
     itemList: true,
     realAmount: true,
     hasPurchaseContract: true,
-    purchaseContractIds: true,
+    purchaseContractIds: false,
     purchaseFiles: true,
   }),
 )

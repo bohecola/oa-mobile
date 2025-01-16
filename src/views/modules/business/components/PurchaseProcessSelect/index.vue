@@ -51,50 +51,40 @@
         </el-table-column>
         <el-table-column label="业务类别" align="center" width="80">
           <template #default="scope">
-            <!-- 项目业务类型 -->
-    <dict-tag v-if="scope.row.subjectType === 'project'" :options="oa_project_business_type" :value="scope.row.businessCategory" />
-    <!-- 采购业务类型 -->
-    <dict-tag v-else :options="oa_purchase_business_type" :value="scope.row.businessCategory" />
-  </div>
-</template>
-
+            <dict-tag v-if="scope.row.subjectType === 'project'" :options="oa_project_business_type" :value="scope.row.businessCategory" />
+            <dict-tag v-else :options="oa_purchase_business_type" :value="scope.row.businessCategory" />
+          </template>
         </el-table-column>
         <el-table-column label="物品类别" align="center" width="120">
           <template #default="scope">
             <dict-tag :options="oa_purchase_object_category" :value="scope.row.objectCategory" />
           </template>
         </el-table-column>
-
         <el-table-column label="含税总金额" align="center" width="120">
           <template #default="scope">
             {{ formatCurrency(scope.row.amount) }}
           </template>
         </el-table-column>
-
         <el-table-column label="实际金额" align="center" width="120">
           <template #default="scope">
             {{ formatCurrency(scope.row.realAmount) }}
           </template>
         </el-table-column>
-
         <el-table-column label="采购说明" align="center">
           <template #default="scope">
             <TextareaView :value="scope.row.description" />
           </template>
         </el-table-column>
-
         <el-table-column label="申请时间" align="center" width="100">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
             <dict-tag :options="oa_purchase_status" :value="scope.row.status" />
           </template>
         </el-table-column>
-
         <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="80px">
           <template #default="scope">
             <el-button

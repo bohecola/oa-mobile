@@ -142,11 +142,6 @@ export interface PurchaseForm extends BaseEntity {
   psId?: string
 
   /**
-   * 项目名称
-   */
-  projectName?: string
-
-  /**
    * 部门id
    */
   deptId?: string | number
@@ -278,10 +273,6 @@ export interface PurchaseQuery extends PageQuery {
    */
   projectId?: string | number
 
-  /**
-   * 项目名称
-   */
-  projectName?: string
   /**
    * 采购类型
    */
