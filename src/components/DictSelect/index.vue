@@ -8,26 +8,20 @@
 <script setup lang="ts">
 import { isEmpty, isNumber } from 'lodash-es'
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string
-    readonly?: boolean
-    multiple?: boolean
-    dictType: string
-  }>(),
-  {
-    modelValue: undefined,
-    readonly: false,
-    multiple: false,
-  },
-)
+const props = defineProps<{
+  modelValue?: string
+  readonly?: boolean
+  multiple?: boolean
+  dictType?: string
+  options?: DictDataOption[]
+}>()
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const dictRefs = toRefs(proxy.useDict(props.dictType))
-const options = dictRefs[props.dictType]
+const options = computed(() => props.options ?? dictRefs[props.dictType].value)
 
 const ids = ref<string | string[]>(deserialize(props.modelValue)!)
 
@@ -39,7 +33,6 @@ function onChange(val: string | string[]) {
 }
 
 function serialize(value?: string | string[]) {
-  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
   if (!isEmpty(value) || isNumber(value)) {
     if (props.multiple) {
       return (value as string[]).join(',')
