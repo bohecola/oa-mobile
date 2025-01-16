@@ -10,14 +10,14 @@ export interface PurchaseVO extends BaseEntity {
   no: string
 
   /**
+   * 预算类型
+   */
+  subjectType?: string
+
+  /**
    * 状态
    */
   status?: string
-
-  /**
-   * 预算类型（项目预算、部门预算）
-   */
-  subjectType?: string
 
   /**
    * 项目id
@@ -80,6 +80,11 @@ export interface PurchaseVO extends BaseEntity {
   amount: number
 
   /**
+   * 不含税总金额
+   */
+  notTaxAmount: number
+
+  /**
    * 实际采购金额
    */
   realAmount: number
@@ -95,6 +100,11 @@ export interface PurchaseVO extends BaseEntity {
   file: number
 
   /**
+   * 验收附件
+   */
+  checkFiles?: string
+
+  /**
    * 备注
    */
   remark: string
@@ -103,6 +113,11 @@ export interface PurchaseVO extends BaseEntity {
    * 采购清单
    */
   itemList?: PurchaseItemVO[]
+
+  /**
+   * 附件列表
+   */
+  ossIdList?: string[]
 }
 
 export interface PurchaseForm extends BaseEntity {
@@ -117,14 +132,9 @@ export interface PurchaseForm extends BaseEntity {
   no?: string
 
   /**
-   * 预算类型（项目预算、部门预算）
+   * 预算类型
    */
   subjectType?: string
-
-  // /**
-  //  * 项目id
-  //  */
-  // projectId?: string | number;
 
   /**
    * 预算id
@@ -142,17 +152,17 @@ export interface PurchaseForm extends BaseEntity {
   deptId?: string | number
 
   /**
-   * 采购类型; 物资采购 外委采购 框架采购
+   * 采购类型
    */
   type?: string
 
   /**
-   * 业务类别; 运维（新能源电站运维）电力工程类项目 电站工程类项目 信息化类项目检修试验类项目其他 管理 销售 研发
+   * 业务类别;
    */
   businessCategory?: string
 
   /**
-   * 物品类别; 生产物资 工程物资 员工福利 办公用品 生活用品 劳保用品 安全物资 其他
+   * 物品类别
    */
   objectCategory?: string
 
@@ -192,7 +202,7 @@ export interface PurchaseForm extends BaseEntity {
   contractName?: string
 
   /**
-   * 合同执行情况; 合同内  合同外
+   * 合同执行情况
    */
   contractExecute?: string
 
@@ -205,6 +215,11 @@ export interface PurchaseForm extends BaseEntity {
    * 金额
    */
   amount?: number
+
+  /**
+   * 不含税总金额
+   */
+  notTaxAmount?: number
 
   /**
    * 实际采购金额
@@ -268,17 +283,17 @@ export interface PurchaseQuery extends PageQuery {
    */
   projectName?: string
   /**
-   * 采购类型; 物资采购 外委采购 框架采购
+   * 采购类型
    */
   type?: string
 
   /**
-   * 业务类别; 运维（新能源电站运维）电力工程类项目 电站工程类项目 信息化类项目检修试验类项目其他 管理 销售 研发
+   * 业务类别
    */
   businessCategory?: string
 
   /**
-   * 物品类别; 生产物资 工程物资 员工福利 办公用品 生活用品 劳保用品 安全物资 其他
+   * 物品类别
    */
   objectCategory?: string
 
@@ -307,6 +322,9 @@ export interface PurchaseQuery extends PageQuery {
    */
   contractExecute?: string
 
+  /**
+   * 查询类型
+   */
   queryType?: string
 
   /**
@@ -314,8 +332,24 @@ export interface PurchaseQuery extends PageQuery {
    */
   status?: string
 
+  /**
+   * 状态列表
+   */
   statusList?: (string | number)[]
 
+  /**
+   * 申请部门
+   */
+  createDept?: string | number
+
+  /**
+   * 申请人
+   */
+  createUserName?: string
+
+  /**
+   * 主键列表
+   */
   ids?: string[]
 
   /**

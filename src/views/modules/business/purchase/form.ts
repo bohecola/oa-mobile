@@ -47,7 +47,6 @@ export function useForm() {
     no: undefined,
     subjectType: 'project',
     psId: undefined,
-    // projectId: undefined,
     projectName: undefined,
     deptId: user.info.deptId,
     type: undefined,
@@ -62,6 +61,7 @@ export function useForm() {
     contractExecute: undefined,
     isOwnerSettlement: 'N',
     amount: undefined,
+    notTaxAmount: undefined,
     realAmount: undefined,
     description: undefined,
     remark: undefined,
@@ -90,6 +90,7 @@ export function useForm() {
       leaseType: [{ required: false, message: '租赁类型不能为空', trigger: 'onChange' }],
       isDeposit: [{ required: false, message: '是否有押金不能为空', trigger: 'onChange' }],
       amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
+      notTaxAmount: [{ required: true, message: '不含税总金额不能为空', trigger: 'onBlur' }],
       isOwnerSettlement: [{ required: false, message: '是否业主单独结算不能为空', trigger: 'onChange' }],
       description: [{ required: true, message: '采购说明不能为空', trigger: 'onBlur' }],
       remark: [{ required: false, message: '备注不能为空', trigger: 'onBlur' }],
@@ -110,10 +111,17 @@ export function useForm() {
   // 更新加载
   const updateLoading = ref(false)
 
+  // 不能删除的文件主键数组
+  const excludeCheckFiles = ref([])
+  const excludeOssIdList = ref([])
+
   // 表单重置
   const reset = () => {
     form.value = { ...cloneDeep(initFormData) }
     Form.value?.resetValidation()
+
+    excludeCheckFiles.value = []
+    excludeOssIdList.value = []
   }
 
   // 回显
@@ -126,11 +134,18 @@ export function useForm() {
       num: Number(item.num),
       amount: Number(item.amount),
       totalAmount: Number(item.totalAmount),
-      // realAmount: Number(item.realAmount),
-      // realTotalAmount: Number(item.realTotalAmount),
     }))
+
+    excludeCheckFiles.value = data.checkFiles?.split(',')
+    excludeOssIdList.value = data.ossIdList
+
     nextTick(() => {
-      Object.assign(form.value, { ...data, amount: Number(data.amount), realAmount: Number(data.realAmount), itemList })
+      Object.assign(form.value, {
+        ...data,
+        amount: Number(data.amount),
+        realAmount: Number(data.realAmount),
+        itemList,
+      })
       isLoading.value = false
     })
   }
@@ -225,6 +240,8 @@ export function useForm() {
     isLoading,
     updateLoading,
     purchaseItem,
+    excludeCheckFiles,
+    excludeOssIdList,
     reset,
     view,
     // submit,

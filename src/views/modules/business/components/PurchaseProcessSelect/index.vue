@@ -11,25 +11,21 @@
 
     <!-- <el-dialog v-model="dialogVisible" title="采购流程选择" width="80%" append-to-body>
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item label="项目" prop="projectName" class="w-[220px]">
-          <el-input v-model.trim="queryParams.projectName" placeholder="请输入项目" clearable @keyup.enter="handleQuery" />
+        <el-form-item label="申请部门" prop="createDept" class="w-[200px]">
+          <DeptSelect v-model="queryParams.createDept" clearable />
         </el-form-item>
-        <el-form-item label="业务类别" prop="businessCategory" class="w-[220px]">
-          <el-select v-model="queryParams.businessCategory" clearable placeholder="请选择业务类别">
-            <el-option
-              v-for="item in [...oa_project_business_type, ...oa_purchase_business_type]"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+        <el-form-item label="申请人" prop="createUserName" class="w-[200px]">
+          <el-input v-model="queryParams.createUserName" placeholder="请输入" clearable />
         </el-form-item>
-        <el-form-item label="物品类别" prop="objectCategory" class="w-[220px]">
-          <el-select v-model="queryParams.objectCategory" clearable placeholder="请选择物品类别">
-            <el-option v-for="item in oa_purchase_object_category" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
+        <el-form-item label="采购类型" prop="type" class="w-[200px]">
+          <dict-select v-model="queryParams.type" :options="oa_purchase_type" clearable />
         </el-form-item>
-
+        <el-form-item label="业务类别" prop="businessCategory" class="w-[200px]">
+          <dict-select v-model="queryParams.businessCategory" :options="[...oa_project_business_type, ...oa_purchase_business_type]" clearable />
+        </el-form-item>
+        <el-form-item label="物品类别" prop="objectCategory" class="w-[200px]">
+          <dict-select v-model="queryParams.objectCategory" :options="oa_purchase_object_category" clearable />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">
             搜索
@@ -55,40 +51,50 @@
         </el-table-column>
         <el-table-column label="业务类别" align="center" width="80">
           <template #default="scope">
-            <dict-tag v-if="scope.row.subjectType === 'project'" :options="oa_project_business_type" :value="scope.row.businessCategory" />
-            <dict-tag v-else :options="oa_purchase_business_type" :value="scope.row.businessCategory" />
-          </template>
+            <!-- 项目业务类型 -->
+    <dict-tag v-if="scope.row.subjectType === 'project'" :options="oa_project_business_type" :value="scope.row.businessCategory" />
+    <!-- 采购业务类型 -->
+    <dict-tag v-else :options="oa_purchase_business_type" :value="scope.row.businessCategory" />
+  </div>
+</template>
+
         </el-table-column>
         <el-table-column label="物品类别" align="center" width="120">
           <template #default="scope">
             <dict-tag :options="oa_purchase_object_category" :value="scope.row.objectCategory" />
           </template>
         </el-table-column>
-        <el-table-column label="金额" align="center" width="120">
+
+        <el-table-column label="含税总金额" align="center" width="120">
           <template #default="scope">
             {{ formatCurrency(scope.row.amount) }}
           </template>
         </el-table-column>
+
         <el-table-column label="实际金额" align="center" width="120">
           <template #default="scope">
             {{ formatCurrency(scope.row.realAmount) }}
           </template>
         </el-table-column>
+
         <el-table-column label="采购说明" align="center">
           <template #default="scope">
             <TextareaView :value="scope.row.description" />
           </template>
         </el-table-column>
+
         <el-table-column label="申请时间" align="center" width="100">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
+
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
             <dict-tag :options="oa_purchase_status" :value="scope.row.status" />
           </template>
         </el-table-column>
+
         <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="80px">
           <template #default="scope">
             <el-button

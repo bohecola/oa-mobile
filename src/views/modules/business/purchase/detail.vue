@@ -63,11 +63,19 @@
         <dict-tag :options="sys_yes_no" :value="form.isDeposit" />
       </template>
     </van-field>
-    <van-field v-show-field="['amount', includeFields]" label="金额" name="amount" input-align="right">
+    <van-field v-show-field="['amount', includeFields]" label="含税总金额" name="amount" input-align="right">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
           <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
+        </div>
+      </template>
+    </van-field>
+    <van-field v-if="isProject && !isNil(form.psId) && form.businessCategory !== '0'" v-show-field="['notTaxAmount', includeFields]" label="不含税总金额" name="notTaxAmount" input-align="right">
+      <template #input>
+        <div class="flex items-baseline">
+          <span class="mr-3">{{ formatCurrency(form.notTaxAmount) }}</span>
+          <span v-if="!isNil(form.notTaxAmount)" class="text-red-400">{{ toCnMoney(form.notTaxAmount) }}</span>
         </div>
       </template>
     </van-field>

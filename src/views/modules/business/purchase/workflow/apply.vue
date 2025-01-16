@@ -105,6 +105,7 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   contractExecute: true,
   isOwnerSettlement: true,
   amount: true,
+  notTaxAmount: true,
   realAmount: true,
   description: true,
   remark: true,

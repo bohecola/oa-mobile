@@ -6,7 +6,7 @@ import request from '@/service/request'
 /**
  * 预算科目下拉选择器列表
  */
-export function getItemByPsIdAndDeptId(params: { psId: string, deptId: string | number }): AxiosPromise {
+export function getItemByPsIdAndDeptId(params: { psId: string, deptId: string | number }): AxiosPromise<ProjectSubjectItemTreeVO[]> {
   return request({
     url: `/oa/finance/projectSubject/getItemByPsIdAndDeptId/${params.psId}/${params.deptId}`,
     method: 'get',
@@ -26,8 +26,9 @@ export function getItemTreeByProjectOrDept(params: {
     url: `/oa/finance/projectSubject/getItemTreeByProjectOrDept`,
     method: 'get',
     params,
-  }, {
-    withCancel: false,
+    headers: {
+      repeatSubmit: false,
+    },
   })
 }
 
@@ -36,7 +37,6 @@ export function getItemTreeByProjectOrDept(params: {
  * @param query
  * @returns {*}
  */
-
 export function listPurchase(query?: Partial<PurchaseQuery>): AxiosPromise<PurchaseVO[]> {
   return request({
     url: '/oa/business/purchase/list',
@@ -75,6 +75,18 @@ export function addPurchase(data: PurchaseForm) {
 export function updatePurchase(data: PurchaseForm) {
   return request({
     url: '/oa/business/purchase',
+    method: 'put',
+    data,
+  })
+}
+
+/**
+ * 修改采购管理（业务中）
+ * @param data
+ */
+export function updatePurchaseByBussiness(data: PurchaseForm) {
+  return request({
+    url: '/oa/business/purchase/updatePurchase',
     method: 'put',
     data,
   })
