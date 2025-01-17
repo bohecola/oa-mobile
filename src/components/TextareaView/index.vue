@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full" v-html="content" />
+  <div class="w-full break-words" v-html="content" />
 </template>
 
 <script setup lang="ts">

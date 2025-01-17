@@ -1,6 +1,22 @@
 <template>
   <TableCard v-for="item in data" :key="item.id">
     <van-field
+      label="流程ID"
+      input-align="right"
+    >
+      <template #input>
+        {{ item.id }}
+      </template>
+    </van-field>
+    <van-field
+      label="申请人"
+      input-align="right"
+    >
+      <template #input>
+        {{ item.createByName }}
+      </template>
+    </van-field>
+    <van-field
       label="申请部门"
       input-align="right"
     >
