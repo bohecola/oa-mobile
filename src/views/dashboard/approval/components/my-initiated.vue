@@ -10,6 +10,7 @@
         <!-- 描述 -->
         <template #label>
           <div class="flex flex-col gap-1">
+            <span>流程ID：{{ row.businessKey }}</span>
             <div class="flex gap-2 text-xs">
               <span>流程状态：</span>
               <dict-tag :options="wf_business_status" :value="row.businessStatus" />

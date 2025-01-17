@@ -36,6 +36,11 @@
             />
 
             <van-cell-group inset class="!mt-3">
+              <van-field label="流程ID" input-align="right">
+                <template #input>
+                  <span>{{ entityVariables?.id }}</span>
+                </template>
+              </van-field>
               <van-field label="发起人" input-align="right">
                 <template #input>
                   <span>{{ entityVariables?.initiator?.nickName }}</span>
