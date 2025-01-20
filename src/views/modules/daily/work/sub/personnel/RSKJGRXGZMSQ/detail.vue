@@ -25,6 +25,12 @@
     </template>
   </van-field>
 
+  <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" input-align="right">
+    <template #input>
+      <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" readonly />
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -38,7 +44,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['l_userId', 'l_userType', 'l_proveType', 'isUseSeal', 'reason', 'ossIdList'],
+    includeFields: () => ['l_userId', 'l_userType', 'l_proveType', 'isUseSeal', 'sealUseType', 'reason', 'ossIdList'],
   },
 )
 

@@ -6,23 +6,46 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty, isNumber } from 'lodash-es'
+import { isEmpty, isNil, isNumber } from 'lodash-es'
 
-const props = defineProps<{
-  modelValue?: string
-  readonly?: boolean
-  multiple?: boolean
-  dictType?: string
-  options?: DictDataOption[]
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+    readonly?: boolean
+    multiple?: boolean
+    dictType: string
+    options?: DictDataOption[]
+    isFilterUseSeal?: boolean
+    filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
+  }>(),
+  {
+    modelValue: undefined,
+    readonly: false,
+    multiple: false,
+    isFilterUseSeal: true,
+  },
+)
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const dictRefs = toRefs(proxy.useDict(props.dictType))
-const options = computed(() => props.options ?? dictRefs[props.dictType].value)
 
+const options = computed(() => {
+  if (!isNil(props.options)) {
+    return props.options
+  }
+  // oa_seal_use_type 特殊处理
+  if (props.isFilterUseSeal && props.dictType === 'oa_seal_use_type') {
+    return dictRefs[props.dictType].value.filter(e => e.value !== '5')
+  }
+
+  if (!isNil(props.filterFn)) {
+    return dictRefs[props.dictType].value.filter(props.filterFn)
+  }
+  return dictRefs[props.dictType].value
+})
 const ids = ref<string | string[]>(deserialize(props.modelValue)!)
 
 function onChange(val: string | string[]) {
