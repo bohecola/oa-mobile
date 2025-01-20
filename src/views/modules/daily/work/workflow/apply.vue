@@ -123,7 +123,9 @@ function onDailyTypeBeforeFinish() {
 // 事务编码变更
 function onNoChange(value?: string) {
   // 部门人事主管权限更换审批 || 项目部其他费用申请 => 资料类型默认值 0
-  form.value.fileType = ['RSXMBRSZGQXGHSP', 'RSXMBQTFYSQ'].includes(value) ? '0' : undefined
+  if (['RSXMBRSZGQXGHSP', 'RSXMBQTFYSQ'].includes(value) && proxy.$route.query.type === 'add') {
+    form.value.fileType = '0'
+  }
 }
 
 // 更新规则
