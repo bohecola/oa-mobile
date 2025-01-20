@@ -101,7 +101,6 @@ export function useForm() {
       invoiceType: [{ required: true, message: '发票类型不能为空', trigger: 'onChange' }],
       taxRate: [
         { required: true, message: '金额/增值税率不能为空', trigger: 'onBlur' },
-        { validator: checkAmountAndTaxRate, trigger: 'onChange' },
       ],
       paymentWay: [{ required: true, message: '付款方式不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onBlur' }],
@@ -119,30 +118,6 @@ export function useForm() {
 
   // 更新加载
   const updateLoading = ref(false)
-
-  // 税率金额总和
-  const totalTaxRateAmount = computed(() => {
-    const totalTaxRateAmount = form.value.taxRate?.reduce<Big.Big>((acc, curr) => {
-      if (isNil(curr.amount)) {
-        acc.add(0)
-      }
-      return acc.add(Big(curr.amount))
-    }, Big(0))
-
-    return totalTaxRateAmount.toNumber()
-  })
-
-  // 合同金额校验
-  function checkAmountAndTaxRate(value: any, rule: any) {
-    if (form.value.amount !== totalTaxRateAmount.value) {
-      showFailToast('合计金额与合同金额不相等')
-      return false
-      // return callback(new Error('合计金额与合同金额不相等'))
-    }
-    else {
-      return true
-    }
-  }
 
   // 表单重置
   const reset = () => {
