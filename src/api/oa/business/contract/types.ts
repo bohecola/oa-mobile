@@ -15,32 +15,32 @@ export interface ContractVO {
   name: string
 
   /**
-   * 甲方;supplier_customer表id
+   * 甲方
    */
   partyA: string
 
   /**
-   * 乙方;supplier_customer表id
+   * 乙方
    */
   partyB: string
 
   /**
-   * 丙方;supplier_customer表id
+   * 丙方
    */
   partyC: string
 
   /**
-   * 丁方;supplier_customer表id
+   * 丁方
    */
   partyD: string
 
   /**
-   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）
    */
   type: string
 
   /**
-   * 合同类别;运维类销售合同 运维类技术协议 运维类安全协议 电力工程类销售合同 电力工程类技术及安全协议 电站工程类技术及安全协议 检修试验类销售合同 检修试验类安全协议 信息化销售合同 运维类框架合作协议 电站工程类销售合同 其他类销售合同
+   * 合同类别
    */
   category: string
 
@@ -70,12 +70,12 @@ export interface ContractVO {
   amount: number
 
   /**
-   * 发票类型;增值税专用发票 增值税普通发票 收据 其他
+   * 发票类型
    */
   invoiceType: string
 
   /**
-   * 金额/增值税率;[{"amount":xxx,'taxRate":xxx}]  税率：0 1% 3% 5% 6% 9% 13%
+   * 金额/增值税率
    */
   taxRate: string
 
@@ -85,7 +85,7 @@ export interface ContractVO {
   paymentWay: string
 
   /**
-   * 合同评审方式;部门评审 部门会审 框架协议 自选评审
+   * 合同评审方式
    */
   reviewWay: string
 
@@ -105,7 +105,7 @@ export interface ContractVO {
   deptId: string | number
 
   /**
-   * 状态;0 草稿 1 评审中 2 执行中 3 已完成 9作废
+   * 状态
    */
   status: string
 
@@ -147,32 +147,32 @@ export interface ContractForm extends BaseEntity {
   projectName?: string
 
   /**
-   * 甲方;supplier_customer表id
+   * 甲方
    */
   partyA?: string
 
   /**
-   * 乙方;supplier_customer表id
+   * 乙方
    */
   partyB?: string
 
   /**
-   * 丙方;supplier_customer表id
+   * 丙方
    */
   partyC?: string
 
   /**
-   * 丁方;supplier_customer表id
+   * 丁方
    */
   partyD?: string
 
   /**
-   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）
    */
   type?: 'in' | 'out' | 'agreement'
 
   /**
-   * 合同类别;运维类销售合同 运维类技术协议 运维类安全协议 电力工程类销售合同 电力工程类技术及安全协议 电站工程类技术及安全协议 检修试验类销售合同 检修试验类安全协议 信息化销售合同 运维类框架合作协议 电站工程类销售合同 其他类销售合同
+   * 合同类别
    */
   category?: string
 
@@ -202,12 +202,12 @@ export interface ContractForm extends BaseEntity {
   amount?: number
 
   /**
-   * 发票类型;增值税专用发票 增值税普通发票 收据 其他
+   * 发票类型
    */
   invoiceType?: string
 
   /**
-   * 金额/增值税率;[{"amount":xxx,'taxRate":xxx}]  税率：0 1% 3% 5% 6% 9% 13%
+   * 金额/增值税率
    */
   taxRate?: string
 
@@ -217,7 +217,7 @@ export interface ContractForm extends BaseEntity {
   paymentWay?: string
 
   /**
-   * 合同评审方式;部门评审 部门会审 框架协议 自选评审
+   * 合同评审方式
    */
   reviewWay?: string
 
@@ -267,6 +267,11 @@ export interface ContractForm extends BaseEntity {
   purchaseIds?: string[]
 
   /**
+   * 自定义审批人
+   */
+  customizeApprover?: string
+
+  /**
    * 附件列表
    */
   ossIdList?: string[]
@@ -284,12 +289,12 @@ export interface ContractQuery extends PageQuery {
   name?: string
 
   /**
-   * 合同类型（销售、支出、协议）;采购合同 销售合同 法务合同 其他合同
+   * 合同类型（销售、支出、协议）
    */
   type?: string
 
   /**
-   * 合同类别;运维类销售合同 运维类技术协议 运维类安全协议 电力工程类销售合同 电力工程类技术及安全协议 电站工程类技术及安全协议 检修试验类销售合同 检修试验类安全协议 信息化销售合同 运维类框架合作协议 电站工程类销售合同 其他类销售合同
+   * 合同类别
    */
   category?: string
 
@@ -302,6 +307,8 @@ export interface ContractQuery extends PageQuery {
   status?: string
 
   statusList?: (string | number)[]
+
+  createUserName?: string
   /**
    * 预算id
    */

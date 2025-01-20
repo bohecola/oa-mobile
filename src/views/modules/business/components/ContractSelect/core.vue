@@ -2,14 +2,20 @@
   <div class="hidden clear-warn" />
   <!-- <el-dialog v-model="dialogVisible" title="合同选择" width="80%" append-to-body>
     <el-form ref="queryFormRef" :model="queryParams" :inline="true" class="mb-4">
+      <el-form-item label="流程ID" prop="businessKey">
+        <el-input v-model="queryParams.businessKey" placeholder="请输入" clearable />
+      </el-form-item>
+      <el-form-item label="合同编号" prop="no">
+        <el-input v-model.trim="queryParams.no" placeholder="请输入编号" clearable @keyup.enter="handleQuery" />
+      </el-form-item>
       <el-form-item label="名称" prop="name">
         <el-input v-model.trim="queryParams.name" placeholder="请输入名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="编号" prop="no">
-        <el-input v-model.trim="queryParams.no" placeholder="请输入编号" clearable @keyup.enter="handleQuery" />
+      <el-form-item label="申请人" prop="createUserName">
+        <el-input v-model.trim="queryParams.createUserName" placeholder="请输入申请人" clearable @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="状态" props="status">
-        <dict-select v-model="queryParams.status" clearable dict-type="oa_contract_status" />
+      <el-form-item label="状态" props="status" class="w-[200px]">
+        <dict-select v-model="queryParams.status" :options="oa_contract_status" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">
@@ -21,9 +27,17 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="tableData" show-overflow-tooltip>
-      <el-table-column label="编号" align="center" prop="no" width="150" />
+    <el-table
+      v-loading="loading"
+      :data="tableData"
+      :row-class-name="(data) => (selectedIdList.includes(data.row.id) ? '!bg-[#ecf5ff] dark:!bg-[#18222c]' : '')"
+      show-overflow-tooltip
+      @row-click="handleSelect"
+    >
+      <el-table-column label="流程ID" align="left" prop="id" width="180" />
+      <el-table-column label="合同编号" align="center" prop="no" width="150" />
       <el-table-column label="名称" align="center" prop="name" min-width="260" />
+      <el-table-column label="申请人" align="center" prop="createByName" width="100" />
       <el-table-column label="合同类型" align="center" width="80">
         <template #default="scope">
           <dict-tag :options="oa_contract_type" :value="scope.row.type" />
@@ -68,13 +82,13 @@
           <dict-tag :options="oa_contract_status" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="100px">
+      <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="100">
         <template #default="scope">
           <el-button
-            circle
             :type="`${selectedIdList.includes(scope.row.id) ? 'primary' : ''}`"
-            icon="Select"
             :disabled="exclude.includes(scope.row.id)"
+            icon="Select"
+            circle
             @click.stop="handleSelect(scope.row)"
           />
         </template>
@@ -99,8 +113,8 @@
 <script setup lang="ts">
 import { cloneDeep, isEmpty } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import { listContract, noRelListContract } from '@/api/oa/business/contract'
 import type { ContractQuery, ContractVO } from '@/api/oa/business/contract/types'
+import { listContract, noRelListContract } from '@/api/oa/business/contract'
 
 // 属性
 const props = withDefaults(
@@ -148,7 +162,7 @@ const selectedIdsStr = computed(() => selectedIdList.value.join(','))
 // 引用
 const queryFormRef = ref<FormInstance>()
 
-const initailQueryParams = {
+const initailQueryParams: ContractQuery = {
   pageNum: 1,
   pageSize: 10,
   no: undefined,
@@ -158,6 +172,7 @@ const initailQueryParams = {
   projectId: undefined,
   status: undefined,
   statusList: [2, 3, 4],
+  createUserName: undefined,
   params: {},
 }
 

@@ -34,9 +34,6 @@ export function useForm() {
   // 合同模式
   const { contractMode, setContractMode } = useContractMode()
 
-  // 实例
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
-
   // 引用
   const Form = ref<FormInstance>()
 
@@ -60,6 +57,7 @@ export function useForm() {
     taxRate: [{ amount: undefined, taxRate: undefined }],
     paymentWay: undefined,
     reviewWay: undefined,
+    customizeApprover: undefined,
     originalFile: undefined,
     noAmountFile: undefined,
     deptId: undefined,
@@ -78,7 +76,6 @@ export function useForm() {
   const data = reactive<Omit<PageData<_ContractForm, any>, 'queryParams'>>({
     form: cloneDeep(initFormData),
     rules: {
-      id: [{ required: true, message: 'ID不能为空', trigger: 'onBlur' }],
       no: [{ required: true, message: '编号不能为空', trigger: 'onBlur' }],
       name: [{ required: true, message: '名称不能为空', trigger: 'onBlur' }],
       partyA: [{ required: true, message: '甲方不能为空', trigger: 'onBlur' }],
@@ -86,25 +83,21 @@ export function useForm() {
       partyC: [{ required: true, message: '丙方不能为空', trigger: 'onBlur' }],
       partyD: [{ required: true, message: '丁方不能为空', trigger: 'onBlur' }],
       type: [{ required: true, message: '合同类型不能为空', trigger: 'onChange' }],
-      category: [
-        {
-          required: true,
-          message: '合同类别不能为空',
-          trigger: 'onChange',
-        },
-      ],
+      category: [{ required: true, message: '合同类别不能为空', trigger: 'onChange' }],
       reviewWay: [{ required: true, message: '合同评审方式不能为空', trigger: 'onChange' }],
+      customizeApprover: [{ required: true, message: '自定义审批人不能为空', trigger: 'onChange' }],
       startDate: [{ required: true, message: '合同开始日期不能为空', trigger: 'onChange' }],
       endDate: [{ required: true, message: '合同结束日期不能为空', trigger: 'onChange' }],
       description: [{ required: true, message: '合同描述不能为空', trigger: 'onBlur' }],
       amount: [{ required: true, message: '合同金额不能为空', trigger: 'onBlur' }],
       invoiceType: [{ required: true, message: '发票类型不能为空', trigger: 'onChange' }],
-      taxRate: [
-        { required: true, message: '金额/增值税率不能为空', trigger: 'onBlur' },
-      ],
+      status: [{ required: true, message: '状态不能为空', trigger: 'onChange' }],
+      taxRate: [{ required: true, message: '金额/增值税率不能为空', trigger: 'onBlur' }],
       paymentWay: [{ required: true, message: '付款方式不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onBlur' }],
-      isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onChange' }],
+      originalFile: [{ required: true, message: '合同原件不能为空', trigger: 'onBlur' }],
+      noAmountFile: [{ required: true, message: '无价合同不能为空', trigger: 'onBlur' }],
+      isUseSeal: [{ required: true, message: '是否用印不能为空', trigger: 'onBlur' }],
       fileUseType: [{ required: true, message: '用印方式不能为空', trigger: 'onChange' }],
       sealUseType: [{ required: true, message: '用印类型不能为空', trigger: 'onChange' }],
     },

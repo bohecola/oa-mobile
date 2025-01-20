@@ -77,6 +77,7 @@ const allFields: PartialBooleanRecord<ContractForm> = {
   taxRate: true,
   paymentWay: true,
   reviewWay: true,
+  customizeApprover: true,
   originalFile: true,
   noAmountFile: true,
   status: true,

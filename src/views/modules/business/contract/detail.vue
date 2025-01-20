@@ -50,6 +50,12 @@
       </template>
     </van-field>
 
+    <van-field v-if="['1', '3'].includes(form.reviewWay)" v-model="form.customizeApprover" v-show-field="['customizeApprover', includeFields]" name="customizeApprover" label="自定义审批人" input-align="right">
+      <template #input>
+        <UserSelect v-model="form.customizeApprover" multiple readonly />
+      </template>
+    </van-field>
+
     <van-field v-show-field="['deptId', includeFields]" name="deptId" label="需求部门" input-align="right">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />

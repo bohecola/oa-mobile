@@ -1,7 +1,9 @@
 <template>
   <el-table v-loading="loading" :data="data" show-overflow-tooltip>
-    <el-table-column label="编号" align="center" prop="no" width="150" />
+    <el-table-column label="流程ID" align="left" prop="id" width="180" />
+    <el-table-column label="合同编号" align="center" prop="no" width="150" />
     <el-table-column label="名称" align="center" prop="name" min-width="260" />
+    <el-table-column label="申请人" align="center" prop="createByName" width="100" />
     <el-table-column label="合同类型" align="center" width="80">
       <template #default="scope">
         <dict-tag :options="oa_contract_type" :value="scope.row.type" />
