@@ -286,7 +286,16 @@
 
     <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="right">
       <template #input>
-        <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
+        <div class="flex flex-col">
+          <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
+          <div class="text-red-400">
+            验收附件上传说明：
+            1.通过采购部采购的需要上传收货确认单
+            2.自行线上采购需要上传网络订单截图
+            3.全部采购物资的照片
+            [注：照片必需带时间、地点(水印相机拍照) ]
+          </div>
+        </div>
       </template>
     </van-field>
 
