@@ -28,7 +28,7 @@
         class="flex flex-col gap-2 overflow-y-auto h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height)-env(safe-area-inset-top))]"
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
-          <div id="AFC">
+          <div id="AFC" class="relative">
             <van-notice-bar
               v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
               :scrollable="false"
@@ -62,6 +62,13 @@
               <slot />
             </van-cell-group>
             <slot v-else />
+
+            <img
+              v-if="isView && businessStatus !== 'draft'"
+              :src="imgObj[businessStatus]"
+              alt="流程状态"
+              class="absolute top-[36px] left-[100px] w-14 h-14 opacity-70"
+            >
           </div>
           <bottom-line />
         </van-tab>
@@ -83,10 +90,13 @@ import ApprovalSteps from './steps.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
 import { useStore } from '@/store'
 
-interface EntityVariables {
-  initiator: Initiator
-  [key: string]: any
-}
+import pending from '@/assets/images/wf/pending.png'
+import passed from '@/assets/images/wf/passed.png'
+import revoked from '@/assets/images/wf/revoked.png'
+import deleted from '@/assets/images/wf/deleted.png'
+import returned from '@/assets/images/wf/returned.png'
+import terminated from '@/assets/images/wf/terminated.png'
+import invalid from '@/assets/images/wf/invalid.png'
 
 const props = withDefaults(
   defineProps<{
@@ -101,6 +111,21 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<Emits>()
+
+const imgObj = {
+  cancel: revoked,
+  waiting: pending,
+  finish: passed,
+  invalid,
+  back: returned,
+  termination: terminated,
+  delete: deleted,
+}
+
+interface EntityVariables {
+  initiator: Initiator
+  [key: string]: any
+}
 
 interface Emits {
   (event: 'temp-save', payload: TempSavePayload): void
@@ -152,6 +177,12 @@ const processVisible = computed(() => {
   const { wfStatus } = proxy?.$route.query ?? {}
   return wfStatus && wfStatus !== 'draft'
 })
+
+// 是否查看
+const isView = computed(() => proxy.$route.query.type === 'view')
+
+// 流程状态
+const businessStatus = computed(() => proxy.$route.query.wfStatus as string)
 
 // 发起人信息
 function createInitiator(): Initiator {
