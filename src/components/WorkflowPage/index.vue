@@ -2,17 +2,17 @@
   <div>
     <NavBar />
 
-    <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600"> -->
-    <!-- <van-button v-if="saveVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
-    暂存
-  </van-button>
-  <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
-    提 交
-  </van-button> -->
-    <!-- <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
-    审批
-  </van-button> -->
-    <!-- </div> -->
+    <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600">
+      <van-button v-if="saveVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
+        暂存
+      </van-button>
+      <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
+        提 交
+      </van-button>
+      <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
+        审批
+      </van-button>
+    </div> -->
 
     <van-floating-bubble v-if="approvalVisible" axis="xy">
       <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
@@ -209,9 +209,9 @@ function handleTempSave() {
   const load = () => (tempSaveLoading.value = true)
   const done = () => (tempSaveLoading.value = false)
   const next = () => {
-    // proxy?.$modal.msgSuccess('暂存成功')
+    proxy?.$modal.msgSuccess('暂存成功')
     // proxy.$tab.closePage(proxy.$route)
-    // proxy.$router.go(-1)
+    proxy.$router.go(-1)
   }
   const payload = {
     load,
