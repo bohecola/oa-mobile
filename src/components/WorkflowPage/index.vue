@@ -35,20 +35,20 @@
               text="当前节点存在需要填写的字段，请暂时在PC端审批"
             />
 
-            <van-cell-group inset class="!mt-3">
+            <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
               <van-field label="流程ID" input-align="right">
                 <template #input>
-                  <span>{{ entityVariables?.id }}</span>
+                  <span>{{ entityVariables.id }}</span>
                 </template>
               </van-field>
               <van-field label="发起人" input-align="right">
                 <template #input>
-                  <span>{{ entityVariables?.initiator?.nickName }}</span>
+                  <span>{{ entityVariables.initiator.nickName }}</span>
                 </template>
               </van-field>
               <van-field label="部门" input-align="right">
                 <template #input>
-                  <span>{{ entityVariables?.initiator?.deptName }}</span>
+                  <DeptSelect v-model="entityVariables.initiator.deptId!" readonly />
                 </template>
               </van-field>
               <van-field label="发起时间" input-align="right">
@@ -85,6 +85,7 @@
 </template>
 
 <script setup lang='ts'>
+import { isNil } from 'lodash-es'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from './types'
 import ApprovalSteps from './steps.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
@@ -186,6 +187,10 @@ const businessStatus = computed(() => proxy.$route.query.wfStatus as string)
 
 // 发起人信息
 function createInitiator(): Initiator {
+  if (props.entityVariables?.initiator) {
+    return props.entityVariables?.initiator
+  }
+
   const initialValue = {
     userId: user.info?.userId as (string | number),
     deptId: user.info?.deptId as (string | number),
@@ -195,7 +200,7 @@ function createInitiator(): Initiator {
     createTime: new Date().toLocaleString(),
   }
 
-  return props.entityVariables?.initiator ?? initialValue
+  return initialValue
 }
 
 // 暂存

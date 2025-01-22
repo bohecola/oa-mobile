@@ -106,10 +106,33 @@ const selectedLabel = computed(() => {
   if (props.modelValue) {
     const nodes = rawData.value.filter(e => (isArray(ids.value) ? ids.value.includes(e.id) : e.id === ids.value))
 
-    return nodes.map(e => e.label).join('、')
+    return nodes
+      .map((e) => {
+        if (e.type === '2') {
+          return computedLabel(e.id)
+        }
+        return e.label
+      })
+      .join('、')
   }
   return ''
 })
+
+// 计算回显 Label
+function computedLabel(id: string | number) {
+  if (isEmpty(rawData.value)) {
+    return ''
+  }
+
+  const node = rawData.value.find(e => e.id === id)
+
+  // 项目部回显 => 上级部门/项目部
+  if (node.type === '2') {
+    const parentNode = rawData.value.find(e => e.id === node.parentId)
+    return `${parentNode.deptName} / ${node.deptName}`
+  }
+  return node.deptName
+}
 
 // 筛选函数
 const filterNodeMethod = (value: string, data: _DeptVO) => data.label.includes(value)
