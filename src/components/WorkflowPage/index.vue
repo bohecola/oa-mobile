@@ -35,28 +35,30 @@
               text="当前节点存在需要填写的字段，请暂时在PC端审批"
             />
 
-            <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
-              <van-field label="流程ID" input-align="right">
-                <template #input>
-                  <span>{{ entityVariables.id }}</span>
-                </template>
-              </van-field>
-              <van-field label="发起人" input-align="right">
-                <template #input>
-                  <span>{{ entityVariables.initiator.nickName }}</span>
-                </template>
-              </van-field>
-              <van-field label="部门" input-align="right">
-                <template #input>
-                  <DeptSelect v-model="entityVariables.initiator.deptId!" readonly />
-                </template>
-              </van-field>
-              <van-field label="发起时间" input-align="right">
-                <template #input>
-                  <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
-                </template>
-              </van-field>
-            </van-cell-group>
+            <van-form label-width="auto">
+              <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
+                <van-field label="流程ID" input-align="right">
+                  <template #input>
+                    <span>{{ entityVariables.id }}</span>
+                  </template>
+                </van-field>
+                <van-field label="发起人" input-align="right">
+                  <template #input>
+                    <span>{{ entityVariables.initiator.nickName }}</span>
+                  </template>
+                </van-field>
+                <van-field label="部门" input-align="right">
+                  <template #input>
+                    <DeptSelect v-model="entityVariables.initiator.deptId!" readonly />
+                  </template>
+                </van-field>
+                <van-field label="发起时间" input-align="right">
+                  <template #input>
+                    <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
+                  </template>
+                </van-field>
+              </van-cell-group>
+            </van-form>
 
             <van-cell-group v-if="group" inset class="!my-3">
               <slot />
