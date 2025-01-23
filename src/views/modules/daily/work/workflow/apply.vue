@@ -173,6 +173,9 @@ const isEditNode = computed(() => {
   else if (['Activity_171tryh'].includes(key) && form.value.no === 'RSXMBPYQWBRYSQ') {
     return 'true'
   }
+  else if (['Activity_171tryh'].includes(key) && form.value.no === 'RSZPXQBGSQ') {
+    return 'true'
+  }
   else {
     return 'false'
   }

@@ -19,7 +19,12 @@ export function useForm() {
   const initRecruitPostForm: UserRecruitPostBo = {
     id: undefined,
     postId: undefined,
+    postName: undefined,
     userNum: 0,
+    ageRequire: undefined,
+    speciality: undefined,
+    responsibility: undefined,
+    demand: undefined,
     educationalRequire: undefined,
     suggestSalary: 0,
     workExperience: undefined,
@@ -48,7 +53,7 @@ export function useForm() {
     rules: {
       no: [{ required: true, message: '招聘编号不能为空', trigger: 'onChange' }],
       deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
-      hopeArriveDate: [{ required: true, message: '期望到达日期不能为空', trigger: 'onBlur' }],
+      hopeArriveDate: [{ required: true, message: '期望到岗日期不能为空', trigger: 'onBlur' }],
       recruitStartDate: [{ required: true, message: '招聘开始日期不能为空', trigger: 'onBlur' }],
       recruitEndDate: [{ required: true, message: '招聘完成日期不能为空', trigger: 'onBlur' }],
       status: [{ required: true, message: '状态不能为空', trigger: 'onChange' }],

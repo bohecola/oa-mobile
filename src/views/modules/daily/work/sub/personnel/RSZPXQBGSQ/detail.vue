@@ -17,10 +17,17 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.gg_additionalBudgetExpenses" v-show-field="['gg_additionalBudgetExpenses', includeFields]" name="gg_additionalBudgetExpenses" label="预算费用追加金额(元)" input-align="right">
+    <template #input>
+      <span>{{ form.gg_additionalBudgetExpenses }}</span>
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -30,7 +37,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['gg_deptId', 'gg_changeType', 'gg_changeDetails', 'reason', 'ossIdList'],
+    includeFields: () => ['gg_deptId', 'gg_changeType', 'gg_changeDetails', 'gg_additionalBudgetExpenses', 'reason', 'ossIdList'],
   },
 )
 

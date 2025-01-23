@@ -6,6 +6,13 @@
       <!-- <upsert /> -->
     </div>
 
+    <!-- 专员确认节点 -->
+    <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
+      <detail :include-fields="['k_deptId', 'gg_changeType', 'gg_changeDetails']" />
+      <detail :include-fields="['gg_additionalBudgetExpenses']" />
+      <detail :include-fields="['reason', 'ossIdList']" />
+    </div>
+
     <!-- 其他审批通用节点 -->
     <div v-else>
       <detail />

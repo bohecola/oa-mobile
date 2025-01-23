@@ -184,6 +184,26 @@ export interface UserRecruitPostBo {
    */
   otherRequire: string
 
+  /**
+   * 年龄要求
+   */
+  ageRequire?: string
+
+  /**
+   * 专业
+   */
+  speciality?: string
+
+  /**
+   * 岗位职责(新增)
+   */
+  responsibility?: string
+
+  /**
+   * 任职要求(新增)
+   */
+  demand?: string
+
 }
 
 export interface UserRecruitQuery extends PageQuery {

@@ -140,6 +140,11 @@ export interface UserPreEmploymentForm extends BaseEntity {
   sex?: string
 
   /**
+   * 年龄
+   */
+  age?: number
+
+  /**
    * 手机号码
    */
   phonenumber?: string
@@ -161,6 +166,16 @@ export interface UserPreEmploymentForm extends BaseEntity {
    * 持证情况
    */
   certificates?: string
+
+  /**
+   * 其他证书
+   */
+  otherCertificates?: string
+
+  /**
+   * 办理人意见
+   */
+  transactorOpinion?: string
 
   /**
    * 面试形式(现场面试、视频面试)

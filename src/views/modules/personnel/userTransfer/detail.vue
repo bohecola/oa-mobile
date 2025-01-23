@@ -19,7 +19,7 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门" input-align="right">
+      <van-field v-show-field="['oldDeptId', includeFields]" name="oldDeptId" label="原部门/项目部" input-align="right">
         <template #input>
           <DeptCascader v-model="form.oldDeptId" :company-id="form.oldCompanyId" readonly />
         </template>
@@ -37,7 +37,7 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门" input-align="right">
+      <van-field v-show-field="['newDeptId', includeFields]" name="newDeptId" label="新部门/项目部" input-align="right">
         <template #input>
           <DeptCascader v-model="form.newDeptId" :company-id="form.newCompanyId" readonly />
         </template>
