@@ -45,7 +45,7 @@
       </van-field>
     </van-cell-group>
 
-    <div class="px-6 py-2 text-sm text-gray-500">
+    <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
       招聘岗位
     </div>
     <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" :title="item.postName" class="mx-4 mb-2" :default-collapse="true">

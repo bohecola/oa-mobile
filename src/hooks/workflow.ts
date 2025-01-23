@@ -1,7 +1,8 @@
+import type { AxiosPromise } from 'axios'
 import { isEmpty } from 'lodash-es'
 import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
 
-export async function useWorkflowViewData({ taskId, processInstanceId }: any) {
+export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
 
   if (taskId) {

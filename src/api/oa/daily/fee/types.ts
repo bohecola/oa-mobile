@@ -10,7 +10,7 @@ export interface DailyFeeVO {
   projectId: number
 
   /**
-   *预算类型(项目预算、部门预算)
+   * 预算类型
    */
   subjectType: string
 
@@ -48,6 +48,11 @@ export interface DailyFeeVO {
    * 证件类型(安全类培训费用、项目日常费用)
    */
   certificateType: string
+
+  /**
+   * 开票信息
+   */
+  receiptInfo?: ReceiptInfo | string
 
   /**
    * 备注
@@ -129,7 +134,7 @@ export interface DailyFeeForm extends BaseEntity {
   contractNo?: string
 
   /**
-   *预算类型(项目预算、部门预算)
+   * 预算类型
    */
   subjectType?: string
 
@@ -159,7 +164,7 @@ export interface DailyFeeForm extends BaseEntity {
   availableAmount?: number
 
   /**
-   * 金额
+   * 申请总金额
    */
   amount?: number
 
@@ -183,8 +188,8 @@ export interface DailyFeeForm extends BaseEntity {
    */
   remark?: string
 
-  // 流程中表单的字段
   /**
+   * 流程中表单的字段
    * 流程中申请事由备注
    */
   wfRemark?: string
@@ -199,7 +204,25 @@ export interface DailyFeeForm extends BaseEntity {
    */
   rootNo?: string
 
+  /**
+   * 开票信息
+   */
+  receiptInfo?: ReceiptInfo | string
+
+  /**
+   * 附件列表
+   */
   ossIdList?: string[]
+}
+
+export interface ReceiptInfo {
+  entityName?: string
+  invoiceType?: string
+  taxRate?: string
+  paymentWay?: string
+  accountName?: string
+  corporateAccount?: string
+  openingBank?: string
 }
 
 export interface DailyFeeQuery extends PageQuery {
@@ -209,7 +232,7 @@ export interface DailyFeeQuery extends PageQuery {
   projectId?: number
 
   /**
-   *预算类型(项目预算、部门预算)
+   * 预算类型
    */
   subjectType?: string
 

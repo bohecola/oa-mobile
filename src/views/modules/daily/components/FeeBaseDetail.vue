@@ -44,7 +44,7 @@
 
   <Teleport to="#AFC" defer>
     <div v-show-field="['itemList', includeFields]">
-      <div class="px-6 py-2 text-sm text-gray-500 dark:text-gray-200">
+      <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
         费用明细
       </div>
 
@@ -150,7 +150,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'availableAmount', 'amount', 'reason', 'ossIdList'],
+    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'availableAmount', 'amount', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 

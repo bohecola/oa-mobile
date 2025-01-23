@@ -91,7 +91,7 @@
         </template>
       </van-field>
     </van-cell-group>
-    <div class="px-6 py-2 text-sm text-gray-500">
+    <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
       面试评价项
     </div>
     <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" v-show-field="['userPreEmploymentEvaluateBoList', includeFields]" :title="`面试评价${index + 1}`" class="mx-4 mb-2" :default-collapse="true">

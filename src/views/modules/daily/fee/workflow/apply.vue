@@ -55,9 +55,10 @@ const { Form, form, rules, isLoading, reset, workflowView } = useForm()
 
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
+  businessKey: undefined,
+  tableName: undefined,
   variables: {},
+  processInstanceName: undefined,
 })
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
@@ -69,29 +70,28 @@ const dailyTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy
 
 // 跟踪字段
 const trackedFields = ref<KeysOfArray<DailyFeeForm>>(getBaseFields())
-// // 动态规则
-// const computedRules = computed(() => {
-//   const newRules = {};
-//   for (const [key, value] of Object.entries(rules.value)) {
-//     if (trackedFields.value.includes(key as any)) {
-//       newRules[key] = value;
-//     }
-//   }
 
-//   return newRules;
-// });
+// 动态规则
+const computedRules = computed(() => {
+  const newRules = {}
+  for (const [key, value] of Object.entries(rules.value)) {
+    if (trackedFields.value.includes(key as any)) {
+      newRules[key] = value
+    }
+  }
 
-//   return newRules;
-// });
+  return newRules
+})
 
 provide('form', form)
-
+provide('Form', Form)
+provide('computedRules', computedRules)
 provide('isView', isView)
 provide('taskDefinitionKey', taskDefinitionKey)
-
 provide('trackFields', trackFields)
 provide('updateRuleRequired', updateRuleRequired)
 
+// 获取基础校验字段
 function getBaseFields() {
   return dailyTypeSelectReadOnly.value ? [] : (['feeType'] as KeysOfArray<DailyFeeForm>)
 }
@@ -132,17 +132,6 @@ function trackFields(fields: KeysOfArray<DailyFeeForm>) {
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy?.$route.query ?? {}
 
-  // const res = await workflowSubmit()
-
-  // if (res) {
-  //   const { valid, data } = res
-  //   if (valid) {
-  //     Object.assign(submitFormData.value.variables.entity, data)
-  //     open(taskId as string)
-  //   }
-  //   return true
-  // }
-
   // 打开审批弹窗
   open(taskId as string)
 }
@@ -153,8 +142,8 @@ onMounted(async () => {
 
   if (taskId || processInstanceId) {
     isLoading.value = true
-    const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { data } = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task } = data
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
 

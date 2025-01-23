@@ -31,7 +31,7 @@ export function getDailyFee(id: string | number): AxiosPromise<DailyFeeVO> {
  * 新增日常费用管理
  * @param data
  */
-export function addDailyFee(data: DailyFeeForm) {
+export function addDailyFee(data: DailyFeeForm): AxiosPromise {
   return request({
     url: '/oa/daily/dailyFee',
     method: 'post',
@@ -43,7 +43,7 @@ export function addDailyFee(data: DailyFeeForm) {
  * 修改日常费用管理
  * @param data
  */
-export function updateDailyFee(data: DailyFeeForm) {
+export function updateDailyFee(data: DailyFeeForm): AxiosPromise {
   return request({
     url: '/oa/daily/dailyFee',
     method: 'put',

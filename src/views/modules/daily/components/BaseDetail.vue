@@ -16,6 +16,8 @@
   </van-field>
 
   <Teleport to="#AFC" defer>
+    <!-- 开票信息 -->
+    <InvoiceInfomation v-if="includeFields.includes('receiptInfo')" readonly class="!mb-6" />
     <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
       <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
     </TableCard>
@@ -25,10 +27,11 @@
 <script setup lang="tsx">
 import { isEmpty } from 'lodash-es'
 import { showDialog } from 'vant'
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import InvoiceInfomation from './InvoiceInfomation.vue'
+import TextareaView from '@/components/TextareaView/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
-import TextareaView from '@/components/TextareaView/index.vue'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 type DailyForm = DailyWorkForm & DailyFeeForm
 
@@ -37,7 +40,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyForm>
   }>(),
   {
-    includeFields: () => ['dailyWorkType', 'feeType', 'reason', 'ossIdList'],
+    includeFields: () => ['reason', 'ossIdList'],
   },
 )
 

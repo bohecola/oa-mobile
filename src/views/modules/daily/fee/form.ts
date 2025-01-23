@@ -28,8 +28,6 @@ export const dailyFeeItem: DailyFeeItemVO = {
 
 export function useForm() {
   const { user } = useStore()
-  // 实例
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
 
   // 引用
   const Form = ref<FormInstance>()
@@ -53,6 +51,15 @@ export function useForm() {
     no: undefined,
     rootNo: undefined,
     ossIdList: undefined,
+    receiptInfo: {
+      entityName: undefined,
+      invoiceType: undefined,
+      taxRate: undefined,
+      paymentWay: undefined,
+      accountName: undefined,
+      corporateAccount: undefined,
+      openingBank: undefined,
+    },
   }
 
   const initRules: Record<string, FieldRule[]> = {
@@ -66,6 +73,15 @@ export function useForm() {
     certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
     amount: [{ validator: checkAmount, trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
+    receiptInfo: {
+      entityName: [{ required: false, message: '单位或个人名称不能为空', trigger: 'onBlur' }],
+      invoiceType: [{ required: false, message: '发票类型不能为空', trigger: 'onChange' }],
+      taxRate: [{ required: false, message: '税率不能为空', trigger: 'onChange' }],
+      paymentWay: [{ required: false, message: '付款方式不能为空', trigger: 'onBlur' }],
+      accountName: [{ required: false, message: '账户名称不能为空', trigger: 'onBlur' }],
+      corporateAccount: [{ required: false, message: '对公账号不能为空', trigger: 'onBlur' }],
+      openingBank: [{ required: false, message: '开户行名称不能为空', trigger: 'onBlur' }],
+    } as any,
   }
 
   // 表单数据
@@ -85,14 +101,13 @@ export function useForm() {
 
   // 表单重置
   const reset = () => {
-    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
-    // 重置规则
+    form.value = cloneDeep(initFormData)
     rules.value = cloneDeep(initRules)
   }
 
   // 金额校验
-  function checkAmount(value: any, rule: any) {
+  function checkAmount(value: any) {
     if (isNil(value)) {
       return '请输入金额'
     }
@@ -106,6 +121,7 @@ export function useForm() {
     isLoading.value = true
     reset()
     const { data } = await getDailyFee(id)
+    data.receiptInfo = JSON.parse(data.receiptInfo as string)
 
     nextTick(() => {
       Object.assign(form.value, data)
@@ -113,9 +129,10 @@ export function useForm() {
     })
   }
 
-  interface SuccessData {
-    id: DailyFeeForm['id']
-  }
+  // interface SuccessData {
+  //   id: DailyFeeForm['id']
+  //   itemList: DailyFeeForm['itemList']
+  // }
 
   // 工作流中回显
   function workflowView(entity: any, options?: ViewOptions) {
@@ -124,16 +141,18 @@ export function useForm() {
       reset()
       // 兼容旧费用流程（非明细表）
       if (!isNil(entity?.subjectItemId) && !entity?.subjectItemId.includes(',')) {
-        const item: DailyFeeItemVO = { subjectItemId: entity.subjectItemId, availableAmount: entity.availableAmount, amount: entity.amount }
         nextTick(() => {
+          const item: DailyFeeItemVO = {
+            subjectItemId: entity.subjectItemId,
+            availableAmount: entity.availableAmount,
+            amount: entity.amount,
+          }
           Object.assign(form.value, entity)
           form.value.itemList = [item]
         })
       }
       else {
-        nextTick(() => {
-          Object.assign(form.value, entity)
-        })
+        nextTick(() => Object.assign(form.value, entity))
       }
     }
     catch (err) {
