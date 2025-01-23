@@ -30,13 +30,19 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['specialCommercialInsurance', includeFields]" name="specialCommercialInsurance" label="购买特殊商业保险" input-align="right">
+    <van-field v-show-field="['departPreDate', includeFields]" name="departPreDate" label="预计离职时间" input-align="right">
+      <template #input>
+        {{ parseTime(form.departPreDate, '{y}-{m}-{d}') }}
+      </template>
+    </van-field>
+
+    <van-field v-if="form.deptType === '2'" v-show-field="['specialCommercialInsurance', includeFields]" name="specialCommercialInsurance" label="购买特殊商业保险" input-align="right">
       <template #input>
         <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
       </template>
     </van-field>
 
-    <van-field v-show-field="['isLoginCompanyEmail', includeFields]" name="isLoginCompanyEmail" label="是否登录过项目部公司邮箱" input-align="right">
+    <van-field v-if="form.deptType === '2'" v-show-field="['isLoginCompanyEmail', includeFields]" name="isLoginCompanyEmail" label="是否登录过项目部公司邮箱" input-align="right">
       <template #input>
         <YesNoSwitch v-model="form.isLoginCompanyEmail" readonly />
       </template>

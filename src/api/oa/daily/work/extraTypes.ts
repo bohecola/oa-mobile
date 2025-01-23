@@ -268,7 +268,8 @@ export interface RSXMBQTFYSQ {
 }
 // 全外包生产人员入职申请表
 export interface RSQWBSCRYRZSQB {
-  ff_deptId?: string
+  ff_deptId?: string | number
+  ff_userId?: string
 }
 
 // 生产人员招聘工作奖励费用核算审批表
@@ -279,4 +280,5 @@ export interface RSZPXQBGSQ {
   gg_deptId?: string
   gg_changeType?: string
   gg_changeDetails?: string
+  gg_additionalBudgetExpenses?: number
 }

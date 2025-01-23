@@ -78,6 +78,11 @@ export interface UserDepartForm extends BaseEntity {
   entryCompanyDate?: string
 
   /**
+   * 预计离职时间
+   */
+  departPreDate?: string
+
+  /**
    * 购买特殊商业保险
    */
   specialCommercialInsurance?: string

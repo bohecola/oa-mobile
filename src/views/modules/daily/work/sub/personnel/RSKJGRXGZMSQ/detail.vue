@@ -27,7 +27,7 @@
 
   <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" input-align="right">
     <template #input>
-      <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" readonly />
+      <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" readonly :is-filter-use-seal="false" />
     </template>
   </van-field>
 

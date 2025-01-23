@@ -165,9 +165,13 @@ const extraInitFormData: DailyWorkForm = {
 
   // 全外包生产人员入职申请表
   ff_deptId: undefined,
+  ff_userId: undefined,
 
   // 招聘需求变更申请
   gg_deptId: undefined,
+  gg_changeType: undefined,
+  gg_changeDetails: undefined,
+  gg_additionalBudgetExpenses: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -330,6 +334,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   gg_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
   gg_changeType: [{ required: true, message: `变更类型${baseMsg}`, trigger: 'onBlur' }],
   gg_changeDetails: [{ required: true, message: `变更明细${baseMsg}`, trigger: 'onBlur' }],
+  gg_additionalBudgetExpenses: [{ required: true, message: `预算费用追加金额${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

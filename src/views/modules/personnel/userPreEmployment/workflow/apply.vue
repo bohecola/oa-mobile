@@ -1,14 +1,21 @@
 <template>
   <WorkflowPage :loading="loading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <detail v-if="isView" ref="Detail" :include-fields="includeFields" :show-loading="false" />
+    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_06mn8j5'">
-        <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
+        <!-- <upsert ref="Upsert" :include-fields="applyFields" :show-loading="false" /> -->
+      </div>
+
+      <!-- 人力确认节点  办理人意见 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_1lximsi'">
+        <detail ref="humanResourcesDetail1" :include-fields="humanResourcesFields" :show-loading="false" />
+        <detail ref="humanResourcesUpsert" :include-fields="['transactorOpinion']" :show-loading="false" />
+        <detail ref="humanResourcesDetail2" :include-fields="['userPreEmploymentEvaluateBoList', 'ossIdList']" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>
-        <detail ref="DetailOther" :include-fields="includeFields" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="overviewFields" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
@@ -36,29 +43,59 @@ const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
 const Detail = ref<InstanceType<typeof detail> | null>()
 const DetailOther = ref<InstanceType<typeof detail> | null>()
 
-// 字段
-const includeFields = ref(
+// 人力资源确认
+const humanResourcesDetail1 = ref<InstanceType<typeof detail> | null>()
+const humanResourcesUpsert = ref<InstanceType<typeof detail> | null>()
+const humanResourcesDetail2 = ref<InstanceType<typeof detail> | null>()
+
+// 所有字段
+const allFields: PartialBooleanRecord<UserPreEmploymentForm> = {
+  id: true,
+  recruitNo: true,
+  deptId: true,
+  postId: true,
+  name: true,
+  sex: true,
+  age: true,
+  phonenumber: true,
+  certificates: true,
+  otherCertificates: true,
+  transactorOpinion: true,
+  interviewWay: true,
+  interviewDate: true,
+  isOwnerInterview: true,
+  isProbation: true,
+  probationCycle: true,
+  isRecommend: true,
+  reference: true,
+  isIntern: true,
+  status: true,
+  userPreEmploymentEvaluateBoList: true,
+  ossIdList: true,
+}
+
+// 申请字段
+const applyFields = ref(
   filterTruthyKeys<UserPreEmploymentForm>({
-    deptId: true,
-    deptName: true,
-    recruitNo: true,
-    postId: true,
-    postName: true,
-    name: true,
-    sex: true,
-    phonenumber: true,
-    interviewWay: true,
-    interviewDate: true,
-    status: true,
-    isOwnerInterview: true,
-    isProbation: true,
-    probationCycle: true,
-    isRecommend: true,
-    reference: true,
-    isIntern: true,
-    certificates: true,
-    userPreEmploymentEvaluateBoList: true,
-    ossIdList: true,
+    ...allFields,
+    transactorOpinion: false,
+  }),
+)
+
+// 总览字段
+const overviewFields = ref(
+  filterTruthyKeys<UserPreEmploymentForm>({
+    ...allFields,
+  }),
+)
+
+// 人力资源确认字段
+const humanResourcesFields = ref(
+  filterTruthyKeys<UserPreEmploymentForm>({
+    ...allFields,
+    userPreEmploymentEvaluateBoList: false,
+    transactorOpinion: false,
+    ossIdList: false,
   }),
 )
 
@@ -78,6 +115,9 @@ async function handleApproval({ open }: ApprovalPayload) {
   // if (taskDefinitionKey.value == 'Activity_06mn8j5') {
   //   // 发起流程 第一步节点
   //   res = await Upsert.value?.workflowSubmit()
+  // }else if ('Activity_1lximsi' == taskDefinitionKey.value) {
+  // 人力资源节点
+  //   res = await humanResourcesUpsert.value?.workflowSubmit();
   // }
   // if (res) {
   //   const { valid, data } = res
@@ -105,7 +145,7 @@ onMounted(async () => {
       query: {
         ...proxy?.$route.query,
         taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: 'false',
+        isEditNode: taskDefinitionKey.value === 'Activity_1lximsi' ? 'true' : 'false',
       },
     })
 
@@ -115,6 +155,12 @@ onMounted(async () => {
           case 'update':
           case 'approval':
             Detail.value?.workflowView(entity)
+
+            // 人力资源确认节点
+            humanResourcesDetail1.value?.workflowView(entity)
+            humanResourcesUpsert.value?.workflowView(entity)
+            humanResourcesDetail2.value?.workflowView(entity)
+
             DetailOther.value?.workflowView(entity)
             break
           case 'view':

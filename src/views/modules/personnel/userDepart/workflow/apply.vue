@@ -2,19 +2,18 @@
   <WorkflowPage
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
-
     @approval="handleApproval"
   >
-    <detail v-if="isView" ref="Detail" :include-fields="includeFieldsDetail" :show-loading="false" />
+    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
 
     <template v-else>
       <!-- 发起流程 第一步节点 -->
       <div v-if="taskDefinitionKey === 'Activity_1npxmwc'">
-        <!-- <upsert ref="Upsert" :include-fields="includeFields" :show-loading="false" /> -->
+        <!-- <upsert ref="Upsert" :include-fields="applyFields" :show-loading="false" /> -->
       </div>
       <!-- 工作交接 详情--交接内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0qv4t1b'">
-        <detail ref="Detail3" :include-fields="includeFields4" :show-loading="false" />
+        <detail ref="Detail3" :include-fields="handoverDetailFields" :show-loading="false" />
         <detail ref="Upsert3" :include-fields="['departDate', 'handoverContent']" :show-loading="false" />
         <detail ref="Detail4" :include-fields="['reason']" :show-loading="false" />
         <detail ref="Upsert4" :include-fields="['ossIdList']" :show-loading="false" />
@@ -29,12 +28,12 @@
 
       <!-- 归档节点 详情--归档内容--可编辑的附件列表 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0zx1e0l'">
-        <detail ref="Detail2" :include-fields="includeFields8" :show-loading="false" />
+        <detail ref="Detail2" :include-fields="documentDetailFields" :show-loading="false" />
         <detail ref="Upsert2" :include-fields="['documentContent', 'ossIdList']" :show-loading="false" />
       </div>
       <!-- 其他审批通用节点 -->
       <div v-else>
-        <detail ref="DetailOther" :include-fields="includeFields3" :show-loading="false" />
+        <detail ref="DetailOther" :include-fields="commonFields" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
@@ -80,53 +79,52 @@ const HRDeductionUpsert = ref<InstanceType<typeof detail> | null>()
 const HRDeductionDetail1 = ref<InstanceType<typeof detail> | null>()
 const HRDeductionDetail2 = ref<InstanceType<typeof detail> | null>()
 
-// 字段
-const includeFields = ref(
+// 所有字段
+const allFields: PartialBooleanRecord<UserDepartForm> = {
+  id: true,
+  userId: true,
+  deptId: true,
+  deptType: true,
+  postId: true,
+  userType: true,
+  entryCompanyDate: true,
+  departPreDate: true,
+  specialCommercialInsurance: true,
+  isLoginCompanyEmail: true,
+  departDate: true,
+  reason: true,
+  handoverPerson: true,
+  handoverContent: true,
+  documentContent: true,
+  ossIdList: true,
+}
+
+// 总览字段
+const overviewFields = ref(
   filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postId: true,
-    userType: true,
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    handoverPerson: true,
-    reason: true,
-    handoverContent: false,
-    ossIdList: true,
+    ...allFields,
   }),
 )
 
-// 查看详情看到所有的信息
-const includeFieldsDetail = ref(
+// 申请字段
+const applyFields = ref(
   filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postId: true,
-    userType: true,
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    departDate: true,
-    handoverPerson: true,
-    reason: true,
-    handoverContent: true,
-    ossIdList: true,
-    documentContent: true,
+    ...allFields,
+    departDate: false,
+    userType: false,
+    handoverContent: false,
+    documentContent: false,
   }),
 )
 
 // 工作交接详情
-const includeFields4 = ref(
+const handoverDetailFields = ref(
   filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postId: true,
-    userType: true,
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    handoverPerson: true,
+    ...allFields,
+    departDate: false,
+    handoverContent: false,
+    reason: false,
+    ossIdList: false,
   }),
 )
 
@@ -138,54 +136,32 @@ const HRDeductionDetail1Fields1 = ref(
     postId: true,
   }),
 )
+
 // 人力扣款详情2
 const HRDeductionDetail1Fields2 = ref(
   filterTruthyKeys<UserDepartForm>({
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    departDate: true,
-    handoverPerson: true,
-    reason: true,
-    handoverContent: true,
-    ossIdList: true,
-    documentContent: true,
+    ...allFields,
+    userType: false,
+    userId: false,
+    deptId: false,
+    postId: false,
+    documentContent: false,
   }),
 )
 
 // 归档的节点详情
-const includeFields8 = ref(
+const documentDetailFields = ref(
   filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postId: true,
-    userType: true,
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    departDate: true,
-    handoverPerson: true,
-    reason: true,
-    handoverContent: true,
+    ...allFields,
+    documentContent: false,
     ossIdList: false,
   }),
 )
 
-// 其他节点的详情
-const includeFields3 = ref(
+const commonFields = ref(
   filterTruthyKeys<UserDepartForm>({
-    userId: true,
-    deptId: true,
-    postId: true,
-    userType: true,
-    entryCompanyDate: true,
-    specialCommercialInsurance: true,
-    isLoginCompanyEmail: true,
-    departDate: true,
-    handoverPerson: true,
-    reason: true,
-    handoverContent: true,
-    ossIdList: true,
+    ...allFields,
+    documentContent: false,
   }),
 )
 
