@@ -13,8 +13,6 @@ export type ViewOptions = Options
 
 export function useForm() {
   const { user } = useStore()
-  // 实例
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
 
   // 引用
   const Form = ref<FormInstance>()
@@ -47,7 +45,6 @@ export function useForm() {
     no: undefined,
     subjectType: 'project',
     psId: undefined,
-    projectName: undefined,
     deptId: user.info.deptId,
     type: undefined,
     businessCategory: undefined,
@@ -57,7 +54,6 @@ export function useForm() {
     isDeposit: 'N',
     contractId: undefined,
     contractNo: undefined,
-    contractName: undefined,
     contractExecute: undefined,
     isOwnerSettlement: 'N',
     amount: undefined,
@@ -150,11 +146,11 @@ export function useForm() {
     })
   }
 
-  interface SuccessData {
-    id: PurchaseForm['id']
-    no: PurchaseForm['no']
-    itemList: PurchaseForm['itemList']
-  }
+  // interface SuccessData {
+  //   id: PurchaseForm['id']
+  //   no: PurchaseForm['no']
+  //   itemList: PurchaseForm['itemList']
+  // }
 
   // // 提交
   // async function submit(options?: SubmitOptions<SuccessData>) {

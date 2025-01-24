@@ -172,12 +172,13 @@ const props = withDefaults(
 )
 
 // 事件
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'change', 'update:contractNo'])
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 预算状态
 const { oa_project_subject_status } = toRefs(proxy.useDict('oa_project_subject_status'))
+const { oa_project_business_type } = toRefs(proxy.useDict('oa_project_business_type'))
 
 // 状态
 const dialogVisible = ref(false)
@@ -187,8 +188,17 @@ const total = ref(0)
 const viewLoading = ref(false)
 
 const selectedList = ref<ProjectSubjectVO[]>([])
-const selectedIdList = computed(() => selectedList.value?.map(item => item.id) ?? [])
-const selectedIdsStr = computed(() => selectedIdList.value.join(','))
+const selectedIdList = computed(() => selectedList.value.map(item => item.id))
+const selectedIdsStr = computed(() => {
+  if (isEmpty(selectedIdList.value)) {
+    return undefined
+  }
+  return selectedIdList.value.join(',')
+})
+const contractNoStr = computed(() => {
+  const noStr = selectedList.value.map(e => e.contractNo).join('、')
+  return !isEmpty(noStr) ? noStr : undefined
+})
 
 // 引用
 const queryFormRef = ref<FormInstance>()
@@ -280,6 +290,9 @@ function confirm() {
   const payload = selectedIdsStr.value
   emit('update:modelValue', payload)
   emit('change', payload)
+
+  emit('update:contractNo', contractNoStr.value)
+
   dialogVisible.value = false
 }
 
@@ -304,6 +317,8 @@ function remove(item: ProjectSubjectVO) {
     selectedList.value.splice(index, 1)
     emit('update:modelValue', selectedIdsStr.value)
     emit('change', selectedIdsStr.value)
+
+    emit('update:contractNo', contractNoStr.value)
   }
 }
 
@@ -311,6 +326,7 @@ function remove(item: ProjectSubjectVO) {
 function clear() {
   emit('update:modelValue', undefined)
   emit('change', undefined)
+  emit('update:contractNo', undefined)
 }
 
 // 刷新
