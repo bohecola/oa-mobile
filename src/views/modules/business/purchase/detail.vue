@@ -20,12 +20,13 @@
         <ProjectSubjectSelect v-model="form.psId" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['contractId', includeFields]" label="合同编号" name="contractId" input-align="right">
+    <van-field v-show-field="['contractNo', includeFields]" label="合同编号" name="contractNo" input-align="right">
       <template #input>
-        <ContractSelect v-model="form.contractId" preview-field="no" readonly />
+        {{ form.contractNo }}
+        <!-- <ContractSelect v-model="form.contractId" preview-field="no" readonly /> -->
       </template>
     </van-field>
-    <van-field v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
+    <van-field v-if="!isNil(form.contractNo)" v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
       <template #input>
         <dict-select v-model="form.contractExecute" dict-type="oa_contract_execute_situation" readonly />
       </template>

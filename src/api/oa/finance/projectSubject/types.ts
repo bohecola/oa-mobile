@@ -46,7 +46,7 @@ export interface ProjectSubjectNoBindFeeTypeVO {
 
 export interface ProjectSubjectItemTreeVO {
   /**
-   * 金额
+   * 预算金额
    */
   amount?: number
 
@@ -69,6 +69,16 @@ export interface ProjectSubjectItemTreeVO {
    * 支出金额
    */
   expendAmount?: number
+
+  /**
+   * 申请中
+   */
+  applyingAmount: number
+
+  /**
+   * 已申请
+   */
+  finishAmount: number
 
   /**
    * 剩余金额
@@ -196,6 +206,11 @@ export interface ProjectSubjectVO {
   status: string
 
   /**
+   * 合同编号
+   */
+  contractNo?: string
+
+  /**
    * 项目预算项
    */
   itemList?: ProjectSubjectItemTreeVO[]
@@ -311,9 +326,14 @@ export interface ProjectSubjectQuery extends PageQuery {
   deptId?: string | number
 
   /**
-   * 新参数
+   * 申请人部门 id
    */
   projectDeptId?: string | number
+
+  /**
+   * 需求部门 id
+   */
+  deptDeptId?: string | number
 
   /**
    * 预算类型

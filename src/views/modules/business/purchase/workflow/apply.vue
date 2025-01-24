@@ -99,7 +99,7 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   leaseType: true,
   isDeposit: true,
   contractId: true,
-  contractName: true,
+  contractNo: true,
   contractExecute: true,
   isOwnerSettlement: true,
   amount: true,
