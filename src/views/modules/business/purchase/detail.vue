@@ -26,7 +26,7 @@
         <!-- <ContractSelect v-model="form.contractId" preview-field="no" readonly /> -->
       </template>
     </van-field>
-    <van-field v-if="!isNil(form.contractNo)" v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
+    <van-field v-if="isProject && !isNil(form.contractNo)" v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
       <template #input>
         <dict-select v-model="form.contractExecute" dict-type="oa_contract_execute_situation" readonly />
       </template>
