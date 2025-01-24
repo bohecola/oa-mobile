@@ -20,7 +20,7 @@
         <ProjectSubjectSelect v-model="form.psId" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['contractNo', includeFields]" label="合同编号" name="contractNo" input-align="right">
+    <van-field v-if="isProject && !isNil(form.psId)" v-show-field="['contractNo', includeFields]" label="合同编号" name="contractNo" input-align="right">
       <template #input>
         {{ form.contractNo }}
         <!-- <ContractSelect v-model="form.contractId" preview-field="no" readonly /> -->
@@ -312,7 +312,7 @@
 <script setup lang="ts">
 import { isEmpty, isNil } from 'lodash-es'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
-import ContractSelect from '../components/ContractSelect/index.vue'
+// import ContractSelect from '../components/ContractSelect/index.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'

@@ -23,13 +23,13 @@
   </van-field>
 
   <van-field
-    v-if="isProject && !isNil(form.psId)" v-show-field="['contractId', includeFields]"
+    v-if="isProject && !isNil(form.psId)" v-show-field="['contractNo', includeFields]"
     label="合同编号"
-    name="contractId"
+    name="contractNo"
     input-align="right"
   >
     <template #input>
-      <ContractSelect v-model="form.contractId" preview-field="no" readonly />
+      {{ form.contractNo }}
     </template>
   </van-field>
 
@@ -143,14 +143,14 @@ import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
 import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
-import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
+// import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
 
 withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'psId', 'deptId', 'subjectItemId', 'availableAmount', 'amount', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => ['subjectType', 'psId', 'deptId', 'contractNo', 'itemList', 'amount', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 
