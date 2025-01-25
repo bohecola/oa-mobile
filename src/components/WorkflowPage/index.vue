@@ -72,6 +72,10 @@
               class="absolute top-[36px] left-[100px] w-14 h-14 opacity-70"
             >
           </div>
+
+          <div v-if="!isNil(entityVariables?.id)" class="!mt-2">
+            <ApprovalFileTable :business-key="entityVariables?.id" />
+          </div>
           <bottom-line />
         </van-tab>
 

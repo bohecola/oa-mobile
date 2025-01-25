@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ApprovalFileTable: typeof import('./src/components/ApprovalFileTable/index.vue')['default']
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
     CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']

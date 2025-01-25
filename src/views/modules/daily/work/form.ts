@@ -4,19 +4,15 @@ import { extraInitFormData, extraInitRules } from './extraForm'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { getDailyWork } from '@/api/oa/daily/work/index'
 
+export interface SuccessData { id: DailyWorkForm['id'] }
 export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-interface SuccessData { id: DailyWorkForm['id'] }
 
 export function useForm() {
-  // 实例
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
-
   // 引用
   const Form = ref<FormInstance>()
 
@@ -28,24 +24,24 @@ export function useForm() {
     fileType: undefined,
     fileUseType: undefined,
     isSeal: 'N',
-    isYwlProject: undefined,
-    isPersonnelTransfer: undefined,
+    isYwlProject: 'N',
+    isPersonnelTransfer: 'N',
     sealType: undefined,
     isReturnSeal: undefined,
     sealFileCategory: undefined,
     sealUseType: undefined,
     administrationFileType: undefined,
-    isUseSeal: undefined,
+    isUseSeal: 'N',
     isExistRegulations: undefined,
     recipient: undefined,
     reason: undefined,
     remark: undefined,
+    wfRemark: undefined,
     no: undefined,
     needDepts: undefined,
-    wfRemark: undefined,
     ossIdList: undefined,
     contentJson: undefined,
-
+    // 额外的字段
     ...extraInitFormData,
   }
 
@@ -109,8 +105,8 @@ export function useForm() {
   }
 
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       Object.assign(form.value, entity)
