@@ -30,7 +30,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="right" />
+      <van-field v-if="!isNil(form.no)" v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="right" />
 
       <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="right">
         <template #input>
@@ -38,7 +38,7 @@
         </template>
       </van-field>
 
-      <van-field v-if="form.deptType === '2'" v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
+      <van-field v-if="form.deptType === '2' && !isNil(form.address)" v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
         <template #input>
           <TextareaView :value="form.address" />
         </template>
@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang='ts'>
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

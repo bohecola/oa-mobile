@@ -10,7 +10,7 @@
     <div class="pl-2 flex gap-2 items-center h-full w-55 hover:cursor-text group">
       <template v-if="selected">
         <!-- TODO 转正和见习入职使用同一个组件优化 -->
-        <span v-if="props.status === '5'" class="text-[var(--el-input-text-color)]">{{ selected?.userName }}</span>
+        <span v-if="props.status === '-1'" class="text-[var(--el-input-text-color)]">{{ selected?.userName }}</span>
         <span v-else class="text-[var(--el-input-text-color)]">{{ selected?.label }}</span>
         <span class="flex-1" />
         <span v-if="clearable" class="mr-1 cursor-pointer opacity-30 hidden group-hover:flex" @click.stop="handleClear">
@@ -47,7 +47,8 @@
 
         <el-table-column label="状态" align="center" prop="status" width="90">
           <template #default="scope">
-            <dict-tag :options="oa_user_state" :value="scope.row.status" />
+            <dict-tag v-if="status !== '-1'" :options="oa_user_state" :value="scope.row.status" />
+            <dict-tag v-else :options="oa_employment_status" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="80">
@@ -102,8 +103,8 @@ const props = withDefaults(
 const emit = defineEmits(['update:modelValue', 'update:name', 'change', 'getRow'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// const { oa_education_type, oa_nation, sys_yes_no, oa_user_state } = toRefs(
-//   proxy.useDict('oa_education_type', 'oa_nation', 'sys_yes_no', 'oa_user_state'),
+// const { oa_education_type, oa_nation, oa_employment_status, oa_user_state } = toRefs(
+//   proxy.useDict('oa_education_type', 'oa_nation', 'oa_employment_status', 'oa_user_state'),
 // )
 
 // 状态
@@ -154,7 +155,7 @@ function handleFocusClick() {
 
 // 选择
 async function handleSelect(row: any) {
-  if (row.status === '5') {
+  if (row.status === '-1') {
     emit('update:modelValue', row.id)
     emit('change', row.id)
   }
@@ -215,7 +216,8 @@ watch(
   () => props.modelValue,
   async (val) => {
     if (val) {
-      if (props.status === '5') {
+      if (props.status === '-1') {
+        await getList()
         selected.value = tableData.value.find(item => item.id === val)
       }
       else {

@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import type { DeptVO } from './../dept/types'
-import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoVO, UserMobileListQuery, UserQuery, UserVO } from './types'
+import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoListQuery, UserInfoVO, UserInfoVo, UserMobileListQuery, UserQuery, UserVO } from './types'
 import type { RoleVO } from '@/api/system/role/types'
 import { parseStrEmpty } from '@/utils/base'
 import request from '@/service/request'
@@ -246,6 +246,17 @@ export function getUserMobileList(params?: UserMobileListQuery): AxiosPromise<Re
     url: `/system/user/userMobileList`,
     method: 'get',
     params,
+  })
+}
+
+/**
+ * 查询用户信息列表userInfo
+ */
+export function getUserInfoList(query: UserInfoListQuery): AxiosPromise<UserInfoVo[]> {
+  return request({
+    url: '/oa/personnel/userInfo/list',
+    method: 'get',
+    params: query,
   })
 }
 

@@ -152,3 +152,283 @@ export interface SysUserMobileVO {
 export interface UserMobileListQuery {
   userIds?: string
 }
+
+/**
+ * 转正申请流程需要这个类型，获取userInfo信息
+ */
+export interface UserInfoListQuery {
+  /**
+   * 学位
+   */
+  academicDegree?: string
+  /**
+   * 住址
+   */
+  address?: string
+  /**
+   * 创建者
+   */
+  createBy?: number
+  /**
+   * 创建部门
+   */
+
+  createDept?: number
+  /**
+   * 创建时间
+   */
+  createTime?: string
+  /**
+   * 离职日期
+   */
+  departDate?: string
+  /**
+   * 学历
+   */
+  education?: string
+  /**
+   * 紧急联系人
+   */
+  emergencyContactName?: string
+  /**
+   * 紧急联系人电话
+   */
+  emergencyContactPhone?: string
+  /**
+   * 紧急联系人所属关系
+   */
+  emergencyContactRelation?: string
+  /**
+   * 入职id（user_employment）
+   */
+  employmentId?: number
+  /**
+   * 入职日期
+   */
+  entryCompanyDate?: string
+
+  firstNum?: number
+  /**
+   * 转正日期
+   */
+  formalDate?: string
+  /**
+   * 毕业院校
+   */
+  graduationSchool?: string
+  /**
+   * ID
+   */
+  id?: number
+  /**
+   * 身份证号
+   */
+  idCard?: string
+  /**
+   * 排序的方向desc或者asc
+   */
+  isAsc?: string /**
+                  * 婚姻状况(未婚 已婚)
+                  */
+  maritalStatus?: string
+  /**
+   * 民族
+   */
+  nation?: string
+  /**
+   * 籍贯
+   */
+  nativePlace?: string
+  /**
+   * 员工编号
+   */
+  no?: string /**
+               * 排序列
+               */
+  orderByColumn?: string
+  /**
+   * 当前页数
+   */
+  pageNum?: number
+  /**
+   * 分页大小
+   */
+  pageSize?: number
+  /**
+   * 请求参数
+   */
+  params?: string
+  /**
+   * 个人邮箱
+   */
+  personEmail?: string
+  /**
+   * 政治面貌
+   */
+  politicalOutlook?: string
+  /**
+   * 试用期时长(月)
+   */
+  probationPeriod?: number
+  /**
+   * 专业
+   */
+  speciality?: string
+  /**
+   * 参加工作时间
+   */
+  startWorkDate?: string
+  /**
+   * 员工状态(试用期 在职 离职 )
+   */
+  status?: string
+  /**
+   * 更新者
+   */
+  updateBy?: number
+  /**
+   * 更新时间
+   */
+  updateTime?: string
+  /**
+   * 用户id
+   */
+  userId?: number | string
+
+  userName?: string
+}
+
+/**
+ * UserInfoVo，用户信息视图对象 oa_user_info
+ */
+export interface UserInfoVo {
+  /**
+   * 学位
+   */
+  academicDegree?: string
+  /**
+   * 住址
+   */
+  address?: string
+  /**
+   * 离职日期
+   */
+  departDate?: Date
+  /**
+   * 部门ID
+   */
+  deptId?: number
+  /**
+   * 部门名称
+   */
+  deptName?: string
+  /**
+   * 学历
+   */
+  education?: string
+  /**
+   * 紧急联系人
+   */
+  emergencyContactName?: string
+  /**
+   * 紧急联系人电话
+   */
+  emergencyContactPhone?: string
+  /**
+   * 紧急联系人所属关系
+   */
+  emergencyContactRelation?: string
+  /**
+   * 入职id（user_employment）
+   */
+  employmentId?: number
+  /**
+   * 入职日期
+   */
+  entryCompanyDate?: string
+  /**
+   * 转正日期
+   */
+  formalDate?: string
+  /**
+   * 毕业院校
+   */
+  graduationSchool?: string
+  /**
+   * ID
+   */
+  id?: number
+  /**
+   * 身份证号
+   */
+  idCard?: string
+  /**
+   * 婚姻状况(未婚 已婚)
+   */
+  maritalStatus?: string
+  /**
+   * 民族
+   */
+  nation?: string
+  /**
+   * 籍贯
+   */
+  nativePlace?: string
+  /**
+   * 员工编号
+   */
+  no?: string
+  /**
+   * 附件列表
+   */
+  ossIdList?: number[]
+  /**
+   * 个人邮箱
+   */
+  personEmail?: string
+  /**
+   * 政治面貌
+   */
+  politicalOutlook?: string
+  /**
+   * 岗位ID
+   */
+  postId?: string
+  /**
+   * 岗位名称
+   */
+  postName?: string
+  /**
+   * 试用期时长(月)
+   */
+  probationPeriod?: number
+  /**
+   * 专业
+   */
+  speciality?: string
+  /**
+   * 参加工作时间
+   */
+  startWorkDate?: Date
+  /**
+   * 员工状态(试用期 在职 离职 )
+   */
+  status?: string
+  /**
+   * 转正类型
+   */
+  type?: string
+  /**
+   * 用户id
+   */
+  userId?: number | string
+  /**
+   * 用户姓名
+   */
+  userName?: string
+
+  /**
+   * 保存'0'、提交'1'状态
+   */
+  writeStatus?: string
+}

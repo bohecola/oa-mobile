@@ -3,7 +3,7 @@
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['userInfoId', includeFields]" name="userInfoId" label="员工" input-align="right">
         <template #input>
-          <UserInfoSelect v-model="form.userInfoId" v-model:user-id="form.userId" v-model:user-name="form.userName" status="5" readonly />
+          <UserInfoSelect v-model="form.userInfoId" v-model:user-id="form.userId" v-model:user-name="form.userName" status="-1" readonly />
         </template>
       </van-field>
 
@@ -51,12 +51,12 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['startDate', includeFields]" name="startDate" label="开始日期" input-align="right">
+      <van-field v-if="form.isProbation === 'Y'" v-show-field="['startDate', includeFields]" name="startDate" label="开始日期" input-align="right">
         <template #input>
           {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
-      <van-field v-show-field="['endDate', includeFields]" name="endDate" label="结束日期" input-align="right">
+      <van-field v-if="form.isProbation === 'Y'" v-show-field="['endDate', includeFields]" name="endDate" label="结束日期" input-align="right">
         <template #input>
           {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
         </template>
@@ -100,7 +100,7 @@
         </template>
       </van-field>
 
-      <van-field v-if="!isNil(form.certificates) && form.certificates.includes('其他证书')" v-show-field="['otherCertificates', includeFields]" name="otherCertificates" label="其他证书" input-align="right">
+      <van-field v-if="!isNil(form.certificates) && form.certificates.includes('9')" v-show-field="['otherCertificates', includeFields]" name="otherCertificates" label="其他证书" input-align="right">
         <template #input>
           <TextareaView :value="form.otherCertificates" />
         </template>
@@ -149,6 +149,8 @@
 <script setup lang="ts">
 import { isEmpty, isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
+import UserInfoSelect from '../components/UserInfoSelect.vue'
+
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { InternshipEmploymentForm } from '@/api/oa/personnel/internshipEmployment/types'

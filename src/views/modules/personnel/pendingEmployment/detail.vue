@@ -111,7 +111,7 @@
         </template>
       </van-field>
 
-      <van-field v-if="!isNil(form.certificates) && form.certificates.includes('其他证书')" v-show-field="['otherCertificates', includeFields]" name="otherCertificates" label="其他证书" input-align="right">
+      <van-field v-if="!isNil(form.certificates) && form.certificates.includes('9')" v-show-field="['otherCertificates', includeFields]" name="otherCertificates" label="其他证书" input-align="right">
         <template #input>
           <TextareaView :value="form.otherCertificates" />
         </template>
