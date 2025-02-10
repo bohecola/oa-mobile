@@ -7,7 +7,7 @@ import request from '@/service/request'
  */
 export function addUserEmploymentHandle(data: UserPendingEmploymentForm) {
   return request({
-    url: '/oa/userEmploymentHandle',
+    url: '/oa/personnel/userEmploymentHandle',
     method: 'post',
     data,
   })
@@ -19,7 +19,7 @@ export function addUserEmploymentHandle(data: UserPendingEmploymentForm) {
  */
 export function updateUserEmploymentHandle(data: UserPendingEmploymentForm) {
   return request({
-    url: '/oa/userEmploymentHandle',
+    url: '/oa/personnel/userEmploymentHandle',
     method: 'put',
     data,
   })

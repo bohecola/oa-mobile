@@ -7,7 +7,7 @@ import request from '@/service/request'
  */
 export function addInternshipEmployment(data: InternshipEmploymentForm) {
   return request({
-    url: '/oa/userInfoHandle',
+    url: '/oa/personnel/userInfoHandle',
     method: 'post',
     data,
   })
@@ -19,7 +19,7 @@ export function addInternshipEmployment(data: InternshipEmploymentForm) {
  */
 export function updateInternshipEmployment(data: InternshipEmploymentForm) {
   return request({
-    url: '/oa/userInfoHandle',
+    url: '/oa/personnel/userInfoHandle',
     method: 'put',
     data,
   })
@@ -30,7 +30,7 @@ export function updateInternshipEmployment(data: InternshipEmploymentForm) {
  */
 export function getInternshipEmployment(id: string) {
   return request({
-    url: `/oa/userInfoHandle/${id}`,
+    url: `/oa/personnel/userInfoHandle/${id}`,
     method: 'get',
   })
 }
