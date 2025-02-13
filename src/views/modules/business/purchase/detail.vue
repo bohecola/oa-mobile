@@ -61,36 +61,47 @@
     <!-- 服务类别为租赁时显示 -->
     <van-field v-if="form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
       <template #input>
-        <dict-tag :options="sys_yes_no" :value="form.isDeposit" />
+        <YesNoSwitch v-model="form.isDeposit" readonly />
       </template>
     </van-field>
+
     <van-field v-show-field="['amount', includeFields]" label="含税总金额" name="amount" input-align="right">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
-          <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
     </van-field>
-    <van-field v-if="isProject && !isNil(form.psId) && form.businessCategory !== '0'" v-show-field="['notTaxAmount', includeFields]" label="不含税总金额" name="notTaxAmount" input-align="right">
+    <van-field v-if="isProject && !isNil(form.psId) && !isYwl" v-show-field="['notTaxAmount', includeFields]" label="不含税总金额" name="notTaxAmount" input-align="right">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.notTaxAmount) }}</span>
-          <span v-if="!isNil(form.notTaxAmount)" class="text-red-400">{{ toCnMoney(form.notTaxAmount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.notTaxAmount) }}</span>
         </div>
       </template>
     </van-field>
-    <van-field v-show-field="['realAmount', includeFields]" label="实际金额" name="amount" input-align="right">
+
+    <van-field v-show-field="['realAmount', includeFields]" label="含税实际总金额" name="realAmount" input-align="right">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.realAmount) }} </span>
-          <span v-if="!isNil(form.realAmount)" class="text-red-400">{{ toCnMoney(form.realAmount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.realAmount) }}</span>
         </div>
       </template>
     </van-field>
+    <van-field v-if="!isYwl && isProject" v-show-field="['notTaxRealAmount', includeFields]" label="不含税实际总金额" name="notTaxRealAmount" input-align="right">
+      <template #input>
+        <div class="flex items-baseline">
+          <span class="mr-3">{{ formatCurrency(form.notTaxRealAmount) }} </span>
+          <span class="text-red-400">{{ toCnMoney(form.notTaxRealAmount) }}</span>
+        </div>
+      </template>
+    </van-field>
+
     <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算" name="isOwnerSettlement" input-align="right">
       <template #input>
-        <dict-tag :options="sys_yes_no" :value="form.isOwnerSettlement" />
+        <YesNoSwitch v-model="form.isOwnerSettlement" readonly />
       </template>
     </van-field>
     <van-field v-show-field="['description', includeFields]" label="采购说明" name="description" input-align="right">
@@ -197,48 +208,110 @@
             input-align="right"
           />
           <van-field
-            v-model="item.num"
             :name="`itemList.${index}.num`"
             label="数量"
             input-align="right"
-          />
+          >
+            <template #input>
+              {{ item.num }}
+            </template>
+          </van-field>
           <van-field
-            v-model="item.amount"
+            v-if="!isYwl && isProject"
+            :name="`itemList.${index}.invoiceType`"
+            label="发票类型"
+            input-align="right"
+          >
+            <template #input>
+              <dict-select v-model="item.invoiceType" :options="oa_purchase_invoice_type" readonly />
+            </template>
+          </van-field>
+          <van-field
+            v-if="!isYwl && isProject"
+            :name="`itemList.${index}.taxRate`"
+            label="税率(%)"
+            input-align="right"
+          >
+            <template #input>
+              <dict-select v-model="item.taxRate" :options="oa_contract_tax_rate" readonly />
+            </template>
+          </van-field>
+          <van-field
+            :name="`itemList.${index}.taxAmount`"
+            label="含税单价(元)"
+            input-align="right"
+          >
+            <template #input>
+              {{ formatCurrency(item.taxAmount) }}
+            </template>
+          </van-field>
+          <van-field
+            v-if="!isYwl && isProject"
             :name="`itemList.${index}.amount`"
-            label="单价(元)"
+            label="不含税单价(元)"
             input-align="right"
           >
             <template #input>
-              {{ formatCurrency(form.itemList[index].amount) }}
+              {{ formatCurrency(item.amount) }}
             </template>
           </van-field>
           <van-field
+            v-if="includeFields.includes('realAmount')"
+            :name="`itemList.${index}.taxRealAmount`"
+            label="含税实际单价(元)"
+            input-align="right"
+          >
+            <template #input>
+              {{ formatCurrency(item.taxRealAmount) }}
+            </template>
+          </van-field>
+          <van-field
+            v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
             :name="`itemList.${index}.realAmount`"
-            label="实际单价(元)"
+            label="不含税实际单价(元)"
             input-align="right"
           >
             <template #input>
-              {{ formatCurrency(form.itemList[index].realAmount) }}
+              {{ formatCurrency(item.realAmount) }}
             </template>
           </van-field>
           <van-field
-            v-model="item.totalAmount"
-            :name="`itemList.${index}.totalAmount`"
+            :name="`itemList.${index}.taxTotalAmount`"
             label="含税合计(元)"
             input-align="right"
           >
             <template #input>
-              {{ formatCurrency(form.itemList[index].totalAmount) }}
+              {{ formatCurrency(item.taxTotalAmount) }}
             </template>
           </van-field>
           <van-field
-            v-model="item.realTotalAmount"
-            :name="`itemList.${index}.realTotalAmount`"
-            label="实际含税合计(元)"
+            v-if="!isYwl && isProject"
+            :name="`itemList.${index}.totalAmount`"
+            label="不含税合计(元)"
             input-align="right"
           >
             <template #input>
-              {{ formatCurrency(form.itemList[index].realTotalAmount) }}
+              {{ formatCurrency(item.totalAmount) }}
+            </template>
+          </van-field>
+          <van-field
+            v-if="includeFields.includes('realAmount')"
+            :name="`itemList.${index}.taxRealTotalAmount`"
+            label="含税实际合计(元)"
+            input-align="right"
+          >
+            <template #input>
+              {{ formatCurrency(item.taxRealTotalAmount) }}
+            </template>
+          </van-field>
+          <van-field
+            v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
+            :name="`itemList.${index}.realTotalAmount`"
+            label="不含税实际合计(元)"
+            input-align="right"
+          >
+            <template #input>
+              {{ formatCurrency(item.realTotalAmount) }}
             </template>
           </van-field>
           <van-field
@@ -267,34 +340,13 @@
       </div>
     </Teleport>
 
-    <!-- <van-field v-show-field="['hasPurchaseContract', includeFields]" label="是否存在采购合同" name="hasPurchaseContract" input-align="right">
-        <template #input>
-          <DictSelect v-model="form.hasPurchaseContract" dict-type="sys_yes_no" readonly />
-        </template>
-      </van-field> -->
-
-    <!-- <van-field v-if="form.hasPurchaseContract === 'Y'" v-show-field="['purchaseContractIds', includeFields]" label="采购合同" class="!items-baseline" name="purchaseContractIds" input-align="right">
-        <template #input>
-          <ContractSelect v-model="form.purchaseContractIds" multiple readonly />
-        </template>
-      </van-field> -->
-
-    <!-- <van-field v-else v-show-field="['purchaseFiles', includeFields]" label="采购附件" name="purchaseFiles" input-align="right">
-        <template #input>
-          <UploadFile v-model="form.purchaseFiles" readonly :card-size="60" />
-        </template>
-      </van-field> -->
-
     <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="right">
       <template #input>
         <div class="flex flex-col">
           <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
           <div class="text-red-400">
-            验收附件上传说明：
-            1.通过采购部采购的需要上传收货确认单
-            2.自行线上采购需要上传网络订单截图
-            3.全部采购物资的照片
-            [注：照片必需带时间、地点(水印相机拍照) ]
+            验收附件上传说明：1.通过采购部采购的需要上传收货确认单及全部物资照片 2.自行采购需要上传网络订单截图(线上)/店内销售清单(线下)及全部物资照片
+            [注：照片必需带时间、地点(水印相机拍照)]
           </div>
         </div>
       </template>
@@ -337,12 +389,10 @@ const { user } = useStore()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// 采购 - 业务类型
-const { oa_purchase_business_type } = toRefs(proxy!.useDict('oa_purchase_business_type'))
-// 项目 - 业务类型
-const { oa_project_business_type } = toRefs(proxy!.useDict('oa_project_business_type'))
-// 系统是否
-const { sys_yes_no } = toRefs(proxy!.useDict('sys_yes_no'))
+// 采购 - 业务类型、项目 - 业务类型、发票类型、税率
+const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(
+  proxy.useDict('oa_purchase_business_type', 'oa_project_business_type', 'oa_purchase_invoice_type', 'oa_contract_tax_rate'),
+)
 
 // 表单
 const { Form, form, isLoading, reset, view, workflowView } = useForm()
@@ -352,6 +402,10 @@ const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')
+// 是否是部门预算
+const isDept = computed(() => form.value.subjectType === 'dept')
+// 业务类型为运维类
+const isYwl = computed(() => isProject.value && form.value.businessCategory === '0')
 
 // 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {

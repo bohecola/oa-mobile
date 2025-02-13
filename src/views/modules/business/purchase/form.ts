@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { getPurchase } from '@/api/oa/business/purchase'
@@ -30,10 +30,22 @@ export function useForm() {
     specsModel: undefined,
     unit: undefined,
     num: undefined,
+
+    invoiceType: undefined,
+    taxRate: undefined,
+
     amount: undefined,
-    realAmount: undefined,
+    taxAmount: undefined,
+
     totalAmount: undefined,
+    taxTotalAmount: undefined,
+
+    realAmount: undefined,
+    taxRealAmount: undefined,
+
     realTotalAmount: undefined,
+    taxRealTotalAmount: undefined,
+
     inquiryWay: undefined,
     supplier: undefined,
     remark: undefined,
@@ -59,6 +71,7 @@ export function useForm() {
     amount: undefined,
     notTaxAmount: undefined,
     realAmount: undefined,
+    notTaxRealAmount: undefined,
     description: undefined,
     remark: undefined,
     itemList: [{ ...purchaseItem }],
@@ -125,23 +138,12 @@ export function useForm() {
     isLoading.value = true
     reset()
     const { data } = await getPurchase(id)
-    const itemList = (data.itemList || []).map((item: PurchaseItemVO) => ({
-      ...item,
-      num: Number(item.num),
-      amount: Number(item.amount),
-      totalAmount: Number(item.totalAmount),
-    }))
 
     excludeCheckFiles.value = data.checkFiles?.split(',')
     excludeOssIdList.value = data.ossIdList
 
     nextTick(() => {
-      Object.assign(form.value, {
-        ...data,
-        amount: Number(data.amount),
-        realAmount: Number(data.realAmount),
-        itemList,
-      })
+      Object.assign(form.value, data)
       isLoading.value = false
     })
   }
@@ -217,9 +219,41 @@ export function useForm() {
     try {
       reset()
       nextTick(() => {
-        Object.assign(form.value, {
-          ...entity,
-        })
+        // 兼容旧采购流程
+        const isOldPurchase = entity.itemList.every((item: any) => isNil(item.taxAmount))
+        if (isOldPurchase) {
+          entity.itemList = entity.itemList.map((item: any) => {
+            // 普票-税率0（历史数据统一都需处理）
+            item.invoiceType = '0'
+            item.taxRate = '0'
+            // // 项目预算-运维类 / 部门预算
+            // if ((entity.subjectType === 'project' && entity.businessCategory === '0') || entity.subjectType === 'dept') {
+
+            // }
+
+            return {
+              ...item,
+              // 含税单价
+              taxAmount: item.amount,
+              // 含税合计
+              taxTotalAmount: item.totalAmount,
+              // 含税实际单价
+              taxRealAmount: isNil(item.realAmount) ? undefined : item.realAmount,
+              // 含税实际合计
+              taxRealTotalAmount: isNil(item.realTotalAmount) ? undefined : item.realTotalAmount,
+              // 不含税单价
+              amount: undefined,
+              // 不含税合计
+              totalAmount: undefined,
+              // 不含税实际单价
+              realAmount: undefined,
+              // 不含税实际合计
+              realTotalAmount: undefined,
+            }
+          })
+        }
+
+        Object.assign(form.value, entity)
       })
     }
     catch (err) {

@@ -105,6 +105,7 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   amount: true,
   notTaxAmount: true,
   realAmount: true,
+  notTaxRealAmount: true,
   description: true,
   remark: true,
   itemList: true,
@@ -128,6 +129,7 @@ const applyFields = ref(
   filterTruthyKeys<PurchaseForm>({
     ...allFields,
     realAmount: false,
+    notTaxRealAmount: false,
     hasPurchaseContract: false,
     purchaseContractIds: false,
     purchaseFiles: false,
@@ -140,6 +142,7 @@ const commonFields = ref(
   filterTruthyKeys<PurchaseForm>({
     ...allFields,
     realAmount: false,
+    notTaxRealAmount: false,
     hasPurchaseContract: false,
     purchaseContractIds: false,
     purchaseFiles: false,
@@ -153,6 +156,7 @@ const executeDetailFields = ref(
     ...allFields,
     itemList: false,
     realAmount: false,
+    notTaxRealAmount: false,
     hasPurchaseContract: false,
     purchaseContractIds: false,
     purchaseFiles: false,
@@ -164,6 +168,7 @@ const executeUpsertFields = ref(
   filterTruthyKeys<PurchaseForm>({
     itemList: true,
     realAmount: true,
+    notTaxRealAmount: true,
     hasPurchaseContract: true,
     purchaseContractIds: false,
     purchaseFiles: true,

@@ -15,5 +15,9 @@ export function formatCurrencyUtil(amount: number, options: CurrencyObjectOption
 
 // 金额转中文大写
 export function toCnMoney(amount: number | string) {
+  if (isNil(amount) || (amount as any) === '') {
+    return amount
+  }
+
   return nzh.cn.toMoney(amount, { outSymbol: false })
 }

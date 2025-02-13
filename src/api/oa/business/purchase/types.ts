@@ -25,17 +25,17 @@ export interface PurchaseVO extends BaseEntity {
   projectId: string | number
 
   /**
-   * 采购类型; 物资采购 外委采购 框架采购
+   * 采购类型
    */
   type: string
 
   /**
-   * 业务类别; 运维（新能源电站运维）电力工程类项目 电站工程类项目 信息化类项目检修试验类项目其他 管理 销售 研发
+   * 业务类别
    */
   businessCategory: string
 
   /**
-   * 物品类别; 生产物资 工程物资 员工福利 办公用品 生活用品 劳保用品 安全物资 其他
+   * 物品类别
    */
   objectCategory: string
 
@@ -65,7 +65,7 @@ export interface PurchaseVO extends BaseEntity {
   contractNo?: string
 
   /**
-   * 合同执行情况; 合同内  合同外
+   * 合同执行情况
    */
   contractExecute: string
 
@@ -75,7 +75,7 @@ export interface PurchaseVO extends BaseEntity {
   isOwnerSettlement: string
 
   /**
-   * 金额
+   * 含税总金额
    */
   amount: number
 
@@ -85,9 +85,14 @@ export interface PurchaseVO extends BaseEntity {
   notTaxAmount: number
 
   /**
-   * 实际采购金额
+   * 含税实际采购总金额
    */
-  realAmount: number
+  realAmount?: number
+
+  /**
+   * 不含税实际采购总金额
+   */
+  notTaxRealAmount?: number
 
   /**
    * 采购说明
@@ -113,6 +118,11 @@ export interface PurchaseVO extends BaseEntity {
    * 采购清单
    */
   itemList?: PurchaseItemVO[]
+
+  /**
+   * 采购合同
+   */
+  purchaseContractIds?: string
 
   /**
    * 附件列表
@@ -167,11 +177,6 @@ export interface PurchaseForm extends BaseEntity {
   serviceCategory?: string
 
   /**
-   * 采购合同
-   */
-  purchaseContractIds?: string
-
-  /**
    * 租赁类型
    */
   leaseType?: string
@@ -207,7 +212,7 @@ export interface PurchaseForm extends BaseEntity {
   isOwnerSettlement?: string
 
   /**
-   * 金额
+   * 含税总金额
    */
   amount?: number
 
@@ -217,9 +222,14 @@ export interface PurchaseForm extends BaseEntity {
   notTaxAmount?: number
 
   /**
-   * 实际采购金额
+   * 含税实际采购总金额
    */
   realAmount?: number
+
+  /**
+   * 不含税实际采购总金额
+   */
+  notTaxRealAmount?: number
 
   /**
    * 采购说明
@@ -240,6 +250,11 @@ export interface PurchaseForm extends BaseEntity {
    * 采购清单
    */
   itemList?: PurchaseItemVO[]
+
+  /**
+   * 采购合同
+   */
+  purchaseContractIds?: string
 
   /**
    * 是否存在采购合同
@@ -309,7 +324,7 @@ export interface PurchaseQuery extends PageQuery {
   contractId?: string | number
 
   /**
-   * 合同执行情况; 合同内  合同外
+   * 合同执行情况
    */
   contractExecute?: string
 
@@ -416,22 +431,47 @@ export interface PurchaseItemVO {
   unit?: string
 
   /**
-   * 单价(元)
+   * 发票类型
+   */
+  invoiceType?: string
+  /**
+   * 税率
+   */
+  taxRate?: string
+
+  /**
+   * 含税单价
+   */
+  taxAmount?: number
+  /**
+   * 不含税单价 - 原单价
    */
   amount?: number
 
   /**
-   * 实际单价(元)
+   * 含税合计
    */
-  realAmount?: number
-
+  taxTotalAmount?: number
   /**
-   * 含税合计(元)
+   * 不含税合计 - 原含税合计
    */
   totalAmount?: number
 
   /**
-   * 实际含税合计(元)
+   * 含税实际单价
+   */
+  taxRealAmount?: number
+  /**
+   * 不含税实际单价 - 原实际单价
+   */
+  realAmount?: number
+
+  /**
+   * 含税实际合计
+   */
+  taxRealTotalAmount?: number
+  /**
+   * 不含税实际合计 - 原实际含税合计
    */
   realTotalAmount?: number
 

@@ -13,7 +13,7 @@ const props = withDefaults(
     modelValue?: string
     readonly?: boolean
     multiple?: boolean
-    dictType: string
+    dictType?: string
     options?: DictDataOption[]
     isFilterUseSeal?: boolean
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
