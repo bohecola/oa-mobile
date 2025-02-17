@@ -65,25 +65,29 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
-        <template #input>
-          <YesNoSwitch v-model="form.isIntern" readonly />
-        </template>
-      </van-field>
+      <div v-if="form.postCode !== 'JXYWRY'">
+        <van-field v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
+          <template #input>
+            <YesNoSwitch v-model="form.isIntern" readonly />
+          </template>
+        </van-field>
 
-      <van-field v-show-field="['isProbation', includeFields]" name="isProbation" :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'" input-align="right">
-        <template #input>
-          <YesNoSwitch v-model="form.isProbation" readonly />
-        </template>
-      </van-field>
+        <van-field v-show-field="['isProbation', includeFields]" name="isProbation" :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'" input-align="right">
+          <template #input>
+            <YesNoSwitch v-model="form.isProbation" readonly />
+          </template>
+        </van-field>
 
-      <van-field v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" :label="form.isIntern !== 'Y' ? '试用期时长(月)' : '实习期时长(月)'" input-align="right" />
+        <van-field v-if="form.isIntern === 'Y' && form.isProbation === 'Y'" v-model="form.internshipExplain" v-show-field="['internshipExplain', includeFields]" name="internshipExplain" label="实习期时长说明" input-align="right" />
 
-      <van-field v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right">
-        <template #input>
-          <span>{{ form.probationWagesRate }}%</span>
-        </template>
-      </van-field>
+        <van-field v-if="form.isIntern === 'N' && form.isProbation === 'Y'" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)" input-align="right" />
+
+        <van-field v-if="form.isProbation === 'Y'" v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right">
+          <template #input>
+            <span>{{ form.probationWagesRate }}%</span>
+          </template>
+        </van-field>
+      </div>
 
       <van-field v-show-field="['realDate', includeFields]" name="realDate" label="实际到岗日期" input-align="right">
         <template #input>

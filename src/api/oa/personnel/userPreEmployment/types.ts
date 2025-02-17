@@ -80,6 +80,11 @@ export interface UserPreEmploymentVO {
   probationCycle: string
 
   /**
+   * 实习期时长说明
+   */
+  internshipExplain?: string
+
+  /**
    * 状态（0录用 1不录用）
    */
   status: string
@@ -201,6 +206,16 @@ export interface UserPreEmploymentForm extends BaseEntity {
    * 试用期时长(月)
    */
   probationCycle?: number
+
+  /**
+   * 实习期时长说明
+   */
+  internshipExplain?: string
+
+  /**
+   * 岗位编码
+   */
+  postCode?: string
 
   /**
    * 状态（0录用 1不录用）

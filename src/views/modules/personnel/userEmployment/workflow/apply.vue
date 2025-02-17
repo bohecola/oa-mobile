@@ -60,6 +60,8 @@ const allFields: PartialBooleanRecord<UserEmploymentForm> = {
   phonenumber: true,
   isProbation: true,
   probationCycle: true,
+  isOutsource: true,
+  internshipExplain: true,
   nation: true,
   education: true,
   hopeDate: true,

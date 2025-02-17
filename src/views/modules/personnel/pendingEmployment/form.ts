@@ -48,6 +48,9 @@ export function useForm() {
     phonenumber: undefined,
     isProbation: 'N',
     probationCycle: undefined,
+    isOutsource: 'N',
+    internshipExplain: undefined,
+    postCode: undefined,
     isRecommend: 'N',
     reference: undefined,
     isIntern: 'N',
@@ -67,6 +70,7 @@ export function useForm() {
       phonenumber: [{ required: true, message: '手机号不能为空', trigger: 'onBlur' }],
       isProbation: [{ required: true, message: '是否有试用期不能为空', trigger: 'onBlur' }],
       probationCycle: [{ required: true, message: '试用期时长不能为空', trigger: 'onBlur' }],
+      internshipExplain: [{ required: true, message: '实习期时长说明不能为空', trigger: 'onBlur' }],
       isRecommend: [{ required: true, message: '是否推荐不能为空', trigger: 'onChange' }],
       reference: [{ required: true, message: '推荐来源不能为空', trigger: 'onChange' }],
       isIntern: [{ required: true, message: '是否实习生不能为空', trigger: 'onChange' }],
@@ -82,6 +86,7 @@ export function useForm() {
       interviewDate: [{ required: true, message: '面试日期不能为空', trigger: 'onBlur' }],
       interviewEvaluation: [{ required: true, message: '面试评价不能为空', trigger: 'onBlur' }],
       isOwnerInterview: [{ required: true, message: '是否需要业主不能为空', trigger: 'onBlur' }],
+      isOutsource: [{ required: true, message: '是否为外包人员不能为空', trigger: 'onBlur' }],
     },
   })
 

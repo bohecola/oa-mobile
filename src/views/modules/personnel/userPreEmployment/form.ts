@@ -35,6 +35,8 @@ export function useForm() {
     isOwnerInterview: undefined,
     isProbation: undefined,
     probationCycle: undefined,
+    internshipExplain: undefined,
+    postCode: undefined,
     isRecommend: 'N',
     reference: undefined,
     isIntern: 'N',
@@ -60,6 +62,7 @@ export function useForm() {
       isOwnerInterview: [{ required: true, message: '是否需要业主面试不能为空', trigger: 'onBlur' }],
       isProbation: [{ required: true, message: '是否有试用期不能为空', trigger: 'onBlur' }],
       probationCycle: [{ required: true, message: '试用期时长(月)不能为空', trigger: 'onBlur' }],
+      internshipExplain: [{ required: true, message: '实习期时长说明不能为空', trigger: 'onBlur' }],
       isRecommend: [{ required: true, message: '是否推荐不能为空', trigger: 'onChange' }],
       certificates: [{ required: true, message: '持证情况不能为空', trigger: 'onChange' }],
       otherCertificates: [{ required: true, message: '其他证书不能为空', trigger: 'onBlur' }],
@@ -78,7 +81,6 @@ export function useForm() {
     form.value = { ...initFormData }
     form.value.isOwnerInterview = 'N'
     form.value.isProbation = 'Y'
-    form.value.probationCycle = 3
     Form.value?.resetValidation()
   }
 

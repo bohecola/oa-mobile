@@ -3,7 +3,8 @@
     <van-cell-group inset class="!my-3">
       <van-field v-show-field="['preEmploymentId', includeFields]" name="preEmploymentId" label="员工" input-align="right">
         <template #input>
-          <PreUserSelect v-model="form.preEmploymentId" readonly />
+          <span v-if="form.name">{{ form.name }}</span>
+          <PreUserSelect v-else v-model="form.preEmploymentId" readonly />
         </template>
       </van-field>
 
@@ -71,43 +72,53 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['interviewDate', includeFields]" name="interviewDate" label="面试日期" input-align="right">
+      <van-field v-if="form.level >= 38" v-show-field="['interviewDate', includeFields]" name="interviewDate" label="面试日期" input-align="right">
         <template #input>
           {{ parseTime(form.interviewDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-show-field="['interviewWay', includeFields]" name="interviewWay" label="面试形式" input-align="right">
+      <van-field v-if="form.level >= 38" v-show-field="['interviewWay', includeFields]" name="interviewWay" label="面试形式" input-align="right">
         <template #input>
           <DictSelect v-model="form.interviewWay" dict-type="oa_interview" readonly />
         </template>
       </van-field>
 
-      <van-field v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试" input-align="right">
+      <van-field v-show-field="['isOutsource', includeFields]" name="isOutsource" label="是否为外包人员" input-align="right">
+        <template #input>
+          <YesNoSwitch v-model="form.isOutsource" readonly />
+        </template>
+      </van-field>
+
+      <van-field v-if="form.level >= 38" v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试" input-align="right">
         <template #input>
           <YesNoSwitch v-model="form.isOwnerInterview" readonly />
         </template>
       </van-field>
 
-      <van-field v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
-        <template #input>
-          <YesNoSwitch v-model="form.isIntern" readonly />
-        </template>
-      </van-field>
+      <div v-if="form.postCode !== 'JXYWRY'">
+        <van-field v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
+          <template #input>
+            <YesNoSwitch v-model="form.isIntern" readonly />
+          </template>
+        </van-field>
 
-      <van-field v-show-field="['isProbation', includeFields]" name="isProbation" :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'" input-align="right">
-        <template #input>
-          <YesNoSwitch v-model="form.isProbation" readonly />
-        </template>
-      </van-field>
+        <van-field v-show-field="['isProbation', includeFields]" name="isProbation" :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'" input-align="right">
+          <template #input>
+            <YesNoSwitch v-model="form.isProbation" readonly />
+          </template>
+        </van-field>
 
-      <van-field v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" :label="form.isIntern !== 'Y' ? '试用期时长(月)' : '实习期时长(月)'" input-align="right" />
+        <van-field v-if="form.isIntern === 'Y' && form.isProbation === 'Y'" v-model="form.internshipExplain" v-show-field="['internshipExplain', includeFields]" name="internshipExplain" label="实习期时长说明" input-align="right" />
 
-      <van-field v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right">
-        <template #input>
-          <span>{{ form.probationWagesRate }}%</span>
-        </template>
-      </van-field>
+        <van-field v-if="form.isIntern === 'N' && form.isProbation === 'Y'" v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]" name="probationCycle" label="试用期时长(月)" input-align="right" />
+
+        <van-field v-if="form.isProbation === 'Y'" v-show-field="['probationWagesRate', includeFields]" name="probationWagesRate" label="试用期薪资发放标准" input-align="right">
+          <template #input>
+            <span>{{ form.probationWagesRate }}%</span>
+          </template>
+        </van-field>
+      </div>
 
       <van-field v-show-field="['realDate', includeFields]" name="realDate" label="实际到岗日期" input-align="right">
         <template #input>
@@ -123,7 +134,7 @@
         </template>
       </van-field>
 
-      <van-field v-show-field="['certificates', includeFields]" name="certificates" label="持证情况" input-align="right">
+      <van-field v-if="form.level >= 38" v-show-field="['certificates', includeFields]" name="certificates" label="持证情况" input-align="right">
         <template #input>
           <DictSelect v-model="form.certificates" dict-type="oa_document_type" multiple readonly />
         </template>

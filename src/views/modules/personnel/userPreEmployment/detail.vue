@@ -43,13 +43,13 @@
         </template>
       </van-field>
 
-      <div v-if="form.status === '3'">
-        <van-field v-model="form.isOwnerInterview" v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试" input-align="right">
-          <template #input>
-            <dict-tag :options="sys_yes_no" :value="form.isOwnerInterview" />
-          </template>
-        </van-field>
+      <van-field v-if="form.status === '3'" v-model="form.isOwnerInterview" v-show-field="['isOwnerInterview', includeFields]" name="isOwnerInterview" label="是否需要业主面试" input-align="right">
+        <template #input>
+          <dict-tag :options="sys_yes_no" :value="form.isOwnerInterview" />
+        </template>
+      </van-field>
 
+      <div v-if="form.status === '3' && form.postCode !== 'JXYWRY'">
         <van-field v-model="form.isIntern" v-show-field="['isIntern', includeFields]" name="isIntern" label="是否实习生" input-align="right">
           <template #input>
             <YesNoSwitch v-model="form.isIntern" readonly />
@@ -69,10 +69,18 @@
         </van-field>
 
         <van-field
-          v-if="form.isProbation === 'Y'"
+          v-if="form.isIntern === 'Y' && form.isProbation === 'Y'"
+          v-model="form.internshipExplain" v-show-field="['internshipExplain', includeFields]"
+          name="internshipExplain"
+          label="实习期时长说明"
+          input-align="right"
+        />
+
+        <van-field
+          v-if="form.isIntern === 'N' && form.isProbation === 'Y'"
           v-model="form.probationCycle" v-show-field="['probationCycle', includeFields]"
           name="probationCycle"
-          :label="form.isIntern !== 'Y' ? '试用期时长(月)' : '实习期时长(月)'"
+          label="试用期时长(月)"
           input-align="right"
         />
       </div>
@@ -155,6 +163,7 @@ import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import type { UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import { listPost } from '@/api/system/post'
 
 withDefaults(
   defineProps<{

@@ -66,6 +66,7 @@ const allFields: PartialBooleanRecord<UserPreEmploymentForm> = {
   isOwnerInterview: true,
   isProbation: true,
   probationCycle: true,
+  internshipExplain: true,
   isRecommend: true,
   reference: true,
   isIntern: true,

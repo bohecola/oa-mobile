@@ -135,6 +135,21 @@ export interface UserEmploymentForm extends BaseEntity {
   interviewDate?: string
 
   /**
+   * 是否为外包人员
+   */
+  isOutsource?: string
+
+  /**
+   * 实习期时长说明
+   */
+  internshipExplain?: string
+
+  /**
+   * 岗位编码
+   */
+  postCode?: string
+
+  /**
    * 是否需要业主面试
    */
   isOwnerInterview?: string

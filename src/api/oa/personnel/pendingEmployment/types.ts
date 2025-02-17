@@ -123,10 +123,26 @@ export interface UserPendingEmploymentForm {
    * ID
    */
   preEmploymentId?: number | string
+
   /**
    * 试用期时长(月)
    */
   probationCycle?: string
+
+  /**
+   * 是否为外包人员
+   */
+  isOutsource?: string
+
+  /**
+   * 实习期时长说明
+   */
+  internshipExplain?: string
+
+  /**
+   * 岗位编码
+   */
+  postCode?: string
   /**
    * 试用期薪资发放标准
    */
