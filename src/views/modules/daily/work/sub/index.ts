@@ -1,3 +1,6 @@
+// 通用
+import DefaultWork from '../../components/common/defaultWork/workflow/apply.vue'
+
 // 财务类
 // 企企账号申请
 import CWQQZH from './financial/qiqiAccount/workflow/apply.vue'
@@ -119,6 +122,7 @@ import RSSCRYZPGZJLFYHSSPB from './personnel/RSSCRYZPGZJLFYHSSPB/workflow/apply.
 import RSZPXQBGSQ from './personnel/RSZPXQBGSQ/workflow/apply.vue'
 
 export default {
+  DefaultWork,
   CWQQZH,
   CWCWZL,
   CWKJZXZM,

@@ -43,6 +43,8 @@ export interface DailyWorkTypeVO {
    * 备注
    */
   remark?: string
+
+  [key: string]: any
 }
 
 export interface DailyWorkTypeForm extends BaseEntity {
@@ -72,6 +74,11 @@ export interface DailyWorkTypeForm extends BaseEntity {
   name?: string
 
   /**
+   * 分类：目录、事务
+   */
+  category?: string
+
+  /**
    * 事务类型
    */
   type?: string
@@ -82,6 +89,21 @@ export interface DailyWorkTypeForm extends BaseEntity {
   no?: string
 
   /**
+   * 处理人
+   */
+  dealUser?: string
+
+  /**
+   * 归档人
+   */
+  archivingUser?: string
+
+  /**
+   * 申请人确认
+   */
+  applyConfirm?: string
+
+  /**
    * 事务状态(启用、停用)
    */
   status?: string
@@ -90,6 +112,11 @@ export interface DailyWorkTypeForm extends BaseEntity {
    * 备注
    */
   remark?: string
+
+  /**
+   * 是否默认页面
+   */
+  isDefaultPage?: string
 }
 
 export interface DailyWorkTypeQuery extends Partial<PageQuery> {

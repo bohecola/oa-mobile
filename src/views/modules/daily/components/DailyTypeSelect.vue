@@ -54,7 +54,15 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:no', 'update:rootNo', 'update:wfRemark', 'before-finish', 'finish'])
+const emit = defineEmits([
+  'update:modelValue',
+  'update:no',
+  'update:rootNo',
+  'update:wfRemark',
+  'update:isDefaultPage',
+  'before-finish',
+  'finish',
+])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -96,6 +104,7 @@ function updateVars(value: string | number) {
   const node = data.value.find(e => e.id === value)
   emit('update:no', node?.no)
   emit('update:wfRemark', node?.remark)
+  emit('update:isDefaultPage', node?.isDefaultPage)
 
   const nodes = findPathNodes<DailyWorkTypeTreeVO>(options.value, value)
   const [rootNode] = nodes

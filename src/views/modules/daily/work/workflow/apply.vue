@@ -14,6 +14,7 @@
               v-model="form.dailyWorkType"
               v-model:no="form.no"
               v-model:wf-remark="form.wfRemark"
+              v-model:is-default-page="isDefaultPage"
               @before-finish="onDailyTypeBeforeFinish"
               @update:no="onNoChange"
             />
@@ -31,7 +32,7 @@
         </van-field>
 
         <template v-if="!isNil(form.no)">
-          <component :is="SubComponent[form.no]" :key="form.no" />
+          <component :is="isDefaultPage === 'Y' ? SubComponent.DefaultWork : SubComponent[form.no]" :key="form.no" />
         </template>
       </van-cell-group>
     </van-form>
@@ -70,7 +71,9 @@ const submitFormData = ref<StartProcessBo<Entity>>({
   processInstanceName: '',
 })
 // 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
+const taskDefinitionKey = ref(proxy.$route.query.nodeId as string)
+// 是否是默认页面
+const isDefaultPage = ref(undefined)
 
 // 是否查看
 const isView = computed(() => proxy.$route.query.type === 'view')
