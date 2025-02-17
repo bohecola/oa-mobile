@@ -1,3 +1,5 @@
+import type { ExtraForm } from './extraTypes'
+
 export interface DailyFeeVO {
   /**
    * ID
@@ -112,7 +114,7 @@ export interface DailyFeeItemVO {
   remark?: string
 }
 
-export interface DailyFeeForm extends BaseEntity {
+export interface DailyFeeForm extends BaseEntity, ExtraForm {
   /**
    * ID
    */
@@ -208,6 +210,8 @@ export interface DailyFeeForm extends BaseEntity {
    * 开票信息
    */
   receiptInfo?: ReceiptInfo | string
+
+  contentJson?: string
 
   /**
    * 附件列表

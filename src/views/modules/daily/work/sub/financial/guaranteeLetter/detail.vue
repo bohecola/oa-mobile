@@ -5,6 +5,8 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.jj_type" v-show-field="['jj_type', includeFields]" label="业务类型" name="jj_type" input-align="right" />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -19,7 +21,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['contractCategory', 'reason', 'ossIdList'],
+    includeFields: () => ['contractCategory', 'jj_type', 'reason', 'ossIdList'],
   },
 )
 

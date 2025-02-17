@@ -1,5 +1,6 @@
 import { cloneDeep, isNil } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
+import { extraInitFormData, extraInitRules } from './extraForm'
 import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
 import { getDailyFee } from '@/api/oa/daily/fee/index'
 import { useStore } from '@/store'
@@ -60,6 +61,9 @@ export function useForm() {
       corporateAccount: undefined,
       openingBank: undefined,
     },
+    contentJson: undefined,
+    // 额外的字段
+    ...extraInitFormData,
   }
 
   const initRules: Record<string, FieldRule[]> = {
@@ -82,6 +86,7 @@ export function useForm() {
       corporateAccount: [{ required: false, message: '对公账号不能为空', trigger: 'onBlur' }],
       openingBank: [{ required: false, message: '开户行名称不能为空', trigger: 'onBlur' }],
     } as any,
+    ...extraInitRules,
   }
 
   // 表单数据

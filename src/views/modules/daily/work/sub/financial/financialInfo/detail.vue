@@ -10,6 +10,8 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.ii_applicationMaterials" v-show-field="['ii_applicationMaterials', includeFields]" label="申请资料" name="ii_applicationMaterials" input-align="right" />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -24,7 +26,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['fileType', 'isSeal', 'reason', 'ossIdList'],
+    includeFields: () => ['fileType', 'isSeal', 'ii_applicationMaterials', 'reason', 'ossIdList'],
   },
 )
 

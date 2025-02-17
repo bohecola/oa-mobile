@@ -1,21 +1,115 @@
 <template>
-  <detail v-if="isView" />
+  <detail v-if="isView" :include-fields="includeFilesNo" />
   <template v-else>
     <!-- 车辆使用相关费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
-      <!-- <upsert /> -->
+      <!-- <upsert :include-fields="includeFilesNo" /> -->
     </div>
 
     <!-- 其他审批通用节点 -->
     <div v-else>
-      <detail />
+      <detail :include-fields="includeFilesNo" />
     </div>
   </template>
 </template>
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+
+const props = withDefaults(
+  defineProps<{
+    includeFields?: KeysOfArray<DailyFeeForm>
+  }>(),
+  {
+    includeFields: () => [
+      'subjectType',
+      'deptId',
+      'psId',
+      'contractNo',
+      'itemList',
+      'amount',
+      'b_contractNo',
+      'b_vehicleNo',
+      'b_vehicleModel',
+      'b_vehicleMileageToday',
+      'b_lastRepairDate',
+      'b_maintenanceIntervalMileage',
+      'b_type',
+      'b_maintenanceAddress',
+      'b_problemDescription',
+      'b_maintenanceItemsAndUnitPrice',
+      'b_invoiceType',
+      'b_paymentMethod',
+      'b_isPlugSmartDrivingBox',
+      'b_useTime',
+      'b_useReason',
+      'b_oilContent',
+      'b_useMethod',
+      'b_annualReviewExpirationDate',
+      'b_verificationDate',
+      'b_annualReviewMethod',
+      'reason',
+      'receiptInfo',
+      'ossIdList',
+    ],
+  },
+)
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
+// 公共字段
+const commonFiles: KeysOfArray<DailyFeeForm> = [
+  'subjectType',
+  'deptId',
+  'psId',
+  'contractNo',
+  'itemList',
+  'amount',
+  'reason',
+  'receiptInfo',
+  'ossIdList',
+]
+
+// 保养维修费用字段
+const BYWXFYFiles: KeysOfArray<DailyFeeForm> = [
+  'b_contractNo',
+  'b_vehicleNo',
+  'b_vehicleModel',
+  'b_vehicleMileageToday',
+  'b_lastRepairDate',
+  'b_maintenanceIntervalMileage',
+  'b_type',
+  'b_maintenanceAddress',
+  'b_problemDescription',
+  'b_maintenanceItemsAndUnitPrice',
+  'b_invoiceType',
+  'b_paymentMethod',
+  'b_isPlugSmartDrivingBox',
+]
+
+// 零星加油费用(现金、油卡)字段
+const LXJYFYFiles = ['b_useTime', 'b_oilContent', 'b_useReason', 'b_useMethod']
+
+// 年审费用字段
+const NSFYFiles = ['b_vehicleNo', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_paymentMethod']
+
+const form = inject<Ref<DailyFeeForm>>('form')
+
+const includeFilesNo = computed(() => {
+  if (form.value.no === 'BYWXFY') {
+    return [...commonFiles, ...BYWXFYFiles] as KeysOfArray<DailyFeeForm>
+  }
+  else if (form.value.no === 'LXJYFY') {
+    return [...commonFiles, ...LXJYFYFiles] as KeysOfArray<DailyFeeForm>
+  }
+  else if (form.value.no === 'NSFY') {
+    return [...commonFiles, ...NSFYFiles] as KeysOfArray<DailyFeeForm>
+  }
+  return [...commonFiles] as KeysOfArray<DailyFeeForm>
+})
+
+// 指令
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 </script>

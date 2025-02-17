@@ -33,7 +33,15 @@ export interface ExtraForm
   RSXMBQTFYSQ,
   RSQWBSCRYRZSQB,
   RSSCRYZPGZJLFYHSSPB,
-  RSZPXQBGSQ {}
+  RSZPXQBGSQ,
+  CWQQZH,
+  CWCWZL,
+  CWKJBH,
+  SWSWZL,
+  SWGSWLHJ,
+  SWHTJSZL,
+  XZYYFK,
+  XZCCXMWZLZ {}
 
 // 商务
 // 项目考核奖励确认单
@@ -96,6 +104,10 @@ export interface RSXJRHMGSDDZZJGSQ {
 // 子管理员权限开通、修改、关闭申请
 export interface RSZGLYQXKTXGGBSQ {
   h_userId?: string
+  h_type?: string
+  h_content?: string
+  h_openingStatus?: string
+  h_effectiveDate?: string
 }
 
 // 关于修改现有钉钉人事相关审批流程的申请
@@ -106,6 +118,7 @@ export interface RSXMBLWRYGZSP {
   i_userId?: string
   i_deptIds?: string | number
   i_month?: string
+  i_number?: number
   i_amount?: number
 }
 
@@ -114,6 +127,7 @@ export interface RSLNHNYZRYDFGZJWXYJFYSP {
   j_userId?: string
   j_deptIds?: string | number
   j_month?: string
+  j_number?: number
   j_amount?: number
   j_scAmount?: number
 }
@@ -124,6 +138,26 @@ export interface RSXMBPYQWBRYSQ {
   k_belongDeptIds?: string
   k_userType?: string
   k_isUniform?: string
+  k_isKeyAccountsVP?: string
+  k_nature?: string
+  k_category?: string
+  k_postId?: string
+  k_number?: number
+  k_isUseOriginalSalaryStandard?: string
+  k_originalSalaryStandard?: number
+  k_newSalaryStandard?: number
+  k_effectiveDate?: string
+  k_monthlyWorkingMode?: string
+  k_salaryStandards?: number
+  k_specialInstructions?: string
+  k_otherDistribution?: string
+  k_originalDistribution?: string
+  k_changeAfterDistribution?: string
+  k_changeReason?: string
+  k_startDate?: string
+  k_endDate?: string
+  k_signeContractType?: string
+  k_purchaseInsuranceType?: string
 }
 
 // 开具个人相关证明申请
@@ -183,6 +217,10 @@ export interface RSXMBRSZGQXGHSP {
 // 生产项目部交通费、驻勤补助标准申请
 export interface RSSCXMBJTFZQBZBZSQ {
   s_deptId?: string | number
+  s_costCategory?: string
+  s_transportationStandards?: string
+  s_transportationFeeAmount?: number
+  s_subsidyStandardDetails?: string
 }
 
 // 解除生产/公司人员劳动合同申请
@@ -222,7 +260,19 @@ export interface RSGSRYZGZSZCSQ {
 }
 
 // 员工考取证书补贴申请
-export interface RSYGKQZSBTSQ {}
+export interface RSYGKQZSBTSQ {
+  yy_type: string
+  yy_name: string
+  yy_status: string
+  yy_speciality: string
+  yy_no: string
+  yy_issuanceDate: string
+  yy_recheckDate: string
+  yy_unit: string
+  yy_startDate: string
+  yy_endDate: string
+  yy_isTraining: string
+}
 
 // 员工考取注册建造师证书奖励申请
 export interface RSYGKQZCJZSZSJLSQ {}
@@ -230,6 +280,8 @@ export interface RSYGKQZCJZSZSJLSQ {}
 // 新增生产岗位申请
 export interface RSXZSCGWSQ {
   z_deptId?: string | number
+  z_postNumber?: number
+  z_postNames?: string
 }
 
 // 外包人员转为咸林公司人员的申请
@@ -265,11 +317,35 @@ export interface RSFXSP {
 export interface RSXMBQTFYSQ {
   ee_deptId?: string
   ee_salesContractNo?: string
+  ee_category?: string
+  ee_subsidyAmountStandard?: number
+  ee_recipientsNumber?: number
+  ee_subsidyTotalAmountMonth?: number
+  ee_subsidyTotalAmountDay?: number
+  ee_startDate?: string
+  ee_endDate?: string
+  ee_distributionCycle?: string
+  ee_distributionMethod?: string
 }
 // 全外包生产人员入职申请表
 export interface RSQWBSCRYRZSQB {
   ff_deptId?: string | number
   ff_userId?: string
+  ff_age?: number
+  ff_sex?: string
+  ff_nation?: string
+  ff_education?: string
+  ff_interviewDate?: string
+  ff_certificates?: string
+  ff_employmentMethod?: string
+  ff_employmentPost?: string
+  ff_employmentNature?: string
+  ff_hopeDate?: string
+  ff_wages?: number
+  ff_otherBenefits?: string
+  ff_isProbation?: string
+  ff_probationCycle?: number
+  ff_performanceWages?: number
 }
 
 // 生产人员招聘工作奖励费用核算审批表
@@ -280,5 +356,66 @@ export interface RSZPXQBGSQ {
   gg_deptId?: string
   gg_changeType?: string
   gg_changeDetails?: string
+  gg_recruitmentNo?: string
+  gg_formType?: string
+  gg_contractNo?: string
+  gg_changeBeforeRecruitNumber?: number
+  gg_changeAfterRecruitNumber?: number
+  gg_changeBeforeSalaryRange?: string
+  gg_changeAfterSalaryRange?: string
+  gg_fixedNumber?: number
+  gg_changeAfterFixedNumber?: number
+  gg_changeAfterNumberPost?: string
+  gg_changeReason?: string
+  gg_effectiveDate?: string
+  gg_content?: string
   gg_additionalBudgetExpenses?: number
+}
+
+// 企企账号申请
+export interface CWQQZH {
+  hh_deptId?: string | number
+  hh_type?: string
+  hh_userId?: string
+  hh_phone?: string
+  hh_superiorLeaders?: string
+  hh_isApprovalAuthority?: string
+  hh_applyForAWebsite?: string
+}
+
+// 财务资料申请
+export interface CWCWZL {
+  ii_applicationMaterials?: string
+}
+
+// 开具保函申请
+export interface CWKJBH {
+  jj_type?: string
+}
+
+// 商务资料申请
+export interface SWSWZL {
+  kk_applicationMaterials?: string
+}
+
+// 公司往来函件申请
+export interface SWGSWLHJ {
+  ll_letterType?: string
+  ll_fileType?: string
+}
+
+// 合同结算资料申请
+export interface SWHTJSZL {
+  mm_contractSettlementNature?: string
+  mm_contractSettlementcontent?: string
+}
+
+// 预约访客申请
+export interface XZYYFK {
+  nn_isReservationKey?: string
+}
+
+// 撤场项目物资流转申请
+export interface XZCCXMWZLZ {
+  oo_evacuationMaterialPlan?: string
 }

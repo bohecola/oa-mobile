@@ -23,6 +23,10 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.mm_contractSettlementNature" v-show-field="['mm_contractSettlementNature', includeFields]" label="合同结算性质" name="mm_contractSettlementNature" input-align="right" />
+
+  <van-field v-model="form.mm_contractSettlementcontent" v-show-field="['mm_contractSettlementcontent', includeFields]" label="合同结算资料内容" name="mm_contractSettlementcontent" input-align="right" />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -37,7 +41,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['customizeApprover', 'fileType', 'isSeal', 'reason', 'ossIdList'],
+    includeFields: () => ['customizeApprover', 'fileType', 'isSeal', 'mm_contractSettlementNature', 'mm_contractSettlementcontent', 'reason', 'ossIdList'],
   },
 )
 

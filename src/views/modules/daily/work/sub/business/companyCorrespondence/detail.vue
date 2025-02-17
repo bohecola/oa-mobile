@@ -17,6 +17,10 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.ll_letterType" v-show-field="['ll_letterType', includeFields]" label="函件类型" name="ll_letterType" input-align="right" />
+
+  <van-field v-model="form.ll_fileType" v-show-field="['ll_fileType', includeFields]" label="文件类型" name="ll_fileType" input-align="right" />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -31,7 +35,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['isYwlProject', 'isPersonnelTransfer', 'reason', 'ossIdList'],
+    includeFields: () => ['isYwlProject', 'isPersonnelTransfer', 'll_letterType', 'll_fileType', 'reason', 'ossIdList'],
   },
 )
 
