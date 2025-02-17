@@ -19,5 +19,5 @@ withDefaults(
 )
 const form = inject<Ref<DailyFeeForm>>('form')
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['hh_deptId', includeFields]" label="项目部" name="hh_deptId" input-align="right">
+  <!-- <van-field v-show-field="['hh_deptId', includeFields]" label="项目部" name="hh_deptId" input-align="right">
     <template #input>
       <DeptSelect v-model="form.hh_deptId" readonly />
     </template>
@@ -8,7 +8,7 @@
     <template #input>
       <UserSelect v-model="form.hh_userId" :multiple="false" readonly />
     </template>
-  </van-field>
+  </van-field> -->
 
   <van-field v-model="form.hh_phone" v-show-field="['hh_phone', includeFields]" label="电话(企企登录账号)" name="hh_deptId" input-align="right" />
 
@@ -45,5 +45,5 @@ withDefaults(
 )
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+const vShowField = createFieldVisibilityDirective<DailyWorkForm>(form)
 </script>

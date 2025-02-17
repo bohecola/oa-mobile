@@ -120,6 +120,8 @@ import RSQWBSCRYRZSQB from './personnel/RSQWBSCRYRZSQB/workflow/apply.vue'
 import RSSCRYZPGZJLFYHSSPB from './personnel/RSSCRYZPGZJLFYHSSPB/workflow/apply.vue'
 // 招聘需求变更申请
 import RSZPXQBGSQ from './personnel/RSZPXQBGSQ/workflow/apply.vue'
+// 项目部特殊商业保险购买申请
+import RSXMBTSSYBXGMSQ from './personnel/RSXMBTSSYBXGMSQ/workflow/apply.vue'
 
 export default {
   DefaultWork,
@@ -179,4 +181,5 @@ export default {
   RSQWBSCRYRZSQB,
   RSSCRYZPGZJLFYHSSPB,
   RSZPXQBGSQ,
+  RSXMBTSSYBXGMSQ,
 }

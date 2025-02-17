@@ -35,9 +35,9 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.b_invoiceType" v-show-field="['b_invoiceType', includeFields]" label="发票类型" name="b_invoiceType" input-align="right" />
+  <!-- <van-field v-model="form.b_invoiceType" v-show-field="['b_invoiceType', includeFields]" label="发票类型" name="b_invoiceType" input-align="right" />
 
-  <van-field v-model="form.b_paymentMethod" v-show-field="['b_paymentMethod', includeFields]" label="付款方式" name="b_paymentMethod" input-align="right" />
+  <van-field v-model="form.b_paymentMethod" v-show-field="['b_paymentMethod', includeFields]" label="付款方式" name="b_paymentMethod" input-align="right" /> -->
 
   <van-field v-show-field="['b_isPlugSmartDrivingBox', includeFields]" label="本次维保是否需拔插智驾盒子" name="b_isPlugSmartDrivingBox" input-align="right">
     <template #input>
@@ -57,13 +57,13 @@
     </template>
   </van-field>
 
+  <van-field v-model="form.b_useMethod" v-show-field="['b_useMethod', includeFields]" label="使用方式" name="b_useMethod" input-align="right" />
+
   <van-field v-show-field="['b_useReason', includeFields]" label="使用事由" name="b_useReason" input-align="right">
     <template #input>
       <TextareaView :value="form.b_useReason" />
     </template>
   </van-field>
-
-  <van-field v-model="form.b_useMethod" v-show-field="['b_useMethod', includeFields]" label="使用方式" name="b_useMethod" input-align="right" />
 
   <van-field v-show-field="['b_annualReviewExpirationDate', includeFields]" label="年审到期时间" name="b_annualReviewExpirationDate" input-align="right">
     <template #input>
@@ -99,5 +99,5 @@ withDefaults(
 const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 </script>

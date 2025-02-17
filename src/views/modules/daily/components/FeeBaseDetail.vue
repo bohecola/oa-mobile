@@ -159,7 +159,7 @@ const { user } = useStore()
 const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 
 // 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {

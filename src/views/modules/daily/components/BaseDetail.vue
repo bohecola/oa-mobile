@@ -46,7 +46,7 @@ withDefaults(
 
 const form = inject<Ref<DailyForm>>('form')
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyForm>()
+const vShowField = createFieldVisibilityDirective<DailyForm>(form)
 
 function handleIconClick() {
   showDialog({

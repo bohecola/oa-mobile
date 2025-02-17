@@ -41,7 +41,9 @@ export interface ExtraForm
   SWGSWLHJ,
   SWHTJSZL,
   XZYYFK,
-  XZCCXMWZLZ {}
+  XZCCXMWZLZ,
+  SWXSHTBH,
+  RSXMBTSSYBXGMSQ {}
 
 // 商务
 // 项目考核奖励确认单
@@ -418,4 +420,29 @@ export interface XZYYFK {
 // 撤场项目物资流转申请
 export interface XZCCXMWZLZ {
   oo_evacuationMaterialPlan?: string
+}
+
+// 销售合同编号申请
+export interface SWXSHTBH {
+  pp_contractCategory?: string
+  pp_contractNature?: string
+  pp_contractNo?: string
+  pp_customerName?: string
+  pp_projectName?: string
+  pp_projectOwnership?: string
+  pp_remark?: string
+}
+
+// 项目部特殊商业保险购买申请
+export interface RSXMBTSSYBXGMSQ {
+  qq_personnelCategory?: string
+  qq_insuranceExpirationDate?: string
+  qq_latestPurchaseDate?: string
+  qq_purchaseInsuranceReason?: string
+  qq_purchaseInsuranceNumber?: number
+  qq_purchaseInsuranceCategory?: string
+  qq_isHighVoltageOperation?: string
+  qq_isClimbingHomework?: string
+  qq_insurancePeriod?: string
+  qq_purchaseInsuranceSpecialExplain?: string
 }

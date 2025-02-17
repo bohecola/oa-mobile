@@ -286,6 +286,27 @@ const extraInitFormData: DailyWorkForm = {
 
   // 撤场项目物资流转申请
   oo_evacuationMaterialPlan: undefined,
+
+  // 销售合同编号申请
+  pp_contractCategory: undefined,
+  pp_contractNature: undefined,
+  pp_contractNo: undefined,
+  pp_customerName: undefined,
+  pp_projectName: undefined,
+  pp_projectOwnership: undefined,
+  pp_remark: undefined,
+
+  // 项目部特殊商业保险购买申请
+  qq_personnelCategory: undefined,
+  qq_insuranceExpirationDate: undefined,
+  qq_latestPurchaseDate: undefined,
+  qq_purchaseInsuranceReason: undefined,
+  qq_purchaseInsuranceNumber: undefined,
+  qq_purchaseInsuranceCategory: undefined,
+  qq_isHighVoltageOperation: undefined,
+  qq_isClimbingHomework: undefined,
+  qq_insurancePeriod: undefined,
+  qq_purchaseInsuranceSpecialExplain: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -564,6 +585,26 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 撤场项目物资流转申请
   oo_evacuationMaterialPlan: [{ required: true, message: `撤场物资处理方案${baseMsg}`, trigger: 'onBlur' }],
+
+  // 销售合同编号申请
+  pp_contractCategory: [{ required: true, message: `合同类别${baseMsg}`, trigger: 'onBlur' }],
+  pp_contractNature: [{ required: true, message: `合同性质${baseMsg}`, trigger: 'onBlur' }],
+  pp_contractNo: [{ required: true, message: `合同编号${baseMsg}`, trigger: 'onBlur' }],
+  pp_customerName: [{ required: true, message: `客户名称${baseMsg}`, trigger: 'onBlur' }],
+  pp_projectName: [{ required: true, message: `项目名称${baseMsg}`, trigger: 'onBlur' }],
+  pp_projectOwnership: [{ required: true, message: `项目归属${baseMsg}`, trigger: 'onBlur' }],
+
+  // 项目部特殊商业保险购买申请
+  qq_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
+  qq_insuranceExpirationDate: [{ required: true, message: `建议保险开始截止日期${baseMsg}`, trigger: 'onBlur' }],
+  qq_latestPurchaseDate: [{ required: true, message: `保险最晚购买日期${baseMsg}`, trigger: 'onBlur' }],
+  qq_purchaseInsuranceReason: [{ required: true, message: `购买保险原因${baseMsg}`, trigger: 'onBlur' }],
+  qq_purchaseInsuranceNumber: [{ required: true, message: `购买保险人数${baseMsg}`, trigger: 'onBlur' }],
+  qq_purchaseInsuranceCategory: [{ required: true, message: `购买保险类别${baseMsg}`, trigger: 'onBlur' }],
+  qq_isHighVoltageOperation: [{ required: true, message: `是否涉及高压电作业${baseMsg}`, trigger: 'onBlur' }],
+  qq_isClimbingHomework: [{ required: true, message: `是否涉及登高作业${baseMsg}`, trigger: 'onBlur' }],
+  qq_insurancePeriod: [{ required: true, message: `保险期限${baseMsg}`, trigger: 'onBlur' }],
+  qq_purchaseInsuranceSpecialExplain: [{ required: true, message: `保险购买特殊说明${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

@@ -17,9 +17,9 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" input-align="right" />
+  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" input-align="right" />
 
-  <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="right" />
+  <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="right" /> -->
 
   <FeeBaseDetail :include-fields="includeFields" />
 </template>
@@ -41,5 +41,5 @@ withDefaults(
 const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 </script>
