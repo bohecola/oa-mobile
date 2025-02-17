@@ -1,7 +1,7 @@
 <template>
   <van-field v-show-field="['yy_type', includeFields]" label="证书类型" name="yy_type" input-align="right">
     <template #input>
-      <DictSelect v-model="form.yy_type" dict-type="oa_document_type" readonly />
+      <DictSelect v-model="form.yy_type" dict-type="oa_document_category" readonly />
     </template>
   </van-field>
 
