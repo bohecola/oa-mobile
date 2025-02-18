@@ -21,9 +21,17 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.a_entertainAddress" v-show-field="['a_entertainAddress', includeFields]" label="招待地点" name="a_entertainAddress" input-align="right" />
+  <van-field v-show-field="['a_entertainAddress', includeFields]" label="招待地点" name="a_entertainAddress" input-align="right">
+    <template #input>
+      <TextareaView :value="form.a_entertainAddress" />
+    </template>
+  </van-field>
 
-  <van-field v-model="form.a_entertainReason" v-show-field="['a_entertainReason', includeFields]" label="招待事由" name="a_entertainReason" input-align="right" />
+  <van-field v-model="form.a_entertainReason" v-show-field="['a_entertainReason', includeFields]" label="招待事由" name="a_entertainReason" input-align="right">
+    <template #input>
+      <TextareaView :value="form.a_entertainAddress" />
+    </template>
+  </van-field>
 
   <FeeBaseDetail :include-fields="includeFields" />
 </template>

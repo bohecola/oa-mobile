@@ -25,7 +25,12 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.hh_applyForAWebsite" v-show-field="['hh_applyForAWebsite', includeFields]" label="申请站点" name="hh_applyForAWebsite" input-align="right" />
+  <van-field v-show-field="['hh_applyForAWebsite', includeFields]" label="申请站点" name="hh_applyForAWebsite" input-align="right">
+    <template #input>
+      <TextareaView :value="form.hh_applyForAWebsite" />
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 

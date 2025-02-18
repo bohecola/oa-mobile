@@ -13,19 +13,35 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.e_purchaseInsuranceReason" v-show-field="['e_purchaseInsuranceReason', includeFields]" label="购买保险原因" name="e_purchaseInsuranceReason" input-align="right" />
-
   <van-field v-model="form.e_purchaseInsuranceNumber" v-show-field="['e_purchaseInsuranceNumber', includeFields]" label="购买保险人数" name="e_purchaseInsuranceNumber" input-align="right" />
 
   <van-field v-model="form.e_purchaseInsuranceCategory" v-show-field="['e_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="e_purchaseInsuranceCategory" input-align="right" />
 
-  <van-field v-model="form.e_isHighVoltageOperation" v-show-field="['e_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="e_isHighVoltageOperation" input-align="right" />
+  <van-field v-show-field="['e_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="e_isHighVoltageOperation" input-align="right">
+    <template #input>
+      <YesNoSwitch v-model="form.e_isHighVoltageOperation" readonly />
+    </template>
+  </van-field>
 
-  <van-field v-model="form.e_isClimbingHomework" v-show-field="['e_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="e_isClimbingHomework" input-align="right" />
+  <van-field v-show-field="['e_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="e_isClimbingHomework" input-align="right">
+    <template #input>
+      <YesNoSwitch v-model="form.e_isClimbingHomework" readonly />
+    </template>
+  </van-field>
 
   <van-field v-model="form.e_insurancePeriod" v-show-field="['e_insurancePeriod', includeFields]" label="保险期限" name="e_insurancePeriod" input-align="right" />
 
-  <van-field v-model="form.e_purchaseInsuranceSpecialExplain" v-show-field="['e_purchaseInsuranceSpecialExplain', includeFields]" label="保险购买特殊说明" name="e_purchaseInsuranceSpecialExplain" input-align="right" />
+  <van-field v-show-field="['e_purchaseInsuranceReason', includeFields]" label="购买保险原因" name="e_purchaseInsuranceReason" input-align="right">
+    <template #input>
+      <TextareaView :value="form.e_purchaseInsuranceReason" />
+    </template>
+  </van-field>
+
+  <van-field v-model="form.e_purchaseInsuranceSpecialExplain" v-show-field="['e_purchaseInsuranceSpecialExplain', includeFields]" label="保险购买特殊说明" name="e_purchaseInsuranceSpecialExplain" input-align="right">
+    <template #input>
+      <TextareaView :value="form.e_purchaseInsuranceSpecialExplain" />
+    </template>
+  </van-field>
 
   <FeeBaseDetail :include-fields="includeFields" />
 </template>
