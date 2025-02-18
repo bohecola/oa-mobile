@@ -1,5 +1,5 @@
 <template>
-  <detail v-if="isView" :include-fields="includeFilesNo" />
+  <detail v-if="isView" :include-fields="includeFieldsNo" />
   <template v-else>
     <!-- 车辆使用相关费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
@@ -9,7 +9,7 @@
 
     <!-- 其他审批通用节点 -->
     <div v-else>
-      <detail :include-fields="includeFilesNo" />
+      <detail :include-fields="includeFieldsNo" />
     </div>
   </template>
 </template>
@@ -61,7 +61,7 @@ const props = withDefaults(
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
 // 公共字段
-const commonFiles: KeysOfArray<DailyFeeForm> = [
+const commonFields: KeysOfArray<DailyFeeForm> = [
   'subjectType',
   'deptId',
   'psId',
@@ -74,7 +74,7 @@ const commonFiles: KeysOfArray<DailyFeeForm> = [
 ]
 
 // 保养维修费用字段
-const BYWXFYFiles: KeysOfArray<DailyFeeForm> = [
+const BYWXFYFields: KeysOfArray<DailyFeeForm> = [
   'b_contractNo',
   'b_vehicleNo',
   'b_vehicleModel',
@@ -91,24 +91,24 @@ const BYWXFYFiles: KeysOfArray<DailyFeeForm> = [
 ]
 
 // 零星加油费用(现金、油卡)字段
-const LXJYFYFiles = ['b_useTime', 'b_oilContent', 'b_useReason', 'b_useMethod']
+const LXJYFYFields = ['b_useTime', 'b_oilContent', 'b_useReason', 'b_useMethod']
 
 // 年审费用字段
-const NSFYFiles = ['b_vehicleNo', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_paymentMethod']
+const NSFYFields = ['b_vehicleNo', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_paymentMethod']
 
 const form = inject<Ref<DailyFeeForm>>('form')
 
-const includeFilesNo = computed(() => {
+const includeFieldsNo = computed(() => {
   if (form.value.no === 'BYWXFY') {
-    return [...commonFiles, ...BYWXFYFiles] as KeysOfArray<DailyFeeForm>
+    return [...commonFields, ...BYWXFYFields] as KeysOfArray<DailyFeeForm>
   }
   else if (form.value.no === 'LXJYFY') {
-    return [...commonFiles, ...LXJYFYFiles] as KeysOfArray<DailyFeeForm>
+    return [...commonFields, ...LXJYFYFields] as KeysOfArray<DailyFeeForm>
   }
   else if (form.value.no === 'NSFY') {
-    return [...commonFiles, ...NSFYFiles] as KeysOfArray<DailyFeeForm>
+    return [...commonFields, ...NSFYFields] as KeysOfArray<DailyFeeForm>
   }
-  return [...commonFiles] as KeysOfArray<DailyFeeForm>
+  return [...commonFields] as KeysOfArray<DailyFeeForm>
 })
 
 // 指令
