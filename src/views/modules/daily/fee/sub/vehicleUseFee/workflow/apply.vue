@@ -3,7 +3,8 @@
   <template v-else>
     <!-- 车辆使用相关费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
-      <!-- <upsert :include-fields="includeFilesNo" /> -->
+      <!-- 编辑页面申请事由不显示 -->
+      <!-- <upsert :include-fields="includeFieldsNo.filter((e) => e !== 'reason')" /> -->
     </div>
 
     <!-- 其他审批通用节点 -->

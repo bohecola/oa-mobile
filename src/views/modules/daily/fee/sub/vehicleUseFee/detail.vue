@@ -1,5 +1,5 @@
 <template>
-  <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo" input-align="right" />
+  <!-- <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo" input-align="right" /> -->
 
   <van-field v-model="form.b_vehicleNo" v-show-field="['b_vehicleNo', includeFields]" label="车牌号" name="b_vehicleNo" input-align="right" />
 
