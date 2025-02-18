@@ -68,10 +68,6 @@ const includeFieldsNo = computed(() => {
   return [...commonFields]
 })
 
-// 依赖收集
-const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')
-trackFields(props.includeFields)
-
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 </script>
