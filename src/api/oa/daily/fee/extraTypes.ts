@@ -57,16 +57,27 @@ export interface AQLPXFY {}
 
 // 项目部特殊商业保险购买申请
 export interface FYXMBTSSYBXGMSQ {
+  e_deptId?: string
   e_personnelCategory?: string
   e_insuranceExpirationDate?: string
   e_latestPurchaseDate?: string
   e_purchaseInsuranceReason?: string
   e_purchaseInsuranceNumber?: number
   e_purchaseInsuranceCategory?: string
+  e_insuranceLimit?: number
   e_isHighVoltageOperation?: string
   e_isClimbingHomework?: string
+  e_distanceRange?: number
   e_insurancePeriod?: string
   e_purchaseInsuranceSpecialExplain?: string
+  e_isNewHiredPurchaseInsurance?: string
+  e_transferInDeptPurchaseInsurance?: string
+  e_transferOutDeptNoPurchaseInsurance?: string
+  e_isEarlyStagePurchaseInsurance?: string
+  e_isBelong?: string
+  e_notBelongDeptPurchaseInsuranceSpecialReason?: string
+  e_isOldInsuranceTermination?: string
+  e_isOldInsuranceTerminationReason?: string
 }
 // 生产项目部临聘人员月度食堂补助费用审批
 export interface FYSCXMBLPRYYDSTBZFYSP {

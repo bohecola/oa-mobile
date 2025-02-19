@@ -90,6 +90,15 @@ const extraInitFormData: DailyWorkForm = {
   k_endDate: undefined,
   k_signeContractType: undefined,
   k_purchaseInsuranceType: undefined,
+  k_workwearType: undefined,
+  k_quantityAndSize: undefined,
+  k_employInformation: undefined,
+  k_insuranceStartDate: undefined,
+  k_insuranceEndDate: undefined,
+  k_insuranceSpecialInstructions: undefined,
+  k_signeContractStartDate: undefined,
+  k_signeContractEndDate: undefined,
+  k_signeContractSpecialInstructions: undefined,
 
   // 开具个人相关证明申请
   l_userId: undefined,
@@ -155,7 +164,7 @@ const extraInitFormData: DailyWorkForm = {
   // 公司人员资格证书注册申请
   y_type: undefined,
   y_name: undefined,
-  y_status: undefined,
+  y_certificateStatus: undefined,
   y_speciality: undefined,
   y_no: undefined,
   y_issuanceDate: undefined,
@@ -166,9 +175,10 @@ const extraInitFormData: DailyWorkForm = {
   y_isTraining: undefined,
 
   // 员工考取证书补贴申请
+  yy_dailyWorkId: undefined,
   yy_type: undefined,
   yy_name: undefined,
-  yy_status: undefined,
+  yy_certificateStatus: undefined,
   yy_speciality: undefined,
   yy_no: undefined,
   yy_issuanceDate: undefined,
@@ -297,14 +307,18 @@ const extraInitFormData: DailyWorkForm = {
   pp_remark: undefined,
 
   // 项目部特殊商业保险购买申请
+  qq_deptId: undefined,
+  qq_deptName: undefined,
   qq_personnelCategory: undefined,
   qq_insuranceExpirationDate: undefined,
   qq_latestPurchaseDate: undefined,
   qq_purchaseInsuranceReason: undefined,
   qq_purchaseInsuranceNumber: undefined,
   qq_purchaseInsuranceCategory: undefined,
+  qq_insuranceLimit: undefined,
   qq_isHighVoltageOperation: undefined,
   qq_isClimbingHomework: undefined,
+  qq_distanceRange: undefined,
   qq_insurancePeriod: undefined,
   qq_purchaseInsuranceSpecialExplain: undefined,
 }
@@ -390,6 +404,15 @@ const extraInitRules: Record<string, FieldRule[]> = {
   k_endDate: [{ required: true, message: `聘用结束时间${baseMsg}`, trigger: 'onBlur' }],
   k_signeContractType: [{ required: true, message: `聘用人员签订合同类型${baseMsg}`, trigger: 'onBlur' }],
   k_purchaseInsuranceType: [{ required: true, message: `聘用人员购买保险类型${baseMsg}`, trigger: 'onBlur' }],
+  k_workwearType: [{ required: true, message: `工服类型${baseMsg}`, trigger: 'onBlur' }],
+  k_quantityAndSize: [{ required: true, message: `数量与尺寸${baseMsg}`, trigger: 'onBlur' }],
+  k_employInformation: [{ required: true, message: `聘用人员信息${baseMsg}`, trigger: 'onBlur' }],
+  k_insuranceStartDate: [{ required: true, message: `保险开始时间${baseMsg}`, trigger: 'onBlur' }],
+  k_insuranceEndDate: [{ required: true, message: `保险结束时间${baseMsg}`, trigger: 'onBlur' }],
+  k_insuranceSpecialInstructions: [{ required: true, message: `保险购买特殊说明${baseMsg}`, trigger: 'onBlur' }],
+  k_signeContractStartDate: [{ required: true, message: `合同签订开始时间${baseMsg}`, trigger: 'onBlur' }],
+  k_signeContractEndDate: [{ required: true, message: `合同签订结束时间${baseMsg}`, trigger: 'onBlur' }],
+  k_signeContractSpecialInstructions: [{ required: true, message: `合同签订特殊说明${baseMsg}`, trigger: 'onBlur' }],
 
   // 开具个人相关证明申请
   l_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],
@@ -453,7 +476,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // 公司人员资格证书注册申请
   y_type: [{ required: true, message: `证书类型${baseMsg}`, trigger: 'onBlur' }],
   y_name: [{ required: true, message: `证书名称${baseMsg}`, trigger: 'onBlur' }],
-  y_status: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
+  y_certificateStatus: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
   y_speciality: [{ required: true, message: `专业名称${baseMsg}`, trigger: 'onBlur' }],
   y_no: [{ required: true, message: `编号${baseMsg}`, trigger: 'onBlur' }],
   y_issuanceDate: [{ required: true, message: `发证日期${baseMsg}`, trigger: 'onBlur' }],
@@ -464,9 +487,10 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // y_isTraining: [{ required: true, message: `是否参与培训${baseMsg}`, trigger: 'onBlur' }],
 
   // 员工考取证书补贴申请
+  yy_dailyWorkId: [{ required: true, message: `补贴申请${baseMsg}`, trigger: 'onBlur' }],
   yy_type: [{ required: true, message: `证书类型${baseMsg}`, trigger: 'onBlur' }],
   yy_name: [{ required: true, message: `证书名称${baseMsg}`, trigger: 'onBlur' }],
-  yy_status: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
+  yy_certificateStatus: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
   yy_speciality: [{ required: true, message: `专业名称${baseMsg}`, trigger: 'onBlur' }],
   yy_no: [{ required: true, message: `编号${baseMsg}`, trigger: 'onBlur' }],
   yy_issuanceDate: [{ required: true, message: `发证日期${baseMsg}`, trigger: 'onBlur' }],
@@ -595,16 +619,27 @@ const extraInitRules: Record<string, FieldRule[]> = {
   pp_projectOwnership: [{ required: true, message: `项目归属${baseMsg}`, trigger: 'onBlur' }],
 
   // 项目部特殊商业保险购买申请
+  qq_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
   qq_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
   qq_insuranceExpirationDate: [{ required: true, message: `建议保险开始截止日期${baseMsg}`, trigger: 'onBlur' }],
   qq_latestPurchaseDate: [{ required: true, message: `保险最晚购买日期${baseMsg}`, trigger: 'onBlur' }],
   qq_purchaseInsuranceReason: [{ required: true, message: `购买保险原因${baseMsg}`, trigger: 'onBlur' }],
   qq_purchaseInsuranceNumber: [{ required: true, message: `购买保险人数${baseMsg}`, trigger: 'onBlur' }],
   qq_purchaseInsuranceCategory: [{ required: true, message: `购买保险类别${baseMsg}`, trigger: 'onBlur' }],
+  qq_insuranceLimit: [{ required: true, message: `购买保险额度(万元)${baseMsg}`, trigger: 'onBlur' }],
   qq_isHighVoltageOperation: [{ required: true, message: `是否涉及高压电作业${baseMsg}`, trigger: 'onBlur' }],
   qq_isClimbingHomework: [{ required: true, message: `是否涉及登高作业${baseMsg}`, trigger: 'onBlur' }],
+  qq_distanceRange: [{ required: true, message: `登高作业位置到地面的距离范围${baseMsg}`, trigger: 'onBlur' }],
   qq_insurancePeriod: [{ required: true, message: `保险期限${baseMsg}`, trigger: 'onBlur' }],
   qq_purchaseInsuranceSpecialExplain: [{ required: true, message: `保险购买特殊说明${baseMsg}`, trigger: 'onBlur' }],
+  qq_isNewHiredPurchaseInsurance: [{ required: true, message: `该项目部新入职人员是否购买此类保险${baseMsg}`, trigger: 'onBlur' }],
+  qq_transferInDeptPurchaseInsurance: [{ required: true, message: `调入该项目部是否购买此类保险${baseMsg}`, trigger: 'onBlur' }],
+  qq_transferOutDeptNoPurchaseInsurance: [{ required: true, message: `调出该项目部是否购买此类保险${baseMsg}`, trigger: 'onBlur' }],
+  qq_isEarlyStagePurchaseInsurance: [{ required: true, message: `该项目部前期是否已购买其他商业类保险${baseMsg}`, trigger: 'onBlur' }],
+  qq_isBelong: [{ required: true, message: `人员是否属于该项目部${baseMsg}`, trigger: 'onBlur' }],
+  qq_notBelongDeptPurchaseInsuranceSpecialReason: [{ required: true, message: `不属于该项目部人员购买保险原因${baseMsg}`, trigger: 'onBlur' }],
+  qq_isOldInsuranceTermination: [{ required: true, message: `原特殊商业保险是否终止${baseMsg}`, trigger: 'onBlur' }],
+  qq_isOldInsuranceTerminationReason: [{ required: true, message: `原特殊商业保险终止原因说明${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

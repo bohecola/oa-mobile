@@ -160,6 +160,15 @@ export interface RSXMBPYQWBRYSQ {
   k_endDate?: string
   k_signeContractType?: string
   k_purchaseInsuranceType?: string
+  k_workwearType?: string
+  k_quantityAndSize?: string
+  k_employInformation?: string
+  k_insuranceStartDate?: string
+  k_insuranceEndDate?: string
+  k_insuranceSpecialInstructions?: string
+  k_signeContractStartDate?: string
+  k_signeContractEndDate?: string
+  k_signeContractSpecialInstructions?: string
 }
 
 // 开具个人相关证明申请
@@ -250,7 +259,7 @@ export interface RSWBYGXYYJZX {
 export interface RSGSRYZGZSZCSQ {
   y_type?: string
   y_name?: string
-  y_status?: string
+  y_certificateStatus?: string
   y_speciality?: string
   y_no?: string
   y_issuanceDate?: string
@@ -263,9 +272,10 @@ export interface RSGSRYZGZSZCSQ {
 
 // 员工考取证书补贴申请
 export interface RSYGKQZSBTSQ {
+  yy_dailyWorkId?: string
   yy_type: string
   yy_name: string
-  yy_status: string
+  yy_certificateStatus: string
   yy_speciality: string
   yy_no: string
   yy_issuanceDate: string
@@ -435,14 +445,26 @@ export interface SWXSHTBH {
 
 // 项目部特殊商业保险购买申请
 export interface RSXMBTSSYBXGMSQ {
+  qq_deptId?: string
+  qq_deptName?: string
   qq_personnelCategory?: string
   qq_insuranceExpirationDate?: string
   qq_latestPurchaseDate?: string
   qq_purchaseInsuranceReason?: string
   qq_purchaseInsuranceNumber?: number
   qq_purchaseInsuranceCategory?: string
+  qq_insuranceLimit?: number
   qq_isHighVoltageOperation?: string
   qq_isClimbingHomework?: string
+  qq_distanceRange?: number
   qq_insurancePeriod?: string
   qq_purchaseInsuranceSpecialExplain?: string
+  qq_isNewHiredPurchaseInsurance?: string
+  qq_transferInDeptPurchaseInsurance?: string
+  qq_transferOutDeptNoPurchaseInsurance?: string
+  qq_isEarlyStagePurchaseInsurance?: string
+  qq_isBelong?: string
+  qq_notBelongDeptPurchaseInsuranceSpecialReason?: string
+  qq_isOldInsuranceTermination?: string
+  qq_isOldInsuranceTerminationReason?: string
 }

@@ -8,7 +8,7 @@
 
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
       <detail :include-fields="detailFields" />
-      <upsert :include-fields="['k_userType']" />
+      <detail :include-fields="['k_userType']" />
       <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 
@@ -52,6 +52,15 @@ const applyFields = ref(
     k_endDate: true,
     k_signeContractType: true,
     k_purchaseInsuranceType: true,
+    k_workwearType: true,
+    k_quantityAndSize: true,
+    k_employInformation: true,
+    k_insuranceStartDate: true,
+    k_insuranceEndDate: true,
+    k_insuranceSpecialInstructions: true,
+    k_signeContractStartDate: true,
+    k_signeContractEndDate: true,
+    k_signeContractSpecialInstructions: true,
     reason: true,
     ossIdList: true,
   }),
@@ -80,6 +89,15 @@ const detailFields = ref(
     k_endDate: true,
     k_signeContractType: true,
     k_purchaseInsuranceType: true,
+    k_workwearType: true,
+    k_quantityAndSize: true,
+    k_employInformation: true,
+    k_insuranceStartDate: true,
+    k_insuranceEndDate: true,
+    k_insuranceSpecialInstructions: true,
+    k_signeContractStartDate: true,
+    k_signeContractEndDate: true,
+    k_signeContractSpecialInstructions: true,
   }),
 )
 </script>
