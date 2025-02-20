@@ -1,8 +1,11 @@
 <template>
+  <FeeBaseDetail :include-fields="includeFields1" />
   <!-- <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo" input-align="right" /> -->
 
+  <!-- 公共 -->
   <van-field v-model="form.b_vehicleNo" v-show-field="['b_vehicleNo', includeFields]" label="车牌号" name="b_vehicleNo" input-align="right" />
 
+  <!-- 保养维修 -->
   <van-field v-model="form.b_vehicleModel" v-show-field="['b_vehicleModel', includeFields]" label="车型" name="b_vehicleModel" input-align="right" />
 
   <van-field v-model="form.b_vehicleMileageToday" v-show-field="['b_vehicleMileageToday', includeFields]" label="今行车里程（公里）" name="c_invoiceType" input-align="right" />
@@ -45,6 +48,7 @@
     </template>
   </van-field>
 
+  <!-- 零星加油费 -->
   <van-field v-model="form.b_useTime" v-show-field="['b_useTime', includeFields]" label="使用时间" name="b_useTime" input-align="right">
     <template #input>
       {{ parseTime(form.b_useTime, '{y}-{m}-{d}') }}
@@ -65,6 +69,7 @@
     </template>
   </van-field>
 
+  <!-- 年审费用 -->
   <van-field v-show-field="['b_annualReviewExpirationDate', includeFields]" label="年审到期时间" name="b_annualReviewExpirationDate" input-align="right">
     <template #input>
       {{ parseTime(form.b_annualReviewExpirationDate, '{y}-{m}-{d}') }}
@@ -79,7 +84,26 @@
 
   <van-field v-model="form.b_annualReviewMethod" v-show-field="['b_annualReviewMethod', includeFields]" label="年审方式" name="b_annualReviewMethod" input-align="right" />
 
-  <FeeBaseDetail :include-fields="includeFields" />
+  <!-- 公司车辆保险费 -->
+  <van-field v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]" label="年审到期时间" name="b_lastStrongInsuranceExpirationDate" input-align="right">
+    <template #input>
+      {{ parseTime(form.b_lastStrongInsuranceExpirationDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]" label="审验日期" name="b_lastCommercialInsuranceExpirationDate" input-align="right">
+    <template #input>
+      {{ parseTime(form.b_lastCommercialInsuranceExpirationDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-model="form.b_strongInsuranceAmount" v-show-field="['b_strongInsuranceAmount', includeFields]" label="本次交强险金额" name="b_strongInsuranceAmount" input-align="right" />
+
+  <van-field v-model="form.b_commercialInsuranceAmount" v-show-field="['b_commercialInsuranceAmount', includeFields]" label="本次商业险金额" name="b_commercialInsuranceAmount" input-align="right" />
+
+  <van-field v-model="form.b_totalAmount" v-show-field="['b_totalAmount', includeFields]" label="总计金额" name="b_totalAmount" input-align="right" />
+
+  <FeeBaseDetail :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
@@ -87,12 +111,12 @@ import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'b_contractNo', 'b_vehicleNo', 'b_vehicleModel', 'b_vehicleMileageToday', 'b_lastRepairDate', 'b_maintenanceIntervalMileage', 'b_type', 'b_maintenanceAddress', 'b_problemDescription', 'b_maintenanceItemsAndUnitPrice', 'b_invoiceType', 'b_paymentMethod', 'b_isPlugSmartDrivingBox', 'b_useTime', 'b_useReason', 'b_oilContent', 'b_useMethod', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'b_contractNo', 'b_vehicleNo', 'b_vehicleModel', 'b_vehicleMileageToday', 'b_lastRepairDate', 'b_maintenanceIntervalMileage', 'b_type', 'b_maintenanceAddress', 'b_problemDescription', 'b_maintenanceItemsAndUnitPrice', 'b_invoiceType', 'b_paymentMethod', 'b_isPlugSmartDrivingBox', 'b_useTime', 'b_useReason', 'b_oilContent', 'b_useMethod', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_lastStrongInsuranceExpirationDate', 'b_lastCommercialInsuranceExpirationDate', 'b_strongInsuranceAmount', 'b_commercialInsuranceAmount', 'b_totalAmount', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 
@@ -100,4 +124,7 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
+
+const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
+const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 </script>

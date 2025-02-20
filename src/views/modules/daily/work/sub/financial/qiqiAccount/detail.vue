@@ -10,6 +10,8 @@
     </template>
   </van-field> -->
 
+  <van-field v-model="form.hh_userName" v-show-field="['hh_userName', includeFields]" label="姓名" name="hh_userName" input-align="right" />
+
   <van-field v-model="form.hh_phone" v-show-field="['hh_phone', includeFields]" label="电话(企企登录账号)" name="hh_deptId" input-align="right" />
 
   <van-field v-model="form.hh_type" v-show-field="['hh_type', includeFields]" label="申请类型" name="hh_deptId" input-align="right" />
@@ -45,7 +47,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['hh_deptId', 'hh_userId', 'hh_phone', 'hh_type', 'hh_superiorLeaders', 'hh_isApprovalAuthority', 'hh_applyForAWebsite', 'reason', 'ossIdList'],
+    includeFields: () => ['hh_deptId', 'hh_userId', 'hh_userName', 'hh_phone', 'hh_type', 'hh_superiorLeaders', 'hh_isApprovalAuthority', 'hh_applyForAWebsite', 'reason', 'ossIdList'],
   },
 )
 const form = inject<Ref<DailyWorkForm>>('form')

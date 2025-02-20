@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 项目日常费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
-      <!-- <upsert :include-fields="includeFieldsNo.filter((e) => e !== 'reason')" /> -->
+      <!-- <upsert :include-fields="includeFieldsNo" /> -->
     </div>
 
     <!-- 其他审批通用节点 -->

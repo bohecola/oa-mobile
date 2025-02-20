@@ -6,7 +6,11 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.e_personnelCategory" v-show-field="['e_personnelCategory', includeFields]" label="人员类别" name="e_personnelCategory" input-align="right" />
+  <van-field v-show-field="['e_personnelCategory', includeFields]" label="人员类别" name="e_personnelCategory" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.e_personnelCategory" dict-type="oa_daily_work_personnel_category" readonly />
+    </template>
+  </van-field>
 
   <van-field v-show-field="['e_insuranceExpirationDate', includeFields]" label="建议保险开始截止日期" name="e_insuranceExpirationDate" input-align="right">
     <template #input>
@@ -22,7 +26,11 @@
 
   <van-field v-model="form.e_purchaseInsuranceNumber" v-show-field="['e_purchaseInsuranceNumber', includeFields]" label="购买保险人数" name="e_purchaseInsuranceNumber" input-align="right" />
 
-  <van-field v-model="form.e_purchaseInsuranceCategory" v-show-field="['e_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="e_purchaseInsuranceCategory" input-align="right" />
+  <van-field v-model="form.e_purchaseInsuranceCategory" v-show-field="['e_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="e_purchaseInsuranceCategory" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.e_purchaseInsuranceCategory" dict-type="oa_daily_work_purchase_insurance_category" readonly />
+    </template>
+  </van-field>
 
   <van-field v-model="form.e_insuranceLimit" v-show-field="['e_insuranceLimit', includeFields]" label="购买保险额度(万元)" name="e_insuranceLimit" input-align="right" />
 

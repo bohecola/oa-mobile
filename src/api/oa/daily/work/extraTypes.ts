@@ -389,6 +389,7 @@ export interface CWQQZH {
   hh_deptId?: string | number
   hh_type?: string
   hh_userId?: string
+  hh_userName?: string
   hh_phone?: string
   hh_superiorLeaders?: string
   hh_isApprovalAuthority?: string

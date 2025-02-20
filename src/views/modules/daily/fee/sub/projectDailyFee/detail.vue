@@ -1,4 +1,6 @@
 <template>
+  <FeeBaseDetail :include-fields="includeFields1" />
+
   <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="right">
     <template #input>
       <DictSelect v-model="form.certificateType" dict-type="oa_project_daily_fee_certificate_type" multiple readonly />
@@ -21,7 +23,7 @@
 
   <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="right" /> -->
 
-  <FeeBaseDetail :include-fields="includeFields" />
+  <FeeBaseDetail :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
@@ -29,7 +31,7 @@ import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
@@ -42,4 +44,7 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
+
+const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
+const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 </script>

@@ -34,6 +34,11 @@ export interface CLSYXGFY {
   b_annualReviewExpirationDate?: string
   b_verificationDate?: string
   b_annualReviewMethod?: string
+  b_lastStrongInsuranceExpirationDate?: string
+  b_lastCommercialInsuranceExpirationDate?: string
+  b_strongInsuranceAmount?: number
+  b_commercialInsuranceAmount?: number
+  b_totalAmount?: number
 }
 
 // 项目日常费用
@@ -78,6 +83,7 @@ export interface FYXMBTSSYBXGMSQ {
   e_notBelongDeptPurchaseInsuranceSpecialReason?: string
   e_isOldInsuranceTermination?: string
   e_isOldInsuranceTerminationReason?: string
+
 }
 // 生产项目部临聘人员月度食堂补助费用审批
 export interface FYSCXMBLPRYYDSTBZFYSP {

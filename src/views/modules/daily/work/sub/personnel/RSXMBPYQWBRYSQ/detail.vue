@@ -11,7 +11,11 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.k_nature" v-show-field="['k_nature', includeFields]" label="聘用人员性质" name="k_nature" input-align="right" />
+  <van-field v-model="form.k_nature" v-show-field="['k_nature', includeFields]" label="聘用人员性质" name="k_nature" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.k_nature" dict-type="oa_daily_work_employ_personnel_type" readonly />
+    </template>
+  </van-field>
 
   <van-field v-model="form.k_category" v-show-field="['k_category', includeFields]" label="聘用类别" name="k_category" input-align="right">
     <template #input>

@@ -269,6 +269,7 @@ const extraInitFormData: DailyWorkForm = {
   hh_deptId: undefined,
   hh_type: undefined,
   hh_userId: undefined,
+  hh_userName: undefined,
   hh_phone: undefined,
   hh_superiorLeaders: undefined,
   hh_isApprovalAuthority: undefined,
@@ -579,6 +580,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   hh_deptId: [{ required: true, message: `所属部门/项目部${baseMsg}`, trigger: 'onBlur' }],
   hh_type: [{ required: true, message: `申请类型${baseMsg}`, trigger: 'onBlur' }],
   hh_userId: [{ required: true, message: `姓名${baseMsg}`, trigger: 'onBlur' }],
+  hh_userName: [{ required: true, message: `姓名${baseMsg}`, trigger: 'onBlur' }],
   hh_phone: [
     { required: true, message: `电话(企企登录账号)${baseMsg}`, trigger: 'onBlur' },
     { pattern: /^1[3-9|]\d{9}$/, message: '请输入正确的手机号码', trigger: 'onBlur' },

@@ -5,7 +5,12 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.qq_personnelCategory" v-show-field="['qq_personnelCategory', includeFields]" label="人员类别" name="qq_personnelCategory" input-align="right" />
+  <van-field v-show-field="['qq_personnelCategory', includeFields]" label="人员类别" name="qq_personnelCategory" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.qq_personnelCategory" dict-type="oa_daily_work_personnel_category" readonly />
+    </template>
+  </van-field>
+
   <van-field v-show-field="['qq_insuranceExpirationDate', includeFields]" label="建议保险开始截止日期" name="qq_insuranceExpirationDate" input-align="right">
     <template #input>
       {{ parseTime(form.qq_insuranceExpirationDate[0], '{y}-{m}-{d}') }} - {{ parseTime(form.qq_insuranceExpirationDate[1], '{y}-{m}-{d}') }}
@@ -20,7 +25,11 @@
 
   <van-field v-model="form.qq_purchaseInsuranceNumber" v-show-field="['qq_purchaseInsuranceNumber', includeFields]" label="购买保险人数" name="qq_purchaseInsuranceNumber" input-align="right" />
 
-  <van-field v-model="form.qq_purchaseInsuranceCategory" v-show-field="['qq_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="qq_purchaseInsuranceCategory" input-align="right" />
+  <van-field v-show-field="['qq_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="qq_purchaseInsuranceCategory" input-align="right">
+    <template #input>
+      <DictSelect v-model="form.qq_purchaseInsuranceCategory" dict-type="oa_daily_work_purchase_insurance_category" readonly />
+    </template>
+  </van-field>
 
   <van-field v-model="form.qq_insuranceLimit" v-show-field="['qq_insuranceLimit', includeFields]" label="购买保险额度(万元)" name="qq_insuranceLimit" input-align="right" />
 

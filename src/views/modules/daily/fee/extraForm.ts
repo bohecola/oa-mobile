@@ -33,6 +33,11 @@ const extraInitFormData: DailyFeeForm = {
   b_annualReviewExpirationDate: undefined,
   b_verificationDate: undefined,
   b_annualReviewMethod: undefined,
+  b_lastStrongInsuranceExpirationDate: undefined,
+  b_lastCommercialInsuranceExpirationDate: undefined,
+  b_strongInsuranceAmount: undefined,
+  b_commercialInsuranceAmount: undefined,
+  b_totalAmount: undefined,
 
   // 项目日常费用（其中包含二级的字段）
   c_startDate: undefined,
@@ -107,6 +112,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
   b_annualReviewExpirationDate: [{ required: true, message: `年审到期时间${baseMsg}`, trigger: 'onBlur' }],
   b_verificationDate: [{ required: true, message: `审验日期${baseMsg}`, trigger: 'onBlur' }],
   b_annualReviewMethod: [{ required: true, message: `年审方式${baseMsg}`, trigger: 'onBlur' }],
+  b_lastStrongInsuranceExpirationDate: [{ required: true, message: `上期交强险到期日期${baseMsg}`, trigger: 'onBlur' }],
+  b_lastCommercialInsuranceExpirationDate: [{ required: true, message: `上期商业险到期日期${baseMsg}`, trigger: 'onBlur' }],
+  b_strongInsuranceAmount: [{ required: true, message: `本次交强险金额${baseMsg}`, trigger: 'onBlur' }],
+  b_commercialInsuranceAmount: [{ required: true, message: `本次商业险金额${baseMsg}`, trigger: 'onBlur' }],
+  b_totalAmount: [{ required: true, message: `总计金额${baseMsg}`, trigger: 'onBlur' }],
 
   // 项目日常费用
   c_startDate: [{ required: true, message: `开始时间${baseMsg}`, trigger: 'onBlur' }],

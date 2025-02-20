@@ -1,4 +1,6 @@
 <template>
+  <FeeBaseDetail :include-fields="includeFields1" />
+
   <van-field v-model="form.d_articleName" v-show-field="['d_articleName', includeFields]" label="投稿名称" name="d_articleName" input-align="right" />
 
   <van-field v-show-field="['d_articleDetail', includeFields]" label="投稿详情" name="d_articleDetail" input-align="right">
@@ -13,7 +15,7 @@
     </template>
   </van-field>
 
-  <FeeBaseDetail :include-fields="includeFields" />
+  <FeeBaseDetail :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
@@ -21,7 +23,7 @@ import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
@@ -33,4 +35,7 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
+
+const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
+const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 </script>

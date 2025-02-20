@@ -4,7 +4,7 @@
     <!-- 车辆使用相关费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
       <!-- 编辑页面申请事由不显示 -->
-      <!-- <upsert :include-fields="includeFieldsNo.filter((e) => e !== 'reason')" /> -->
+      <!-- <upsert :include-fields="includeFieldsNo" /> -->
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -51,6 +51,11 @@ const props = withDefaults(
       'b_annualReviewExpirationDate',
       'b_verificationDate',
       'b_annualReviewMethod',
+      'b_lastStrongInsuranceExpirationDate',
+      'b_lastCommercialInsuranceExpirationDate',
+      'b_strongInsuranceAmount',
+      'b_commercialInsuranceAmount',
+      'b_totalAmount',
       'reason',
       'receiptInfo',
       'ossIdList',
@@ -96,6 +101,16 @@ const LXJYFYFields = ['b_useTime', 'b_oilContent', 'b_useReason', 'b_useMethod']
 // 年审费用字段
 const NSFYFields = ['b_vehicleNo', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_paymentMethod']
 
+// 公司车辆保险费用
+const GSCLBXFFields = [
+  'b_vehicleNo',
+  'b_lastStrongInsuranceExpirationDate',
+  'b_lastCommercialInsuranceExpirationDate',
+  'b_strongInsuranceAmount',
+  'b_commercialInsuranceAmount',
+  'b_totalAmount',
+]
+
 const form = inject<Ref<DailyFeeForm>>('form')
 
 const includeFieldsNo = computed(() => {
@@ -107,6 +122,9 @@ const includeFieldsNo = computed(() => {
   }
   else if (form.value.no === 'NSFY') {
     return [...commonFields, ...NSFYFields] as KeysOfArray<DailyFeeForm>
+  }
+  else if (form.value.no === 'GSCLBXF') {
+    return [...commonFields, ...GSCLBXFFields] as KeysOfArray<DailyFeeForm>
   }
   return [...commonFields] as KeysOfArray<DailyFeeForm>
 })
