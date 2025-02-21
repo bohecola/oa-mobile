@@ -5,7 +5,7 @@
     label="申请事由"
     input-align="right"
     value-class="flex-nowrap"
-    :right-icon="form.wfRemark ? 'info-o' : ''"
+    :right-icon="!isEmpty(form.wfRemark) ? 'info-o' : ''"
     @click-right-icon="handleIconClick"
   >
     <template #input>
