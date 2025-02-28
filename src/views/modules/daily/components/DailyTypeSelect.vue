@@ -37,6 +37,8 @@ import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
 import { queryByParentDaily } from '@/api/oa/daily/category'
 import { findPathNodes } from '@/utils'
 
+type DailyWorkTypeTreeVO = DailyWorkTypeVO & { children?: DailyWorkTypeVO[] }
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
@@ -71,8 +73,6 @@ const isLoading = ref(false)
 
 const id = ref<number | string>(props.modelValue)
 const data = ref<DailyWorkTypeVO[]>([])
-
-type DailyWorkTypeTreeVO = DailyWorkTypeVO & { children?: DailyWorkTypeVO[] }
 
 const options = computed(() => proxy?.handleTree<DailyWorkTypeTreeVO>(data.value))
 
@@ -130,6 +130,10 @@ function open() {
 function close() {
   show.value = false
 }
+
+onMounted(async () => {
+  await getData()
+})
 
 defineExpose({
   open,
