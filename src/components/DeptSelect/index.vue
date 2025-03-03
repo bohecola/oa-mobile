@@ -65,6 +65,8 @@ const emit = defineEmits(['update:modelValue', 'update:value', 'change', 'nodeCl
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
+const route = useRoute()
+
 // 节点数据加载状态
 const isLoading = ref(false)
 
@@ -149,14 +151,21 @@ async function getData() {
     Object.assign(queryParams, props.params)
   }
 
+  if (route && route.query && route.query.isInternal) {
+    queryParams.isInternal = route.query.isInternal as string
+  }
+
   const { data } = await listDept(queryParams).finally(() => (isLoading.value = false))
-  rawData.value = data.map((e) => {
-    return {
-      ...e,
-      id: !isNil(e.deptId) ? String(e.deptId) : e.deptId,
-      label: e.deptName,
-    }
+
+  const rootNode = { label: '根节点', id: '0', deptId: '0', deptName: '根节点', type: -1 }
+
+  const formatFormData = item => ({
+    ...item,
+    id: !isNil(item.deptId) ? String(item.deptId) : item.deptId,
+    label: item.deptName,
   })
+
+  rawData.value = props.withDefaultRootNode ? [rootNode, ...data].map(formatFormData) : data.map(formatFormData)
 }
 
 // change 事件

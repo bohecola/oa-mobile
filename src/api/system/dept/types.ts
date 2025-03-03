@@ -6,6 +6,10 @@ export interface DeptQuery extends PageQuery {
   deptCategory?: string
   status?: string
   type?: string
+  /**
+   * 标识：内部人员看到的部门数据，系统管理看到的全部部门数据
+   */
+  isInternal?: string
 }
 
 /**

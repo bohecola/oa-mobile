@@ -20,6 +20,12 @@ export interface UserQuery extends PageQuery {
   status?: string
   deptId?: string | number
   roleId?: string | number
+  // Y: 显示  N: 不显示（默认）
+  isShowResigned?: string
+  /**
+   * 标识：内部人员看到的部门数据，系统管理看到的全部部门数据
+   */
+  isInternal?: string
 }
 
 /**

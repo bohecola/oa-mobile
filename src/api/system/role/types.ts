@@ -35,6 +35,10 @@ export interface RoleQuery extends PageQuery {
   roleName: string
   roleKey: string
   status: string
+  /**
+   * 标识：内部人员看到的部门数据，系统管理看到的全部部门数据
+   */
+  isInternal?: string
 }
 
 export interface RoleForm {

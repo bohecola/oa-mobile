@@ -61,19 +61,13 @@
 
       <van-field v-model="item.educationalRequire" :name="`itemList.${index}.educationalRequire`" label="学历要求" input-align="right" />
 
-      <van-field v-model="item.suggestSalary" :name="`itemList.${index}.suggestSalary`" label="建议薪资(元/月)" input-align="right" />
-
       <van-field v-model="item.speciality" :name="`itemList.${index}.speciality`" label="专业" input-align="right" />
+
+      <van-field v-model="item.suggestSalary" :name="`itemList.${index}.suggestSalary`" label="建议薪资(元/月)" input-align="right" />
 
       <van-field v-model="item.workExperience" :name="`itemList.${index}.workExperience`" label="工作经验" input-align="right">
         <template #input>
           <TextareaView :value="item.workExperience" />
-        </template>
-      </van-field>
-
-      <van-field v-model="item.otherRequire" :name="`itemList.${index}.otherRequire`" label="其他要求" input-align="right">
-        <template #input>
-          <TextareaView :value="item.otherRequire" />
         </template>
       </van-field>
 
@@ -86,6 +80,12 @@
       <van-field v-model="item.responsibility" :name="`itemList.${index}.responsibility`" label="任职资格" input-align="right">
         <template #input>
           <TextareaView :value="item.responsibility" />
+        </template>
+      </van-field>
+
+      <van-field v-model="item.otherRequire" :name="`itemList.${index}.otherRequire`" label="其他要求" input-align="right">
+        <template #input>
+          <TextareaView :value="item.otherRequire" />
         </template>
       </van-field>
     </TableCard>

@@ -172,7 +172,7 @@ export interface UserRecruitPostBo {
   /**
    * 建议薪资（元/月）
    */
-  suggestSalary: number
+  suggestSalary: string
 
   /**
    * 工作经验

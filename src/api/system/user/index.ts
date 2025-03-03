@@ -1,5 +1,5 @@
 import type { AxiosPromise } from 'axios'
-import type { DeptVO } from './../dept/types'
+import type { DeptQuery, DeptVO } from './../dept/types'
 import type { CheckUserNameAndPhoneUnique, SysUserMobileVO, UserForm, UserInfoListQuery, UserInfoVO, UserInfoVo, UserMobileListQuery, UserQuery, UserVO } from './types'
 import type { RoleVO } from '@/api/system/role/types'
 import { parseStrEmpty } from '@/utils/base'
@@ -219,10 +219,11 @@ export function listUserByDeptId(deptId: string | number): AxiosPromise<UserVO[]
 /**
  * 查询部门下拉树结构
  */
-export function deptTreeSelect(): AxiosPromise<DeptVO[]> {
+export function deptTreeSelect(query?: DeptQuery): AxiosPromise<DeptVO[]> {
   return request({
     url: '/system/user/deptTree',
     method: 'get',
+    params: query,
   })
 }
 

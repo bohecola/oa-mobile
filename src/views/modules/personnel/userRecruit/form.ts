@@ -26,7 +26,7 @@ export function useForm() {
     responsibility: undefined,
     demand: undefined,
     educationalRequire: undefined,
-    suggestSalary: 0,
+    suggestSalary: undefined,
     workExperience: undefined,
     otherRequire: undefined,
   }
