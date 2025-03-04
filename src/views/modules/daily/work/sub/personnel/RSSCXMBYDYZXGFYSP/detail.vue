@@ -7,13 +7,13 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['o_deptId', includeFields]" name="o_deptId" label="申请部门" input-align="right">
+  <van-field v-show-field="['o_deptId', includeFields]" name="o_deptId" label="申请部门" input-align="left">
     <template #input>
       <DeptSelect v-model="form.o_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['o_amount', includeFields]" name="o_amount" label="总金额（元）" input-align="right">
+  <van-field v-show-field="['o_amount', includeFields]" name="o_amount" label="总金额（元）" input-align="left">
     <template #input>
       {{ form.o_amount }}
       <span v-if="!isNil(form.o_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.o_amount) }}</span>

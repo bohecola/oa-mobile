@@ -5,12 +5,17 @@
     :group="false"
     @approval="handleApproval"
   >
-    <van-form ref="Form" label-width="auto">
+    <van-form
+      ref="Form"
+      :class="dailyTypeSelectReadOnly ? 'reset-label' : ''"
+      label-width="auto"
+      label-align="top"
+    >
       <van-cell-group inset class="!my-3">
         <van-field
           name="dailyWorkType"
           label="日常费用类型"
-          input-align="right"
+          input-align="left"
           @click="handleDailyTypeClick"
         >
           <template #input>

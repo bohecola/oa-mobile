@@ -1,23 +1,23 @@
 <template>
-  <van-field v-show-field="['t_userId', includeFields]" label="被解除劳动合同员工" name="t_userId" input-align="right">
+  <van-field v-show-field="['t_userId', includeFields]" label="被解除劳动合同员工" name="t_userId" input-align="left">
     <template #input>
       <UserSelect v-model="form.t_userId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['t_deptId', includeFields]" label="所在部门/项目部" name="t_deptId" input-align="right">
+  <van-field v-show-field="['t_deptId', includeFields]" label="所在部门/项目部" name="t_deptId" input-align="left">
     <template #input>
       <DeptSelect v-model="form.t_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['t_postIds', includeFields]" label="岗位" name="t_postIds" input-align="right">
+  <van-field v-show-field="['t_postIds', includeFields]" label="岗位" name="t_postIds" input-align="left">
     <template #input>
       <PostSelect v-model="form.t_postIds" :dept-id="form.t_deptId" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['t_isFormal', includeFields]" label="是否已转正" name="t_isFormal" input-align="right">
+  <van-field v-show-field="['t_isFormal', includeFields]" label="是否已转正" name="t_isFormal" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.t_isFormal" readonly />
     </template>

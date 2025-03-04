@@ -1,17 +1,17 @@
 <template>
-  <van-field v-show-field="['aa_deptId', includeFields]" name="aa_deptId" label="项目部" input-align="right">
+  <van-field v-show-field="['aa_deptId', includeFields]" name="aa_deptId" label="项目部" input-align="left">
     <template #input>
       <DeptSelect v-model="form.aa_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['aa_userId', includeFields]" name="aa_userId" label="申请人员名单" input-align="right">
+  <van-field v-show-field="['aa_userId', includeFields]" name="aa_userId" label="申请人员名单" input-align="left">
     <template #input>
       <UserSelect v-model="form.aa_userId" :multiple="true" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['aa_effectiveDate', includeFields]" name="aa_effectiveDate" label="生效日期" input-align="right">
+  <van-field v-show-field="['aa_effectiveDate', includeFields]" name="aa_effectiveDate" label="生效日期" input-align="left">
     <template #input>
       {{ parseTime(form.aa_effectiveDate, '{y}-{m}-{d}') }}
     </template>

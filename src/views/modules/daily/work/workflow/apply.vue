@@ -1,11 +1,16 @@
 <template>
   <WorkflowPage :loading="isLoading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
-    <van-form ref="Form" label-width="auto">
+    <van-form
+      ref="Form"
+      :class="dailyTypeSelectReadOnly ? 'reset-label' : ''"
+      label-width="auto"
+      label-align="top"
+    >
       <van-cell-group inset class="!my-3">
         <van-field
           name="dailyWorkType"
           label="日常事务类型"
-          input-align="right"
+          input-align="left"
           @click="handleDailyTypeClick"
         >
           <template #input>
@@ -24,7 +29,7 @@
           v-if="form.dailyWorkType"
           prop="companyId"
           label="公司"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             <ComanySelect v-model="form.companyId" readonly />

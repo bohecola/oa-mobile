@@ -1,23 +1,23 @@
 <template>
-  <van-field v-show-field="['b_userId', includeFields]" label="员工" name="b_userId" input-align="right">
+  <van-field v-show-field="['b_userId', includeFields]" label="员工" name="b_userId" input-align="left">
     <template #input>
       <UserSelect v-model="form.b_userId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_deptId', includeFields]" label="部门/项目部" name="b_deptId" input-align="right">
+  <van-field v-show-field="['b_deptId', includeFields]" label="部门/项目部" name="b_deptId" input-align="left">
     <template #input>
       <DeptSelect v-model="form.b_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_postIds', includeFields]" label="岗位" name="b_postIds" input-align="right">
+  <van-field v-show-field="['b_postIds', includeFields]" label="岗位" name="b_postIds" input-align="left">
     <template #input>
       <PostSelect v-model="form.b_postIds" :dept-id="form.b_deptId" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_sex', includeFields]" label="性别" name="b_sex" input-align="right">
+  <van-field v-show-field="['b_sex', includeFields]" label="性别" name="b_sex" input-align="left">
     <template #input>
       <DictSelect v-model="form.b_sex" dict-type="sys_user_sex" readonly />
     </template>
@@ -31,13 +31,13 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['b_contractEndTime', includeFields]" label="合同到期时间" name="b_contractEndTime" input-align="right">
+  <van-field v-show-field="['b_contractEndTime', includeFields]" label="合同到期时间" name="b_contractEndTime" input-align="left">
     <template #input>
       {{ parseTime(form.b_contractEndTime, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_contractType', includeFields]" label="合同类型" name="b_contractType" input-align="right">
+  <van-field v-show-field="['b_contractType', includeFields]" label="合同类型" name="b_contractType" input-align="left">
     <template #input>
       <dict-select v-model="form.b_contractType" component="checkbox" dict-type="oa_daily_work_rsldhtxqsp_contract_type" multiple readonly />
     </template>

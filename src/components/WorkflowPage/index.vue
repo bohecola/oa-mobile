@@ -35,24 +35,24 @@
               text="当前节点存在需要填写的字段，请暂时在PC端审批"
             />
 
-            <van-form label-width="auto">
+            <van-form label-width="auto" class="reset-label" label-align="top">
               <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
-                <van-field label="流程ID" input-align="right">
+                <van-field label="流程ID" input-align="left">
                   <template #input>
                     <span>{{ entityVariables.id }}</span>
                   </template>
                 </van-field>
-                <van-field label="发起人" input-align="right">
+                <van-field label="发起人" input-align="left">
                   <template #input>
                     <span>{{ entityVariables.initiator.nickName }}</span>
                   </template>
                 </van-field>
-                <van-field label="部门" input-align="right">
+                <van-field label="部门" input-align="left">
                   <template #input>
                     <DeptSelect v-model="entityVariables.initiator.deptId!" readonly />
                   </template>
                 </van-field>
-                <van-field label="发起时间" input-align="right">
+                <van-field label="发起时间" input-align="left">
                   <template #input>
                     <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
                   </template>
@@ -69,7 +69,7 @@
               v-if="isView && businessStatus !== 'draft'"
               :src="imgObj[businessStatus]"
               alt="流程状态"
-              class="absolute top-[36px] left-[100px] w-14 h-14 opacity-70"
+              class="absolute top-[16px] right-[30px] w-14 h-14 opacity-70"
             >
           </div>
 

@@ -1,6 +1,6 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
-  <van-field v-model="form.f_applyNumber" v-show-field="['f_applyNumber', includeFields]" label="申请人数" name="f_applyNumber" input-align="right" />
+  <van-field v-model="form.f_applyNumber" v-show-field="['f_applyNumber', includeFields]" label="申请人数" name="f_applyNumber" input-align="left" />
 
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>

@@ -65,4 +65,10 @@ body {
   }
 }
 
+.reset-label {
+  .van-field__label{
+    color: #a1a1aa !important;
+  }
+}
+
 @import './theme.scss';

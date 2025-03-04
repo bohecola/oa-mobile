@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['sealType', includeFields]" label="申请类型" name="sealType" input-align="right">
+  <van-field v-show-field="['sealType', includeFields]" label="申请类型" name="sealType" input-align="left">
     <template #input>
       <DictSelect v-model="form.sealType" dict-type="oa_seal_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isReturnSeal', includeFields]" label="是否交回原印" name="isReturnSeal" input-align="right">
+  <van-field v-show-field="['isReturnSeal', includeFields]" label="是否交回原印" name="isReturnSeal" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.isReturnSeal" readonly />
     </template>

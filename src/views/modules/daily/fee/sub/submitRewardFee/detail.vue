@@ -1,15 +1,15 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <van-field v-model="form.d_articleName" v-show-field="['d_articleName', includeFields]" label="投稿名称" name="d_articleName" input-align="right" />
+  <van-field v-model="form.d_articleName" v-show-field="['d_articleName', includeFields]" label="投稿名称" name="d_articleName" input-align="left" />
 
-  <van-field v-show-field="['d_articleDetail', includeFields]" label="投稿详情" name="d_articleDetail" input-align="right">
+  <van-field v-show-field="['d_articleDetail', includeFields]" label="投稿详情" name="d_articleDetail" input-align="left">
     <template #input>
       <TextareaView :value="form.d_articleDetail" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['d_rewardAmount', includeFields]" label="奖励金额" name="d_rewardAmount" input-align="right">
+  <van-field v-show-field="['d_rewardAmount', includeFields]" label="奖励金额" name="d_rewardAmount" input-align="left">
     <template #input>
       <span class="mr-3">{{ formatCurrency(form.d_rewardAmount) }}</span>
     </template>

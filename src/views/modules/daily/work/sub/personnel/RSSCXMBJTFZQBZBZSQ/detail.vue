@@ -1,17 +1,17 @@
 <template>
-  <van-field v-show-field="['s_deptId', includeFields]" label="项目部" name="s_deptId" input-align="right">
+  <van-field v-show-field="['s_deptId', includeFields]" label="项目部" name="s_deptId" input-align="left">
     <template #input>
       <DeptSelect v-model="form.s_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.s_costCategory" v-show-field="['s_costCategory', includeFields]" label="申请费用类别" name="s_costCategory" input-align="right" />
+  <van-field v-model="form.s_costCategory" v-show-field="['s_costCategory', includeFields]" label="申请费用类别" name="s_costCategory" input-align="left" />
 
-  <van-field v-model="form.s_transportationStandards" v-show-field="['s_transportationStandards', includeFields]" label="拟申请交通工具标准" name="s_transportationStandards" input-align="right" />
+  <van-field v-model="form.s_transportationStandards" v-show-field="['s_transportationStandards', includeFields]" label="拟申请交通工具标准" name="s_transportationStandards" input-align="left" />
 
-  <van-field v-model="form.s_transportationFeeAmount" v-show-field="['s_transportationFeeAmount', includeFields]" label="拟申请交通费金额（元/单趟）" name="s_transportationFeeAmount" input-align="right" />
+  <van-field v-model="form.s_transportationFeeAmount" v-show-field="['s_transportationFeeAmount', includeFields]" label="拟申请交通费金额（元/单趟）" name="s_transportationFeeAmount" input-align="left" />
 
-  <van-field v-model="form.s_subsidyStandardDetails" v-show-field="['s_subsidyStandardDetails', includeFields]" label="驻勤补助标准明细" name="s_subsidyStandardDetails" input-align="right" />
+  <van-field v-model="form.s_subsidyStandardDetails" v-show-field="['s_subsidyStandardDetails', includeFields]" label="驻勤补助标准明细" name="s_subsidyStandardDetails" input-align="left" />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

@@ -3,7 +3,7 @@
     <van-field
       name="receiptInfo.entityName"
       label="单位或个人名称"
-      input-align="right"
+      input-align="left"
     >
       <template #input>
         <span v-if="readonly">{{ (form.receiptInfo as ReceiptInfo).entityName }}</span>
@@ -12,7 +12,7 @@
     <van-field
       name="receiptInfo.invoiceType"
       label="发票类型"
-      input-align="right"
+      input-align="left"
     >
       <template #input>
         <DictSelect v-model="(form.receiptInfo as ReceiptInfo).invoiceType" dict-type="oa_contract_invoice_type" clearable :readonly="readonly" />
@@ -22,7 +22,7 @@
     <van-field
       name="receiptInfo.taxRate"
       label="税率（%）"
-      input-align="right"
+      input-align="left"
     >
       <template #input>
         <DictSelect v-model="(form.receiptInfo as ReceiptInfo).taxRate" dict-type="oa_contract_tax_rate" clearable :readonly="readonly" />
@@ -32,7 +32,7 @@
     <van-field
       name="receiptInfo.paymentWay"
       label="付款方式"
-      input-align="right"
+      input-align="left"
     >
       <template #input>
         <DictSelect v-model="(form.receiptInfo as ReceiptInfo).paymentWay" dict-type="oa_daily_fee_payment_way" clearable :readonly="readonly" />
@@ -43,7 +43,7 @@
       <van-field
         name="receiptInfo.accountName"
         label="账户名称"
-        input-align="right"
+        input-align="left"
       >
         <template #input>
           <span v-if="readonly">{{ (form.receiptInfo as ReceiptInfo).accountName }}</span>
@@ -53,7 +53,7 @@
       <van-field
         name="receiptInfo.corporateAccount"
         label="对公账号"
-        input-align="right"
+        input-align="left"
       >
         <template #input>
           <span v-if="readonly">{{ (form.receiptInfo as ReceiptInfo).corporateAccount }}</span>
@@ -63,7 +63,7 @@
       <van-field
         name="receiptInfo.openingBank"
         label="开户行名称"
-        input-align="right"
+        input-align="left"
       >
         <template #input>
           <span v-if="readonly">{{ (form.receiptInfo as ReceiptInfo).openingBank }}</span>

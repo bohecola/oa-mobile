@@ -1,31 +1,31 @@
 <template>
-  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="right">
+  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="left">
     <template #input>
       <UserSelect v-model="form.customizeApprover" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['customizeTransactor', includeFields]" label="办理人" input-align="right">
+  <van-field v-show-field="['customizeTransactor', includeFields]" label="办理人" input-align="left">
     <template #input>
       <UserSelect v-model="form.customizeTransactor" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型" input-align="right">
+  <van-field v-show-field="['fileType', includeFields]" label="资料类型" input-align="left">
     <template #input>
       <DictSelect v-model="form.fileType" dict-type="oa_file_type" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" input-align="right">
+  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.isSeal" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.mm_contractSettlementNature" v-show-field="['mm_contractSettlementNature', includeFields]" label="合同结算性质" name="mm_contractSettlementNature" input-align="right" />
+  <van-field v-model="form.mm_contractSettlementNature" v-show-field="['mm_contractSettlementNature', includeFields]" label="合同结算性质" name="mm_contractSettlementNature" input-align="left" />
 
-  <van-field v-model="form.mm_contractSettlementcontent" v-show-field="['mm_contractSettlementcontent', includeFields]" label="合同结算资料内容" name="mm_contractSettlementcontent" input-align="right" />
+  <van-field v-model="form.mm_contractSettlementcontent" v-show-field="['mm_contractSettlementcontent', includeFields]" label="合同结算资料内容" name="mm_contractSettlementcontent" input-align="left" />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

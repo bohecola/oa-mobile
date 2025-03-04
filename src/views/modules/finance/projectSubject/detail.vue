@@ -1,29 +1,37 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" :model="form" label-width="8em" readonly>
+  <van-form
+    ref="Form"
+    v-loading="isLoading && showLoading"
+    :model="form"
+    class="reset-label"
+    label-width="auto"
+    label-align="top"
+    readonly
+  >
     <van-cell-group inset class="!my-3">
-      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="预算类型" input-align="right">
+      <van-field v-model="form.type" v-show-field="['type', includeFields]" name="type" label="预算类型" input-align="left">
         <template #input>
           <dict-select v-model="form.type" dict-type="oa_project_subject_type" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="名称" input-align="right" />
-      <van-field v-model="form.contractNo" v-show-field="['contractNo', includeFields]" name="contractNo" label="合同编号" input-align="right" />
-      <van-field v-if="form.type === 'project'" v-model="form.businessType" v-show-field="['businessType', includeFields]" name="businessType" label="业务类型" input-align="right">
+      <van-field v-model="form.name" v-show-field="['name', includeFields]" name="name" label="名称" input-align="left" />
+      <van-field v-model="form.contractNo" v-show-field="['contractNo', includeFields]" name="contractNo" label="合同编号" input-align="left" />
+      <van-field v-if="form.type === 'project'" v-model="form.businessType" v-show-field="['businessType', includeFields]" name="businessType" label="业务类型" input-align="left">
         <template #input>
           <dict-select v-model="form.businessType" dict-type="oa_project_business_type" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.startDate" v-show-field="['startDate', includeFields]" name="startDate" label="开始日期" input-align="right">
+      <van-field v-model="form.startDate" v-show-field="['startDate', includeFields]" name="startDate" label="开始日期" input-align="left">
         <template #input>
           {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
-      <van-field v-model="form.endDate" v-show-field="['endDate', includeFields]" name="endDate" label="结束日期" input-align="right">
+      <van-field v-model="form.endDate" v-show-field="['endDate', includeFields]" name="endDate" label="结束日期" input-align="left">
         <template #input>
           {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
-      <van-field v-if="form.businessType === '0'" v-model="form.endDate" v-show-field="['xmbSubjectFeeType', includeFields]" name="xmbSubjectFeeType" label="项目部可用费用类型" input-align="right">
+      <van-field v-if="form.businessType === '0'" v-model="form.endDate" v-show-field="['xmbSubjectFeeType', includeFields]" name="xmbSubjectFeeType" label="项目部可用费用类型" input-align="left">
         <template #input>
           <dict-select v-model="form.xmbSubjectFeeType" dict-type="oa_subject_fee_type_ywl" multiple readonly />
         </template>

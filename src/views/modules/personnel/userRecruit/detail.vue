@@ -1,44 +1,44 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="8em">
+  <van-form ref="Form" v-loading="isLoading && showLoading" class="reset-label" label-width="auto" label-align="top" readonly>
     <van-cell-group inset class="!my-3">
-      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="right">
+      <van-field v-show-field="['deptId', includeFields]" name="deptId" label="部门名称" input-align="left">
         <template #input>
           <DeptSelect v-model="form.deptId" readonly />
         </template>
       </van-field>
-      <van-field v-model="form.status" v-show-field="['status', includeFields]" name="status" label="状态" input-align="right">
+      <van-field v-model="form.status" v-show-field="['status', includeFields]" name="status" label="状态" input-align="left">
         <template #input>
           <dict-tag :options="oa_recruit_status" :value="form.status" />
         </template>
       </van-field>
 
-      <van-field v-model="form.recruitStartDate" v-show-field="['recruitStartDate', includeFields]" name="recruitStartDate" label="招聘开始时间" input-align="right">
+      <van-field v-model="form.recruitStartDate" v-show-field="['recruitStartDate', includeFields]" name="recruitStartDate" label="招聘开始时间" input-align="left">
         <template #input>
           {{ parseTime(form.recruitStartDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-model="form.recruitEndDate" v-show-field="['recruitEndDate', includeFields]" name="recruitEndDate" label="招聘完成日期" input-align="right">
+      <van-field v-model="form.recruitEndDate" v-show-field="['recruitEndDate', includeFields]" name="recruitEndDate" label="招聘完成日期" input-align="left">
         <template #input>
           {{ parseTime(form.recruitEndDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到岗日期" input-align="right">
+      <van-field v-model="form.hopeArriveDate" v-show-field="['hopeArriveDate', includeFields]" name="hopeArriveDate" label="期望到岗日期" input-align="left">
         <template #input>
           {{ parseTime(form.hopeArriveDate, '{y}-{m}-{d}') }}
         </template>
       </van-field>
 
-      <van-field v-if="!isNil(form.no)" v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="right" />
+      <van-field v-if="!isNil(form.no)" v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="left" />
 
-      <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="right">
+      <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="left">
         <template #input>
           <TextareaView :value="form.applyReason" />
         </template>
       </van-field>
 
-      <van-field v-if="form.deptType === '2' && !isNil(form.address)" v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="right">
+      <van-field v-if="form.deptType === '2' && !isNil(form.address)" v-model="form.address" v-show-field="['address', includeFields]" name="address" label="项目部地址" input-align="left">
         <template #input>
           <TextareaView :value="form.address" />
         </template>
@@ -49,41 +49,41 @@
       招聘岗位
     </div>
     <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" v-show-field="['userRecruitPostBoList', includeFields]" :title="item.postName" class="mx-4 mb-2" :default-collapse="true">
-      <van-field :name="`itemList.${index}.postId`" label="岗位名称" input-align="right">
+      <van-field :name="`itemList.${index}.postId`" label="岗位名称" input-align="left">
         <template #input>
           <PostSelect v-model="item.postId" :dept-id="form.deptId" multiple readonly />
         </template>
       </van-field>
 
-      <van-field v-model="item.userNum" :name="`itemList.${index}.userNum`" label="招聘人数" input-align="right" />
+      <van-field v-model="item.userNum" :name="`itemList.${index}.userNum`" label="招聘人数" input-align="left" />
 
-      <van-field v-model="item.ageRequire" :name="`itemList.${index}.ageRequire`" label="年龄要求" input-align="right" />
+      <van-field v-model="item.ageRequire" :name="`itemList.${index}.ageRequire`" label="年龄要求" input-align="left" />
 
-      <van-field v-model="item.educationalRequire" :name="`itemList.${index}.educationalRequire`" label="学历要求" input-align="right" />
+      <van-field v-model="item.educationalRequire" :name="`itemList.${index}.educationalRequire`" label="学历要求" input-align="left" />
 
-      <van-field v-model="item.speciality" :name="`itemList.${index}.speciality`" label="专业" input-align="right" />
+      <van-field v-model="item.speciality" :name="`itemList.${index}.speciality`" label="专业" input-align="left" />
 
-      <van-field v-model="item.suggestSalary" :name="`itemList.${index}.suggestSalary`" label="建议薪资(元/月)" input-align="right" />
+      <van-field v-model="item.suggestSalary" :name="`itemList.${index}.suggestSalary`" label="建议薪资(元/月)" input-align="left" />
 
-      <van-field v-model="item.workExperience" :name="`itemList.${index}.workExperience`" label="工作经验" input-align="right">
+      <van-field v-model="item.workExperience" :name="`itemList.${index}.workExperience`" label="工作经验" input-align="left">
         <template #input>
           <TextareaView :value="item.workExperience" />
         </template>
       </van-field>
 
-      <van-field v-model="item.demand" :name="`itemList.${index}.demand`" label="任职条件" input-align="right">
+      <van-field v-model="item.demand" :name="`itemList.${index}.demand`" label="任职条件" input-align="left">
         <template #input>
           <TextareaView :value="item.demand" />
         </template>
       </van-field>
 
-      <van-field v-model="item.responsibility" :name="`itemList.${index}.responsibility`" label="任职资格" input-align="right">
+      <van-field v-model="item.responsibility" :name="`itemList.${index}.responsibility`" label="任职资格" input-align="left">
         <template #input>
           <TextareaView :value="item.responsibility" />
         </template>
       </van-field>
 
-      <van-field v-model="item.otherRequire" :name="`itemList.${index}.otherRequire`" label="其他要求" input-align="right">
+      <van-field v-model="item.otherRequire" :name="`itemList.${index}.otherRequire`" label="其他要求" input-align="left">
         <template #input>
           <TextareaView :value="item.otherRequire" />
         </template>

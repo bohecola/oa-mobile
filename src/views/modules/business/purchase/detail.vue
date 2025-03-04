@@ -1,11 +1,11 @@
 <template>
-  <van-form ref="Form" v-loading="isLoading && showLoading" readonly label-width="auto">
-    <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
+  <van-form ref="Form" v-loading="isLoading && showLoading" class="reset-label" readonly label-width="auto" label-align="top">
+    <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="left">
       <template #input>
         <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId" input-align="right">
+    <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId" input-align="left">
       <template #input>
         <DeptSelect v-model="form.deptId" readonly />
       </template>
@@ -14,58 +14,58 @@
       v-show-field="['psId', includeFields]"
       label="预算"
       name="psId"
-      input-align="right"
+      input-align="left"
     >
       <template #input>
         <ProjectSubjectSelect v-model="form.psId" readonly />
       </template>
     </van-field>
-    <van-field v-if="isProject && !isNil(form.psId)" v-show-field="['contractNo', includeFields]" label="合同编号" name="contractNo" input-align="right">
+    <van-field v-if="isProject && !isNil(form.psId)" v-show-field="['contractNo', includeFields]" label="合同编号" name="contractNo" input-align="left">
       <template #input>
         {{ form.contractNo }}
         <!-- <ContractSelect v-model="form.contractId" preview-field="no" readonly /> -->
       </template>
     </van-field>
-    <van-field v-if="isProject && !isNil(form.contractNo)" v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="right">
+    <van-field v-if="isProject && !isNil(form.contractNo)" v-show-field="['contractExecute', includeFields]" label="合同执行情况" name="contractExecute" input-align="left">
       <template #input>
         <dict-select v-model="form.contractExecute" dict-type="oa_contract_execute_situation" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['type', includeFields]" label="采购类型" name="type" input-align="right">
+    <van-field v-show-field="['type', includeFields]" label="采购类型" name="type" input-align="left">
       <template #input>
         <dict-select v-model="form.type" dict-type="oa_purchase_type" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['businessCategory', includeFields]" label="业务类别" name="businessCategory" input-align="right">
+    <van-field v-show-field="['businessCategory', includeFields]" label="业务类别" name="businessCategory" input-align="left">
       <!-- 如果选择了项目，则默认项目的业务类型，如果没有项目则可选：管理、销售、研发 -->
       <template #input>
         <dict-tag :options="isProject ? oa_project_business_type : oa_purchase_business_type" :value="form.businessCategory" />
       </template>
     </van-field>
-    <van-field v-show-field="['objectCategory', includeFields]" label="物品类别" name="objectCategory" input-align="right">
+    <van-field v-show-field="['objectCategory', includeFields]" label="物品类别" name="objectCategory" input-align="left">
       <template #input>
         <dict-select v-model="form.objectCategory" dict-type="oa_purchase_object_category" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="right">
+    <van-field v-show-field="['serviceCategory', includeFields]" label="服务类别" name="serviceCategory" input-align="left">
       <template #input>
         <dict-select v-model="form.serviceCategory" dict-type="oa_purchase_service_category" readonly />
       </template>
     </van-field>
     <!-- 服务类别为租赁时显示 -->
-    <van-field v-if="form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="right">
+    <van-field v-if="form.serviceCategory === '3'" v-show-field="['leaseType', includeFields]" label="租赁类型" name="leaseType" input-align="left">
       <template #input>
         <dict-select v-model="form.leaseType" dict-type="oa_purchase_lease_type" readonly />
       </template>
     </van-field>
     <!-- 服务类别为租赁时显示 -->
-    <van-field v-if="form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="right">
+    <van-field v-if="form.serviceCategory === '3'" v-show-field="['isDeposit', includeFields]" label="是否有押金" name="isDeposit" input-align="left">
       <template #input>
         <YesNoSwitch v-model="form.isDeposit" readonly />
       </template>
     </van-field>
 
-    <van-field v-show-field="['amount', includeFields]" label="含税总金额" name="amount" input-align="right">
+    <van-field v-show-field="['amount', includeFields]" label="含税总金额" name="amount" input-align="left">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
@@ -73,7 +73,7 @@
         </div>
       </template>
     </van-field>
-    <van-field v-if="isProject && !isNil(form.psId) && !isYwl" v-show-field="['notTaxAmount', includeFields]" label="不含税总金额" name="notTaxAmount" input-align="right">
+    <van-field v-if="isProject && !isNil(form.psId) && !isYwl" v-show-field="['notTaxAmount', includeFields]" label="不含税总金额" name="notTaxAmount" input-align="left">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.notTaxAmount) }}</span>
@@ -82,7 +82,7 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['realAmount', includeFields]" label="含税实际总金额" name="realAmount" input-align="right">
+    <van-field v-show-field="['realAmount', includeFields]" label="含税实际总金额" name="realAmount" input-align="left">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.realAmount) }} </span>
@@ -90,7 +90,7 @@
         </div>
       </template>
     </van-field>
-    <van-field v-if="!isYwl && isProject" v-show-field="['notTaxRealAmount', includeFields]" label="不含税实际总金额" name="notTaxRealAmount" input-align="right">
+    <van-field v-if="!isYwl && isProject" v-show-field="['notTaxRealAmount', includeFields]" label="不含税实际总金额" name="notTaxRealAmount" input-align="left">
       <template #input>
         <div class="flex items-baseline">
           <span class="mr-3">{{ formatCurrency(form.notTaxRealAmount) }} </span>
@@ -99,24 +99,24 @@
       </template>
     </van-field>
 
-    <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算" name="isOwnerSettlement" input-align="right">
+    <van-field v-show-field="['isOwnerSettlement', includeFields]" label="是否业主单独结算" name="isOwnerSettlement" input-align="left">
       <template #input>
         <YesNoSwitch v-model="form.isOwnerSettlement" readonly />
       </template>
     </van-field>
-    <van-field v-show-field="['description', includeFields]" label="采购说明" name="description" input-align="right">
+    <van-field v-show-field="['description', includeFields]" label="采购说明" name="description" input-align="left">
       <template #input>
         <TextareaView :value="form.description" />
       </template>
     </van-field>
-    <van-field v-show-field="['remark', includeFields]" label="备注" name="remark" input-align="right">
+    <van-field v-show-field="['remark', includeFields]" label="备注" name="remark" input-align="left">
       <template #input>
         <TextareaView :value="form.remark" />
       </template>
     </van-field>
 
     <Teleport to="#AFC" defer>
-      <div v-show-field="['itemList', includeFields]">
+      <div v-show-field="['itemList', includeFields]" class="reset-label">
         <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
           采购清单
         </div>
@@ -133,7 +133,7 @@
               },
             ]"
             label="预算科目"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               <PurchaseCategorySelect
@@ -150,7 +150,7 @@
           <van-field
             :name="`itemList.${index}.budgetAmount`"
             label="预算金额"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(form.itemList[index].budgetAmount) }}
@@ -159,7 +159,7 @@
           <van-field
             :name="`itemList.${index}.applyingAmount`"
             label="申请中"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(form.itemList[index].applyingAmount) }}
@@ -168,7 +168,7 @@
           <van-field
             :name="`itemList.${index}.finishAmount`"
             label="已申请"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(form.itemList[index].finishAmount) }}
@@ -177,7 +177,7 @@
           <van-field
             :name="`itemList.${index}.availableAmount`"
             label="剩余金额"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(form.itemList[index].availableAmount) }}
@@ -187,30 +187,30 @@
             v-model="item.name"
             :name="`itemList.${index}.name`"
             label="物品名称"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             v-model="item.brand"
             :name="`itemList.${index}.brand`"
             label="品牌"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             v-model="item.specsModel"
             :name="`itemList.${index}.specsModel`"
             label="规格型号"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             v-model="item.unit"
             :name="`itemList.${index}.unit`"
             label="单位"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             :name="`itemList.${index}.num`"
             label="数量"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ item.num }}
@@ -220,7 +220,7 @@
             v-if="!isYwl && isProject"
             :name="`itemList.${index}.invoiceType`"
             label="发票类型"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               <dict-select v-model="item.invoiceType" :options="oa_purchase_invoice_type" readonly />
@@ -230,7 +230,7 @@
             v-if="!isYwl && isProject"
             :name="`itemList.${index}.taxRate`"
             label="税率(%)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               <dict-select v-model="item.taxRate" :options="oa_contract_tax_rate" readonly />
@@ -239,7 +239,7 @@
           <van-field
             :name="`itemList.${index}.taxAmount`"
             label="含税单价(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.taxAmount) }}
@@ -249,7 +249,7 @@
             v-if="!isYwl && isProject"
             :name="`itemList.${index}.amount`"
             label="不含税单价(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.amount) }}
@@ -259,7 +259,7 @@
             v-if="includeFields.includes('realAmount')"
             :name="`itemList.${index}.taxRealAmount`"
             label="含税实际单价(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.taxRealAmount) }}
@@ -269,7 +269,7 @@
             v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
             :name="`itemList.${index}.realAmount`"
             label="不含税实际单价(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.realAmount) }}
@@ -278,7 +278,7 @@
           <van-field
             :name="`itemList.${index}.taxTotalAmount`"
             label="含税合计(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.taxTotalAmount) }}
@@ -288,7 +288,7 @@
             v-if="!isYwl && isProject"
             :name="`itemList.${index}.totalAmount`"
             label="不含税合计(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.totalAmount) }}
@@ -298,7 +298,7 @@
             v-if="includeFields.includes('realAmount')"
             :name="`itemList.${index}.taxRealTotalAmount`"
             label="含税实际合计(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.taxRealTotalAmount) }}
@@ -308,7 +308,7 @@
             v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
             :name="`itemList.${index}.realTotalAmount`"
             label="不含税实际合计(元)"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               {{ formatCurrency(item.realTotalAmount) }}
@@ -318,19 +318,19 @@
             v-model="item.inquiryWay"
             :name="`itemList.${index}.inquiryWay`"
             label="询价途径"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             v-model="item.supplier"
             :name="`itemList.${index}.supplier`"
             label="指定供应商"
-            input-align="right"
+            input-align="left"
           />
           <van-field
             v-model="item.remark"
             :name="`itemList.${index}.remark`"
             label="备注"
-            input-align="right"
+            input-align="left"
           >
             <template #input>
               <TextareaView :value="item.remark" />
@@ -340,7 +340,7 @@
       </div>
     </Teleport>
 
-    <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="right">
+    <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="left">
       <template #input>
         <div class="flex flex-col">
           <UploadFile v-model="form.checkFiles" readonly :card-size="60" />

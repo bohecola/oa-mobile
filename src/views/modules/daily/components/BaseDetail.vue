@@ -3,7 +3,7 @@
     v-show-field="['reason', includeFields]"
     name="reason"
     label="申请事由"
-    input-align="right"
+    input-align="left"
     value-class="flex-nowrap"
     :right-icon="!isEmpty(form.wfRemark) ? 'info-o' : ''"
     @click-right-icon="handleIconClick"
@@ -17,7 +17,7 @@
 
   <Teleport to="#AFC" defer>
     <!-- 开票信息 -->
-    <InvoiceInfomation v-if="includeFields.includes('receiptInfo')" readonly class="!mb-6" />
+    <InvoiceInfomation v-if="includeFields.includes('receiptInfo')" readonly class="!mb-6 reset-label" />
     <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
       <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
     </TableCard>

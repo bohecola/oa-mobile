@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="right">
+  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType" input-align="left">
     <template #input>
       <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId" input-align="right">
+  <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId" input-align="left">
     <template #input>
       <DeptSelect v-model="form.deptId" readonly />
     </template>
@@ -15,7 +15,7 @@
     v-show-field="['psId', includeFields]"
     label="预算"
     name="psId"
-    input-align="right"
+    input-align="left"
   >
     <template #input>
       <ProjectSubjectSelect v-model="form.psId" readonly />
@@ -26,14 +26,14 @@
     v-if="isProject && !isNil(form.psId)" v-show-field="['contractNo', includeFields]"
     label="合同编号"
     name="contractNo"
-    input-align="right"
+    input-align="left"
   >
     <template #input>
       {{ form.contractNo }}
     </template>
   </van-field>
 
-  <van-field v-show-field="['amount', includeFields]" label="申请总金额" name="amount" input-align="right">
+  <van-field v-show-field="['amount', includeFields]" label="申请总金额" name="amount" input-align="left">
     <template #input>
       <div class="flex items-baseline">
         <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
@@ -43,7 +43,7 @@
   </van-field>
 
   <Teleport to="#AFC" defer>
-    <div v-show-field="['itemList', includeFields]">
+    <div v-show-field="['itemList', includeFields]" class="reset-label">
       <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
         费用明细
       </div>
@@ -61,7 +61,7 @@
               },
             ]"
             label="预算科目"
-            input-align="right"
+            input-align="left"
             class="!items-baseline"
             :border="false"
           >
@@ -82,7 +82,7 @@
         <van-field
           :name="`itemList.${index}.budgetAmount`"
           label="预算金额"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             {{ formatCurrency(form.itemList[index].budgetAmount) }}
@@ -92,7 +92,7 @@
         <van-field
           :name="`itemList.${index}.applyingAmount`"
           label="申请中"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             {{ formatCurrency(form.itemList[index].applyingAmount) }}
@@ -102,7 +102,7 @@
         <van-field
           :name="`itemList.${index}.finishAmount`"
           label="已申请"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             {{ formatCurrency(form.itemList[index].finishAmount) }}
@@ -112,7 +112,7 @@
         <van-field
           :name="`itemList.${index}.availableAmount`"
           label="剩余金额"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             {{ formatCurrency(form.itemList[index].availableAmount) }}
@@ -122,7 +122,7 @@
         <van-field
           :name="`itemList.${index}.amount`"
           label="申请金额（元）"
-          input-align="right"
+          input-align="left"
         >
           <template #input>
             {{ formatCurrency(form.itemList[index].amount) }}

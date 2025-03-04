@@ -1,27 +1,27 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="right">
+  <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="left">
     <template #input>
       <DictSelect v-model="form.certificateType" dict-type="oa_project_daily_fee_certificate_type" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['c_startDate', includeFields]" label="开始时间" name="c_startDate" input-align="right">
+  <van-field v-show-field="['c_startDate', includeFields]" label="开始时间" name="c_startDate" input-align="left">
     <template #input>
       {{ parseTime(form.c_startDate, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
-  <van-field v-show-field="['c_endDate', includeFields]" label="结束时间" name="c_endDate" input-align="right">
+  <van-field v-show-field="['c_endDate', includeFields]" label="结束时间" name="c_endDate" input-align="left">
     <template #input>
       {{ parseTime(form.c_endDate, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
-  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" input-align="right" />
+  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" input-align="left" />
 
-  <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="right" /> -->
+  <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="left" /> -->
 
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>

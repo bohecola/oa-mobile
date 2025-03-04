@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['x_deptId', includeFields]" name="x_deptId" label="部门/项目部" input-align="right">
+  <van-field v-show-field="['x_deptId', includeFields]" name="x_deptId" label="部门/项目部" input-align="left">
     <template #input>
       <DeptSelect v-model="form.x_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包员工" input-align="right">
+  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包员工" input-align="left">
     <template #input>
       <UserSelect v-model="form.x_userId" :multiple="true" readonly />
     </template>
@@ -19,19 +19,19 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['x_contractSigningTime', includeFields]" name="x_contractSigningTime" label="合同签订时间" input-align="right">
+  <van-field v-show-field="['x_contractSigningTime', includeFields]" name="x_contractSigningTime" label="合同签订时间" input-align="left">
     <template #input>
       {{ parseTime(form.x_contractSigningTime, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="right">
+  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="left">
     <template #input>
       {{ parseTime(form.x_contractEndTime, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="right">
+  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.x_isRetirementAge" readonly />
     </template>

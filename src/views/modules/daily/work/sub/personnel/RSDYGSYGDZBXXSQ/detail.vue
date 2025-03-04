@@ -6,13 +6,13 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <van-field v-show-field="['f_deptId', includeFields]" label="部门" name="f_deptId" input-align="right">
+  <van-field v-show-field="['f_deptId', includeFields]" label="部门" name="f_deptId" input-align="left">
     <template #input>
       <DeptSelect v-model="form.f_deptId" clearable readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['f_fileType', includeFields]" label="资料类别" name="f_fileType" input-align="right">
+  <van-field v-show-field="['f_fileType', includeFields]" label="资料类别" name="f_fileType" input-align="left">
     <template #input>
       <dict-select v-model="form.f_fileType" dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type" multiple readonly />
     </template>
