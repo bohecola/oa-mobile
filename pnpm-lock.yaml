@@ -69,8 +69,8 @@ importers:
         specifier: ^2.0.12
         version: 2.0.12
       vant:
-        specifier: ^4.9.2
-        version: 4.9.2(vue@3.5.13(typescript@5.5.4))
+        specifier: ^4.9.17
+        version: 4.9.17(vue@3.5.13(typescript@5.5.4))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.5.4)
@@ -3682,8 +3682,8 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-  vant@4.9.2:
-    resolution: {integrity: sha512-dBvpFioPpiLtsbW7z4v84lvl/zgaRn3Hwhwg4iBusU7aoQ9rbtbTH38/3FLuB8qqvVt8BOSAi7u/JYMO5wtr9g==}
+  vant@4.9.17:
+    resolution: {integrity: sha512-so/plH9G4au9rUrqy7yLB1slmZqY2Ub3Gq8ckMSQXbUEwTzmViVjEDqh/hNck/XELxwL+gIy2hLXiSgVcf2EBQ==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -7682,11 +7682,11 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vant@4.9.2(vue@3.5.13(typescript@5.5.4)):
+  vant@4.9.17(vue@3.5.13(typescript@5.5.4)):
     dependencies:
       '@vant/popperjs': 1.3.0
       '@vant/use': 1.6.0(vue@3.5.13(typescript@5.5.4))
-      '@vue/shared': 3.4.31
+      '@vue/shared': 3.5.13
       vue: 3.5.13(typescript@5.5.4)
 
   vite-plugin-compression@0.5.1(vite@5.3.3(@types/node@20.14.10)(sass@1.77.8)(terser@5.31.3)):
