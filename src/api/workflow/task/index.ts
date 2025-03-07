@@ -297,7 +297,7 @@ export function getListByDeleteMultiInstance(taskId: string) {
  * 查询流程定义
  * @returns {*}
  */
-export function getUseMap() {
+export function getUseMap(): AxiosPromise {
   return request({
     url: '/workflow/definitionConfig/getUseMap',
     method: 'get',
