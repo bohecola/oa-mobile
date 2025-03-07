@@ -311,6 +311,7 @@ const extraInitFormData: DailyWorkForm = {
   qq_deptId: undefined,
   qq_deptName: undefined,
   qq_personnelCategory: undefined,
+  qq_insuranceExpirationDate: undefined,
   qq_insuranceExpirationStartDate: undefined,
   qq_insuranceExpirationEndDate: undefined,
   qq_latestPurchaseDate: undefined,

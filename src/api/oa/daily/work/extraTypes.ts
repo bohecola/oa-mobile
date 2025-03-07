@@ -449,6 +449,7 @@ export interface RSXMBTSSYBXGMSQ {
   qq_deptId?: string
   qq_deptName?: string
   qq_personnelCategory?: string
+  qq_insuranceExpirationDate?: string
   qq_insuranceExpirationStartDate?: string
   qq_insuranceExpirationEndDate?: string
   qq_latestPurchaseDate?: string
