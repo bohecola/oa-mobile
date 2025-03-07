@@ -64,7 +64,8 @@ export interface AQLPXFY {}
 export interface FYXMBTSSYBXGMSQ {
   e_deptId?: string
   e_personnelCategory?: string
-  e_insuranceExpirationDate?: string
+  e_insuranceExpirationStartDate?: string
+  e_insuranceExpirationEndDate?: string
   e_latestPurchaseDate?: string
   e_purchaseInsuranceReason?: string
   e_purchaseInsuranceNumber?: number

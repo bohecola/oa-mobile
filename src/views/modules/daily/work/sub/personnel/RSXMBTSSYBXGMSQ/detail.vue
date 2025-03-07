@@ -11,9 +11,15 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_insuranceExpirationDate', includeFields]" label="建议保险开始截止日期" name="qq_insuranceExpirationDate" input-align="left">
+  <van-field v-show-field="['qq_insuranceExpirationStartDate', includeFields]" label="建议保险开始日期" name="qq_insuranceExpirationStartDate" input-align="left">
     <template #input>
-      {{ parseTime(form.qq_insuranceExpirationDate[0], '{y}-{m}-{d}') }} - {{ parseTime(form.qq_insuranceExpirationDate[1], '{y}-{m}-{d}') }}
+      {{ parseTime(form.qq_insuranceExpirationStartDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['qq_insuranceExpirationEndDate', includeFields]" label="建议保险截止日期" name="qq_insuranceExpirationEndDate" input-align="left">
+    <template #input>
+      {{ parseTime(form.qq_insuranceExpirationEndDate, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
@@ -123,7 +129,8 @@ withDefaults(
     includeFields: () => [
       'qq_deptId',
       'qq_personnelCategory',
-      'qq_insuranceExpirationDate',
+      'qq_insuranceExpirationStartDate',
+      'qq_insuranceExpirationEndDate',
       'qq_latestPurchaseDate',
       'qq_purchaseInsuranceReason',
       'qq_purchaseInsuranceNumber',

@@ -54,7 +54,8 @@ const extraInitFormData: DailyFeeForm = {
   // 项目部特殊商业保险购买申请
   e_deptId: undefined,
   e_personnelCategory: undefined,
-  e_insuranceExpirationDate: undefined,
+  e_insuranceExpirationStartDate: undefined,
+  e_insuranceExpirationEndDate: undefined,
   e_latestPurchaseDate: undefined,
   e_purchaseInsuranceReason: undefined,
   e_purchaseInsuranceNumber: undefined,
@@ -133,7 +134,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // 项目部特殊商业保险购买申请
   e_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
   // e_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
-  // e_insuranceExpirationDate: [{ required: true, message: `建议保险开始截止日期${baseMsg}`, trigger: 'onBlur' }],
+  // e_insuranceExpirationStartDate: [{ required: true, message: `建议保险开始日期${baseMsg}`, trigger: 'onBlur' }],
+  // e_insuranceExpirationEndDate: [{ required: true, message: `建议保险截止日期${baseMsg}`, trigger: 'onBlur' }],
   // e_latestPurchaseDate: [{ required: true, message: `保险最晚购买日期${baseMsg}`, trigger: 'onBlur' }],
   // e_purchaseInsuranceReason: [{ required: true, message: `购买保险原因${baseMsg}`, trigger: 'onBlur' }],
   // e_purchaseInsuranceNumber: [{ required: true, message: `购买保险人数${baseMsg}`, trigger: 'onBlur' }],

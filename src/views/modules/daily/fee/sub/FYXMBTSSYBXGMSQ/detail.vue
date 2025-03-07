@@ -12,9 +12,15 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['e_insuranceExpirationDate', includeFields]" label="建议保险开始截止日期" name="e_insuranceExpirationDate" input-align="left">
+  <van-field v-show-field="['e_insuranceExpirationStartDate', includeFields]" label="建议保险开始日期" name="e_insuranceExpirationStartDate" input-align="left">
     <template #input>
-      {{ parseTime(form.e_insuranceExpirationDate[0], '{y}-{m}-{d}') }} - {{ parseTime(form.e_insuranceExpirationDate[1], '{y}-{m}-{d}') }}
+      {{ parseTime(form.e_insuranceExpirationStartDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['e_insuranceExpirationEndDate', includeFields]" label="建议保险截止日期" name="e_insuranceExpirationEndDate" input-align="left">
+    <template #input>
+      {{ parseTime(form.e_insuranceExpirationEndDate, '{y}-{m}-{d}') }}
     </template>
   </van-field>
 
@@ -121,7 +127,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'e_deptId', 'e_personnelCategory', 'e_insuranceExpirationDate', 'e_latestPurchaseDate', 'e_purchaseInsuranceReason', 'e_purchaseInsuranceNumber', 'e_purchaseInsuranceCategory', 'e_insuranceLimit', 'e_isHighVoltageOperation', 'e_isClimbingHomework', 'e_distanceRange', 'e_insurancePeriod', 'e_purchaseInsuranceSpecialExplain', 'e_isNewHiredPurchaseInsurance', 'e_transferInDeptPurchaseInsurance', 'e_transferOutDeptNoPurchaseInsurance', 'e_isEarlyStagePurchaseInsurance', 'e_isBelong', 'e_notBelongDeptPurchaseInsuranceSpecialReason', 'e_isOldInsuranceTermination', 'e_isOldInsuranceTerminationReason', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'e_deptId', 'e_personnelCategory', 'e_insuranceExpirationStartDate', 'e_insuranceExpirationEndDate', 'e_latestPurchaseDate', 'e_purchaseInsuranceReason', 'e_purchaseInsuranceNumber', 'e_purchaseInsuranceCategory', 'e_insuranceLimit', 'e_isHighVoltageOperation', 'e_isClimbingHomework', 'e_distanceRange', 'e_insurancePeriod', 'e_purchaseInsuranceSpecialExplain', 'e_isNewHiredPurchaseInsurance', 'e_transferInDeptPurchaseInsurance', 'e_transferOutDeptNoPurchaseInsurance', 'e_isEarlyStagePurchaseInsurance', 'e_isBelong', 'e_notBelongDeptPurchaseInsuranceSpecialReason', 'e_isOldInsuranceTermination', 'e_isOldInsuranceTerminationReason', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 const form = inject<Ref<DailyFeeForm>>('form')
