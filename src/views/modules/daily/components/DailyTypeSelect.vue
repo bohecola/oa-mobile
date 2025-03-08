@@ -4,7 +4,8 @@
       <van-skeleton-paragraph class="!h-[60%]" />
     </template>
     <template #default>
-      <span>{{ presentText }}</span>
+      <span v-if="!isNil(modelValue)">{{ presentText }}</span>
+      <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
       <!-- 弹窗 -->
       <van-popup
         v-model:show="show"
@@ -31,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import type { CascaderOption } from 'vant'
 import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
 import { queryByParentDaily } from '@/api/oa/daily/category'
@@ -61,6 +62,7 @@ const emit = defineEmits([
   'update:no',
   'update:rootNo',
   'update:wfRemark',
+  'update:presentText',
   'update:isDefaultPage',
   'before-finish',
   'finish',
@@ -96,6 +98,8 @@ function onFinish({ value }: Params) {
 
   emit('update:modelValue', value)
   emit('finish', value)
+
+  emit('update:presentText', presentText.value)
 
   updateVars(value)
 }

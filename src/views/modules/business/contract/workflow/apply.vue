@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-// import upsert from '../upsert.vue'
+import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import type { ContractForm } from '@/api/oa/business/contract/types'
@@ -44,7 +44,19 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 加载
 const loading = ref(false)
 // 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
+const taskDefinitionKey = ref(proxy.$route.query.nodeId as string)
+// 流程表单
+const submitFormData = ref<StartProcessBo<Entity>>({
+  businessKey: '',
+  tableName: '',
+  variables: {},
+  processInstanceName: '',
+})
+
+// 是否查看
+const isView = ref(proxy.$route.query.type === 'view')
+
+provide('taskDefinitionKey', taskDefinitionKey)
 
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
@@ -80,7 +92,7 @@ const allFields: PartialBooleanRecord<ContractForm> = {
   customizeApprover: true,
   originalFile: true,
   noAmountFile: true,
-  status: true,
+  // status: true,
   isUseSeal: true,
   fileUseType: true,
   sealUseType: true,
@@ -101,7 +113,7 @@ const applyFields = filterTruthyKeys<ContractForm>({
   noAmountFile: false,
 })
 
-// 归档查看
+// 归档字段
 const archiveDetailFields = filterTruthyKeys<ContractForm>({
   ...allFields,
   startDate: false,
@@ -114,7 +126,6 @@ const archiveDetailFields = filterTruthyKeys<ContractForm>({
   ossIdList: false,
   purchaseIds: false,
 })
-// 归档编辑
 const archiveUpsertFields = filterTruthyKeys<ContractForm>({
   startDate: true,
   endDate: true,
@@ -124,17 +135,6 @@ const archiveUpsertFields = filterTruthyKeys<ContractForm>({
   originalFile: true,
   noAmountFile: true,
 })
-
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-  processInstanceName: '',
-})
-
-// 是否查看
-const isView = computed(() => proxy.$route.query.type === 'view')
 
 // // 开始流程
 // async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
@@ -210,22 +210,17 @@ async function handleApproval({ open }: ApprovalPayload) {
 
 // 挂载
 onMounted(async () => {
-  const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
-  const { type, taskId, processInstanceId } = proxy.$route.query
+  const { type, taskId, processInstanceId, nodeId } = proxy.$route.query
+  taskDefinitionKey.value = nodeId as string
+  isView.value = type === 'view'
 
   if (taskId || processInstanceId) {
     loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
+
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
-
-    proxy?.$router.replace({
-      query: {
-        ...proxy?.$route.query,
-        taskDefinitionKey: taskDefinitionKey.value,
-      },
-    })
 
     nextTick(() => {
       try {

@@ -2,18 +2,6 @@
   <div>
     <NavBar />
 
-    <!-- <div v-if="submitVisible || approvalVisible" class="p-2 flex gap-2 bg-[var(--van-background-3)] border border-l-0 border-r-0 dark:border-zinc-600">
-      <van-button v-if="saveVisible" :loading="tempSaveLoading" type="default" size="small" :disabled="actionBtnDisabled" @click="handleTempSave">
-        暂存
-      </van-button>
-      <van-button v-if="submitVisible" :loading="submitLoading" type="primary" size="small" :disabled="actionBtnDisabled" @click="handleSubmit">
-        提 交
-      </van-button>
-      <van-button v-if="approvalVisible" type="primary" size="small" class="px-6" :disabled="actionBtnDisabled" @click="handleApproval">
-        审批
-      </van-button>
-    </div> -->
-
     <van-floating-bubble v-if="approvalVisible" axis="xy">
       <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
         <span class="!text-xs text-nowrap w-[4ch] inline-block">
@@ -25,7 +13,7 @@
     <van-tabs v-model:active="active" lazy-render @change="onTabChange">
       <div
         id="TabsContainer"
-        class="flex flex-col gap-2 overflow-y-auto h-[calc(100vh-var(--van-nav-bar-height)-var(--van-tabs-line-height)-env(safe-area-inset-top))]"
+        :class="`overflow-y-auto ${saveOrSubmitVisible ? 'bottom-panel' : ''}`"
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
           <div id="AFC" class="relative">
@@ -60,28 +48,51 @@
               </van-cell-group>
             </van-form>
 
+            <!-- 审批表单 -->
             <van-cell-group v-if="group" inset class="!my-3">
               <slot />
             </van-cell-group>
             <slot v-else />
 
-            <img
-              v-if="isView && businessStatus !== 'draft'"
-              :src="imgObj[businessStatus]"
-              alt="流程状态"
-              class="absolute top-[16px] right-[30px] w-14 h-14 opacity-70"
-            >
+            <!-- 审批状态 -->
+            <StatusIcon v-if="isView && businessStatus !== 'draft'" :business-status="businessStatus" />
           </div>
 
+          <!-- 审批附件 -->
           <div v-if="!isNil(entityVariables?.id)" class="!mt-2">
             <ApprovalFileTable :business-key="entityVariables?.id" />
           </div>
+
+          <!-- 底线 -->
           <bottom-line />
         </van-tab>
 
-        <van-tab title="审批记录" name="record">
+        <!-- 审批记录 -->
+        <van-tab v-if="processVisible" title="审批记录" name="record">
           <ApprovalSteps ref="ApprovalStepsRef" />
         </van-tab>
+      </div>
+
+      <div v-if="saveOrSubmitVisible" class="p-2 pb-safe-offset-2 grid grid-cols-[1fr,4fr] gap-2 bg-[--bg-card]">
+        <van-button
+          v-if="saveVisible"
+          :loading="tempSaveLoading"
+          type="default"
+          :disabled="actionBtnDisabled"
+          @click="handleTempSave"
+        >
+          暂存
+        </van-button>
+
+        <van-button
+          v-if="submitVisible"
+          :loading="submitLoading"
+          type="primary"
+          :disabled="actionBtnDisabled"
+          @click="handleSubmit"
+        >
+          提交
+        </van-button>
       </div>
     </van-tabs>
 
@@ -91,19 +102,24 @@
 </template>
 
 <script setup lang='ts'>
+import dayjs from 'dayjs'
 import { isNil } from 'lodash-es'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from './types'
 import ApprovalSteps from './steps.vue'
+import StatusIcon from './status-icon.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
 import { useStore } from '@/store'
 
-import pending from '@/assets/images/wf/pending.png'
-import passed from '@/assets/images/wf/passed.png'
-import revoked from '@/assets/images/wf/revoked.png'
-import deleted from '@/assets/images/wf/deleted.png'
-import returned from '@/assets/images/wf/returned.png'
-import terminated from '@/assets/images/wf/terminated.png'
-import invalid from '@/assets/images/wf/invalid.png'
+interface EntityVariables {
+  initiator: Initiator
+  [key: string]: any
+}
+
+interface Emits {
+  (event: 'temp-save', payload: TempSavePayload): void
+  (event: 'submit', payload: SubmitPayload): void
+  (event: 'approval', payload: ApprovalPayload): void
+}
 
 const props = withDefaults(
   defineProps<{
@@ -119,36 +135,16 @@ const props = withDefaults(
 
 const emit = defineEmits<Emits>()
 
-const imgObj = {
-  cancel: revoked,
-  waiting: pending,
-  finish: passed,
-  invalid,
-  back: returned,
-  termination: terminated,
-  delete: deleted,
-}
-
-interface EntityVariables {
-  initiator: Initiator
-  [key: string]: any
-}
-
-interface Emits {
-  (event: 'temp-save', payload: TempSavePayload): void
-  (event: 'submit', payload: SubmitPayload): void
-  (event: 'approval', payload: ApprovalPayload): void
-}
-
+const { user } = useStore()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 // 提交组件
 const submitVerifyRef = ref<InstanceType<typeof SubmitVerify>>()
+// 审批记录组件
 const ApprovalStepsRef = ref<InstanceType<typeof ApprovalSteps> | null>()
 
+// 活跃标签栏
 const active = ref<'form' | 'record'>('form')
-
-const { user } = useStore()
-
 // 暂存加载
 const tempSaveLoading = ref(false)
 // 提交加载
@@ -173,6 +169,8 @@ const submitVisible = computed(() => {
   )
 })
 
+const saveOrSubmitVisible = computed(() => saveVisible.value || submitVisible.value)
+
 // 审批可见
 const approvalVisible = computed(() => {
   const { type, wfStatus, isEditNode } = proxy.$route.query
@@ -181,7 +179,7 @@ const approvalVisible = computed(() => {
 
 // 流程可见
 const processVisible = computed(() => {
-  const { wfStatus } = proxy?.$route.query ?? {}
+  const { wfStatus } = proxy?.$route.query
   return wfStatus && wfStatus !== 'draft'
 })
 
@@ -198,12 +196,12 @@ function createInitiator(): Initiator {
   }
 
   const initialValue = {
-    userId: user.info?.userId as (string | number),
-    deptId: user.info?.deptId as (string | number),
-    nickName: user.info?.nickName as string,
-    deptName: user.info?.deptName as string,
-    maxPostLevel: user.info?.maxPostLevel as number,
-    createTime: new Date().toLocaleString(),
+    userId: user.info?.userId,
+    deptId: user.info?.deptId,
+    nickName: user.info?.nickName,
+    deptName: user.info?.deptName,
+    maxPostLevel: user.info?.maxPostLevel,
+    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   }
 
   return initialValue
@@ -216,14 +214,14 @@ function handleTempSave() {
   const done = () => (tempSaveLoading.value = false)
   const next = () => {
     proxy?.$modal.msgSuccess('暂存成功')
-    // proxy.$tab.closePage(proxy.$route)
     proxy.$router.go(-1)
   }
-  const payload = {
+  const payload: TempSavePayload = {
     load,
     done,
     next,
     initiator,
+    operation: 'tempSave',
   }
   emit('temp-save', payload)
 }
@@ -233,11 +231,12 @@ function handleSubmit() {
   const initiator = createInitiator()
   const load = () => (submitLoading.value = true)
   const done = () => (submitLoading.value = false)
-  const payload = {
+  const payload: SubmitPayload = {
     load,
     done,
-    open: submitVerifyRef.value!.openDialog,
+    open: submitVerifyRef.value.openDialog,
     initiator,
+    operation: 'submit',
   }
   emit('submit', payload)
 }
@@ -259,6 +258,7 @@ async function submitCallback() {
   }
 }
 
+// 标签切换
 function onTabChange(val: any) {
   const TabsContainer = document.querySelector('#TabsContainer')
   switch (val) {
@@ -286,3 +286,16 @@ function onTabChange(val: any) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  $topHeight: calc(var(--van-nav-bar-height) + var(--van-tabs-line-height) + env(safe-area-inset-top));
+  $bottomHeight: calc(var(--van-button-default-height) + env(safe-area-inset-bottom) + theme('spacing.2') * 2);
+
+  #TabsContainer {
+    height: calc(100vh - #{$topHeight});
+
+    &.bottom-panel {
+      height: calc(100vh - #{$topHeight} - #{$bottomHeight});
+    }
+  }
+</style>

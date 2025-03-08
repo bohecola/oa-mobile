@@ -77,7 +77,7 @@
       value-class="!flex-[2]"
     >
       <template #value>
-        <UploadFile v-model="ids" is-multiple :limit="8" :card-size="60" :is-show-tip="true" />
+        <UploadFile v-model="ids" is-multiple :limit="8"  :is-show-tip="true" />
       </template>
     </van-cell> -->
   </div>

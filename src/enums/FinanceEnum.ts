@@ -1,0 +1,4 @@
+export enum FinanceEnum {
+  MAX_AMOUNT_STRING = '9999999999',
+  MAX_AMOUNT_NUMBER = 9999999999,
+}

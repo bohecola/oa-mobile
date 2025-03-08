@@ -1,3 +1,4 @@
+import type { FieldRule } from 'vant'
 import type { ComponentInternalInstance as ComponentInstance } from 'vue'
 import type { RouteRecordRaw, Router as VueRouter } from 'vue-router'
 
@@ -22,6 +23,10 @@ declare global {
   type TrackFieldsFn<T> = (fields: KeysOfArray<T>) => void
 
   type UpdateRuleRequiredFn = (field: string, required: boolean) => void
+
+  type FormRules<T> = {
+    [k in keyof T]?: FieldRule[]
+  }
 
   interface Router extends VueRouter {
     find: (path: string) => RouteRecordRaw | undefined

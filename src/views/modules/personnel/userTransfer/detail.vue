@@ -99,7 +99,7 @@
     </van-cell-group>
 
     <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
-      <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
+      <UploadFile v-model="form.ossIdList" readonly  />
     </TableCard>
   </van-form>
 </template>

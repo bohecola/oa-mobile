@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-[--bg-card] border" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
-    <div class="p-2" :class="{ 'border-b': !isCollapse }" @click="handleCollapse">
+  <div class="bg-[--bg-card] border w-full" :class="[{ 'shadow-sm': shadow }, { rounded: round }]">
+    <div class="px-2 py-1" :class="{ 'border-b': !isCollapse }" @click="handleCollapse">
       <div class="flex justify-between items-baseline">
         <slot v-if="slots.header" name="header" />
         <span v-else :class="titleClass">{{ title }}</span>
@@ -17,7 +17,7 @@
       <van-empty v-else image-size="60" description="数据为空" class="!py-2" />
     </div>
 
-    <div v-if="slots.footer" class="border-t p-2">
+    <div v-if="slots.footer" class="px-2 py-1 border-t">
       <slot name="footer" />
     </div>
   </div>

@@ -3,12 +3,13 @@ import type { FieldRule } from 'vant'
 export {}
 
 declare global {
-  interface BaseEntity {
-    createDept?: any
+  declare interface BaseEntity {
     createBy?: any
-    updateBy?: any
+    createDept?: any
     createTime?: string
-    updateTime?: string
+    updateBy?: any
+    updateTime?: any
+    operation?: 'tempSave' | 'submit'
   }
 
   /**
@@ -27,7 +28,9 @@ declare global {
   declare interface PageData<T, D> {
     form: T
     queryParams: D
-    rules: Record<string, FieldRule[]>
+    rules: {
+      [k in keyof T]?: FieldRule[]
+    }
   }
 
   /**

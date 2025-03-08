@@ -12,6 +12,7 @@ export interface TempSavePayload {
   load: () => void
   next: () => void
   initiator: Initiator
+  operation: BaseEntity['operation']
 }
 
 export interface SubmitPayload {
@@ -19,6 +20,7 @@ export interface SubmitPayload {
   load: () => void
   open: (taskId: string) => void
   initiator: Initiator
+  operation: BaseEntity['operation']
 }
 
 export interface ApprovalPayload {

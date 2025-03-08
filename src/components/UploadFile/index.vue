@@ -118,7 +118,7 @@ const props = withDefaults(
     fileType: () => fileTypeEnum,
     readonly: false,
     isMultiple: false,
-    cardSize: 80,
+    cardSize: 60,
     valueType: 'string',
   },
 )

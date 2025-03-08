@@ -137,7 +137,7 @@
           <DictSelect v-model="item.type" dict-type="oa_train_oss_type" readonly />
         </template>
         <template #default>
-          <UploadFile v-model="item.files" readonly :card-size="60" />
+          <UploadFile v-model="item.files" readonly  />
         </template>
       </van-cell>
     </van-cell-group>

@@ -343,7 +343,7 @@
     <van-field v-show-field="['checkFiles', includeFields]" label="验收附件" name="checkFiles" input-align="left">
       <template #input>
         <div class="flex flex-col">
-          <UploadFile v-model="form.checkFiles" readonly :card-size="60" />
+          <UploadFile v-model="form.checkFiles" readonly  />
           <div class="text-red-400">
             验收附件上传说明：1.通过采购部采购的需要上传收货确认单及全部物资照片 2.自行采购需要上传网络订单截图(线上)/店内销售清单(线下)及全部物资照片
             [注：照片必需带时间、地点(水印相机拍照)]
@@ -355,7 +355,7 @@
     <!-- 附件列表 -->
     <Teleport to="#AFC" defer>
       <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
-        <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
+        <UploadFile v-model="form.ossIdList" readonly  />
       </TableCard>
     </Teleport>
   </van-form>

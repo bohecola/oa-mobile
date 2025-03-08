@@ -67,7 +67,7 @@
     </div>
 
     <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
-      <UploadFile v-model="form.ossIdList" readonly :card-size="60" />
+      <UploadFile v-model="form.ossIdList" readonly  />
     </TableCard>
   </van-form>
 </template>

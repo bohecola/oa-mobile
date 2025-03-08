@@ -5,12 +5,13 @@
       :class="dailyTypeSelectReadOnly ? 'reset-label' : ''"
       label-width="auto"
       label-align="top"
+      input-align="left"
     >
       <van-cell-group inset class="!my-3">
         <van-field
           name="dailyWorkType"
           label="日常事务类型"
-          input-align="left"
+          :is-link="!dailyTypeSelectReadOnly"
           @click="handleDailyTypeClick"
         >
           <template #input>
@@ -19,18 +20,15 @@
               v-model="form.dailyWorkType"
               v-model:no="form.no"
               v-model:wf-remark="form.wfRemark"
+              v-model:present-text="presentText"
               v-model:is-default-page="isDefaultPage"
               @before-finish="onDailyTypeBeforeFinish"
               @update:no="onNoChange"
             />
           </template>
         </van-field>
-        <van-field
-          v-if="form.dailyWorkType"
-          prop="companyId"
-          label="公司"
-          input-align="left"
-        >
+
+        <van-field v-if="form.dailyWorkType" name="companyId" label="公司">
           <template #input>
             <ComanySelect v-model="form.companyId" readonly />
           </template>
@@ -60,50 +58,60 @@ import { getDept } from '@/api/system/dept'
 
 type Entity = DailyWorkForm & { initiator: Initiator }
 
+// interface StartWorkFlowOptions {
+//   operation?: BaseEntity['operation']
+//   entity: Entity
+//   next?: (result: any) => void
+// }
+
+// 状态
 const { user } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// 引用
-const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect> | null>()
 // 表单
 const { Form, form, rules, isLoading, reset, workflowView } = useForm()
+// 引用
+const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect>>()
 
 // 流程表单
 const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
+  businessKey: undefined,
+  tableName: undefined,
   variables: {},
-  processInstanceName: '',
+  processInstanceName: undefined,
 })
+
 // 流程节点 Key
 const taskDefinitionKey = ref(proxy.$route.query.nodeId as string)
-// 是否是默认页面
-const isDefaultPage = ref(undefined)
-
 // 是否查看
-const isView = computed(() => proxy.$route.query.type === 'view')
-// 日常事务类型选择器只读
-const dailyTypeSelectReadOnly = computed(() => !['add', 'update'].includes(proxy.$route.query.type as string))
+const isView = ref(proxy.$route.query.type === 'view')
 
+// 日常事务类型选择器只读
+const dailyTypeSelectReadOnly = ref(!['add', 'update'].includes(proxy.$route.query.type as string))
+// 选中文字
+const presentText = ref<string>(undefined)
+// 是否是默认页面
+const isDefaultPage = ref<string>(undefined)
 // 跟踪字段
 const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
-// // 动态规则
-// const computedRules = computed(() => {
-//   const newRules = {};
-//   for (const [key, value] of Object.entries(rules.value)) {
-//     if (trackedFields.value.includes(key as any)) {
-//       newRules[key] = value;
-//     }
-//   }
 
-//   return newRules;
-// });
+// 动态规则
+const computedRules = computed(() => {
+  const newRules = {}
+  for (const [key, value] of Object.entries(rules.value)) {
+    if (trackedFields.value.includes(key as any)) {
+      newRules[key] = value
+    }
+  }
 
+  return newRules
+})
+
+provide('Form', Form)
 provide('form', form)
-
+provide('computedRules', computedRules)
 provide('isView', isView)
 provide('taskDefinitionKey', taskDefinitionKey)
-
 provide('trackFields', trackFields)
 provide('updateRuleRequired', updateRuleRequired)
 
@@ -111,21 +119,22 @@ function getBaseFields() {
   return dailyTypeSelectReadOnly.value ? [] : (['dailyWorkType', 'companyId'] as KeysOfArray<DailyWorkForm>)
 }
 
-// 类型选择点击
+// 日常事务类型选择器打开
 async function handleDailyTypeClick() {
   if (dailyTypeSelectReadOnly.value) {
     return false
   }
   DailyTypeSelectRef.value?.open()
-  // 根据当前登录用户的部门deptid获取公司id
-  const { data } = await getDept(user.info.deptId)
-  form.value.companyId = data.parentId
 }
 
-// 类型选择完成
-function onDailyTypeBeforeFinish() {
+// 日常事务类型选择
+async function onDailyTypeBeforeFinish() {
   reset()
   trackedFields.value = getBaseFields()
+
+  // 获取当前登录用户的公司 id
+  const { data } = await getDept(user.info.deptId)
+  form.value.companyId = data.parentId
 }
 
 // 事务编码变更
@@ -156,7 +165,7 @@ function trackFields(fields: KeysOfArray<DailyWorkForm>) {
 
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
-  const { taskId } = proxy?.$route.query ?? {}
+  const { taskId } = proxy.$route.query
 
   // const res = await workflowSubmit()
 
@@ -207,12 +216,16 @@ watch([isEditNode, taskDefinitionKey], () => {
 
 // 挂载
 onMounted(async () => {
-  const { type, taskId, processInstanceId } = proxy?.$route.query ?? {}
+  const { type, taskId, processInstanceId, nodeId } = proxy.$route.query
+  dailyTypeSelectReadOnly.value = !['add', 'update'].includes(type as string)
+  taskDefinitionKey.value = nodeId as string
+  isView.value = type === 'view'
 
   if (taskId || processInstanceId) {
     isLoading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = res.data
+
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
 
