@@ -71,7 +71,7 @@
         </template>
       </van-field>
 
-      <van-field v-model="item.demand" :name="`itemList.${index}.demand`" label="任职条件" input-align="left">
+      <van-field v-model="item.demand" :name="`itemList.${index}.demand`" label="岗位职责" input-align="left">
         <template #input>
           <TextareaView :value="item.demand" />
         </template>
