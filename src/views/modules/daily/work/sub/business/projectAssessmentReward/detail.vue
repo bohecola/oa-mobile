@@ -5,11 +5,15 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['a_businessType', includeFields]" label="项目类别" name="a_businessType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.a_businessType" dict-type="oa_project_business_type" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.a_businessType"
+    v-show-field="['a_businessType', includeFields]"
+    label="项目类别"
+    name="a_businessType"
+    input-align="left"
+    dict-type="oa_project_business_type"
+    :readonly="true"
+  />
 
   <van-field v-show-field="['a_deptId', includeFields]" label="部门" name="a_deptId" input-align="left">
     <template #input>

@@ -1,9 +1,14 @@
 <template>
-  <van-field v-show-field="['m_welfareCategory', includeFields]" label="福利类别" name="m_welfareCategory" input-align="left">
-    <template #input>
-      <dict-select v-model="form.m_welfareCategory" dict-type="oa_daily_work_rsgsghygflsq_welfare_category" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.m_welfareCategory"
+    v-show-field="['m_welfareCategory', includeFields]"
+    label="福利类别"
+    name="m_welfareCategory"
+    input-align="left"
+    dict-type="oa_daily_work_rsgsghygflsq_welfare_category"
+    :multiple="false"
+    :readonly="true"
+  />
 
   <van-field v-show-field="['m_amount', includeFields]" label="合计金额（元）" name="m_amount" input-align="left">
     <template #input>

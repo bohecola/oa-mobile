@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 项目日常费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
-      <!-- <upsert :include-fields="includeFieldsNo" /> -->
+      <upsert :include-fields="includeFieldsNo" />
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import upsert from '../upsert.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

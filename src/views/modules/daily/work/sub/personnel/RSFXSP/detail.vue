@@ -5,11 +5,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['dd_month', includeFields]" label="发薪月" name="dd_month" input-align="left">
-    <template #input>
-      {{ parseTime(form.dd_month, '{y}-{m}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.dd_month" v-show-field="['dd_month', includeFields]" name="dd_month" label="发薪月" :columns-type="['year', 'month']" readonly />
 
   <van-field v-show-field="['dd_totalAmount', includeFields]" label="总金额（元）" name="dd_totalAmount" input-align="left">
     <template #input>

@@ -31,11 +31,7 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['b_contractEndTime', includeFields]" label="合同到期时间" name="b_contractEndTime" input-align="left">
-    <template #input>
-      {{ parseTime(form.b_contractEndTime, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.b_contractEndTime" v-show-field="['b_contractEndTime', includeFields]" name="b_contractEndTime" label="合同到期时间" readonly />
 
   <van-field v-show-field="['b_contractType', includeFields]" label="合同类型" name="b_contractType" input-align="left">
     <template #input>

@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 招聘需求变更申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <!-- <upsert :include-fields="applyFields" /> -->
+      <upsert :include-fields="applyFields" />
     </div>
 
     <!-- 专员确认节点 -->
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-// import upsert from '../upsert.vue';
+import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import { filterTruthyKeys } from '@/utils'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

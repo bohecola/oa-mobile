@@ -19,16 +19,9 @@
 
   <van-field v-model="form.ee_distributionCycle" v-show-field="['ee_distributionCycle', includeFields]" label="发放周期" name="ee_distributionCycle" input-align="left" />
 
-  <van-field v-if="form.ee_distributionCycle === '连续发放'" v-show-field="['ee_startDate', includeFields]" label="执行开始日期" name="ee_startingDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.ee_startDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
-  <van-field v-if="form.ee_distributionCycle === '连续发放'" v-show-field="['ee_endDate', includeFields]" label="执行结束日期" name="ee_startingDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.ee_endDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-if="form.ee_distributionCycle === '连续发放'" v-model="form.ee_startDate" v-show-field="['ee_startDate', includeFields]" name="ee_startDate" label="执行开始日期" readonly />
+
+  <DatePicker v-if="form.ee_distributionCycle === '连续发放'" v-model="form.ee_endDate" v-show-field="['ee_endDate', includeFields]" name="ee_endDate" label="执行结束日期" readonly />
 
   <van-field v-model="form.ee_distributionMethod" v-show-field="['ee_distributionMethod', includeFields]" label="发放方式" name="ee_distributionMethod" input-align="left" />
 

@@ -1,6 +1,6 @@
 <template>
   <dict-tag v-if="readonly" :options="sys_yes_no" :value="switchValue" />
-  <van-switch v-else v-model="switchValue" active-value="Y" inactive-value="N" @change="onChange" />
+  <van-switch v-else v-model="switchValue" active-value="Y" inactive-value="N" :size="size" @change="onChange" />
 </template>
 
 <script setup lang="ts">
@@ -11,10 +11,12 @@ const props = withDefaults(
   defineProps<{
     modelValue?: string
     readonly?: boolean
+    size?: string | number
   }>(),
   {
     modelValue: undefined,
     readonly: false,
+    size: '18px',
   },
 )
 

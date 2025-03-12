@@ -9,7 +9,7 @@
     <!-- 自定义审核人审核 -->
     <div v-else-if="taskDefinitionKey === 'Activity_1p4ss2n'">
       <detail :include-fields="['customizeApprover']" />
-      <detail :include-fields="['customizeTransactor']" />
+      <upsert :include-fields="['customizeTransactor']" />
       <detail :include-fields="baseFields" />
     </div>
 
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-// import upsert from '../upsert.vue'
+import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 

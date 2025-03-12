@@ -6,11 +6,7 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <van-field v-show-field="['c_useDate', includeFields]" label="用印日期" name="c_useDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.c_useDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.c_useDate" v-show-field="['c_useDate', includeFields]" name="c_useDate" label="用印日期" readonly />
 
   <van-field v-show-field="['c_sealType', includeFields]" label="用印类型" name="c_sealType" input-align="left">
     <template #input>

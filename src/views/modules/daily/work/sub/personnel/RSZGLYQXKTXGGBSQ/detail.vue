@@ -11,11 +11,7 @@
 
   <van-field v-model="form.h_openingStatus" v-show-field="['h_openingStatus', includeFields]" label="开通情况" name="h_openingStatus" input-align="left" />
 
-  <van-field v-show-field="['h_effectiveDate', includeFields]" label="生效日期" name="h_effectiveDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.h_effectiveDate, '{y}-{m}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.h_effectiveDate" v-show-field="['h_effectiveDate', includeFields]" name="h_effectiveDate" label="生效日期" :columns-type="['year', 'month']" readonly />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

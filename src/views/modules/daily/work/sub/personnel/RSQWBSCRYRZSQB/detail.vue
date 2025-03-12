@@ -36,11 +36,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['ff_interviewDate', includeFields]" name="ff_interviewDate" label="面试日期" input-align="left">
-    <template #input>
-      {{ parseTime(form.ff_interviewDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.ff_interviewDate" v-show-field="['ff_interviewDate', includeFields]" name="ff_interviewDate" label="面试日期" readonly />
 
   <van-field v-model="form.ff_employmentMethod" v-show-field="['ff_employmentMethod', includeFields]" label="入职方式" name="ff_employmentMethod" input-align="left" />
 
@@ -48,11 +44,7 @@
 
   <van-field v-model="form.ff_employmentNature" v-show-field="['ff_employmentNature', includeFields]" label="入职性质" name="ff_employmentNature" input-align="left" />
 
-  <van-field v-model="form.ff_hopeDate" v-show-field="['ff_hopeDate', includeFields]" name="ff_hopeDate" label="预计到岗日期" input-align="left">
-    <template #input>
-      {{ parseTime(form.ff_hopeDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.ff_hopeDate" v-show-field="['ff_hopeDate', includeFields]" name="ff_hopeDate" label="预计到岗日期" readonly />
 
   <van-field v-model="form.ff_wages" v-show-field="['ff_wages', includeFields]" name="ff_wages" label="月工资总额（元/月）" input-align="left">
     <template #input>

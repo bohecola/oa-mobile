@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 营业执照借用申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <detail />
+      <upsert />
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import upsert from '../upsert.vue'
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')

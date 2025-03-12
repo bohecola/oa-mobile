@@ -48,29 +48,13 @@
 
   <van-field v-model="form.yy_no" v-show-field="['yy_no', includeFields]" label="编号" name="yy_no" input-align="left" />
 
-  <van-field v-show-field="['yy_issuanceDate', includeFields]" label="发证时间" name="yy_issuanceDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.yy_issuanceDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.yy_issuanceDate" v-show-field="['yy_issuanceDate', includeFields]" name="yy_issuanceDate" label="发证时间" readonly />
 
-  <van-field v-show-field="['yy_recheckDate', includeFields]" label="复审时间" name="yy_recheckDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.yy_recheckDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.yy_recheckDate" v-show-field="['yy_recheckDate', includeFields]" name="yy_recheckDate" label="复审时间" readonly />
 
-  <van-field v-show-field="['yy_startDate', includeFields]" label="开始日期" name="yy_startDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.yy_startDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.yy_startDate" v-show-field="['yy_startDate', includeFields]" name="yy_startDate" label="开始日期" readonly />
 
-  <van-field v-show-field="['yy_endDate', includeFields]" label="结束日期" name="yy_endDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.yy_endDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.yy_endDate" v-show-field="['yy_endDate', includeFields]" name="yy_endDate" label="结束日期" readonly />
 
   <van-field v-model="form.yy_unit" v-show-field="['yy_unit', includeFields]" label="发证单位" name="yy_unit" input-align="left" />
 

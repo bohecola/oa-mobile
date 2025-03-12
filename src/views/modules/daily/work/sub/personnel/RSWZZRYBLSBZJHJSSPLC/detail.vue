@@ -26,11 +26,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['cc_effectiveMonth', includeFields]" name="cc_effectiveMonth" label="生效月份" input-align="left">
-    <template #input>
-      {{ parseTime(form.cc_effectiveMonth, '{y}-{m}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.cc_effectiveMonth" v-show-field="['cc_effectiveMonth', includeFields]" name="cc_effectiveMonth" label="生效月份" :columns-type="['year', 'month']" readonly />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

@@ -1,9 +1,15 @@
 <template>
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型" name="fileType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.fileType" dict-type="oa_file_type" multiple readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.fileType"
+    v-show-field="['fileType', includeFields]"
+    label="资料类型"
+    name="fileType"
+    input-align="left"
+    dict-type="oa_file_type"
+    :multiple="true"
+    :readonly="true"
+  />
+
   <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" name="isSeal" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.isSeal" readonly />

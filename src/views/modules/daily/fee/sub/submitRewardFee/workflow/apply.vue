@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 投稿奖励费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
-      <!-- <upsert /> -->
+      <upsert />
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import upsert from '../upsert.vue'
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')

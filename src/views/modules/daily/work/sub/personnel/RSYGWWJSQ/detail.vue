@@ -7,11 +7,7 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['n_mounth', includeFields]" name="n_mounth" label="申请月份" input-align="left">
-    <template #input>
-      {{ parseTime(form.n_mounth, '{y}-{m}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.n_mounth" v-show-field="['n_mounth', includeFields]" name="n_mounth" label="申请月份" :columns-type="['year', 'month']" readonly />
 
   <van-field v-show-field="['n_giftGoldCategory', includeFields]" name="n_giftGoldCategory" label="礼（慰问）金类别" input-align="left">
     <template #input>

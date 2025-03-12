@@ -11,11 +11,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['bb_effectiveDate', includeFields]" name="bb_effectiveDate" label="调薪生效日期" input-align="left">
-    <template #input>
-      {{ parseTime(form.bb_effectiveDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.bb_effectiveDate" v-show-field="['bb_effectiveDate', includeFields]" name="bb_effectiveDate" label="调薪生效日期" readonly />
 
   <van-field v-show-field="['bb_changeSalaryAfter', includeFields]" name="bb_changeSalaryAfter" label="调薪后基本工资" input-align="left">
     <template #input>

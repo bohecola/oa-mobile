@@ -18,20 +18,11 @@
       </el-form-item>
     </el-col>
   </el-row> -->
+  <DatePicker v-model="form.x_contractSigningTime" v-show-field="['x_contractSigningTime', includeFields]" name="x_contractSigningTime" label="合同签订时间" readonly />
 
-  <van-field v-show-field="['x_contractSigningTime', includeFields]" name="x_contractSigningTime" label="合同签订时间" input-align="left">
-    <template #input>
-      {{ parseTime(form.x_contractSigningTime, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.x_contractEndTime" v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" readonly />
 
-  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="left">
-    <template #input>
-      {{ parseTime(form.x_contractEndTime, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
-
-  <van-field v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" input-align="left">
+  <van-field v-show-field="['x_isRetirementAge', includeFields]" name="x_isRetirementAge" label="是否退休年龄" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.x_isRetirementAge" readonly />
     </template>

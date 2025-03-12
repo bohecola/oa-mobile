@@ -1,9 +1,18 @@
 <template>
-  <van-field v-show-field="['fileType', includeFields]" label="资料类型" name="fileType" input-align="left">
+  <!-- <van-field v-show-field="['fileType', includeFields]" label="资料类型" name="fileType" input-align="left">
     <template #input>
       <DictSelect v-model="form.fileType" dict-type="oa_file_type" multiple readonly />
     </template>
-  </van-field>
+  </van-field> -->
+  <DictPicker
+    v-model="form.fileType"
+    label="资料类型"
+    name="fileType"
+    input-align="left"
+    :dict-data-list="oa_file_type"
+    :multiple="true"
+    :readonly="true"
+  />
   <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" name="isSeal" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.isSeal" readonly />
@@ -29,6 +38,9 @@ withDefaults(
     includeFields: () => ['fileType', 'isSeal', 'ii_applicationMaterials', 'reason', 'ossIdList'],
   },
 )
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const { oa_file_type } = toRefs<any>(proxy?.useDict('oa_file_type'))
 
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令

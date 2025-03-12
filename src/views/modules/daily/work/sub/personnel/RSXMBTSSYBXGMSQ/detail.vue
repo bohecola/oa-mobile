@@ -17,23 +17,11 @@
     </template>
   </van-field>
 
-  <van-field v-if="form.qq_insuranceExpirationStartDate" v-show-field="['qq_insuranceExpirationStartDate', includeFields]" label="建议保险开始日期" name="qq_insuranceExpirationStartDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.qq_insuranceExpirationStartDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-if="form.qq_insuranceExpirationStartDate" v-model="form.qq_insuranceExpirationStartDate" v-show-field="['qq_insuranceExpirationStartDate', includeFields]" name="qq_insuranceExpirationStartDate" label="建议保险开始日期" readonly />
 
-  <van-field v-if="form.qq_insuranceExpirationEndDate" v-show-field="['qq_insuranceExpirationEndDate', includeFields]" label="建议保险截止日期" name="qq_insuranceExpirationEndDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.qq_insuranceExpirationEndDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-if="form.qq_insuranceExpirationEndDate" v-model="form.qq_insuranceExpirationEndDate" v-show-field="['qq_insuranceExpirationEndDate', includeFields]" name="qq_insuranceExpirationEndDate" label="建议保险截止日期" readonly />
 
-  <van-field v-show-field="['qq_latestPurchaseDate', includeFields]" label="保险最晚购买日期" name="qq_latestPurchaseDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.qq_latestPurchaseDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.qq_latestPurchaseDate" v-show-field="['qq_latestPurchaseDate', includeFields]" name="qq_latestPurchaseDate" label="保险最晚购买日期" readonly />
 
   <van-field v-model="form.qq_purchaseInsuranceNumber" v-show-field="['qq_purchaseInsuranceNumber', includeFields]" label="购买保险人数" name="qq_purchaseInsuranceNumber" input-align="left" />
 

@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 工会用印审批 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <!-- <upsert /> -->
+      <upsert />
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-// import upsert from '../upsert.vue';
+import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 
 const isView = inject<boolean>('isView')

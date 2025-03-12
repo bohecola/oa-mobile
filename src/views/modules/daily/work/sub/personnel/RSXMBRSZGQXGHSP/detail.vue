@@ -18,11 +18,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['r_effectiveDate', includeFields]" name="r_effectiveDate" label="生效日期" input-align="left">
-    <template #input>
-      {{ parseTime(form.r_effectiveDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.r_effectiveDate" v-show-field="['r_effectiveDate', includeFields]" name="r_effectiveDate" label="生效日期" readonly />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

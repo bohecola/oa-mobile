@@ -12,11 +12,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['i_month', includeFields]" name="i_month" label="所发工资月份" input-align="left">
-    <template #input>
-      {{ parseTime(form.i_month, '{y}-{m}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.i_month" v-show-field="['i_month', includeFields]" name="i_month" label="所发工资月份" :columns-type="['year', 'month']" readonly />
 
   <van-field v-show-field="['i_amount', includeFields]" name="i_amount" label="所发工资总金额" input-align="left">
     <template #input>

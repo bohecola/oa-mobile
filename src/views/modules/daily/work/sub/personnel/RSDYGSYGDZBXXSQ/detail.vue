@@ -12,11 +12,16 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['f_fileType', includeFields]" label="资料类别" name="f_fileType" input-align="left">
-    <template #input>
-      <dict-select v-model="form.f_fileType" dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type" multiple readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.f_fileType"
+    v-show-field="['f_fileType', includeFields]"
+    label="资料类别"
+    name="f_fileType"
+    input-align="left"
+    dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type"
+    :multiple="true"
+    :readonly="true"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

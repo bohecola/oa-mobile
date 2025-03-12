@@ -47,11 +47,7 @@
     </van-field>
   </div>
 
-  <van-field v-show-field="['k_effectiveDate', includeFields]" label="生效日期" name="k_effectiveDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.k_effectiveDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker v-model="form.k_effectiveDate" v-show-field="['k_effectiveDate', includeFields]" name="k_effectiveDate" label="生效日期" readonly />
 
   <van-field v-model="form.k_monthlyWorkingMode" v-show-field="['k_monthlyWorkingMode', includeFields]" label="月度上班及休假模式" name="k_monthlyWorkingMode" input-align="left" />
 
@@ -107,17 +103,9 @@
         <TextareaView :value="form.k_otherDistribution" />
       </template>
     </van-field>
-    <van-field v-show-field="['k_startDate', includeFields]" label="聘用开始日期" name="k_startDate" input-align="left">
-      <template #input>
-        {{ parseTime(form.k_startDate, '{y}-{m}') }}
-      </template>
-    </van-field>
+    <DatePicker v-model="form.k_startDate" v-show-field="['k_startDate', includeFields]" name="k_startDate" label="聘用开始日期" readonly />
 
-    <van-field v-show-field="['k_endDate', includeFields]" label="聘用结束日期" name="k_endDate" input-align="left">
-      <template #input>
-        {{ parseTime(form.k_endDate, '{y}-{m}') }}
-      </template>
-    </van-field>
+    <DatePicker v-model="form.k_endDate" v-show-field="['k_endDate', includeFields]" name="k_endDate" label="聘用结束日期" readonly />
 
     <van-field v-model="form.k_signeContractType" v-show-field="['k_signeContractType', includeFields]" label="聘用人员签订合同类型" name="k_signeContractType" input-align="left">
       <template #input>
@@ -126,16 +114,10 @@
     </van-field>
 
     <div v-if="['0', '1'].includes(form.k_signeContractType)">
-      <van-field v-show-field="['k_signeContractStartDate', includeFields]" label="合同签订开始时间" name="k_signeContractStartDate" input-align="left">
-        <template #input>
-          {{ parseTime(form.k_signeContractStartDate, '{y}-{m}') }}
-        </template>
-      </van-field>
-      <van-field v-show-field="['k_signeContractEndDate', includeFields]" label="合同签订结束时间" name="k_signeContractEndDate" input-align="left">
-        <template #input>
-          {{ parseTime(form.k_signeContractEndDate, '{y}-{m}') }}
-        </template>
-      </van-field>
+      <DatePicker v-model="form.k_signeContractStartDate" v-show-field="['k_signeContractStartDate', includeFields]" name="k_signeContractStartDate" label="合同签订开始时间" readonly />
+
+      <DatePicker v-model="form.k_signeContractEndDate" v-show-field="['k_signeContractEndDate', includeFields]" name="k_signeContractEndDate" label="合同签订结束时间" readonly />
+
       <van-field v-show-field="['k_signeContractSpecialInstructions', includeFields]" label="合同签订特殊说明" name="k_signeContractSpecialInstructions" input-align="left">
         <template #input>
           <TextareaView :value="form.k_signeContractSpecialInstructions" />
@@ -150,16 +132,10 @@
     </van-field>
 
     <div v-if="['0', '1', '2'].includes(form.k_purchaseInsuranceType)">
-      <van-field v-show-field="['k_insuranceStartDate', includeFields]" label="保险开始时间" name="k_insuranceStartDate" input-align="left">
-        <template #input>
-          {{ parseTime(form.k_insuranceStartDate, '{y}-{m}') }}
-        </template>
-      </van-field>
-      <van-field v-show-field="['k_insuranceEndDate', includeFields]" label="保险结束时间" name="k_insuranceEndDate" input-align="left">
-        <template #input>
-          {{ parseTime(form.k_insuranceEndDate, '{y}-{m}') }}
-        </template>
-      </van-field>
+      <DatePicker v-model="form.k_insuranceStartDate" v-show-field="['k_insuranceStartDate', includeFields]" name="k_insuranceStartDate" label="保险开始时间" readonly />
+
+      <DatePicker v-model="form.k_insuranceEndDate" v-show-field="['k_insuranceEndDate', includeFields]" name="k_insuranceEndDate" label="保险结束时间" readonly />
+
       <van-field v-show-field="['k_insuranceSpecialInstructions', includeFields]" label="保险购买特殊情况说明" name="k_insuranceSpecialInstructions" input-align="left">
         <template #input>
           <TextareaView :value="form.k_insuranceSpecialInstructions" />

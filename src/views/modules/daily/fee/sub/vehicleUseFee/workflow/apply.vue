@@ -4,7 +4,7 @@
     <!-- 车辆使用相关费用 -->
     <div v-if="taskDefinitionKey === 'Activity_0wh1ixm'">
       <!-- 编辑页面申请事由不显示 -->
-      <!-- <upsert :include-fields="includeFieldsNo" /> -->
+      <upsert :include-fields="includeFieldsNo" />
     </div>
 
     <!-- 其他审批通用节点 -->
@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import detail from '../detail.vue'
+import upsert from '../upsert.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

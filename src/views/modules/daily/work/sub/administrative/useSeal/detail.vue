@@ -1,21 +1,37 @@
 <template>
-  <van-field v-show-field="['fileUseType', includeFields]" label="使用方式" name="fileUseType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.fileUseType" dict-type="oa_file_use_type" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.fileUseType"
+    v-show-field="['fileUseType', includeFields]"
+    label="使用方式"
+    name="fileUseType"
+    input-align="left"
+    dict-type="oa_file_use_type"
+    placeholder="请选择"
+    :multiple="false"
+    :readonly="true"
+  />
 
-  <van-field v-show-field="['sealFileCategory', includeFields]" label="文件类别" name="sealFileCategory" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.sealFileCategory" dict-type="oa_seal_file_category" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.sealFileCategory"
+    v-show-field="['sealFileCategory', includeFields]"
+    label="文件类别"
+    name="sealFileCategory"
+    input-align="left"
+    dict-type="oa_seal_file_category"
+    :multiple="false"
+    :readonly="true"
+  />
 
-  <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.sealUseType" dict-type="oa_seal_use_type" multiple readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.sealUseType"
+    v-show-field="['sealUseType', includeFields]"
+    label="用印类型"
+    name="sealUseType"
+    input-align="left"
+    dict-type="oa_seal_use_type"
+    :multiple="true"
+    :readonly="true"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>
