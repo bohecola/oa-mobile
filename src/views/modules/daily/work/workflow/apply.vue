@@ -1,17 +1,28 @@
 <template>
-  <WorkflowPage :loading="isLoading" :entity-variables="submitFormData.variables?.entity" :group="false" @approval="handleApproval">
+  <WorkflowPage
+    :loading="isLoading"
+    :entity-variables="submitFormData.variables?.entity"
+    :group="false"
+    @temp-save="handleTempSave"
+    @submit="handleSubmit"
+    @approval="handleApproval"
+  >
     <van-form
       ref="Form"
       :class="dailyTypeSelectReadOnly ? 'reset-label' : ''"
-      label-width="auto"
-      label-align="top"
+      :readonly="dailyTypeSelectReadOnly"
       input-align="left"
+      label-align="top"
+      label-width="auto"
+      required="auto"
+      scroll-to-error
     >
       <van-cell-group inset class="!my-3">
         <van-field
           name="dailyWorkType"
           label="日常事务类型"
           :is-link="!dailyTypeSelectReadOnly"
+          :rules="computedRules.dailyWorkType"
           @click="handleDailyTypeClick"
         >
           <template #input>
@@ -30,6 +41,7 @@
 
         <van-field v-if="form.dailyWorkType" name="companyId" label="公司">
           <template #input>
+            <!-- TODO 公司选择 -->
             <ComanySelect v-model="form.companyId" readonly />
           </template>
         </van-field>
@@ -49,27 +61,28 @@ import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
 import ComanySelect from '../../../personnel/components/ComanySelect.vue'
-import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
+import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { useWorkflowViewData } from '@/hooks'
 import { useStore } from '@/store'
 import { getDept } from '@/api/system/dept'
+import { startWorkFlow } from '@/api/workflow/task'
 
 type Entity = DailyWorkForm & { initiator: Initiator }
 
-// interface StartWorkFlowOptions {
-//   operation?: BaseEntity['operation']
-//   entity: Entity
-//   next?: (result: any) => void
-// }
+interface StartWorkFlowOptions {
+  operation?: BaseEntity['operation']
+  entity: Entity
+  next?: (result: any) => void
+}
 
 // 状态
 const { user } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
-const { Form, form, rules, isLoading, reset, workflowView } = useForm()
+const { Form, form, rules, isLoading, reset, submit, workflowView, workflowSubmit } = useForm()
 // 引用
 const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect>>()
 
@@ -97,7 +110,7 @@ const trackedFields = ref<KeysOfArray<DailyWorkForm>>(getBaseFields())
 
 // 动态规则
 const computedRules = computed(() => {
-  const newRules = {}
+  const newRules: FormRules<DailyWorkForm> = {}
   for (const [key, value] of Object.entries(rules.value)) {
     if (trackedFields.value.includes(key as any)) {
       newRules[key] = value
@@ -122,7 +135,7 @@ function getBaseFields() {
 // 日常事务类型选择器打开
 async function handleDailyTypeClick() {
   if (dailyTypeSelectReadOnly.value) {
-    return false
+    return
   }
   DailyTypeSelectRef.value?.open()
 }
@@ -163,56 +176,75 @@ function trackFields(fields: KeysOfArray<DailyWorkForm>) {
   }, trackedFields.value)
 }
 
+// 开始流程
+async function handleStartWorkflow(options: StartWorkFlowOptions) {
+  const { operation, entity, next } = options
+  const { initiator: { nickName } } = entity
+
+  const processInstanceName = `${presentText.value?.split(' / ')[1]}-${nickName}`
+
+  // 业务提交
+  await submit({
+    operation,
+    success: async ({ id }) => {
+      submitFormData.value = {
+        tableName: 'oa_daily_work',
+        businessKey: id,
+        variables: {
+          entity: {
+            ...entity,
+            id,
+          },
+        },
+        processInstanceName,
+      }
+      // 启动流程
+      await startWorkFlow(submitFormData.value).then(next)
+    },
+  })
+}
+
+// 暂存
+async function handleTempSave({ load, done, next, initiator, operation }: TempSavePayload) {
+  await workflowSubmit({
+    success: async (data) => {
+      load()
+      const options: StartWorkFlowOptions = {
+        operation,
+        entity: { ...data, initiator },
+        next,
+      }
+      await handleStartWorkflow(options).finally(done)
+    },
+  })
+}
+
+// 提交
+async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
+  await workflowSubmit({
+    success: async (data) => {
+      load()
+      const options: StartWorkFlowOptions = {
+        entity: { ...data, initiator },
+        next: (res: any) => open(res.data?.taskId),
+      }
+      await handleStartWorkflow(options).finally(done)
+    },
+  })
+}
+
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy.$route.query
 
-  // const res = await workflowSubmit()
-
-  // if (res) {
-  //   const { valid, data } = res
-  //   if (valid) {
-  //     Object.assign(submitFormData.value.variables.entity, data)
-  //     open(taskId as string)
-  //   }
-  //   return true
-  // }
-
-  // 打开审批弹窗
-  open(taskId as string)
-}
-
-const isEditNode = computed(() => {
-  const key = taskDefinitionKey.value as string
-  if (key === 'Activity_1p4ss2n' && user.info.userId === form.value.customizeApprover) {
-    return 'true'
-  }
-  else if (['Activity_171tryh'].includes(key) && form.value.no === 'RSXMBPYQWBRYSQ') {
-    return 'true'
-  }
-  else if (['Activity_171tryh'].includes(key) && form.value.no === 'RSZPXQBGSQ') {
-    return 'true'
-  }
-  else if (['Activity_0y4z19l'].includes(key) && form.value.no === 'RSYGKQZSBTSQ') {
-    return 'true'
-  }
-  else {
-    return 'false'
-  }
-})
-
-// 自定义审核人展示在PC端编辑提示
-watch([isEditNode, taskDefinitionKey], () => {
-  proxy?.$router.replace({
-    query: {
-      ...proxy?.$route.query,
-      taskDefinitionKey: taskDefinitionKey.value,
-      isEditNode: isEditNode.value,
+  await workflowSubmit({
+    success: (data) => {
+      Object.assign(submitFormData.value.variables.entity, data)
     },
   })
-}, {
-  immediate: true,
-})
+
+  open(taskId as string)
+}
 
 // 挂载
 onMounted(async () => {

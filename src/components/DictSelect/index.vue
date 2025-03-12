@@ -30,7 +30,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const dictRefs = toRefs(proxy.useDict(props.dictType))
+const dictRefs = toRefs(!isNil(props.dictType) ? proxy.useDict(props.dictType) : {})
 
 const options = computed(() => {
   if (!isNil(props.options)) {

@@ -26,6 +26,24 @@
       :rules="computedRules.no"
     />
 
+    <van-field label="合同模式">
+      <template #input>
+        <van-radio-group v-model="contractMode" direction="horizontal" @change="onRadioGroupChange">
+          <van-radio
+            v-for="item in [
+              { value: 'two', label: '双方' },
+              { value: 'three', label: '三方' },
+              { value: 'four', label: '多方' },
+            ]"
+            :key="item.value"
+            :name="item.value"
+          >
+            {{ item.label }}
+          </van-radio>
+        </van-radio-group>
+      </template>
+    </van-field>
+
     <van-field
       v-model="form.partyA"
       v-show-field="['partyA', includeFields]"
@@ -250,11 +268,7 @@
       </van-field>
     </template>
 
-    <van-field
-      v-show-field="['taxRate', includeFields]"
-      name="taxRate"
-      :rules="computedRules.taxRate"
-    >
+    <van-field v-show-field="['taxRate', includeFields]">
       <template #label>
         <div class="flex justify-between w-full">
           <span>金额/增值税率</span>
@@ -347,10 +361,12 @@
 
     <van-field
       v-if="isPurchaseContract"
+      v-show-field="['purchaseIds', includeFields]"
       name="purchaseIds"
       label="关联采购申请"
       placeholder="请选择"
       :rules="computedRules.purchaseIds"
+      is-link
     >
       <template #input>
         <PurchaseProcessSelect
@@ -402,8 +418,8 @@
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
 import Big from 'big.js'
+import { isNil } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect/index.vue'
@@ -426,10 +442,17 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const { oa_contract_category_in } = toRefs(proxy.useDict('oa_contract_category_in'))
-const { oa_contract_category_out } = toRefs(proxy.useDict('oa_contract_category_out'))
-const { oa_contract_category_agreement } = toRefs(proxy.useDict('oa_contract_category_agreement'))
+const {
+  oa_contract_category_in,
+  oa_contract_category_out,
+  oa_contract_category_agreement,
+} = toRefs(
+  proxy.useDict(
+    'oa_contract_category_in',
+    'oa_contract_category_out',
+    'oa_contract_category_agreement',
+  ),
+)
 
 const { Form, form, rules, isLoading, updateLoading, contractMode, reset, view, submit, workflowSubmit, workflowView } = useForm()
 
@@ -474,16 +497,19 @@ const exclude = computed(() => {
   })
 })
 
+// TODO 重置表单值
 // 合同类型选择
 function onContractTypeSelectChange(value?: string) {
   Form.value.resetValidation(['category', 'reviewWay', 'purchaseIds', 'customizeApprover'])
 }
 
+// TODO 重置表单值
 // 合同类别选择
 function onContractCategorySelectChange() {
   Form.value.resetValidation(['reviewWay', 'purchaseIds', 'customizeApprover'])
 }
 
+// TODO 重置表单值
 // 合同评审方式选择
 function onReviewWayChange() {
   Form.value.resetValidation(['customizeApprover'])
@@ -507,7 +533,7 @@ function handleAdd() {
   form.value.taxRate.push({ amount: undefined, taxRate: undefined })
 }
 
-// 金额/税率新增
+// 金额/税率删除
 function handleRemove(_: any, index: number) {
   proxy.$modal.confirm('是否删除这条数据？')
     .then(() => {

@@ -3,6 +3,8 @@
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
     @approval="handleApproval"
+    @temp-save="handleTempSave"
+    @submit="handleSubmit"
   >
     <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
     <template v-else>
@@ -14,7 +16,7 @@
       <!-- 归档节点 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0bj6sxt'">
         <detail ref="ArchiveDetail1" :include-fields="archiveDetailFields" :show-loading="false" />
-        <detail ref="ArchiveUpsert" :include-fields="archiveUpsertFields" :show-loading="false" />
+        <upsert ref="ArchiveUpsert" :include-fields="archiveUpsertFields" :show-loading="false" />
         <detail ref="ArchiveDetail2" :include-fields="['purchaseIds', 'ossIdList']" :show-loading="false" />
       </div>
 
@@ -60,10 +62,10 @@ provide('taskDefinitionKey', taskDefinitionKey)
 
 // 引用
 const Detail = ref<InstanceType<typeof detail> | null>()
-const Upsert = ref<InstanceType<typeof detail> | null>()
+const Upsert = ref<InstanceType<typeof upsert> | null>()
 
 const ArchiveDetail1 = ref<InstanceType<typeof detail> | null>()
-const ArchiveUpsert = ref<InstanceType<typeof detail> | null>()
+const ArchiveUpsert = ref<InstanceType<typeof upsert> | null>()
 const ArchiveDetail2 = ref<InstanceType<typeof detail> | null>()
 
 const CommonDetail = ref<InstanceType<typeof detail> | null>()
@@ -136,76 +138,78 @@ const archiveUpsertFields = filterTruthyKeys<ContractForm>({
   noAmountFile: true,
 })
 
-// // 开始流程
-// async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
-//   // 业务提交
-//   await Upsert.value?.submit({
-//     success: async ({ id }) => {
-//       submitFormData.value = {
-//         tableName: 'oa_contract',
-//         businessKey: id,
-//         variables: {
-//           entity: {
-//             ...entity,
-//             id,
-//           },
-//         },
-//         processInstanceName: `${proxy.$route.query.procdefName}-${entity.no}-${entity.initiator.nickName}`,
-//       }
-//       // 启动流程
-//       await startWorkFlow(submitFormData.value).then(next)
-//     },
-//   })
-// }
+// 开始流程
+async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
+  const { procdefName } = proxy.$route.query
+  const { no, initiator: { nickName } } = entity
 
-// // 暂存
-// async function handleTempSave({ load, done, initiator, next }: TempSavePayload) {
-//   const { valid, data } = await Upsert.value?.workflowSubmit()
+  const processInstanceName = `${procdefName}-${no}-${nickName}`
 
-//   if (valid) {
-//     load()
-//     const entity = { ...data, initiator }
+  // 业务提交
+  await Upsert.value?.submit({
+    success: async ({ id }) => {
+      submitFormData.value = {
+        tableName: 'oa_contract',
+        businessKey: id,
+        variables: {
+          entity: {
+            ...entity,
+            id,
+          },
+        },
+        processInstanceName,
+      }
+      // 启动流程
+      await startWorkFlow(submitFormData.value).then(next)
+    },
+  })
+}
 
-//     await handleStartWorkflow(entity, next).finally(done)
-//   }
-// }
+// 暂存
+async function handleTempSave({ load, done, initiator, next }: TempSavePayload) {
+  await Upsert.value?.workflowSubmit({
+    success: async (data) => {
+      load()
+      const entity = { ...data, initiator }
+      await handleStartWorkflow(entity, next).finally(done)
+    },
+  })
+}
 
-// // 提交
-// async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
-//   const { valid, data } = await Upsert.value?.workflowSubmit()
-
-//   if (valid) {
-//     load()
-//     const entity = { ...data, initiator }
-
-//     const next = (res: any) => open(res.data?.taskId)
-
-//     await handleStartWorkflow(entity, next).finally(done)
-//   }
-// }
+// 提交
+async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
+  await Upsert.value?.workflowSubmit({
+    success: async (data) => {
+      load()
+      const entity = { ...data, initiator }
+      const next = (res: any) => open(res.data?.taskId)
+      await handleStartWorkflow(entity, next).finally(done)
+    },
+  })
+}
 
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy.$route.query
-  // let res: any
-  // if (taskDefinitionKey.value === 'Activity_08sjg5i') {
-  //   // 发起流程 第一步节点
-  //   res = await Upsert.value?.workflowSubmit()
-  // }
-  // else if (taskDefinitionKey.value === 'Activity_0bj6sxt') {
-  //   // 归档 节点
-  //   res = await ArchiveUpsert.value?.workflowSubmit()
-  // }
-  // if (res) {
-  //   const { valid, data } = res
-  //   if (valid) {
-  //     Object.assign(submitFormData.value.variables.entity, data)
-  //     open(taskId as string)
-  //   }
-  //   return true
-  // }
-  // 打开审批弹窗
-  open(taskId as string)
+
+  const success = (data: ContractForm) => {
+    Object.assign(submitFormData.value.variables.entity, data)
+    open(taskId as string)
+  }
+
+  switch (taskDefinitionKey.value) {
+    // 申请节点
+    case 'Activity_08sjg5i':
+      await Upsert.value?.workflowSubmit({ success })
+      break
+    // 归档节点
+    case 'Activity_0bj6sxt':
+      await ArchiveUpsert.value?.workflowSubmit({ success })
+      break
+    // 打开审批弹窗
+    default:
+      open(taskId as string)
+  }
 }
 
 // 挂载

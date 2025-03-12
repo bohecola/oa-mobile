@@ -211,6 +211,9 @@ export interface DailyFeeForm extends BaseEntity, ExtraForm {
    */
   receiptInfo?: ReceiptInfo | string
 
+  /**
+   * 申请业务内容
+   */
   contentJson?: string
 
   /**

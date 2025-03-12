@@ -198,10 +198,17 @@ withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const { oa_contract_category_in } = toRefs(proxy.useDict('oa_contract_category_in'))
-const { oa_contract_category_out } = toRefs(proxy.useDict('oa_contract_category_out'))
-const { oa_contract_category_agreement } = toRefs(proxy.useDict('oa_contract_category_agreement'))
+const {
+  oa_contract_category_in,
+  oa_contract_category_out,
+  oa_contract_category_agreement,
+} = toRefs(
+  proxy.useDict(
+    'oa_contract_category_in',
+    'oa_contract_category_out',
+    'oa_contract_category_agreement',
+  ),
+)
 
 const { Form, form, contractMode, isLoading, reset, view, workflowView } = useForm()
 

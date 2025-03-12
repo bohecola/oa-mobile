@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { isEmpty, isNil } from 'lodash-es'
 import type { CascaderOption } from 'vant'
+import { useCustomFieldValue } from '@vant/use'
 import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
 import { queryByParentDaily } from '@/api/oa/daily/category'
 import { findPathNodes } from '@/utils'
@@ -73,8 +74,11 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const show = ref(false)
 const isLoading = ref(false)
 
-const id = ref<number | string>(props.modelValue)
+const id = ref<string | number>(props.modelValue)
+
 const data = ref<DailyWorkTypeVO[]>([])
+
+useCustomFieldValue(() => id.value)
 
 const options = computed(() => proxy?.handleTree<DailyWorkTypeTreeVO>(data.value))
 

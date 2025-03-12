@@ -90,7 +90,6 @@ function onChange(value: (string | number) | (string | number)[]) {
 }
 
 function serialize(value: DeptTreeCascaderValue) {
-  // isEmpty(value) 如果value是数字返回的是true,数字的可迭代长度为0
   if (!isEmpty(value) || isNumber(value)) {
     if (props.multiple) {
       return (value as (string | number)[]).join(',')
@@ -107,7 +106,6 @@ function serialize(value: DeptTreeCascaderValue) {
 function deserialize(value: string | number) {
   if (value) {
     if (props.multiple) {
-      // 兼容 id 为 100、101 这种 number 类型的情况
       return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
     }
     else {

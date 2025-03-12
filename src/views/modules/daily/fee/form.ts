@@ -1,17 +1,23 @@
-import { cloneDeep, isNil } from 'lodash-es'
 import type { FieldRule, FormInstance } from 'vant'
+import { cloneDeep, isNil } from 'lodash-es'
 import { extraInitFormData, extraInitRules } from './extraForm'
 import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
-import { getDailyFee } from '@/api/oa/daily/fee/index'
+import { addDailyFee, getDailyFee, updateDailyFee } from '@/api/oa/daily/fee/index'
 import { useStore } from '@/store'
 
 export interface Options<T = any> {
+  operation?: BaseEntity['operation']
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
 
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+
+interface SuccessData {
+  id: DailyFeeForm['id']
+  itemList: DailyFeeForm['itemList']
+}
 
 // 费用明细项
 export const dailyFeeItem: DailyFeeItemVO = {
@@ -67,15 +73,15 @@ export function useForm() {
   }
 
   const initRules: Record<string, FieldRule[]> = {
-    subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
-    deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
     feeType: [{ required: true, message: '费用类别不能为空', trigger: 'onChange' }],
+    deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
+    subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
     psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],
     contractId: [{ required: true, message: '合同编号不能为空', trigger: 'onChange' }],
     subjectItemId: [{ required: true, message: '预算科目不能为空', trigger: 'onChange' }],
     isAdministration: [{ required: true, message: '行政协助不能为空', trigger: 'onChange' }],
     certificateType: [{ required: true, message: '证件类型不能为空', trigger: 'onChange' }],
-    amount: [{ validator: checkAmount, trigger: 'onChange' }],
+    amount: [{ required: true, message: '申请总金额不能为空', trigger: 'onBlur' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
     receiptInfo: {
       entityName: [{ required: false, message: '单位或个人名称不能为空', trigger: 'onBlur' }],
@@ -111,16 +117,6 @@ export function useForm() {
     rules.value = cloneDeep(initRules)
   }
 
-  // 金额校验
-  function checkAmount(value: any) {
-    if (isNil(value)) {
-      return '请输入金额'
-    }
-    else if (value > form.value.availableAmount) {
-      return '输入金额不能大于剩余金额'
-    }
-  }
-
   // 回显
   async function view(id: string | number) {
     isLoading.value = true
@@ -134,37 +130,74 @@ export function useForm() {
     })
   }
 
-  // interface SuccessData {
-  //   id: DailyFeeForm['id']
-  //   itemList: DailyFeeForm['itemList']
-  // }
+  // 提交
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { operation = 'submit', success, fail } = options
+    form.value.operation = operation
+
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+        form.value.receiptInfo = JSON.stringify(form.value.receiptInfo)
+
+        // 以 A-Za-a_ 开头的所有字段自动构建为 contentJson
+        const regex = /^[A-Z]{1,2}_/i
+        const content = Object.fromEntries(Object.entries(form.value).filter(([key, val]) => regex.test(key) && !isNil(val)))
+        form.value.contentJson = JSON.stringify(content)
+
+        if (form.value.id) {
+          const { data } = await updateDailyFee(form.value)
+          form.value.itemList = data.itemList
+        }
+        else {
+          const { data } = await addDailyFee(form.value)
+          form.value.id = data.id
+          form.value.itemList = data.itemList
+        }
+
+        success?.({
+          id: form.value.id,
+          itemList: form.value.itemList,
+        })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<DailyFeeForm> = {}) {
+    const { success, fail } = options
+
+    await Form.value?.validate()
+      .then(() => success?.(form.value))
+      .catch(fail)
+  }
 
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
-      // 兼容旧费用流程（非明细表）
-      if (!isNil(entity?.subjectItemId) && !entity?.subjectItemId.includes(',')) {
-        nextTick(() => {
+      nextTick(() => {
+        // 兼容旧费用流程（非明细表）
+        if (!isNil(entity?.subjectItemId) && !entity?.subjectItemId.includes(',')) {
           const item: DailyFeeItemVO = {
             subjectItemId: entity.subjectItemId,
             availableAmount: entity.availableAmount,
             amount: entity.amount,
           }
-          Object.assign(form.value, entity)
           form.value.itemList = [item]
-        })
-      }
-      else {
-        nextTick(() => Object.assign(form.value, entity))
-      }
+        }
+
+        Object.assign(form.value, entity)
+
+        success?.(entity)
+      })
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -174,7 +207,9 @@ export function useForm() {
     isLoading,
     updateLoading,
     reset,
+    submit,
     view,
+    workflowSubmit,
     workflowView,
   }
 }

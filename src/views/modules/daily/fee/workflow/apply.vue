@@ -3,21 +3,26 @@
     :loading="isLoading"
     :entity-variables="submitFormData.variables?.entity"
     :group="false"
+    @temp-save="handleTempSave"
+    @submit="handleSubmit"
     @approval="handleApproval"
   >
     <van-form
       ref="Form"
       :class="dailyTypeSelectReadOnly ? 'reset-label' : ''"
-      label-width="auto"
-      label-align="top"
+      :readonly="dailyTypeSelectReadOnly"
       input-align="left"
+      label-align="top"
+      label-width="auto"
+      required="auto"
+      scroll-to-error
     >
       <van-cell-group inset class="!my-3">
         <van-field
           name="dailyWorkType"
           label="日常费用类型"
           :is-link="!dailyTypeSelectReadOnly"
-          :readonly="dailyTypeSelectReadOnly"
+          :rules="computedRules.feeType"
           @click="handleDailyTypeClick"
         >
           <template #input>
@@ -25,7 +30,7 @@
               ref="DailyTypeSelectRef"
               v-model="form.feeType"
               v-model:no="form.no"
-              v-model:rootNo="form.rootNo"
+              v-model:root-no="form.rootNo"
               v-model:wf-remark="form.wfRemark"
               v-model:present-text="presentText"
               v-model:is-default-page="isDefaultPage"
@@ -48,23 +53,24 @@ import { isNil } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
-import type { ApprovalPayload, Initiator } from '@/components/WorkflowPage/types'
+import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { useWorkflowViewData } from '@/hooks'
+import { startWorkFlow } from '@/api/workflow/task'
 
 type Entity = DailyFeeForm & { initiator: Initiator }
 
-// interface StartWorkFlowOptions {
-//   operation?: BaseEntity['operation']
-//   entity: Entity
-//   next?: (result: any) => void
-// }
+interface StartWorkFlowOptions {
+  operation?: BaseEntity['operation']
+  entity: Entity
+  next?: (result: any) => void
+}
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
-const { Form, form, rules, isLoading, reset, workflowView } = useForm()
+const { Form, form, rules, isLoading, reset, submit, workflowSubmit, workflowView } = useForm()
 // 引用
 const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect>>()
 
@@ -91,7 +97,7 @@ const trackedFields = ref<KeysOfArray<DailyFeeForm>>(getBaseFields())
 
 // 动态规则
 const computedRules = computed(() => {
-  const newRules = {}
+  const newRules: FormRules<DailyFeeForm> = {}
   for (const [key, value] of Object.entries(rules.value)) {
     if (trackedFields.value.includes(key as any)) {
       newRules[key] = value
@@ -146,9 +152,75 @@ function trackFields(fields: KeysOfArray<DailyFeeForm>) {
   }, trackedFields.value)
 }
 
+// 开始流程
+async function handleStartWorkflow(options: StartWorkFlowOptions) {
+  const { operation, entity, next } = options
+
+  const { initiator: { nickName } } = entity
+
+  const processInstanceName = `${presentText.value}-${nickName}`
+
+  // 业务提交
+  await submit({
+    operation,
+    // 成功后启动流程
+    success: async ({ id, itemList }) => {
+      submitFormData.value = {
+        tableName: 'oa_daily_fee',
+        businessKey: id,
+        variables: {
+          entity: {
+            ...entity,
+            id,
+            itemList,
+          },
+        },
+        processInstanceName,
+      }
+      // 启动流程
+      await startWorkFlow(submitFormData.value).then(next)
+    },
+  })
+}
+
+// 暂存
+async function handleTempSave({ load, done, next, initiator, operation }: TempSavePayload) {
+  await workflowSubmit({
+    success: async (data) => {
+      load()
+      const options: StartWorkFlowOptions = {
+        operation,
+        entity: { ...data, initiator },
+        next,
+      }
+      await handleStartWorkflow(options).finally(done)
+    },
+  })
+}
+
+// 提交
+async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
+  workflowSubmit({
+    success: async (data) => {
+      load()
+      const options: StartWorkFlowOptions = {
+        entity: { ...data, initiator },
+        next: (res: any) => open(res.data?.taskId),
+      }
+      await handleStartWorkflow(options).finally(done)
+    },
+  })
+}
+
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy.$route.query
+
+  await workflowSubmit({
+    success: (data) => {
+      Object.assign(submitFormData.value.variables.entity, data)
+    },
+  })
 
   // 打开审批弹窗
   open(taskId as string)

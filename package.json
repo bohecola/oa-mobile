@@ -23,6 +23,7 @@
     "@morev/vue-transitions": "^3.0.2",
     "@tanstack/vue-query": "^5.55.4",
     "@vant/touch-emulator": "^1.4.0",
+    "@vant/use": "^1.6.0",
     "@vueuse/core": "^10.11.0",
     "@xuanmo/dl-common": "0.0.5-beta.29",
     "@xuanmo/dl-ui": "0.0.5-beta.39",

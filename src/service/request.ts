@@ -146,7 +146,7 @@ export function globalHeaders() {
 }
 
 // 请求方法
-export default function<T>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
+export default function<T = AxiosResponse>(config: AxiosRequestConfig, requestOptions: RequestOptions = {}) {
   // 配置项
   const { isEncrypt, withCancel = false } = requestOptions
 

@@ -214,7 +214,7 @@ function closeDialog() {
 // 审批意见校验
 function isMessageEmpty() {
   if (!form.value.message) {
-    proxy?.$modal.msgWarning('请填写审批意见')
+    proxy.$modal.msgWarning('请填写审批意见')
     return true
   }
   return false
@@ -258,14 +258,14 @@ async function handleCompleteTask() {
     userName: e.nickName,
   }))
 
-  await proxy?.$modal.confirm('是否确认提交？')
+  await proxy.$modal.confirm('是否确认提交？')
   loading.value = true
   buttonDisabled.value = true
   try {
     await completeTask(form.value)
     popup.visible = false
     emits('submitCallback')
-    proxy?.$modal.msgSuccess('操作成功')
+    proxy.$modal.msgSuccess('操作成功')
   }
   finally {
     loading.value = false
@@ -300,7 +300,7 @@ async function handleBackProcessOpen() {
 // 驳回
 async function handleBackProcess() {
   backForm.value.taskId = taskId.value
-  await proxy?.$modal.confirm(`是否确认驳回到${backNode.value.nodeName}？`)
+  await proxy.$modal.confirm(`是否确认驳回到${backNode.value.nodeName}？`)
   loading.value = true
   backLoading.value = true
   backButtonDisabled.value = true
@@ -309,7 +309,7 @@ async function handleBackProcess() {
   backLoading.value = false
   backButtonDisabled.value = false
   emits('submitCallback')
-  proxy?.$modal.msgSuccess('操作成功')
+  proxy.$modal.msgSuccess('操作成功')
 }
 
 // // 加签
@@ -340,16 +340,16 @@ async function handleDelegateTask(user: UserVO) {
       nickName: user.nickName,
       comment: form.value.message,
     }
-    await proxy?.$modal.confirm('是否确认提交？')
+    await proxy.$modal.confirm('是否确认提交？')
     loading.value = true
     buttonDisabled.value = true
     await delegateTask(params).finally(() => (loading.value = false))
     popup.visible = false
     emits('submitCallback')
-    proxy?.$modal.msgSuccess('操作成功')
+    proxy.$modal.msgSuccess('操作成功')
   }
   else {
-    proxy?.$modal.msgWarning('请选择用户！')
+    proxy.$modal.msgWarning('请选择用户！')
   }
 }
 
@@ -368,16 +368,16 @@ async function handleTransferTask(user: UserVO) {
       userId: user.userId,
       comment: form.value.message,
     }
-    await proxy?.$modal.confirm('是否确认提交？')
+    await proxy.$modal.confirm('是否确认提交？')
     loading.value = true
     buttonDisabled.value = true
     await transferTask(params).finally(() => (loading.value = false))
     popup.visible = false
     emits('submitCallback')
-    proxy?.$modal.msgSuccess('操作成功')
+    proxy.$modal.msgSuccess('操作成功')
   }
   else {
-    proxy?.$modal.msgWarning('请选择用户！')
+    proxy.$modal.msgWarning('请选择用户！')
   }
 }
 
@@ -387,13 +387,13 @@ async function handleTerminationTask(data: any) {
     taskId: taskId.value,
     comment: form.value.message,
   }
-  await proxy?.$modal.confirm('是否确认终止？')
+  await proxy.$modal.confirm('是否确认终止？')
   loading.value = true
   buttonDisabled.value = true
   await terminationTask(params).finally(() => (loading.value = false))
   popup.visible = false
   emits('submitCallback')
-  proxy?.$modal.msgSuccess('操作成功')
+  proxy.$modal.msgSuccess('操作成功')
 }
 
 // 驳回节点选择器确认

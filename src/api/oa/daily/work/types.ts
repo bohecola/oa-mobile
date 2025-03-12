@@ -241,6 +241,11 @@ export interface DailyWorkForm extends BaseEntity, ExtraForm {
    * 申请业务内容
    */
   contentJson?: string
+
+  /**
+   * 最大岗位级别
+   */
+  maxPostLevel?: number
 }
 
 export interface DailyWorkQuery extends PageQuery {

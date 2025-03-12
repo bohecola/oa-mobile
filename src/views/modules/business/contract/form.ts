@@ -1,4 +1,3 @@
-import { showFailToast } from 'vant'
 import { cloneDeep } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import type { ContractForm } from '@/api/oa/business/contract/types'
@@ -113,8 +112,8 @@ export function useForm() {
 
   // 表单重置
   const reset = () => {
-    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
+    form.value = cloneDeep(initFormData)
     setContractMode('two')
   }
 
@@ -132,69 +131,40 @@ export function useForm() {
 
   // 提交表单
   async function submit(options: SubmitOptions<SuccessData> = {}) {
-    // const { success, fail } = options
-    const valid = await Form.value?.validate()
-    console.log(valid, 222)
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
 
-    // const valid = await Form.value?.validate(async (valid: boolean) => {
-    //   try {
-    //     if (valid) {
-    //       updateLoading.value = true
+        const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
+        const data: ContractForm = { ...form.value, taxRate }
 
-    //       const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
-    //       const data: ContractForm = {
-    //         ...form.value,
-    //         taxRate,
-    //       }
-
-    //       if (form.value.id) {
-    //         await updateContract(data).finally(() => (updateLoading.value = false))
-    //       }
-    //       else {
-    //         // // 生成编号
-    //         // const { msg } = (await getGenerateCode(BusinessCodeEnum.HTCODE, 'oa_contract')) ?? {};
-    //         // data.no = form.value.no = msg;
-    //         const { data: id } = (await addContract(data).finally(() => (updateLoading.value = false))) ?? {}
-    //         form.value.id = id
-    //       }
-    //       success?.({ id: form.value.id })
-    //     }
-    //   }
-    //   catch (err) {
-    //     console.error(err)
-    //     fail?.(err)
-    //   }
-    // })
-
-    // return valid
+        if (form.value.id) {
+          await updateContract(data)
+        }
+        else {
+          const { data: id } = await addContract(data)
+          form.value.id = id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
   }
 
   // 工作流中提交表单
-  async function workflowSubmit(options: SubmitOptions = {}) {
-    const { success } = options
-
-    // let data: ContractForm
-
-    // const valid = await Form.value?.validate(async (valid: boolean) => {
-    //   const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
-    //   data = {
-    //     ...form.value,
-    //     taxRate,
-    //   }
-    //   if (valid) {
-    //     success?.()
-    //   }
-    // })
-
-    // return {
-    //   valid,
-    //   data,
-    // }
+  async function workflowSubmit(options: SubmitOptions<ContractForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        const taxRate = JSON.stringify(form.value.taxRate) !== '[{}]' ? JSON.stringify(form.value.taxRate) : undefined
+        success?.({ ...form.value, taxRate })
+      }).catch(fail)
   }
 
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       setContractMode(entity.partyD ? 'four' : entity.partyC ? 'three' : 'two')
@@ -205,12 +175,12 @@ export function useForm() {
           taxRate: entity.taxRate === undefined ? undefined : JSON.parse(entity.taxRate),
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {

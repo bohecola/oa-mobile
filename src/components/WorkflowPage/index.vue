@@ -213,7 +213,7 @@ function handleTempSave() {
   const load = () => (tempSaveLoading.value = true)
   const done = () => (tempSaveLoading.value = false)
   const next = () => {
-    proxy?.$modal.msgSuccess('暂存成功')
+    proxy.$modal.msgSuccess('暂存成功')
     proxy.$router.go(-1)
   }
   const payload: TempSavePayload = {
