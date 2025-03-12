@@ -1,11 +1,42 @@
 <template>
-  <van-field v-show-field="['yy_type', includeFields]" label="证书类型" name="yy_type" input-align="left">
+  <van-field v-show-field="['yy_entryCompanyDate', includeFields]" label="入职时间" name="yy_entryCompanyDate" input-align="left">
+    <template #input>
+      {{ parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['yy_subsidyStandards', includeFields]" label="补贴标准(元/月)" name="yy_subsidyStandards" input-align="left">
+    <template #input>
+      {{ formatCurrency(form.yy_subsidyStandards) }}
+      <span v-if="!isNil(form.yy_subsidyStandards)" class="ml-3 text-red-400">{{ toCnMoney(form.yy_subsidyStandards) }}</span>
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['yy_type', includeFields]" label="申请注册/使用证书类型" name="yy_type" input-align="left">
     <template #input>
       <DictSelect v-model="form.yy_type" dict-type="oa_document_type" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.yy_name" v-show-field="['yy_name', includeFields]" label="证书名称" name="yy_name" input-align="left" />
+  <van-field v-model="form.yy_name" v-show-field="['yy_name', includeFields]" label="申请注册/使用证书名称" name="yy_name" input-align="left" />
+
+  <van-field v-show-field="['yy_certificateLevel', includeFields]" label="证书等级" name="yy_certificateLevel" input-align="left">
+    <template #input>
+      <DictSelect v-model="form.yy_certificateLevel" dict-type="oa_certificate_level" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['yy_registrationCompanyDate', includeFields]" label="注册到公司日期" name="yy_registrationCompanyDate" input-align="left">
+    <template #input>
+      {{ parseTime(form.yy_registrationCompanyDate, '{y}-{m}-{d}') }}
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['yy_otherCompanyUseStatus', includeFields]" label="证书目前是否正在其他公司使用" name="yy_otherCompanyUseStatus" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.yy_otherCompanyUseStatus" readonly />
+    </template>
+  </van-field>
 
   <van-field v-show-field="['yy_certificateStatus', includeFields]" label="证书状态" name="yy_certificateStatus" input-align="left">
     <template #input>
@@ -41,7 +72,7 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.yy_unit" v-show-field="['yy_unit', includeFields]" label="工作/申报单位" name="yy_unit" input-align="left" />
+  <van-field v-model="form.yy_unit" v-show-field="['yy_unit', includeFields]" label="发证单位" name="yy_unit" input-align="left" />
 
   <van-field v-show-field="['yy_isTraining', includeFields]" label="是否参与培训" name="yy_isTraining" input-align="left">
     <template #input>
@@ -52,6 +83,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -61,7 +93,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'reason', 'ossIdList'],
+    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_certificateLevel', 'yy_otherCompanyUseStatus', 'yy_entryCompanyDate', 'yy_subsidyStandards', 'yy_registrationCompanyDate', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'reason', 'ossIdList'],
   },
 )
 

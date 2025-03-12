@@ -173,6 +173,8 @@ const extraInitFormData: DailyWorkForm = {
   y_startDate: undefined,
   y_endDate: undefined,
   y_isTraining: undefined,
+  y_certificateLevel: undefined, // 证书等级
+  y_otherCompanyUseStatus: undefined, // 证书目前是否正在其他公司使用
 
   // 员工考取证书补贴申请
   yy_dailyWorkId: undefined,
@@ -187,6 +189,11 @@ const extraInitFormData: DailyWorkForm = {
   yy_startDate: undefined,
   yy_endDate: undefined,
   yy_isTraining: undefined,
+  yy_certificateLevel: undefined, // 证书等级
+  yy_otherCompanyUseStatus: undefined, // 证书目前是否正在其他公司使用
+  yy_entryCompanyDate: undefined, // 入职时间
+  yy_subsidyStandards: undefined, // 补贴标准
+  yy_registrationCompanyDate: undefined, // 注册到公司日期
 
   // 新增生产岗位申请
   z_deptId: undefined,
@@ -487,21 +494,25 @@ const extraInitRules: Record<string, FieldRule[]> = {
   y_unit: [{ required: true, message: `工作/申报单位${baseMsg}`, trigger: 'onBlur' }],
   y_startDate: [{ required: true, message: `开始日期${baseMsg}`, trigger: 'onBlur' }],
   y_endDate: [{ required: true, message: `结束日期${baseMsg}`, trigger: 'onBlur' }],
+  y_certificateLevel: [{ required: true, message: `证书等级${baseMsg}`, trigger: 'onBlur' }],
+  y_otherCompanyUseStatus: [{ required: true, message: `证书目前是否正在其他公司使用${baseMsg}`, trigger: 'onBlur' }],
   // y_isTraining: [{ required: true, message: `是否参与培训${baseMsg}`, trigger: 'onBlur' }],
 
   // 员工考取证书补贴申请
   yy_dailyWorkId: [{ required: true, message: `补贴申请${baseMsg}`, trigger: 'onBlur' }],
-  yy_type: [{ required: true, message: `证书类型${baseMsg}`, trigger: 'onBlur' }],
-  yy_name: [{ required: true, message: `证书名称${baseMsg}`, trigger: 'onBlur' }],
-  yy_certificateStatus: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
-  yy_speciality: [{ required: true, message: `专业名称${baseMsg}`, trigger: 'onBlur' }],
-  yy_no: [{ required: true, message: `编号${baseMsg}`, trigger: 'onBlur' }],
-  yy_issuanceDate: [{ required: true, message: `发证日期${baseMsg}`, trigger: 'onBlur' }],
-  yy_recheckDate: [{ required: true, message: `复审日期${baseMsg}`, trigger: 'onBlur' }],
-  yy_unit: [{ required: true, message: `工作/申报单位${baseMsg}`, trigger: 'onBlur' }],
-  yy_startDate: [{ required: true, message: `开始日期${baseMsg}`, trigger: 'onBlur' }],
-  yy_endDate: [{ required: true, message: `结束日期${baseMsg}`, trigger: 'onBlur' }],
+  // yy_type: [{ required: true, message: `证书类型${baseMsg}`, trigger: 'onBlur' }],
+  // yy_name: [{ required: true, message: `证书名称${baseMsg}`, trigger: 'onBlur' }],
+  // yy_certificateStatus: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],
+  // yy_speciality: [{ required: true, message: `专业名称${baseMsg}`, trigger: 'onBlur' }],
+  // yy_no: [{ required: true, message: `编号${baseMsg}`, trigger: 'onBlur' }],
+  // yy_issuanceDate: [{ required: true, message: `发证日期${baseMsg}`, trigger: 'onBlur' }],
+  // yy_recheckDate: [{ required: true, message: `复审日期${baseMsg}`, trigger: 'onBlur' }],
+  // yy_unit: [{ required: true, message: `工作/申报单位${baseMsg}`, trigger: 'onBlur' }],
+  // yy_startDate: [{ required: true, message: `开始日期${baseMsg}`, trigger: 'onBlur' }],
+  // yy_endDate: [{ required: true, message: `结束日期${baseMsg}`, trigger: 'onBlur' }],
   // yy_isTraining: [{ required: true, message: `是否参与培训${baseMsg}`, trigger: 'onBlur' }],
+  // yy_certificateLevel: [{ required: true, message: `证书等级${baseMsg}`, trigger: 'onBlur' }],
+  // yy_otherCompanyUseStatus: [{ required: true, message: `证书目前是否正在其他公司使用${baseMsg}`, trigger: 'onBlur' }],
 
   // 新增生产岗位申请
   z_deptId: [{ required: true, message: `申请部门${baseMsg}`, trigger: 'onBlur' }],

@@ -1,11 +1,23 @@
 <template>
-  <van-field v-show-field="['y_type', includeFields]" label="证书类型" name="y_type" input-align="left">
+  <van-field v-show-field="['y_type', includeFields]" label="申请注册/使用证书类型" name="y_type" input-align="left">
     <template #input>
       <DictSelect v-model="form.y_type" dict-type="oa_document_type" :filter-fn="(item) => !['0', '1', '2', '3'].includes(item.value)" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.y_name" v-show-field="['y_name', includeFields]" label="证书名称" name="y_name" input-align="left" />
+  <van-field v-model="form.y_name" v-show-field="['y_name', includeFields]" label="申请注册/使用证书名称" name="y_name" input-align="left" />
+
+  <van-field v-show-field="['y_certificateLevel', includeFields]" label="证书等级" name="y_certificateLevel" input-align="left">
+    <template #input>
+      <DictSelect v-model="form.y_certificateLevel" dict-type="oa_certificate_level" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['y_otherCompanyUseStatus', includeFields]" label="证书目前是否正在其他公司使用" name="y_otherCompanyUseStatus" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.y_otherCompanyUseStatus" readonly />
+    </template>
+  </van-field>
 
   <van-field v-show-field="['y_certificateStatus', includeFields]" label="证书状态" name="y_certificateStatus" input-align="left">
     <template #input>
@@ -41,7 +53,7 @@
     </template>
   </van-field>
 
-  <van-field v-model="form.y_unit" v-show-field="['y_unit', includeFields]" label="工作/申报单位" name="y_unit" input-align="left" />
+  <van-field v-model="form.y_unit" v-show-field="['y_unit', includeFields]" label="发证单位" name="y_unit" input-align="left" />
 
   <van-field v-show-field="['y_isTraining', includeFields]" label="是否参与培训" name="y_isTraining" input-align="left">
     <template #input>
@@ -65,6 +77,8 @@ withDefaults(
     includeFields: () => [
       'y_type',
       'y_name',
+      'y_certificateLevel',
+      'y_otherCompanyUseStatus',
       'y_certificateStatus',
       'y_speciality',
       'y_no',

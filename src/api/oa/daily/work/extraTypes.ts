@@ -268,6 +268,8 @@ export interface RSGSRYZGZSZCSQ {
   y_startDate?: string
   y_endDate?: string
   y_isTraining?: string
+  y_certificateLevel?: string // 证书等级
+  y_otherCompanyUseStatus?: string // 证书目前是否正在其他公司使用
 }
 
 // 员工考取证书补贴申请
@@ -284,6 +286,11 @@ export interface RSYGKQZSBTSQ {
   yy_startDate: string
   yy_endDate: string
   yy_isTraining: string
+  yy_certificateLevel?: string // 证书等级
+  yy_otherCompanyUseStatus?: string // 证书目前是否正在其他公司使用
+  yy_entryCompanyDate?: string // 入职时间
+  yy_subsidyStandards?: number // 补贴标准
+  yy_registrationCompanyDate?: string // 注册到公司日期
 }
 
 // 员工考取注册建造师证书奖励申请
