@@ -1,17 +1,23 @@
 <template>
-  <van-field v-show-field="['aa_deptId', includeFields]" name="aa_deptId" label="项目部" input-align="left">
+  <van-field v-show-field="['aa_deptId', includeFields]" name="aa_deptId" label="项目部">
     <template #input>
       <DeptSelect v-model="form.aa_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['aa_userId', includeFields]" name="aa_userId" label="申请人员名单" input-align="left">
+  <van-field v-show-field="['aa_userId', includeFields]" name="aa_userId" label="申请人员名单">
     <template #input>
       <UserSelect v-model="form.aa_userId" :multiple="true" readonly />
     </template>
   </van-field>
 
-  <DatePicker v-model="form.aa_effectiveDate" v-show-field="['aa_effectiveDate', includeFields]" name="aa_effectiveDate" label="生效日期" readonly />
+  <DatePicker
+    v-model="form.aa_effectiveDate"
+    v-show-field="['aa_effectiveDate', includeFields]"
+    name="aa_effectiveDate"
+    label="生效日期"
+    readonly
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

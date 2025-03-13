@@ -1,17 +1,29 @@
 <template>
-  <van-field v-show-field="['needDepts', includeFields]" name="needDepts" label="需求部门" input-align="left">
+  <van-field
+    v-show-field="['needDepts', includeFields]"
+    name="needDepts"
+    label="需求部门"
+  >
     <template #input>
       <DeptSelect v-model="form.needDepts" multiple readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['recipient', includeFields]" name="recipient" label="接收人" input-align="left">
+  <van-field
+    v-show-field="['recipient', includeFields]"
+    name="recipient"
+    label="接收人"
+  >
     <template #input>
       <UserSelect v-model="form.recipient" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['isExistRegulations', includeFields]" label="是否存在违章" name="isExistRegulations" input-align="left">
+  <van-field
+    v-show-field="['isExistRegulations', includeFields]"
+    label="是否存在违章"
+    name="isExistRegulations"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isExistRegulations" readonly />
     </template>

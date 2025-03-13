@@ -1,102 +1,245 @@
 <template>
-  <van-field v-show-field="['qq_deptId', includeFields]" label="部门/项目部" name="qq_deptId" input-align="left">
+  <van-field
+    v-show-field="['qq_deptId', includeFields]"
+    label="部门/项目部"
+    name="qq_deptId"
+    :rules="computedRules.qq_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.qq_deptId" />
+      <DeptSelect v-model="form.qq_deptId" @change="onDeptChange" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_personnelCategory', includeFields]" label="人员类别" name="qq_personnelCategory" input-align="left">
+  <van-field
+    v-show-field="['qq_personnelCategory', includeFields]"
+    label="人员类别"
+    name="qq_personnelCategory"
+    :rules="computedRules.z_deptId"
+  >
     <template #input>
       <DictSelect v-model="form.qq_personnelCategory" dict-type="oa_daily_work_personnel_category" />
     </template>
   </van-field>
 
-  <DatePicker v-if="form.qq_insuranceExpirationStartDate" v-model="form.qq_insuranceExpirationStartDate" v-show-field="['qq_insuranceExpirationStartDate', includeFields]" name="qq_insuranceExpirationStartDate" label="建议保险开始日期" />
+  <DatePicker
+    v-if="form.qq_insuranceExpirationStartDate"
+    v-model="form.qq_insuranceExpirationStartDate"
+    v-show-field="['qq_insuranceExpirationStartDate', includeFields]"
+    name="qq_insuranceExpirationStartDate"
+    label="建议保险开始日期"
+    :rules="computedRules.qq_insuranceExpirationStartDate"
+  />
 
-  <DatePicker v-if="form.qq_insuranceExpirationEndDate" v-model="form.qq_insuranceExpirationEndDate" v-show-field="['qq_insuranceExpirationEndDate', includeFields]" name="qq_insuranceExpirationEndDate" label="建议保险截止日期" />
+  <DatePicker
+    v-if="form.qq_insuranceExpirationEndDate"
+    v-model="form.qq_insuranceExpirationEndDate"
+    v-show-field="['qq_insuranceExpirationEndDate', includeFields]"
+    name="qq_insuranceExpirationEndDate"
+    label="建议保险截止日期"
+    :rules="computedRules.qq_insuranceExpirationEndDate"
+  />
 
-  <DatePicker v-model="form.qq_latestPurchaseDate" v-show-field="['qq_latestPurchaseDate', includeFields]" name="qq_latestPurchaseDate" label="保险最晚购买日期" />
+  <DatePicker
+    v-model="form.qq_latestPurchaseDate"
+    v-show-field="['qq_latestPurchaseDate', includeFields]"
+    name="qq_latestPurchaseDate"
+    label="保险最晚购买日期"
+    :rules="computedRules.qq_latestPurchaseDate"
+  />
 
-  <van-field v-model="form.qq_purchaseInsuranceNumber" v-show-field="['qq_purchaseInsuranceNumber', includeFields]" label="购买保险人数" placeholder="请输入" name="qq_purchaseInsuranceNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.qq_purchaseInsuranceNumber"
+    v-show-field="['qq_purchaseInsuranceNumber', includeFields]"
+    label="购买保险人数"
+    placeholder="请输入"
+    name="qq_purchaseInsuranceNumber"
+    :rules="computedRules.qq_purchaseInsuranceNumber"
+  />
 
-  <van-field v-show-field="['qq_purchaseInsuranceCategory', includeFields]" label="购买保险类别" name="qq_purchaseInsuranceCategory" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.qq_purchaseInsuranceCategory" dict-type="oa_daily_work_purchase_insurance_category" />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.qq_purchaseInsuranceCategory"
+    v-show-field="['qq_purchaseInsuranceCategory', includeFields]"
+    label="购买保险类别"
+    name="qq_purchaseInsuranceCategory"
+    dict-type="oa_daily_work_purchase_insurance_category"
+    :multiple="false"
+    :rules="computedRules.qq_purchaseInsuranceCategory"
+  />
 
-  <van-field v-model="form.qq_insuranceLimit" v-show-field="['qq_insuranceLimit', includeFields]" label="购买保险额度(万元)" placeholder="请输入" name="qq_insuranceLimit" input-align="left" />
+  <van-field-number
+    v-model.number="form.qq_insuranceLimit"
+    v-show-field="['qq_insuranceLimit', includeFields]"
+    label="购买保险额度(万元)"
+    placeholder="请输入"
+    name="qq_insuranceLimit"
+    :rules="computedRules.qq_insuranceLimit"
+  />
 
-  <van-field v-show-field="['qq_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="qq_isHighVoltageOperation" input-align="left">
+  <van-field
+    v-show-field="['qq_isHighVoltageOperation', includeFields]"
+    label="是否涉及高压电作业"
+    name="qq_isHighVoltageOperation"
+    :rules="computedRules.qq_isHighVoltageOperation"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isHighVoltageOperation" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="qq_isClimbingHomework" input-align="left">
+  <van-field
+    v-show-field="['qq_isClimbingHomework', includeFields]"
+    label="是否涉及登高作业"
+    name="qq_isClimbingHomework"
+    :rules="computedRules.qq_isClimbingHomework"
+    @change="onIsClimbingHomeworkChange"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isClimbingHomework" />
     </template>
   </van-field>
 
-  <van-field v-if="form.qq_isClimbingHomework === 'Y'" v-model="form.qq_distanceRange" v-show-field="['qq_distanceRange', includeFields]" label="登高作业位置到地面的距离范围(米)" placeholder="请输入" name="qq_distanceRange" input-align="left" />
+  <van-field
+    v-if="form.qq_isClimbingHomework === 'Y'"
+    v-model="form.qq_distanceRange"
+    v-show-field="['qq_distanceRange', includeFields]"
+    label="登高作业位置到地面的距离范围(米)"
+    placeholder="请输入"
+    name="qq_distanceRange"
+    :rules="computedRules.qq_distanceRange"
+  />
 
-  <van-field v-show-field="['qq_isNewHiredPurchaseInsurance', includeFields]" label="该项目部新入职人员是否购买此类保险" name="qq_isNewHiredPurchaseInsurance" input-align="left">
+  <van-field
+    v-show-field="['qq_isNewHiredPurchaseInsurance', includeFields]"
+    label="该项目部新入职人员是否购买此类保险"
+    name="qq_isNewHiredPurchaseInsurance"
+    :rules="computedRules.qq_isNewHiredPurchaseInsurance"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isNewHiredPurchaseInsurance" />
     </template>
   </van-field>
-  <van-field v-show-field="['qq_transferInDeptPurchaseInsurance', includeFields]" label="调入该项目部是否购买此类保险" name="qq_transferInDeptPurchaseInsurance" input-align="left">
+
+  <van-field
+    v-show-field="['qq_transferInDeptPurchaseInsurance', includeFields]"
+    label="调入该项目部是否购买此类保险"
+    name="qq_transferInDeptPurchaseInsurance"
+    :rules="computedRules.qq_transferInDeptPurchaseInsurance"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_transferInDeptPurchaseInsurance" />
     </template>
   </van-field>
-  <van-field v-show-field="['qq_transferOutDeptNoPurchaseInsurance', includeFields]" label="调出该项目部是否取消购买此类保险" name="qq_transferOutDeptNoPurchaseInsurance" input-align="left">
+
+  <van-field
+    v-show-field="['qq_transferOutDeptNoPurchaseInsurance', includeFields]"
+    label="调出该项目部是否取消购买此类保险"
+    name="qq_transferOutDeptNoPurchaseInsurance"
+    :rules="computedRules.qq_transferOutDeptNoPurchaseInsurance"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_transferOutDeptNoPurchaseInsurance" />
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_isEarlyStagePurchaseInsurance', includeFields]" label="该项目部前期是否已购买其他商业类保险" name="qq_isEarlyStagePurchaseInsurance" input-align="left">
+  <van-field
+    v-show-field="['qq_isEarlyStagePurchaseInsurance', includeFields]"
+    label="该项目部前期是否已购买其他商业类保险"
+    name="qq_isEarlyStagePurchaseInsurance"
+    :rules="computedRules.qq_isEarlyStagePurchaseInsurance"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isEarlyStagePurchaseInsurance" />
     </template>
   </van-field>
 
-  <van-field v-if="form.qq_isEarlyStagePurchaseInsurance === 'Y'" v-show-field="['qq_isOldInsuranceTermination', includeFields]" label="原特殊商业保险是否终止" name="qq_isOldInsuranceTermination" input-align="left">
+  <van-field
+    v-if="form.qq_isEarlyStagePurchaseInsurance === 'Y'"
+    v-show-field="['qq_isOldInsuranceTermination', includeFields]"
+    label="原特殊商业保险是否终止"
+    name="qq_isOldInsuranceTermination"
+    :rules="computedRules.qq_isOldInsuranceTermination"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isOldInsuranceTermination" />
     </template>
   </van-field>
 
-  <van-field v-if="form.qq_isOldInsuranceTermination === 'Y'" v-model="form.qq_isOldInsuranceTerminationReason" v-show-field="['qq_isOldInsuranceTerminationReason', includeFields]" type="textarea" rows="2" label="原特殊商业保险终止原因说明" name="qq_isOldInsuranceTerminationReason" input-align="left" />
+  <van-field
+    v-if="form.qq_isOldInsuranceTermination === 'Y'"
+    v-model="form.qq_isOldInsuranceTerminationReason"
+    v-show-field="['qq_isOldInsuranceTerminationReason', includeFields]"
+    type="textarea"
+    rows="2"
+    autosize
+    label="原特殊商业保险终止原因说明"
+    name="qq_isOldInsuranceTerminationReason"
+    :rules="computedRules.qq_isOldInsuranceTerminationReason"
+  />
 
-  <van-field v-show-field="['qq_isBelong', includeFields]" label="人员是否属于该项目部" name="qq_isBelong" input-align="left">
+  <van-field
+    v-show-field="['qq_isBelong', includeFields]"
+    label="人员是否属于该项目部"
+    name="qq_isBelong"
+    :rules="computedRules.qq_isBelong"
+  >
     <template #input>
       <YesNoSwitch v-model="form.qq_isBelong" />
     </template>
   </van-field>
 
-  <van-field v-if="form.qq_isBelong === 'N'" v-model="form.qq_notBelongDeptPurchaseInsuranceSpecialReason" v-show-field="['qq_notBelongDeptPurchaseInsuranceSpecialReason', includeFields]" label="不属于该项目部人员购买保险原因" name="qq_notBelongDeptPurchaseInsuranceSpecialReason" input-align="left">
-    <template #input>
-      <TextareaView :value="form.qq_notBelongDeptPurchaseInsuranceSpecialReason" />
-    </template>
-  </van-field>
+  <van-field
+    v-if="form.qq_isBelong === 'N'"
+    v-model="form.qq_notBelongDeptPurchaseInsuranceSpecialReason"
+    v-show-field="['qq_notBelongDeptPurchaseInsuranceSpecialReason', includeFields]"
+    label="不属于该项目部人员购买保险原因"
+    type="textarea"
+    rows="2"
+    autosize
+    name="qq_notBelongDeptPurchaseInsuranceSpecialReason"
+    :rules="computedRules.qq_notBelongDeptPurchaseInsuranceSpecialReason"
+  />
 
-  <van-field v-model="form.qq_insurancePeriod" v-show-field="['qq_insurancePeriod', includeFields]" label="保险期限" placeholder="请输入" name="qq_insurancePeriod" input-align="left" />
+  <van-field
+    v-model="form.qq_insurancePeriod"
+    v-show-field="['qq_insurancePeriod', includeFields]"
+    label="保险期限"
+    placeholder="请输入"
+    name="qq_insurancePeriod"
+    :rules="computedRules.qq_insurancePeriod"
+  />
 
-  <van-field v-model="form.qq_purchaseInsuranceReason" v-show-field="['qq_purchaseInsuranceReason', includeFields]" label="购买保险原因" type="textarea" rows="2" name="qq_purchaseInsuranceReason" input-align="left" />
+  <van-field
+    v-model="form.qq_purchaseInsuranceReason"
+    v-show-field="['qq_purchaseInsuranceReason', includeFields]"
+    label="购买保险原因"
+    type="textarea"
+    rows="2"
+    autosize
+    name="qq_purchaseInsuranceReason"
+    :rules="computedRules.qq_purchaseInsuranceReason"
+  />
 
-  <van-field v-model="form.qq_purchaseInsuranceSpecialExplain" v-show-field="['qq_purchaseInsuranceSpecialExplain', includeFields]" type="textarea" rows="2" label="保险购买特殊说明" name="qq_purchaseInsuranceSpecialExplain" input-align="left" />
+  <van-field
+    v-model="form.qq_purchaseInsuranceSpecialExplain"
+    v-show-field="['qq_purchaseInsuranceSpecialExplain', includeFields]"
+    type="textarea"
+    rows="2"
+    autosize
+    label="保险购买特殊说明"
+    name="qq_purchaseInsuranceSpecialExplain"
+    :rules="computedRules.qq_purchaseInsuranceSpecialExplain"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
+import type { FormInstance } from 'vant'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import { getDept } from '@/api/system/dept'
 
 const props = withDefaults(
   defineProps<{
@@ -134,10 +277,23 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
+const Form = inject<Ref<FormInstance>>('Form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+function onIsClimbingHomeworkChange() {
+  // 清空距离范围
+  Form.value.resetValidation(['qq_distanceRange'])
+}
+
+async function onDeptChange(value: string | number) {
+  const res = await getDept(value)
+  form.value.qq_deptName = res.data.deptName
+}
 </script>

@@ -1,29 +1,91 @@
 <template>
-  <van-field v-show-field="['ee_deptId', includeFields]" label="项目部" name="ee_deptId" input-align="left">
+  <van-field v-show-field="['ee_deptId', includeFields]" label="项目部" name="ee_deptId">
     <template #input>
       <DeptSelect v-model="form.ee_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.ee_salesContractNo" v-show-field="['ee_salesContractNo', includeFields]" label="销售合同编号" name="ee_salesContractNo" input-align="left" />
+  <van-field
+    v-model="form.ee_salesContractNo"
+    v-show-field="['ee_salesContractNo', includeFields]"
+    label="销售合同编号"
+    name="ee_salesContractNo"
+    readonly
+  />
 
-  <van-field v-model="form.ee_category" v-show-field="['ee_category', includeFields]" label="申请类别" name="ee_category" input-align="left" />
+  <van-field
+    v-model="form.ee_category"
+    v-show-field="['ee_category', includeFields]"
+    label="申请类别"
+    name="ee_category"
+    readonly
+  />
 
-  <van-field v-model="form.ee_subsidyAmountStandard" v-show-field="['ee_subsidyAmountStandard', includeFields]" label="申请补助金额标准" name="ee_subsidyAmountStandard" input-align="left" />
+  <van-field
+    v-model="form.ee_subsidyAmountStandard"
+    v-show-field="['ee_subsidyAmountStandard', includeFields]"
+    label="申请补助金额标准"
+    name="ee_subsidyAmountStandard"
+    readonly
+  />
 
-  <van-field v-model="form.ee_recipientsNumber" v-show-field="['ee_recipientsNumber', includeFields]" label="发放人数" name="ee_recipientsNumber" input-align="left" />
+  <van-field
+    v-model="form.ee_recipientsNumber"
+    v-show-field="['ee_recipientsNumber', includeFields]"
+    label="发放人数"
+    name="ee_recipientsNumber"
+    readonly
+  />
 
-  <van-field v-model="form.ee_subsidyTotalAmountMonth" v-show-field="['ee_subsidyTotalAmountMonth', includeFields]" label="申请补助总金额(元/月)" name="ee_subsidyTotalAmountMonth" input-align="left" />
+  <van-field
+    v-model="form.ee_subsidyTotalAmountMonth"
+    v-show-field="['ee_subsidyTotalAmountMonth', includeFields]"
+    label="申请补助总金额(元/月)"
+    name="ee_subsidyTotalAmountMonth"
+    readonly
+  />
 
-  <van-field v-model="form.ee_subsidyTotalAmountDay" v-show-field="['ee_subsidyTotalAmountDay', includeFields]" label="申请补助总金额(元/天)" name="ee_subsidyTotalAmountDay" input-align="left" />
+  <van-field
+    v-model="form.ee_subsidyTotalAmountDay"
+    v-show-field="['ee_subsidyTotalAmountDay', includeFields]"
+    label="申请补助总金额(元/天)"
+    name="ee_subsidyTotalAmountDay"
+    readonly
+  />
 
-  <van-field v-model="form.ee_distributionCycle" v-show-field="['ee_distributionCycle', includeFields]" label="发放周期" name="ee_distributionCycle" input-align="left" />
+  <van-field
+    v-model="form.ee_distributionCycle"
+    v-show-field="['ee_distributionCycle', includeFields]"
+    label="发放周期"
+    name="ee_distributionCycle"
+    readonly
+  />
 
-  <DatePicker v-if="form.ee_distributionCycle === '连续发放'" v-model="form.ee_startDate" v-show-field="['ee_startDate', includeFields]" name="ee_startDate" label="执行开始日期" readonly />
+  <DatePicker
+    v-if="form.ee_distributionCycle === '连续发放'"
+    v-model="form.ee_startDate"
+    v-show-field="['ee_startDate', includeFields]"
+    name="ee_startDate"
+    label="执行开始日期"
+    readonly
+  />
 
-  <DatePicker v-if="form.ee_distributionCycle === '连续发放'" v-model="form.ee_endDate" v-show-field="['ee_endDate', includeFields]" name="ee_endDate" label="执行结束日期" readonly />
+  <DatePicker
+    v-if="form.ee_distributionCycle === '连续发放'"
+    v-model="form.ee_endDate"
+    v-show-field="['ee_endDate', includeFields]"
+    name="ee_endDate"
+    label="执行结束日期"
+    readonly
+  />
 
-  <van-field v-model="form.ee_distributionMethod" v-show-field="['ee_distributionMethod', includeFields]" label="发放方式" name="ee_distributionMethod" input-align="left" />
+  <van-field
+    v-model="form.ee_distributionMethod"
+    v-show-field="['ee_distributionMethod', includeFields]"
+    label="发放方式"
+    name="ee_distributionMethod"
+    readonly
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

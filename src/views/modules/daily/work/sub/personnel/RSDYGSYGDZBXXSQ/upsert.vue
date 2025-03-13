@@ -6,7 +6,7 @@
         </el-form-item>
       </el-col>
     </el-row> -->
-  <van-field v-show-field="['f_deptId', includeFields]" label="部门" name="f_deptId" input-align="left">
+  <van-field v-show-field="['f_deptId', includeFields]" label="部门" name="f_deptId" :rules="computedRules.f_deptId">
     <template #input>
       <DeptSelect v-model="form.f_deptId" clearable />
     </template>
@@ -17,9 +17,10 @@
     v-show-field="['f_fileType', includeFields]"
     label="资料类别"
     name="f_fileType"
-    input-align="left"
     dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type"
     :multiple="true"
+    :rules="computedRules.f_fileType"
+    :readonly="true"
   />
 
   <BaseDetail :include-fields="includeFields" />
@@ -42,6 +43,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

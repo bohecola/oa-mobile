@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 合同结算资料申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <detail :include-fields="applyFields" />
+      <upsert :include-fields="applyFields" />
     </div>
 
     <!-- 自定义审核人审核 -->

@@ -1,9 +1,19 @@
 <template>
+  <van-field
+    v-show-field="['needDepts', includeFields]"
+    name="needDepts"
+    label="需求部门"
+  >
+    <template #input>
+      <DeptSelect v-model="form.needDepts" multiple readonly />
+    </template>
+  </van-field>
   <BaseDetail :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import BaseDetail from '../../../../components/BaseDetail.vue'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
@@ -12,7 +22,13 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['reason', 'ossIdList'],
+    includeFields: () => ['needDepts', 'reason', 'ossIdList'],
   },
 )
+
+// 表单
+const form = inject<Ref<DailyWorkForm>>('form')
+
+// 指令
+const vShowField = createFieldVisibilityDirective<DailyWorkForm>(form)
 </script>

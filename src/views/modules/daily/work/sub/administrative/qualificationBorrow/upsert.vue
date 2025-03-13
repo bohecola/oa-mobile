@@ -4,9 +4,10 @@
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
-    input-align="left"
     dict-type="oa_file_type"
     :multiple="true"
+    :rules="computedRules.fileType"
+    :required="true"
   />
 
   <DictPicker
@@ -14,12 +15,18 @@
     v-show-field="['fileUseType', includeFields]"
     label="使用方式"
     name="fileUseType"
-    input-align="left"
     dict-type="oa_file_use_type"
-    :multiple="false"
+    :rules="computedRules.fileUseType"
+    :required="true"
   />
 
-  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" name="isSeal" input-align="left">
+  <van-field
+    v-show-field="['isSeal', includeFields]"
+    label="是否加盖公章"
+    name="isSeal"
+    input-align="left"
+    :rules="computedRules.isSeal"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isSeal" />
     </template>
@@ -46,6 +53,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

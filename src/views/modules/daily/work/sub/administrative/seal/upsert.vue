@@ -4,12 +4,17 @@
     v-show-field="['sealType', includeFields]"
     label="申请类型"
     name="sealType"
-    input-align="left"
     dict-type="oa_seal_type"
     :multiple="false"
+    :rules="computedRules.sealType"
   />
 
-  <van-field v-show-field="['isReturnSeal', includeFields]" label="是否交回原印" name="isReturnSeal" input-align="left">
+  <van-field
+    v-show-field="['isReturnSeal', includeFields]"
+    label="是否交回原印"
+    name="isReturnSeal"
+    :rules="computedRules.isReturnSeal"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isReturnSeal" />
     </template>
@@ -36,6 +41,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

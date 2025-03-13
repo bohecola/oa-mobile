@@ -1,5 +1,11 @@
 <template>
-  <van-field v-show-field="['isPersonnelTransfer', includeFields]" label="是否涉及人员任命、调整" name="isPersonnelTransfer" input-align="left" label-width="170">
+  <van-field
+    v-show-field="['isPersonnelTransfer', includeFields]"
+    label="是否涉及人员任命、调整"
+    name="isPersonnelTransfer"
+    label-width="170"
+    :rules="computedRules.isPersonnelTransfer"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isPersonnelTransfer" />
     </template>
@@ -27,6 +33,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

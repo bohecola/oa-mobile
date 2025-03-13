@@ -4,13 +4,16 @@
     v-show-field="['sealType', includeFields]"
     label="申请类型"
     name="sealType"
-    input-align="left"
     dict-type="oa_seal_type"
     :multiple="false"
     :readonly="true"
   />
 
-  <van-field v-show-field="['isReturnSeal', includeFields]" label="是否交回原印" name="isReturnSeal" input-align="left">
+  <van-field
+    v-show-field="['isReturnSeal', includeFields]"
+    label="是否交回原印"
+    name="isReturnSeal"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isReturnSeal" readonly />
     </template>

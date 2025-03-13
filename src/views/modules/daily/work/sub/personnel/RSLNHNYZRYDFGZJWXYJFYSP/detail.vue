@@ -6,7 +6,7 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <van-field v-show-field="['j_deptIds', includeFields]" label="项目部" name="j_deptIds" input-align="left">
+  <van-field v-show-field="['j_deptIds', includeFields]" label="项目部" name="j_deptIds">
     <template #input>
       <DeptSelect v-model="form.j_deptIds" multiple readonly />
     </template>
@@ -14,7 +14,7 @@
 
   <DatePicker v-model="form.j_month" v-show-field="['j_month', includeFields]" name="j_month" label="所发工资月份" :columns-type="['year', 'month']" readonly />
 
-  <van-field v-show-field="['j_amount', includeFields]" label="应发工资总额（元）" name="j_amount" input-align="left" class="!items-baseline">
+  <van-field v-show-field="['j_amount', includeFields]" label="应发工资总额（元）" name="j_amount" class="!items-baseline">
     <template #input>
       <div class="items-baseline">
         <span>{{ form.j_amount }}</span>
@@ -23,7 +23,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['j_scAmount', includeFields]" label="单位社保总额（元）" name="j_scAmount" input-align="left">
+  <van-field v-show-field="['j_scAmount', includeFields]" label="单位社保总额（元）" name="j_scAmount">
     <template #input>
       <span>{{ form.j_scAmount }}</span>
       <span v-if="!isNil(form.j_scAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.j_scAmount) }}</span>

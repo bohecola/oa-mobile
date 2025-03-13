@@ -1,59 +1,155 @@
 <template>
-  <van-field v-show-field="['gg_deptId', includeFields]" label="部门/项目部" name="gg_deptId" input-align="left">
+  <van-field
+    v-show-field="['gg_deptId', includeFields]"
+    label="部门/项目部"
+    name="gg_deptId"
+    :rules="computedRules.gg_deptId"
+  >
     <template #input>
       <DeptSelect v-model="form.gg_deptId" />
     </template>
   </van-field>
 
-  <van-field v-model="form.gg_recruitmentNo" v-show-field="['gg_recruitmentNo', includeFields]" label="招聘编号" placeholder="请输入" name="gg_recruitmentNo" input-align="left" />
+  <van-field
+    v-model.trim="form.gg_recruitmentNo"
+    v-show-field="['gg_recruitmentNo', includeFields]"
+    label="招聘编号"
+    placeholder="请输入"
+    name="gg_recruitmentNo"
+    :rules="computedRules.gg_recruitmentNo"
+  />
 
-  <van-field v-model="form.gg_formType" v-show-field="['gg_formType', includeFields]" label="招聘需求申请表单类型" placeholder="请输入" name="gg_formType" input-align="left" />
+  <van-field
+    v-model.trim="form.gg_formType"
+    v-show-field="['gg_formType', includeFields]"
+    label="招聘需求申请表单类型"
+    placeholder="请输入纸质申请单、线上申请单"
+    name="gg_formType"
+    :rules="computedRules.gg_formType"
+  />
 
-  <van-field v-model="form.gg_contractNo" v-show-field="['gg_contractNo', includeFields]" label="合同号" placeholder="请输入" name="gg_contractNo" input-align="left" />
+  <van-field
+    v-model.trim="form.gg_contractNo"
+    v-show-field="['gg_contractNo', includeFields]"
+    label="合同号"
+    placeholder="请输入"
+    name="gg_contractNo"
+    :rules="computedRules.gg_contractNo"
+  />
 
-  <van-field v-show-field="['gg_changeType', includeFields]" name="gg_changeType" label="变更类型" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.gg_changeType" dict-type="oa_daily_work_rszpxqbgsq_change_type" />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.gg_changeType"
+    v-show-field="['gg_changeType', includeFields]"
+    label="变更类型"
+    name="gg_changeType"
+    dict-type="oa_daily_work_rszpxqbgsq_change_type"
+    :multiple="false"
+    :rules="computedRules.gg_changeType"
+    :required="true"
+    @change="onTypeChange"
+  />
 
-  <van-field v-show-field="['gg_changeDetails', includeFields]" name="gg_changeDetails" label="变更明细" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.gg_changeDetails" dict-type="oa_daily_work_rszpxqbgsq_change_details" multiple />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.gg_changeDetails"
+    v-show-field="['gg_changeDetails', includeFields]"
+    label="变更明细"
+    name="gg_changeDetails"
+    dict-type="oa_daily_work_rszpxqbgsq_change_details"
+    :multiple="true"
+    :rules="computedRules.gg_changeDetails"
+    :required="true"
+  />
 
-  <van-field v-model="form.gg_changeBeforeRecruitNumber" v-show-field="['gg_changeBeforeRecruitNumber', includeFields]" label="变更前需求招聘人数" placeholder="请输入" name="gg_changeBeforeRecruitNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.gg_changeBeforeRecruitNumber"
+    v-show-field="['gg_changeBeforeRecruitNumber', includeFields]"
+    label="变更前需求招聘人数"
+    placeholder="请输入"
+    name="gg_changeBeforeRecruitNumber"
+    :rules="computedRules.gg_changeBeforeRecruitNumber"
+  />
 
-  <van-field v-model="form.gg_changeAfterRecruitNumber" v-show-field="['gg_changeAfterRecruitNumber', includeFields]" label="变更后实际需求招聘人数" placeholder="请输入" name="gg_changeAfterRecruitNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.gg_changeAfterRecruitNumber"
+    v-show-field="['gg_changeAfterRecruitNumber', includeFields]"
+    label="变更后实际需求招聘人数"
+    placeholder="请输入"
+    name="gg_changeAfterRecruitNumber"
+    :rules="computedRules.gg_changeAfterRecruitNumber"
+  />
 
-  <!-- <van-field v-model="form.gg_changeBeforeSalaryRange" v-show-field="['gg_changeBeforeSalaryRange', includeFields]" label="变更前薪资范围" placeholder="请输入" name="gg_changeBeforeSalaryRange" input-align="left" />
+  <!-- <van-field v-model="form.gg_changeBeforeSalaryRange" v-show-field="['gg_changeBeforeSalaryRange', includeFields]" label="变更前薪资范围" placeholder="请输入" name="gg_changeBeforeSalaryRange" :rules="computedRules.gg_deptId" />
 
-    <van-field v-model="form.gg_changeAfterSalaryRange" v-show-field="['gg_changeAfterSalaryRange', includeFields]" label="变更后薪资范围" placeholder="请输入" name="gg_changeAfterSalaryRange" input-align="left" /> -->
+    <van-field v-model="form.gg_changeAfterSalaryRange" v-show-field="['gg_changeAfterSalaryRange', includeFields]" label="变更后薪资范围" placeholder="请输入" name="gg_changeAfterSalaryRange" :rules="computedRules.gg_deptId" /> -->
 
-  <van-field v-model="form.gg_fixedNumber" v-show-field="['gg_fixedNumber', includeFields]" label="现项目部定员数" placeholder="请输入" name="gg_fixedNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.gg_fixedNumber"
+    v-show-field="['gg_fixedNumber', includeFields]"
+    label="现项目部定员数"
+    placeholder="请输入"
+    name="gg_fixedNumber"
+    :rules="computedRules.gg_fixedNumber"
+  />
 
-  <van-field v-model="form.gg_changeAfterFixedNumber" v-show-field="['gg_changeAfterFixedNumber', includeFields]" label="变更后项目部定员数" placeholder="请输入" name="gg_changeAfterFixedNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.gg_changeAfterFixedNumber"
+    v-show-field="['gg_changeAfterFixedNumber', includeFields]"
+    label="变更后项目部定员数"
+    placeholder="请输入"
+    name="gg_changeAfterFixedNumber"
+    :rules="computedRules.gg_changeAfterFixedNumber"
+  />
 
-  <van-field v-model="form.gg_changeAfterNumberPost" v-show-field="['gg_changeAfterNumberPost', includeFields]" label="变更后需招聘人数及岗位" placeholder="请输入" name="gg_changeAfterNumberPost" input-align="left" />
+  <van-field
+    v-model.trim="form.gg_changeAfterNumberPost"
+    v-show-field="['gg_changeAfterNumberPost', includeFields]"
+    label="变更后需招聘人数及岗位"
+    placeholder="请输入"
+    name="gg_changeAfterNumberPost"
+    :rules="computedRules.gg_changeAfterNumberPost"
+  />
 
-  <van-field v-model="form.gg_effectiveDate" v-show-field="['gg_effectiveDate', includeFields]" name="gg_effectiveDate" label="变更生效日期" input-align="left">
-    <template #input>
-      {{ parseTime(form.gg_effectiveDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker
+    v-model="form.gg_effectiveDate"
+    v-show-field="['gg_effectiveDate', includeFields]"
+    name="gg_effectiveDate"
+    label="变更生效日期"
+    :rules="computedRules.gg_effectiveDate"
+  />
 
-  <van-field v-model="form.gg_additionalBudgetExpenses" v-show-field="['gg_additionalBudgetExpenses', includeFields]" name="gg_additionalBudgetExpenses" label="预算费用追加金额(元)" placeholder="请输入" input-align="left" />
+  <van-field-number
+    v-model.number="form.gg_additionalBudgetExpenses"
+    v-show-field="['gg_additionalBudgetExpenses', includeFields]"
+    name="gg_additionalBudgetExpenses"
+    label="预算费用追加金额(元)"
+    placeholder="请输入"
+    :rules="computedRules.gg_additionalBudgetExpenses"
+  />
 
-  <van-field v-model="form.gg_changeReason" v-show-field="['gg_changeReason', includeFields]" label="变更原因" placeholder="请输入" name="gg_changeAfterFixedNumber" input-align="left" />
+  <van-field
+    v-model.trim="form.gg_changeReason"
+    v-show-field="['gg_changeReason', includeFields]"
+    label="变更原因"
+    placeholder="请输入"
+    name="gg_changeAfterFixedNumber"
+    :rules="computedRules.gg_deptId"
+  />
 
-  <van-field v-model="form.gg_content" v-show-field="['gg_content', includeFields]" label="招聘详细内容" placeholder="请输入" name="gg_content" input-align="left" />
+  <van-field
+    v-model="form.gg_content"
+    v-show-field="['gg_content', includeFields]"
+    label="招聘详细内容"
+    placeholder="请输入"
+    name="gg_content"
+    :rules="computedRules.gg_content"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
+import type { FormInstance } from 'vant'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -68,10 +164,19 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
+const Form = inject<Ref<FormInstance>>('Form')
+
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 申请类型切换
+function onTypeChange() {
+  Form?.value?.resetValidation(['gg_changeDetails'])
+}
 </script>

@@ -1,27 +1,37 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <van-field v-if="form.no === 'PXFY'" v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.certificateType" dict-type="oa_project_daily_fee_certificate_type" multiple />
-    </template>
-  </van-field>
+  <DictPicker
+    v-if="form.no === 'PXFY'"
+    v-model="form.certificateType"
+    v-show-field="['certificateType', includeFields]"
+    label="证件类型"
+    name="certificateType"
+    dict-type="oa_project_daily_fee_certificate_type"
+    :multiple="true"
+    :rules="computedRules.certificateType"
+    :required="true"
+  />
 
-  <van-field v-show-field="['c_startDate', includeFields]" label="开始时间" name="c_startDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.c_startDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker
+    v-model="form.c_startDate"
+    v-show-field="['c_startDate', includeFields]"
+    name="c_startDate"
+    label="开始时间"
+    :rules="computedRules.c_startDate"
+  />
 
-  <van-field v-show-field="['c_endDate', includeFields]" label="结束时间" name="c_endDate" input-align="left">
-    <template #input>
-      {{ parseTime(form.c_endDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+  <DatePicker
+    v-model="form.c_endDate"
+    v-show-field="['c_endDate', includeFields]"
+    name="c_endDate"
+    label="结束时间"
+    :rules="computedRules.c_endDate"
+  />
 
-  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" input-align="left" />
+  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" :rules="computedRules.f_applyNumber" />
 
-    <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" input-align="left" /> -->
+    <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" :rules="computedRules.f_applyNumber" /> -->
 
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>
@@ -44,6 +54,8 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')

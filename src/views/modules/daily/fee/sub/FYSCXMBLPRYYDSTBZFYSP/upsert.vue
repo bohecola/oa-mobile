@@ -1,6 +1,13 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
-  <van-field v-model="form.f_applyNumber" v-show-field="['f_applyNumber', includeFields]" label="申请人数" placeholder="请输入" name="f_applyNumber" input-align="left" />
+  <van-field-number
+    v-model.number="form.f_applyNumber"
+    v-show-field="['f_applyNumber', includeFields]"
+    label="申请人数"
+    placeholder="请输入"
+    name="f_applyNumber"
+    :rules="computedRules.f_applyNumber"
+  />
 
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>
@@ -21,6 +28,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyFeeForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')

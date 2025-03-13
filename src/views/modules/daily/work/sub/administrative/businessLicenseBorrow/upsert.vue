@@ -4,9 +4,10 @@
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
-    input-align="left"
     dict-type="oa_file_type"
     :multiple="true"
+    :rules="computedRules.fileType"
+    :required="true"
   />
 
   <DictPicker
@@ -14,9 +15,10 @@
     v-show-field="['fileUseType', includeFields]"
     label="使用方式"
     name="fileUseType"
-    input-align="left"
     dict-type="oa_file_use_type"
     :multiple="true"
+    :rules="computedRules.fileUseType"
+    :required="true"
   />
 
   <BaseDetail :include-fields="includeFields" />
@@ -41,6 +43,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

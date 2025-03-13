@@ -14,21 +14,38 @@
       </el-col>
     </el-row> -->
 
-  <van-field v-show-field="['cc_socialSecurityProcessingCategory', includeFields]" name="cc_socialSecurityProcessingCategory" label="社保办理类别" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.cc_socialSecurityProcessingCategory" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type" />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.cc_socialSecurityProcessingCategory"
+    v-show-field="['cc_socialSecurityProcessingCategory', includeFields]"
+    label="社保办理类别"
+    name="cc_socialSecurityProcessingCategory"
+    dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type"
+    :multiple="true"
+    :rules="computedRules.cc_socialSecurityProcessingCategory"
+  />
 
-  <van-field v-show-field="['cc_insuranceType', includeFields]" name="cc_insuranceType" label="险种" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.cc_insuranceType" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type" :multiple="true" />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.cc_insuranceType"
+    v-show-field="['cc_insuranceType', includeFields]"
+    label="险种"
+    name="cc_insuranceType"
+    dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type"
+    :multiple="true"
+    :rules="computedRules.cc_insuranceType"
+  />
 
-  <DatePicker v-model="form.cc_effectiveMonth" v-show-field="['cc_effectiveMonth', includeFields]" name="cc_effectiveMonth" label="生效月份" :columns-type="['year', 'month']" />
+  <DatePicker
+    v-model="form.cc_effectiveMonth"
+    v-show-field="['cc_effectiveMonth', includeFields]"
+    name="cc_effectiveMonth"
+    label="生效月份"
+    :columns-type="['year', 'month']"
+  />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseDetail
+    :include-fields="includeFields"
+    :rules="computedRules.cc_insuranceType"
+  />
 </template>
 
 <script setup lang="ts">
@@ -49,7 +66,13 @@ const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 附件必选
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+updateRuleRequired('ossIdList', true)
 </script>

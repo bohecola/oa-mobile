@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['x_deptId', includeFields]" name="x_deptId" label="部门/项目部" input-align="left">
+  <van-field v-show-field="['x_deptId', includeFields]" name="x_deptId" label="部门/项目部">
     <template #input>
       <DeptSelect v-model="form.x_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包员工" input-align="left">
+  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包员工">
     <template #input>
       <UserSelect v-model="form.x_userId" :multiple="true" readonly />
     </template>
@@ -18,11 +18,23 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <DatePicker v-model="form.x_contractSigningTime" v-show-field="['x_contractSigningTime', includeFields]" name="x_contractSigningTime" label="合同签订时间" readonly />
+  <DatePicker
+    v-model="form.x_contractSigningTime"
+    v-show-field="['x_contractSigningTime', includeFields]"
+    name="x_contractSigningTime"
+    label="合同签订时间"
+    readonly
+  />
 
-  <DatePicker v-model="form.x_contractEndTime" v-show-field="['x_contractEndTime', includeFields]" name="x_contractEndTime" label="合同到期时间" readonly />
+  <DatePicker
+    v-model="form.x_contractEndTime"
+    v-show-field="['x_contractEndTime', includeFields]"
+    name="x_contractEndTime"
+    label="合同到期时间"
+    readonly
+  />
 
-  <van-field v-show-field="['x_isRetirementAge', includeFields]" name="x_isRetirementAge" label="是否退休年龄" input-align="left">
+  <van-field v-show-field="['x_isRetirementAge', includeFields]" name="x_isRetirementAge" label="是否退休年龄">
     <template #input>
       <YesNoSwitch v-model="form.x_isRetirementAge" readonly />
     </template>

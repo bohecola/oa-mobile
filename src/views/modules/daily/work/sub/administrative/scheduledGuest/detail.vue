@@ -1,5 +1,9 @@
 <template>
-  <van-field v-show-field="['nn_isReservationKey', includeFields]" label="预约会议室钥匙" name="nn_isReservationKey" input-align="left">
+  <van-field
+    v-show-field="['nn_isReservationKey', includeFields]"
+    label="预约会议室钥匙"
+    name="nn_isReservationKey"
+  >
     <template #input>
       <YesNoSwitch v-model="form.nn_isReservationKey" readonly />
     </template>

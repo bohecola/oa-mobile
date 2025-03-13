@@ -1,11 +1,11 @@
 <template>
-  <van-field v-show-field="['bb_userId', includeFields]" name="bb_userId" label="调薪人员" input-align="left">
+  <van-field v-show-field="['bb_userId', includeFields]" name="bb_userId" label="调薪人员">
     <template #input>
       <UserSelect v-model="form.bb_userId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['customizeApprover', includeFields]" name="customizeApprover" label="审核人" input-align="left">
+  <van-field v-show-field="['customizeApprover', includeFields]" name="customizeApprover" label="审核人">
     <template #input>
       <UserSelect v-model="form.customizeApprover" readonly />
     </template>
@@ -13,7 +13,7 @@
 
   <DatePicker v-model="form.bb_effectiveDate" v-show-field="['bb_effectiveDate', includeFields]" name="bb_effectiveDate" label="调薪生效日期" readonly />
 
-  <van-field v-show-field="['bb_changeSalaryAfter', includeFields]" name="bb_changeSalaryAfter" label="调薪后基本工资" input-align="left">
+  <van-field v-show-field="['bb_changeSalaryAfter', includeFields]" name="bb_changeSalaryAfter" label="调薪后基本工资">
     <template #input>
       {{ form.bb_changeSalaryAfter }}
       <span v-if="!isNil(form.bb_changeSalaryAfter)" class="ml-3 text-red-400 ">{{ toCnMoney(form.bb_changeSalaryAfter) }}</span>

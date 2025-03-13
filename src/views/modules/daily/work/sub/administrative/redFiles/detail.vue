@@ -1,5 +1,10 @@
 <template>
-  <van-field v-show-field="['isPersonnelTransfer', includeFields]" label="是否涉及人员任命、调整" name="isPersonnelTransfer" input-align="left" label-width="170">
+  <van-field
+    v-show-field="['isPersonnelTransfer', includeFields]"
+    label="是否涉及人员任命、调整"
+    name="isPersonnelTransfer"
+    label-width="170"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isPersonnelTransfer" readonly />
     </template>

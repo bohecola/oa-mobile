@@ -1,5 +1,10 @@
 <template>
-  <van-field v-show-field="['nn_isReservationKey', includeFields]" label="预约会议室钥匙" name="nn_isReservationKey" input-align="left">
+  <van-field
+    v-show-field="['nn_isReservationKey', includeFields]"
+    label="预约会议室钥匙"
+    name="nn_isReservationKey"
+    :rules="computedRules.nn_isReservationKey"
+  >
     <template #input>
       <YesNoSwitch v-model="form.nn_isReservationKey" />
     </template>
@@ -25,6 +30,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

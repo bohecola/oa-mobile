@@ -8,8 +8,8 @@
 
     <!-- 专员确认节点 -->
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
+      <upsert :include-fields="['gg_recruitmentNo', 'gg_additionalBudgetExpenses']" />
       <detail :include-fields="commissionerConfirmFields" />
-      <detail :include-fields="['gg_recruitmentNo', 'gg_additionalBudgetExpenses']" />
       <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 

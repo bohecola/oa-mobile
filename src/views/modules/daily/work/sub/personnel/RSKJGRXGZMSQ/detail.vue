@@ -7,25 +7,28 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['l_userType', includeFields]" label="人员类别" name="l_userType" input-align="left">
+  <van-field v-show-field="['l_userType', includeFields]" label="人员类别" name="l_userType">
     <template #input>
       {{ form.l_userType }}
     </template>
   </van-field>
+  <DictPicker
+    v-model="form.l_proveType"
+    v-show-field="['l_proveType', includeFields]"
+    label="证明类别"
+    name="l_proveType"
+    dict-type="oa_daily_work_rskjgrxgzmsq_prove_type"
+    :multiple="false"
+    :readonly="true"
+  />
 
-  <van-field v-show-field="['l_proveType', includeFields]" label="证明类别" name="l_proveType" input-align="left">
-    <template #input>
-      <dict-select v-model="form.l_proveType" dict-type="oa_daily_work_rskjgrxgzmsq_prove_type" readonly />
-    </template>
-  </van-field>
-
-  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印" name="isUseSeal" input-align="left">
+  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印" name="isUseSeal">
     <template #input>
       <YesNoSwitch v-model="form.isUseSeal" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" input-align="left">
+  <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType">
     <template #input>
       <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" readonly :is-filter-use-seal="false" />
     </template>

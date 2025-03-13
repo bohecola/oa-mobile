@@ -4,7 +4,6 @@
     v-show-field="['administrationFileType', includeFields]"
     label="申请资料"
     name="administrationFileType"
-    input-align="left"
     dict-type="oa_administration_file_type"
     :multiple="true"
     :readonly="true"
@@ -15,13 +14,17 @@
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
-    input-align="left"
     dict-type="oa_file_type"
     :multiple="true"
     :readonly="true"
   />
 
-  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印" name="isUseSeal" input-align="left">
+  <van-field
+    v-show-field="['isUseSeal', includeFields]"
+    label="是否用印"
+    name="isUseSeal"
+    input-align="left"
+  >
     <template #input>
       <YesNoSwitch v-model="form.isUseSeal" readonly />
     </template>

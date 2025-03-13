@@ -14,19 +14,34 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['cc_socialSecurityProcessingCategory', includeFields]" name="cc_socialSecurityProcessingCategory" label="社保办理类别" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.cc_socialSecurityProcessingCategory" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.cc_socialSecurityProcessingCategory"
+    v-show-field="['cc_socialSecurityProcessingCategory', includeFields]"
+    label="社保办理类别"
+    name="cc_socialSecurityProcessingCategory"
+    dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type"
+    :multiple="true"
+    :readonly="true"
+  />
 
-  <van-field v-show-field="['cc_insuranceType', includeFields]" name="cc_insuranceType" label="险种" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.cc_insuranceType" dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type" :multiple="true" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.cc_insuranceType"
+    v-show-field="['cc_insuranceType', includeFields]"
+    label="险种"
+    name="cc_insuranceType"
+    dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type"
+    :multiple="true"
+    :readonly="true"
+  />
 
-  <DatePicker v-model="form.cc_effectiveMonth" v-show-field="['cc_effectiveMonth', includeFields]" name="cc_effectiveMonth" label="生效月份" :columns-type="['year', 'month']" readonly />
+  <DatePicker
+    v-model="form.cc_effectiveMonth"
+    v-show-field="['cc_effectiveMonth', includeFields]"
+    name="cc_effectiveMonth"
+    label="生效月份"
+    :columns-type="['year', 'month']"
+    readonly
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

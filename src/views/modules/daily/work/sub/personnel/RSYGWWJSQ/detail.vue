@@ -7,15 +7,26 @@
     </el-col>
   </el-row> -->
 
-  <DatePicker v-model="form.n_mounth" v-show-field="['n_mounth', includeFields]" name="n_mounth" label="申请月份" :columns-type="['year', 'month']" readonly />
+  <DatePicker
+    v-model="form.n_mounth"
+    v-show-field="['n_mounth', includeFields]"
+    name="n_mounth"
+    label="申请月份"
+    :columns-type="['year', 'month']"
+    readonly
+  />
 
-  <van-field v-show-field="['n_giftGoldCategory', includeFields]" name="n_giftGoldCategory" label="礼（慰问）金类别" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.n_giftGoldCategory" dict-type="oa_daily_work_rsygwwjsq_gift_gold_category" multiple readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.n_giftGoldCategory"
+    v-show-field="['n_giftGoldCategory', includeFields]"
+    label="礼（慰问）金类别"
+    name="n_giftGoldCategory"
+    dict-type="oa_daily_work_rsygwwjsq_gift_gold_category"
+    :multiple="true"
+    :readonly="true"
+  />
 
-  <van-field v-show-field="['n_amount', includeFields]" name="n_amount" label="本月礼（慰问）金合计" input-align="left">
+  <van-field v-show-field="['n_amount', includeFields]" name="n_amount" label="本月礼（慰问）金合计">
     <template #input>
       {{ form.n_amount }}
       <span v-if="!isNil(form.n_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.n_amount) }}</span>

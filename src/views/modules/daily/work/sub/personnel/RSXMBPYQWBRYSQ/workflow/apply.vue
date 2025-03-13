@@ -7,6 +7,7 @@
     </div>
 
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
+      <upsert :include-fields="['k_userType']" />
       <detail :include-fields="detailFields" />
       <!-- <detail :include-fields="['k_userType']" /> -->
       <detail :include-fields="['reason', 'ossIdList']" />
@@ -27,7 +28,6 @@ import { filterTruthyKeys } from '@/utils'
 
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
-
 const applyFields = ref(
   filterTruthyKeys<DailyWorkForm>({
     k_deptId: true,

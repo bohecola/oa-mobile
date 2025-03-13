@@ -1,5 +1,11 @@
 <template>
-  <van-field v-model="form.oo_evacuationMaterialPlan" v-show-field="['oo_evacuationMaterialPlan', includeFields]" label="撤场物资处理方案" name="oo_evacuationMaterialPlan" input-align="left" />
+  <van-field
+    v-model="form.oo_evacuationMaterialPlan"
+    v-show-field="['oo_evacuationMaterialPlan', includeFields]"
+    label="撤场物资处理方案"
+    name="oo_evacuationMaterialPlan"
+    readonly
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

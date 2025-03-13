@@ -1,16 +1,31 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <van-field v-model="form.d_articleName" v-show-field="['d_articleName', includeFields]" label="投稿名称" placeholder="请输入" name="d_articleName" input-align="left" />
+  <van-field
+    v-model="form.d_articleName"
+    v-show-field="['d_articleName', includeFields]"
+    label="投稿名称"
+    placeholder="请输入"
+    name="d_articleName"
+    :rules="computedRules.d_articleName"
+  />
 
-  <van-field v-show-field="['d_articleDetail', includeFields]" type="textarea" rows="2" label="投稿详情" name="d_articleDetail" input-align="left" />
+  <van-field
+    v-show-field="['d_articleDetail', includeFields]"
+    type="textarea"
+    rows="2"
+    autozize
+    label="投稿详情"
+    name="d_articleDetail"
+    :rules="computedRules.d_articleDetail"
+  />
 
   <van-field-number
     v-model.number="form.d_rewardAmount"
     v-show-field="['d_rewardAmount', includeFields]"
     label="奖励金额"
     name="d_rewardAmount"
-    :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+    :rules="computedRules.d_rewardAmount"
     clearable
   />
 
@@ -34,6 +49,8 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
+
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')

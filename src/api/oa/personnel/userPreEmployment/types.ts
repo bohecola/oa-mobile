@@ -45,6 +45,11 @@ export interface UserPreEmploymentVO {
   sex: string
 
   /**
+   * 年龄
+   */
+  age: number
+
+  /**
    * 手机号码
    */
   phonenumber: string
@@ -52,7 +57,7 @@ export interface UserPreEmploymentVO {
   /**
    * 持证情况
    */
-  certificates: string[]
+  certificates: string
 
   /**
    * 面试形式(现场面试、视频面试)

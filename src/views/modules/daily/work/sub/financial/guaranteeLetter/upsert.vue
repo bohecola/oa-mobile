@@ -4,12 +4,19 @@
     v-show-field="['contractCategory', includeFields]"
     label="销售合同类别"
     name="contractCategory"
-    input-align="left"
     dict-type="oa_contract_category_in"
-    component="radio"
+    :rules="computedRules.contractCategory"
+    :required="true"
   />
 
-  <van-field v-model="form.jj_type" v-show-field="['jj_type', includeFields]" label="业务类型" name="jj_type" input-align="left" />
+  <van-field
+    v-model="form.jj_type"
+    v-show-field="['jj_type', includeFields]"
+    label="业务类型"
+    placeholder="请输入履约保函、投标保函、预付款保函、工程维修保函、质量保函、付款保函"
+    name="jj_type"
+    :rules="computedRules.jj_type"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>
@@ -29,12 +36,11 @@ const props = withDefaults(
   },
 )
 
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_contract_category_in } = toRefs<any>(proxy?.useDict('oa_contract_category_in'))
-
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

@@ -6,13 +6,23 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <DatePicker v-model="form.c_useDate" v-show-field="['c_useDate', includeFields]" name="c_useDate" label="用印日期" readonly />
+  <DatePicker
+    v-model="form.c_useDate"
+    v-show-field="['c_useDate', includeFields]"
+    name="c_useDate"
+    label="用印日期"
+    readonly
+  />
 
-  <van-field v-show-field="['c_sealType', includeFields]" label="用印类型" name="c_sealType" input-align="left">
-    <template #input>
-      <dict-select v-model="form.c_sealType" component="checkbox" dict-type="oa_daily_work_rsghyysp_seal_type" multiple readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.c_sealType"
+    v-show-field="['c_sealType', includeFields]"
+    label="用印类型"
+    name="c_sealType"
+    dict-type="oa_daily_work_rsghyysp_seal_type"
+    :multiple="true"
+    :readonly="true"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

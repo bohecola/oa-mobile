@@ -7,20 +7,32 @@
       </el-col>
     </el-row> -->
 
-  <DatePicker v-model="form.n_mounth" v-show-field="['n_mounth', includeFields]" name="n_mounth" label="申请月份" :columns-type="['year', 'month']" />
+  <DatePicker
+    v-model="form.n_mounth"
+    v-show-field="['n_mounth', includeFields]"
+    name="n_mounth"
+    label="申请月份"
+    :columns-type="['year', 'month']"
+    :rules="computedRules.n_mounth"
+  />
 
-  <van-field v-show-field="['n_giftGoldCategory', includeFields]" name="n_giftGoldCategory" label="礼（慰问）金类别" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.n_giftGoldCategory" dict-type="oa_daily_work_rsygwwjsq_gift_gold_category" multiple />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.n_giftGoldCategory"
+    v-show-field="['n_giftGoldCategory', includeFields]"
+    label="礼（慰问）金类别"
+    name="n_giftGoldCategory"
+    dict-type="oa_daily_work_rsygwwjsq_gift_gold_category"
+    :multiple="true"
+    :rules="computedRules.n_giftGoldCategory"
+    :required="true"
+  />
 
   <van-field-number
     v-model.number="form.n_amount"
     v-show-field="['n_amount', includeFields]"
     label="本月礼（慰问）金合计"
     name="n_amount"
-    :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+    :rules="computedRules.n_amount"
     clearable
   />
 
@@ -46,7 +58,13 @@ const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 附件必选
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+updateRuleRequired('ossIdList', true)
 </script>

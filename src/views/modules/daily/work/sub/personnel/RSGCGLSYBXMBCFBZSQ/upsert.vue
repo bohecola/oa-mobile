@@ -7,7 +7,7 @@
       </el-col>
     </el-row> -->
 
-  <van-field v-show-field="['p_deptId', includeFields]" label="项目部" name="p_deptId" input-align="left">
+  <van-field v-show-field="['p_deptId', includeFields]" label="项目部" name="p_deptId" :rules="computedRules.p_deptId">
     <template #input>
       <DeptSelect v-model="form.p_deptId" />
     </template>
@@ -18,7 +18,7 @@
     v-show-field="['p_amount', includeFields]"
     label="餐费补助总金额（元）"
     name="p_amount"
-    :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+    :rules="computedRules.p_amount"
     clearable
   />
 
@@ -44,7 +44,13 @@ const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 附件必选
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+updateRuleRequired('ossIdList', true)
 </script>

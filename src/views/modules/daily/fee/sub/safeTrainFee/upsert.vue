@@ -1,9 +1,14 @@
 <template>
-  <van-field v-show-field="['certificateType', includeFields]" label="证件类型" name="certificateType" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.certificateType" dict-type="oa_security_train_certificate_type" multiple />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.certificateType"
+    v-show-field="['certificateType', includeFields]"
+    label="证件类型"
+    name="certificateType"
+    dict-type="oa_security_train_certificate_type"
+    :multiple="true"
+    :rules="computedRules.certificateType"
+    :required="true"
+  />
 
   <FeeBaseDetail :include-fields="includeFields" />
 </template>
@@ -26,6 +31,8 @@ const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
+
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')

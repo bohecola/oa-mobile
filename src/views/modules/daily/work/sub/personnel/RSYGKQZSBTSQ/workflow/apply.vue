@@ -3,12 +3,12 @@
   <template v-else>
     <!-- 员工考取证书补贴申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <upsert />
+      <upsert :include-fields="applyFields" />
     </div>
 
     <!-- 专员确认节点 -->
     <div v-else-if="taskDefinitionKey === 'Activity_0y4z19l'">
-      <detail :include-fields="['yy_subsidyStandards']" />
+      <upsert :include-fields="['yy_subsidyStandards']" />
       <detail :include-fields="applyFields" />
     </div>
     <!-- 其他审批通用节点 -->

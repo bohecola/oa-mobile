@@ -1,33 +1,37 @@
 <template>
-  <van-field v-show-field="['y_type', includeFields]" label="申请注册/使用证书类型" name="y_type" input-align="left">
+  <van-field v-show-field="['y_type', includeFields]" label="申请注册/使用证书类型" name="y_type">
     <template #input>
       <DictSelect v-model="form.y_type" dict-type="oa_document_type" :filter-fn="(item) => !['0', '1', '2', '3'].includes(item.value)" readonly />
     </template>
   </van-field>
 
-  <van-field v-model="form.y_name" v-show-field="['y_name', includeFields]" label="申请注册/使用证书名称" name="y_name" input-align="left" />
+  <van-field v-model="form.y_name" v-show-field="['y_name', includeFields]" label="申请注册/使用证书名称" name="y_name" />
 
-  <van-field v-show-field="['y_certificateLevel', includeFields]" label="证书等级" name="y_certificateLevel" input-align="left">
+  <van-field v-show-field="['y_certificateLevel', includeFields]" label="证书等级" name="y_certificateLevel">
     <template #input>
       <DictSelect v-model="form.y_certificateLevel" dict-type="oa_certificate_level" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['y_otherCompanyUseStatus', includeFields]" label="证书目前是否正在其他公司使用" name="y_otherCompanyUseStatus" input-align="left">
+  <van-field v-show-field="['y_otherCompanyUseStatus', includeFields]" label="证书目前是否正在其他公司使用" name="y_otherCompanyUseStatus">
     <template #input>
       <YesNoSwitch v-model="form.y_otherCompanyUseStatus" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['y_certificateStatus', includeFields]" label="证书状态" name="y_certificateStatus" input-align="left">
-    <template #input>
-      <DictSelect v-model="form.y_certificateStatus" dict-type="sys_normal_disable" readonly />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.y_certificateStatus"
+    v-show-field="['y_certificateStatus', includeFields]"
+    label="证书状态"
+    name="y_certificateStatus"
+    dict-type="sys_normal_disable"
+    :multiple="false"
+    :readonly="true"
+  />
 
-  <van-field v-model="form.y_speciality" v-show-field="['y_speciality', includeFields]" label="专业名称" name="y_speciality" input-align="left" />
+  <van-field v-model="form.y_speciality" v-show-field="['y_speciality', includeFields]" label="专业名称" name="y_speciality" readonly />
 
-  <van-field v-model="form.y_no" v-show-field="['y_no', includeFields]" label="编号" name="y_no" input-align="left" />
+  <van-field v-model="form.y_no" v-show-field="['y_no', includeFields]" label="编号" name="y_no" readonly />
 
   <DatePicker v-model="form.y_issuanceDate" v-show-field="['y_issuanceDate', includeFields]" name="y_issuanceDate" label="发证时间" readonly />
 
@@ -37,9 +41,9 @@
 
   <DatePicker v-model="form.y_endDate" v-show-field="['y_endDate', includeFields]" name="y_endDate" label="结束日期" readonly />
 
-  <van-field v-model="form.y_unit" v-show-field="['y_unit', includeFields]" label="发证单位" name="y_unit" input-align="left" />
+  <van-field v-model="form.y_unit" v-show-field="['y_unit', includeFields]" label="发证单位" name="y_unit" readonly />
 
-  <van-field v-show-field="['y_isTraining', includeFields]" label="是否参与培训" name="y_isTraining" input-align="left">
+  <van-field v-show-field="['y_isTraining', includeFields]" label="是否参与培训" name="y_isTraining">
     <template #input>
       <YesNoSwitch v-model="form.y_isTraining" readonly />
     </template>

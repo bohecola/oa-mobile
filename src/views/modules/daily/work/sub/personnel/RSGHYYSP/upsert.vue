@@ -7,13 +7,23 @@
       </el-col>
     </el-row> -->
 
-  <DatePicker v-model="form.c_useDate" v-show-field="['c_useDate', includeFields]" name="c_useDate" label="用印日期" />
+  <DatePicker
+    v-model="form.c_useDate"
+    v-show-field="['c_useDate', includeFields]"
+    name="c_useDate"
+    label="用印日期"
+    :rules="computedRules.c_useDate"
+  />
 
-  <van-field v-show-field="['c_sealType', includeFields]" label="用印类型" name="c_sealType" input-align="left">
-    <template #input>
-      <dict-select v-model="form.c_sealType" component="checkbox" dict-type="oa_daily_work_rsghyysp_seal_type" multiple />
-    </template>
-  </van-field>
+  <DictPicker
+    v-model="form.c_sealType"
+    v-show-field="['c_sealType', includeFields]"
+    label="用印类型"
+    name="c_sealType"
+    dict-type="oa_daily_work_rsghyysp_seal_type"
+    :multiple="true"
+    :rules="computedRules.c_sealType"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>
@@ -36,7 +46,13 @@ const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 附件必选
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+updateRuleRequired('ossIdList', true)
 </script>

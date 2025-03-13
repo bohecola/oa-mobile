@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover" input-align="left">
+  <van-field v-show-field="['customizeApprover', includeFields]" label="审核人" name="customizeApprover">
     <template #input>
       <UserSelect v-model="form.customizeApprover" multiple readonly />
     </template>
