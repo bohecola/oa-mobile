@@ -1,5 +1,5 @@
 <template>
-  <van-field v-show-field="['r_deptId', includeFields]" name="z_deptId" label="部门/项目部所属部门" input-align="left">
+  <van-field v-show-field="['r_deptId', includeFields]" name="z_deptId" label="所属部门/项目部" input-align="left">
     <template #input>
       <!-- TODO 筛选部门 -->
       <DeptSelect v-model="form.r_deptId" readonly />
