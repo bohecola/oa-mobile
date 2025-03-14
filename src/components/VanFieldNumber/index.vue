@@ -18,7 +18,7 @@ function formatter(value: string) {
   const firstDotIndex = value.indexOf('.')
   if (firstDotIndex !== -1) {
     value = value.slice(0, firstDotIndex + 1)
-      + value.slice(firstDotIndex + 1).replace(/\./g, '')
+    + value.slice(firstDotIndex + 1).replace(/\./g, '')
   }
 
   // 4. 如果存在小数点，限制小数点后最多两位
@@ -39,7 +39,6 @@ function formatter(value: string) {
     placeholder="请输入"
     :min="0"
     :max="Big(FinanceEnum.MAX_AMOUNT_STRING).toNumber()"
-
     :formatter="formatter"
     v-bind="attrs"
   >

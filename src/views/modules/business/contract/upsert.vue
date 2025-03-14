@@ -419,7 +419,7 @@
 
 <script setup lang='ts'>
 import Big from 'big.js'
-import { isNil } from 'lodash-es'
+import { isNil, isNumber } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect/index.vue'
@@ -547,7 +547,7 @@ watch(
   () => form.value.taxRate,
   (val) => {
     const amount = val.reduce<Big.Big>((prev, curr) => {
-      if (!isNil(curr.amount) && curr.amount as any !== '') {
+      if (isNumber(curr.amount)) {
         return prev.add(Big(curr.amount))
       }
       return prev.add(0)

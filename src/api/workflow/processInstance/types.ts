@@ -8,6 +8,8 @@ export interface ProcessInstanceQuery extends PageQuery {
   key?: string
   startUserId?: string
   businessKey?: string
+  processDefinitionKey?: string
+  contractNo?: string
 }
 
 export interface ProcessInstanceVO extends BaseEntity {
@@ -26,6 +28,7 @@ export interface ProcessInstanceVO extends BaseEntity {
   businessStatus: string
   businessStatusName: string
   taskVoList: TaskVO[]
+  tableName: string
 }
 
 export interface ActHiProcinstVO {

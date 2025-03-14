@@ -1,10 +1,10 @@
 <template>
   <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
     <van-swipe-cell v-for="row in list" :key="row.id">
-      <van-cell @click="handleView(row)">
+      <van-cell @click="handleOpen(row, 'view')">
         <!-- 标题 -->
         <template #title>
-          <span class="mr-2">{{ row.name }}</span>
+          <span class="mr-2">{{ (row as any).name }}</span>
         </template>
 
         <!-- 描述 -->
@@ -32,13 +32,18 @@
       <template #right>
         <van-button
           v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="danger" text="删除" class="h-full"
-          @click="handleDelete(row)"
+          square type="primary" text="修改" class="h-full"
+          @click="handleOpen(row, 'update')"
         />
         <van-button
           v-if="row.businessStatus === 'waiting'"
           square type="primary" text="撤销" class="h-full"
           @click="handleCancelProcessApply(row)"
+        />
+        <van-button
+          v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+          square type="danger" text="删除" class="h-full"
+          @click="handleDelete(row)"
         />
       </template>
     </van-swipe-cell>
@@ -106,7 +111,7 @@ const list = computed(() => {
   }, [])
 })
 
-function handleView(row: any) {
+function handleOpen(row: any, type: string) {
   const routerJumpVo = reactive<RouterJumpVo>({
     wfDefinitionConfigVo: row.wfDefinitionConfigVo,
     wfNodeConfigVo: row.wfNodeConfigVo,
@@ -114,7 +119,7 @@ function handleView(row: any) {
     businessStatus: row.businessStatus,
     taskId: '',
     processInstanceId: row.id,
-    type: 'view',
+    type,
   })
   workflowCommon.routerJump(routerJumpVo, proxy)
 }

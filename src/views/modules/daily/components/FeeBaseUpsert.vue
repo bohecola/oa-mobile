@@ -101,51 +101,56 @@
           </template>
         </van-field>
 
-        <van-field
-          :name="`itemList.${index}.amount`"
+        <van-field-number
+          v-model="item.amount"
           label="申请金额（元）"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].amount) }}
-          </template>
-        </van-field>
+          :name="`itemList.${index}.amount`"
+          :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+          clearable
+        />
       </TableCard>
     </template>
   </van-field>
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
+import type { FormInstance } from 'vant'
+import { isNil, isNumber } from 'lodash-es'
+import Big from 'big.js'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
-import BaseDetail from './BaseDetail.vue'
+import BaseUpsert from './BaseUpsert.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
 import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
-// import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'psId', 'deptId', 'contractNo', 'itemList', 'amount', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => defaultFields,
   },
 )
 
 const { user } = useStore()
 
+const Form = inject<Ref<FormInstance>>('Form')
 const form = inject<Ref<DailyFeeForm>>('form')
+const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
+
+// 依赖收集
+const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')
+trackFields(props.includeFields.filter(field => defaultFields.includes(field)))
 
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
+const vShowField = createFieldVisibilityDirective<DailyFeeForm>()
 
-// 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
-  const applyDeptId = (form.value as any)?.initiator?.deptId ?? user.info.deptId
+  const applyDeptId = (form.value as any)?.initiator?.deptId ?? form.value?.createDept ?? initiatorDeptId.value
 
   return {
     psId,
@@ -155,4 +160,74 @@ const PurchaseCategorySelectParams = computed(() => {
 
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')
+
+// 销售合同查询条件
+const contractQuery = computed(() => {
+  return { type: 'in', psId: form.value.psId }
+})
+
+function resetSubjectItemId() {
+  form.value.itemList.forEach((e) => {
+    e.subjectItemId = undefined
+    e.subjectItemDeptId = undefined
+    e.budgetAmount = undefined
+    e.applyingAmount = undefined
+    e.finishAmount = undefined
+    e.availableAmount = undefined
+  })
+}
+
+// 预算类型修改
+function onSubjectTypeChange() {
+  Form.value.resetValidation(['deptId', 'psId', 'contractId', 'contractNo'])
+  resetSubjectItemId()
+}
+
+// 部门修改
+function onDeptSelectChange() {
+  Form.value.resetValidation(['psId', 'contractId', 'contractNo'])
+  resetSubjectItemId()
+}
+
+// 预算修改
+function onProjectSubjectChange() {
+  Form.value.resetValidation(['contractId', 'contractNo'])
+  resetSubjectItemId()
+}
+
+// 金额计算
+watch(
+  () => form.value.itemList,
+  (val) => {
+    const amount = val
+      ?.reduce<Big.Big>((acc, curr) => {
+        if (isNumber(curr.amount)) {
+          return acc.add(curr.amount)
+        }
+
+        return acc.add(0)
+      }, Big(0))
+      .toNumber()
+
+    form.value.amount = amount
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+)
+</script>
+
+<script lang="ts">
+const defaultFields = [
+  'subjectType',
+  'deptId',
+  'psId',
+  'contractNo',
+  'itemList',
+  'amount',
+  'reason',
+  'receiptInfo',
+  'ossIdList',
+] as KeysOfArray<DailyFeeForm>
 </script>

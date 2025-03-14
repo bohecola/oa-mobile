@@ -149,6 +149,10 @@ const active = ref<'form' | 'record'>('form')
 const tempSaveLoading = ref(false)
 // 提交加载
 const submitLoading = ref(false)
+// 发起人部门ID
+const deptId = computed(() => props.entityVariables?.initiator.deptId)
+// 依赖提供
+provide('initiatorDeptId', deptId)
 
 // 按钮禁用
 const actionBtnDisabled = computed(() => active.value === 'record')
