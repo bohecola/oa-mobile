@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" />
 
   <DictPicker
     v-if="form.no === 'PXFY'"
@@ -10,7 +10,6 @@
     dict-type="oa_project_daily_fee_certificate_type"
     :multiple="true"
     :rules="computedRules.certificateType"
-    :required="true"
   />
 
   <DatePicker
@@ -33,11 +32,11 @@
 
     <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" :rules="computedRules.f_applyNumber" /> -->
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 

@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" />
 
   <!-- <el-row :gutter="20">
     <el-col v-show-field="['e_dailyWorkId', includeFields]" :span="24">
@@ -25,7 +25,6 @@
     dict-type="oa_daily_work_personnel_category"
     :multiple="false"
     :rules="computedRules.f_applyNumber"
-    :required="true"
   />
 
   <van-field
@@ -67,6 +66,7 @@
     v-model.number="form.e_purchaseInsuranceNumber"
     v-show-field="['e_purchaseInsuranceNumber', includeFields]"
     label="购买保险人数"
+    type="digit"
     name="e_purchaseInsuranceNumber"
     readonly
   />
@@ -78,6 +78,7 @@
     name="e_purchaseInsuranceCategory"
     dict-type="oa_daily_work_purchase_insurance_category"
     :multiple="false"
+    readonly
   />
 
   <van-field-number
@@ -189,17 +190,20 @@
     v-if="form.e_isBelong === 'N'"
     v-model="form.e_notBelongDeptPurchaseInsuranceSpecialReason"
     v-show-field="['e_notBelongDeptPurchaseInsuranceSpecialReason', includeFields]"
-    type="textarea"
-    rows="2"
     label="不属于该项目部人员购买保险原因"
     name="e_notBelongDeptPurchaseInsuranceSpecialReason"
-  />
+  >
+    <template #input>
+      <TextareaView :value="form.e_notBelongDeptPurchaseInsuranceSpecialReason" />
+    </template>
+  </van-field>
 
   <van-field
     v-model="form.e_insurancePeriod"
     v-show-field="['e_insurancePeriod', includeFields]"
     label="保险期限"
     name="e_insurancePeriod"
+    readonly
   />
 
   <van-field
@@ -208,6 +212,7 @@
     rows="2"
     label="购买保险原因"
     name="e_purchaseInsuranceReason"
+    readonly
   />
 
   <van-field
@@ -217,16 +222,18 @@
     rows="2"
     label="保险购买特殊说明"
     name="e_purchaseInsuranceSpecialExplain"
+    readonly
   />
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import { getDailyWorkByRelateConditionsBo } from '@/api/oa/daily/fee'
 
 const props = withDefaults(
   defineProps<{
@@ -252,7 +259,11 @@ const includeFields2 = computed(() => props.includeFields.filter(e => ['reason',
 const dailyWorkData = ref()
 
 // const getList = async () => {
-//   const res = await getDailyByNo('RSXMBTSSYBXGMSQ');
+// const params = {
+//   no: 'RSXMBTSSYBXGMSQ',
+//   status: '2',
+// }
+// const res = await getDailyWorkByRelateConditionsBo(params)
 //   dailyWorkData.value = res.data.map((e) => {
 //     const content = JSON.parse(e.contentJson);
 

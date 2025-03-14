@@ -35,7 +35,9 @@
   <van-field
     v-model.trim="form.ee_recipientsNumber"
     v-show-field="['ee_recipientsNumber', includeFields]"
-    label="发放人数" placeholder="请输入"
+    label="发放人数"
+    type="digit"
+    placeholder="请输入"
     name="ee_recipientsNumber"
     :rules="computedRules.ee_recipientsNumber"
   />
@@ -94,11 +96,11 @@
     :rules="computedRules.ee_distributionMethod"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

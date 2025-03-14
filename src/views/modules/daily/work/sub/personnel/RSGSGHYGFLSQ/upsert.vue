@@ -7,7 +7,7 @@
     dict-type="oa_daily_work_rsgsghygflsq_welfare_category"
     :multiple="false"
     :rules="computedRules.m_welfareCategory"
-    :required="true"
+    
   />
 
   <van-field-number
@@ -19,12 +19,12 @@
     clearable
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

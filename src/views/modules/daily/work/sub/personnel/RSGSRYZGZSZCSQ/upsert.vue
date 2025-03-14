@@ -49,7 +49,7 @@
     dict-type="sys_normal_disable"
     :multiple="false"
     :rules="computedRules.y_certificateStatus"
-    :required="true"
+    
   />
 
   <van-field
@@ -122,11 +122,11 @@
     </template>
   </van-field>
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

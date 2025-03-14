@@ -37,7 +37,7 @@
     dict-type="sys_user_sex"
     :multiple="false"
     :rules="computedRules.ff_sex"
-    :required="true"
+    
   />
 
   <DictPicker
@@ -48,7 +48,7 @@
     dict-type="ff_nation"
     :multiple="false"
     :rules="computedRules.ff_nation"
-    :required="true"
+    
   />
 
   <DictPicker
@@ -59,7 +59,7 @@
     dict-type="oa_education_type"
     :multiple="false"
     :rules="computedRules.ff_education"
-    :required="true"
+    
   />
 
   <DictPicker
@@ -70,7 +70,7 @@
     dict-type="oa_document_type"
     :multiple="true"
     :rules="computedRules.ff_certificates"
-    :required="true"
+    
   />
 
   <DatePicker
@@ -166,12 +166,12 @@
     </template>
   </van-field>
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import PreUserSelect from '@/views/modules/personnel/userEmployment/workflow/components/PreUserSelect.vue'

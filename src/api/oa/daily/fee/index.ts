@@ -1,5 +1,5 @@
 import type { AxiosPromise } from 'axios'
-import type { DailyFeeForm, DailyFeeQuery, DailyFeeVO } from '@/api/oa/daily/fee/types'
+import type { DailyByRelateConditionsQuery, DailyFeeForm, DailyFeeQuery, DailyFeeVO } from '@/api/oa/daily/fee/types'
 import request from '@/service/request'
 
 /**
@@ -59,5 +59,18 @@ export function delDailyFee(id: string | number | Array<string | number>) {
   return request({
     url: `/oa/daily/dailyFee/${id}`,
     method: 'delete',
+  })
+}
+
+/**
+ * 日常费用类型——项目部特殊商业保险购买申请——选择日常事务中<项目部特殊商业保险购买申请>流程审批通过的数据
+ * 日常事务类型——员工考取证书补贴申请——选择日常事务中<公司人员资格证书注册申请>流程审批通过的数据 no:编码、userId、statsh:'2'已完成
+ * @param query
+ */
+export function getDailyWorkByRelateConditionsBo(query?: DailyByRelateConditionsQuery) {
+  return request({
+    url: '/oa/daily/dailyWork/getDailyWorkByRelateConditionsBo',
+    method: 'get',
+    params: query,
   })
 }

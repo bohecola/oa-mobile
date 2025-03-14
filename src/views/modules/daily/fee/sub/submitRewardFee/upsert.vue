@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" />
 
   <van-field
     v-model="form.d_articleName"
@@ -29,11 +29,11 @@
     clearable
   />
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 

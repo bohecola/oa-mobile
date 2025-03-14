@@ -79,13 +79,13 @@
     :rules="computedRules.a_rewardAmount"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'

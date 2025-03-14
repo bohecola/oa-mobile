@@ -6,7 +6,7 @@
     name="contractCategory"
     dict-type="oa_contract_category_in"
     :rules="computedRules.contractCategory"
-    :required="true"
+    
   />
 
   <van-field
@@ -18,11 +18,11 @@
     :rules="computedRules.jj_type"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

@@ -29,7 +29,7 @@
     dict-type="oa_file_type"
     :multiple="true"
     :rules="computedRules.fileType"
-    :required="true"
+    
   />
 
   <van-field
@@ -61,11 +61,11 @@
     :rules="computedRules.mm_contractSettlementcontent"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

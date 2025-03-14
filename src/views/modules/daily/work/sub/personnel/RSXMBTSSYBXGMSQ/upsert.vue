@@ -51,6 +51,7 @@
     v-model.number="form.qq_purchaseInsuranceNumber"
     v-show-field="['qq_purchaseInsuranceNumber', includeFields]"
     label="购买保险人数"
+    type="digit"
     placeholder="请输入"
     name="qq_purchaseInsuranceNumber"
     :rules="computedRules.qq_purchaseInsuranceNumber"
@@ -230,13 +231,13 @@
     :rules="computedRules.qq_purchaseInsuranceSpecialExplain"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getDept } from '@/api/system/dept'

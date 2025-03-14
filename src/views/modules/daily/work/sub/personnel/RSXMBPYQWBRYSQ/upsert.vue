@@ -82,7 +82,7 @@
       dict-type="oa_daily_work_rsxmbpywbrysq_workwear_type"
       :multiple="true"
       :rules="computedRules.k_workwearType"
-      :required="true"
+      
       @change="onCategoryChange"
     />
 
@@ -320,13 +320,13 @@
     :rules="computedRules.k_changeReason"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

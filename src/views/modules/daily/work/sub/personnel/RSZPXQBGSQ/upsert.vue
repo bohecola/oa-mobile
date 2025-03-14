@@ -45,7 +45,7 @@
     dict-type="oa_daily_work_rszpxqbgsq_change_type"
     :multiple="false"
     :rules="computedRules.gg_changeType"
-    :required="true"
+
     @change="onTypeChange"
   />
 
@@ -57,7 +57,6 @@
     dict-type="oa_daily_work_rszpxqbgsq_change_details"
     :multiple="true"
     :rules="computedRules.gg_changeDetails"
-    :required="true"
   />
 
   <van-field-number
@@ -65,6 +64,7 @@
     v-show-field="['gg_changeBeforeRecruitNumber', includeFields]"
     label="变更前需求招聘人数"
     placeholder="请输入"
+    type="digit"
     name="gg_changeBeforeRecruitNumber"
     :rules="computedRules.gg_changeBeforeRecruitNumber"
   />
@@ -73,6 +73,7 @@
     v-model.number="form.gg_changeAfterRecruitNumber"
     v-show-field="['gg_changeAfterRecruitNumber', includeFields]"
     label="变更后实际需求招聘人数"
+    type="digit"
     placeholder="请输入"
     name="gg_changeAfterRecruitNumber"
     :rules="computedRules.gg_changeAfterRecruitNumber"
@@ -105,6 +106,7 @@
     v-show-field="['gg_changeAfterNumberPost', includeFields]"
     label="变更后需招聘人数及岗位"
     placeholder="请输入"
+    type="digit"
     name="gg_changeAfterNumberPost"
     :rules="computedRules.gg_changeAfterNumberPost"
   />
@@ -144,13 +146,13 @@
     :rules="computedRules.gg_content"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

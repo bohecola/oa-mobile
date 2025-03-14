@@ -7,7 +7,7 @@
     dict-type="oa_file_use_type"
     :multiple="false"
     :rules="computedRules.fileUseType"
-    :required="true"
+    
   />
 
   <DictPicker
@@ -18,7 +18,7 @@
     dict-type="oa_seal_file_category"
     :multiple="false"
     :rules="computedRules.sealFileCategory"
-    :required="true"
+    
   />
 
   <DictPicker
@@ -29,14 +29,14 @@
     dict-type="oa_seal_use_type"
     :multiple="true"
     :rules="computedRules.sealUseType"
-    :required="true"
+    
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

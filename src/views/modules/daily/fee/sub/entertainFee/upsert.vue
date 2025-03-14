@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" />
 
   <van-field
     v-show-field="['isAdministration', includeFields]"
@@ -34,6 +34,7 @@
     v-model.number="form.a_customerNumber"
     v-show-field="['a_customerNumber', includeFields]"
     label="客户人数"
+    type="digit"
     placeholder="请输入"
     name="a_customerNumber"
     :rules="computedRules.a_customerNumber"
@@ -42,7 +43,9 @@
   <van-field-number
     v-model.number="form.a_accompanyNumber"
     v-show-field="['a_accompanyNumber', includeFields]"
-    label="陪同人数" placeholder="请输入"
+    label="陪同人数"
+    type="digit"
+    placeholder="请输入"
     name="a_accompanyNumber"
     :rules="computedRules.a_accompanyNumber"
   />
@@ -86,12 +89,12 @@
     :rules="computedRules.a_entertainReason"
   />
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
 import { trim } from 'lodash-es'
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 

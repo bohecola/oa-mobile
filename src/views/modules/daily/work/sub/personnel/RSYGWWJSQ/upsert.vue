@@ -24,7 +24,7 @@
     dict-type="oa_daily_work_rsygwwjsq_gift_gold_category"
     :multiple="true"
     :rules="computedRules.n_giftGoldCategory"
-    :required="true"
+    
   />
 
   <van-field-number
@@ -36,12 +36,12 @@
     clearable
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

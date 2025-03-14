@@ -1,19 +1,21 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" />
+
   <van-field-number
     v-model.number="form.f_applyNumber"
     v-show-field="['f_applyNumber', includeFields]"
     label="申请人数"
+    type="digit"
     placeholder="请输入"
     name="f_applyNumber"
     :rules="computedRules.f_applyNumber"
   />
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

@@ -10,6 +10,7 @@
     v-show-field="['e_userCounts', includeFields]"
     name="e_userCounts"
     label="证明开具人数"
+    type="digit"
     :rules="computedRules.e_userCounts"
   />
 
@@ -23,11 +24,11 @@
     :rules="computedRules.e_proveType"
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

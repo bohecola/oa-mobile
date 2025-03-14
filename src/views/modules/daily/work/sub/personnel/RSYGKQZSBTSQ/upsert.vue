@@ -13,15 +13,13 @@
     </el-col>
   </el-row> -->
 
-  <van-field
+  <DatePicker
+    v-model="form.yy_entryCompanyDate"
     v-show-field="['yy_entryCompanyDate', includeFields]"
-    label="入职时间"
     name="yy_entryCompanyDate"
-  >
-    <template #input>
-      {{ parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+    label="入职时间"
+    readonly
+  />
 
   <van-field-number
     v-model.number="form.yy_subsidyStandards"
@@ -60,15 +58,13 @@
     :readonly="true"
   />
 
-  <van-field
+  <DatePicker
+    v-model="form.yy_registrationCompanyDate"
     v-show-field="['yy_registrationCompanyDate', includeFields]"
-    label="注册到公司日期"
     name="yy_registrationCompanyDate"
-  >
-    <template #input>
-      {{ parseTime(form.yy_registrationCompanyDate, '{y}-{m}-{d}') }}
-    </template>
-  </van-field>
+    label="注册到公司日期"
+    readonly
+  />
 
   <DictPicker
     v-model="form.yy_certificateStatus"
@@ -146,13 +142,15 @@
       <YesNoSwitch v-model="form.yy_isTraining" readonly />
     </template>
   </van-field>
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import { getDailyWorkByRelateConditionsBo } from '@/api/oa/daily/fee'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import { useUserStore } from '@/store/user'
 
 const props = withDefaults(
   defineProps<{
@@ -183,9 +181,16 @@ trackFields(props.includeFields)
 //   title: ''
 // });
 
+// const userStore = useUserStore()
+
 // const getList = async () => {
-//   // 公司人员资格证书注册申请流程走完之后才可以申请补贴，传的编码是公司人员资格证书注册申请流程的编码
-//   const res = await getDailyByNo('RSGSRYZGZSZCSQ');
+// 公司人员资格证书注册申请流程走完之后才可以申请补贴，传的编码是公司人员资格证书注册申请流程的编码
+// const params = {
+//   no: 'RSGSRYZGZSZCSQ',
+//   userId: userStore.info.userId,
+//   status: '2',
+// }
+// const res = await getDailyWorkByRelateConditionsBo(params)
 //   dailyWorkData.value = res.data.map((e) => {
 //     const content = JSON.parse(e.contentJson);
 //     const type = oa_document_type.value.find((e) => e.value === content.y_type)?.label || '未知';

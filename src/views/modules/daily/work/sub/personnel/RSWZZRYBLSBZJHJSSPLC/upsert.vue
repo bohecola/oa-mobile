@@ -42,14 +42,14 @@
     :columns-type="['year', 'month']"
   />
 
-  <BaseDetail
+  <BaseUpsert
     :include-fields="includeFields"
     :rules="computedRules.cc_insuranceType"
   />
 </template>
 
 <script setup lang="ts">
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

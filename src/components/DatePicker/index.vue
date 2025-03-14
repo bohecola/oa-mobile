@@ -2,7 +2,7 @@
   <div class="clearfix">
     <van-field
       v-model="date"
-      input-align="left"
+      :required="required"
       is-link
       :name="name"
       :label="label"
@@ -46,6 +46,10 @@ const props = defineProps(
       type: String,
       default: '请选择',
     },
+    required: {
+      type: Boolean,
+      default: true,
+    },
   },
 )
 
@@ -57,6 +61,7 @@ const showPicker = ref(false)
 function onConfirm({ selectedValues }) {
   date.value = selectedValues.join('-')
   emit('update:modelValue', date.value)
+  emit('changeData', selectedValues)
   showPicker.value = false
 }
 

@@ -25,6 +25,7 @@
     v-model.number="form.i_number"
     v-show-field="['i_amount', includeFields]"
     label="所发工资人数"
+    type="digit"
     name="i_amount"
     :rules="computedRules.i_amount"
     clearable
@@ -39,12 +40,12 @@
     clearable
   />
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import BaseDetail from '../../../../components/BaseDetail.vue'
+import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 

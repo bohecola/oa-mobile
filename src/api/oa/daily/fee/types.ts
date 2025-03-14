@@ -283,3 +283,9 @@ export interface DailyFeeQuery extends PageQuery {
    */
   params?: any
 }
+
+export interface DailyByRelateConditionsQuery {
+  no: string
+  userId?: string | number
+  status: string
+}

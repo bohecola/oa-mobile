@@ -7,14 +7,13 @@
     dict-type="oa_security_train_certificate_type"
     :multiple="true"
     :rules="computedRules.certificateType"
-    :required="true"
   />
 
-  <FeeBaseDetail :include-fields="includeFields" />
+  <FeeBaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
-import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 
