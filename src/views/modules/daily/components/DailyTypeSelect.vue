@@ -78,8 +78,6 @@ const id = ref<string | number>(props.modelValue)
 
 const data = ref<DailyWorkTypeVO[]>([])
 
-useCustomFieldValue(() => id.value)
-
 const options = computed(() => proxy?.handleTree<DailyWorkTypeTreeVO>(data.value))
 
 const presentText = computed(() => {
@@ -96,14 +94,14 @@ async function getData() {
 
 interface Params { value: string | number, selectedOptions: CascaderOption[], tabIndex: number }
 
-function onFinish({ value }: Params) {
+function onFinish({ value, selectedOptions }: Params) {
   show.value = false
   emit('before-finish')
 
   emit('update:modelValue', value)
   emit('finish', value)
 
-  emit('update:presentText', presentText.value)
+  emit('update:presentText', selectedOptions.map(e => e.name).join(' / '))
 
   updateVars(value)
 }
@@ -119,6 +117,16 @@ function updateVars(value: string | number) {
   emit('update:rootNo', rootNode?.no)
 }
 
+function open() {
+  show.value = true
+}
+
+function close() {
+  show.value = false
+}
+
+useCustomFieldValue(() => id.value)
+
 watch(
   () => props.modelValue,
   async (val) => {
@@ -130,14 +138,6 @@ watch(
     nextTick(() => updateVars(val))
   },
 )
-
-function open() {
-  show.value = true
-}
-
-function close() {
-  show.value = false
-}
 
 onMounted(async () => {
   await getData()

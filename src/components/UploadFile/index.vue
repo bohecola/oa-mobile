@@ -76,6 +76,7 @@
 import type { UploaderAfterRead, UploaderInstance, UploaderFileListItem as _UploaderFileListItem } from 'vant'
 import type { Numeric } from 'vant/lib/utils'
 import { isArray, isEmpty } from 'lodash-es'
+import { useCustomFieldValue } from '@vant/use'
 import type { FileActionEnum, FileType } from './helper'
 import { excelTypeEnum, fileTypeEnum, imageTypeEnum, isImageType, isVideoType, otherTypeEnum, pdfTypeEnum, pptTypeEnum, txtTypeEnum, videoTypeEnum, wordTypeEnum } from './helper'
 import viewer from './viewer.vue'
@@ -293,6 +294,13 @@ const fileActionEnums: FileActionEnum[] = [
     icon: other,
   },
 ]
+
+// 自定义表单项的值
+useCustomFieldValue(() => {
+  const ids = getOssIds(fileList.value)
+  const value = props.valueType === 'string' ? ids.join(',') : ids
+  return value
+})
 
 // 文件列表回显
 watch(
