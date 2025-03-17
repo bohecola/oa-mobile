@@ -104,56 +104,40 @@
       </van-field>
     </template>
 
-    <van-field
+    <DictSelect
       v-model="form.type"
       v-show-field="['type', includeFields]"
       name="type"
       label="合同类型"
-      placeholder="请选择"
+      dict-type="oa_contract_type"
       :rules="computedRules.type"
-      is-link
-    >
-      <template #input>
-        <DictSelect
-          v-model="form.type"
-          dict-type="oa_contract_type"
-          @change="onContractTypeSelectChange"
-        />
-      </template>
-    </van-field>
+      @change="onContractTypeSelectChange"
+    />
 
-    <van-field
+    <DictSelect
       v-model="form.category"
       v-show-field="['category', includeFields]"
       name="category"
       label="合同类别"
-      placeholder="请选择"
       :rules="computedRules.category"
-      is-link
-    >
-      <template #input>
-        <DictSelect
-          v-model="form.category"
-          :options="form.type === 'in' ? oa_contract_category_in : form.type === 'out' ? oa_contract_category_out : oa_contract_category_agreement"
-          @change="onContractCategorySelectChange"
-        />
-      </template>
-    </van-field>
+      :options="form.type === 'in'
+        ? oa_contract_category_in
+        : form.type === 'out'
+          ? oa_contract_category_out
+          : oa_contract_category_agreement"
+      @change="onContractCategorySelectChange"
+    />
 
-    <van-field
+    <DictSelect
       v-if="isPurchaseContract"
       v-model="form.reviewWay"
       v-show-field="['reviewWay', includeFields]"
       name="reviewWay"
       label="合同评审方式"
-      placeholder="请选择"
+      dict-type="oa_contract_review_way"
       :rules="computedRules.reviewWay"
-      is-link
-    >
-      <template #input>
-        <DictSelect v-model="form.reviewWay" dict-type="oa_contract_review_way" @change="onReviewWayChange" />
-      </template>
-    </van-field>
+      @change="onReviewWayChange"
+    />
 
     <van-field
       v-if="['1', '3'].includes(form.reviewWay)"
@@ -212,60 +196,45 @@
       </template>
     </van-field>
 
-    <van-field
+    <DictSelect
       v-model="form.invoiceType"
       v-show-field="['invoiceType', includeFields]"
       name="invoiceType"
       label="发票类型"
-      placeholder="请选择"
+      dict-type="oa_contract_invoice_type"
       :rules="computedRules.invoiceType"
-      is-link
-    >
-      <template #input>
-        <DictSelect v-model="form.invoiceType" dict-type="oa_contract_invoice_type" />
-      </template>
-    </van-field>
+    />
 
     <van-field
-      v-model="form.isUseSeal"
       v-show-field="['isUseSeal', includeFields]"
       name="isUseSeal"
       label="是否用印"
       :rules="computedRules.isUseSeal"
     >
       <template #input>
-        <YesNoSwitch v-model="form.isUseSeal" />
+        <YesNoSwitch v-model="form.isUseSeal" @change="onIsUseSealChange" />
       </template>
     </van-field>
 
     <template v-if="form.isUseSeal === 'Y'">
-      <van-field
+      <DictSelect
         v-model="form.fileUseType"
         v-show-field="['fileUseType', includeFields]"
         name="fileUseType"
         label="用印方式"
-        placeholder="请选择"
+        dict-type="oa_file_use_type"
         :rules="computedRules.fileUseType"
-        is-link
-      >
-        <template #input>
-          <DictSelect v-model="form.fileUseType" dict-type="oa_file_use_type" />
-        </template>
-      </van-field>
+      />
 
-      <van-field
+      <DictSelect
         v-model="form.sealUseType"
         v-show-field="['sealUseType', includeFields]"
         name="sealUseType"
         label="用印类型"
-        placeholder="请选择"
+        dict-type="oa_seal_use_type"
         :rules="computedRules.sealUseType"
-        is-link
-      >
-        <template #input>
-          <DictSelect v-model="form.sealUseType" dict-type="oa_seal_use_type" multiple />
-        </template>
-      </van-field>
+        multiple
+      />
     </template>
 
     <van-field v-show-field="['taxRate', includeFields]">
@@ -513,6 +482,12 @@ function onContractCategorySelectChange() {
 // 合同评审方式选择
 function onReviewWayChange() {
   Form.value.resetValidation(['customizeApprover'])
+}
+
+// TODO 重置表单值
+// 是否用印选择
+function onIsUseSealChange(value?: string) {
+  Form.value.resetValidation(['fileUseType', 'sealUseType'])
 }
 
 // 合同模式选择变化

@@ -24,7 +24,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const { sys_yes_no } = toRefs(props.readonly ? proxy.useDict('sys_yes_no') : {})
+const { sys_yes_no } = toRefs(props.readonly ? proxy.useDict('sys_yes_no') : reactive<Record<string, DictDataOption[]>>({}))
 
 const switchValue = ref<string>(props.modelValue ?? 'N')
 

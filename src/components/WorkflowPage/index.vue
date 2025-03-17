@@ -248,7 +248,7 @@ function handleSubmit() {
 // 审批
 function handleApproval() {
   emit('approval', {
-    open: submitVerifyRef.value!.openDialog,
+    open: submitVerifyRef.value.openDialog,
   })
 }
 
