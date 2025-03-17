@@ -71,7 +71,7 @@
     v-model="form.a_entertainAddress"
     v-show-field="['a_entertainAddress', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="招待地点"
     name="a_entertainAddress"
@@ -82,7 +82,7 @@
     v-model="form.a_entertainReason"
     v-show-field="['a_entertainReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="招待事由"
     name="a_entertainReason"
@@ -93,7 +93,6 @@
 </template>
 
 <script setup lang="ts">
-import { trim } from 'lodash-es'
 import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'

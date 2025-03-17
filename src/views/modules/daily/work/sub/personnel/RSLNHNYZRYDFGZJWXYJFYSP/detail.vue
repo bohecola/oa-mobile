@@ -14,6 +14,15 @@
 
   <DatePicker v-model="form.j_month" v-show-field="['j_month', includeFields]" name="j_month" label="所发工资月份" :columns-type="['year', 'month']" readonly />
 
+  <van-field-number
+    v-model.number="form.j_number"
+    v-show-field="['j_number', includeFields]"
+    label="所发工资人数"
+    type="digit"
+    name="j_number"
+    readonly
+  />
+
   <van-field v-show-field="['j_amount', includeFields]" label="应发工资总额（元）" name="j_amount" class="!items-baseline">
     <template #input>
       <div class="items-baseline">
@@ -44,7 +53,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['j_userId', 'j_deptIds', 'j_month', 'j_amount', 'j_scAmount', 'reason', 'ossIdList'],
+    includeFields: () => ['j_userId', 'j_deptIds', 'j_month', 'j_number', 'j_amount', 'j_scAmount', 'reason', 'ossIdList'],
   },
 )
 

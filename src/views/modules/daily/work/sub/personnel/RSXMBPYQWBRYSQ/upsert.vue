@@ -56,6 +56,7 @@
     v-model.number="form.k_number"
     v-show-field="['k_number', includeFields]"
     label="人员数量"
+    type="digit"
     placeholder="请输入"
     name="k_number"
     :rules="computedRules.k_number"
@@ -82,7 +83,7 @@
       dict-type="oa_daily_work_rsxmbpywbrysq_workwear_type"
       :multiple="true"
       :rules="computedRules.k_workwearType"
-      
+
       @change="onCategoryChange"
     />
 
@@ -90,7 +91,8 @@
       v-model="form.k_quantityAndSize"
       v-show-field="['k_quantityAndSize', includeFields]"
       type="textarea"
-      rows="2"
+      rows="1"
+      autosize
       name="k_quantityAndSize"
       label="数量与尺寸"
       placeholder="工服尺码为：160、165、170、175、180、185、190、195，鞋码为：39、40、41、42、43、44、45、46，请描述清楚需几套什么尺码的工服与鞋，如人员较多请上传附件。"
@@ -164,7 +166,8 @@
       v-model="form.k_originalDistribution"
       v-show-field="['k_originalDistribution', includeFields]"
       type="textarea"
-      rows="2"
+      rows="1"
+      autosize
       label="原补助、发放标准及发放形式"
       name="k_originalDistribution"
       :rules="computedRules.k_originalDistribution"
@@ -174,7 +177,8 @@
       v-model="form.k_changeAfterDistribution"
       v-show-field="['k_changeAfterDistribution', includeFields]"
       type="textarea"
-      rows="2"
+      rows="1"
+      autosize
       label="变更后补助、发放标准及发放形式"
       name="k_changeAfterDistribution"
       :rules="computedRules.k_changeAfterDistribution"
@@ -186,7 +190,8 @@
     v-model="form.k_specialInstructions"
     v-show-field="['k_specialInstructions', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="工资发放特殊说明"
     name="k_specialInstructions"
     :rules="computedRules.i_deptIds"
@@ -197,7 +202,8 @@
       v-model="form.k_otherDistribution"
       v-show-field="['k_otherDistribution', includeFields]"
       type="textarea"
-      rows="2"
+      rows="1"
+      autosize
       label="其他补助、发放标准及发放形式"
       name="k_otherDistribution"
       :rules="computedRules.i_deptIds"
@@ -250,7 +256,8 @@
       <van-field
         v-show-field="['k_signeContractSpecialInstructions', includeFields]"
         type="textarea"
-        rows="2"
+        rows="1"
+        autosize
         label="合同签订特殊说明"
         name="k_signeContractSpecialInstructions"
         :rules="computedRules.k_signeContractSpecialInstructions"
@@ -289,7 +296,8 @@
         v-model="form.k_insuranceSpecialInstructions"
         v-show-field="['k_insuranceSpecialInstructions', includeFields]"
         type="textarea"
-        rows="2"
+        rows="1"
+        autosize
         label="保险购买特殊情况说明"
         name="k_insuranceSpecialInstructions"
         :rules="computedRules.k_insuranceSpecialInstructions"
@@ -302,7 +310,8 @@
     v-model="form.k_employInformation"
     v-show-field="['k_employInformation', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="聘用人员信息"
     placeholder="请输入账户姓名、聘用人员身份证号、聘用人员联系电话、聘用人员银行账号、开户行名称（银行名称+具体支行）"
     name="k_employInformation"
@@ -314,7 +323,8 @@
     v-model="form.k_changeReason"
     v-show-field="['k_changeReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="变更原因"
     name="k_changeReason"
     :rules="computedRules.k_changeReason"
@@ -324,7 +334,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

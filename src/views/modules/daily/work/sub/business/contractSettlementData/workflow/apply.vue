@@ -30,6 +30,6 @@ type DailyWorkFormFields = KeysOfArray<DailyWorkForm>
 const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
 
-const baseFields: DailyWorkFormFields = ['fileType', 'isSeal', 'reason', 'ossIdList']
+const baseFields: DailyWorkFormFields = ['fileType', 'isSeal', 'mm_contractSettlementNature', 'mm_contractSettlementcontent', 'reason', 'ossIdList']
 const applyFields: DailyWorkFormFields = ['customizeApprover', ...baseFields]
 </script>

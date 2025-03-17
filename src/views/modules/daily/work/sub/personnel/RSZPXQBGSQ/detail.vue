@@ -129,7 +129,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

@@ -60,7 +60,7 @@
   <van-field
     v-show-field="['b_maintenanceAddress', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="车辆维修/保养地点"
     name="b_maintenanceAddress"
@@ -70,7 +70,7 @@
   <van-field
     v-show-field="['b_problemDescription', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="问题描述"
     name="b_problemDescription"
@@ -80,7 +80,7 @@
   <van-field
     v-show-field="['b_maintenanceItemsAndUnitPrice', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="维修/保养项目及单价"
     name="b_maintenanceItemsAndUnitPrice"
@@ -114,7 +114,7 @@
   <van-field
     v-show-field="['b_oilContent', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="用油内容"
     placeholder="请输入"
@@ -134,7 +134,7 @@
   <van-field
     v-show-field="['b_useReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="使用事由"
     name="b_useReason"

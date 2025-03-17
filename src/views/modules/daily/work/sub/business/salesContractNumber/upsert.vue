@@ -60,7 +60,7 @@
     name="pp_remark"
     placeholder="请输入"
     type="textarea"
-    rows="2"
+    rows="1"
     :rules="computedRules.pp_remark"
   />
 
@@ -69,9 +69,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

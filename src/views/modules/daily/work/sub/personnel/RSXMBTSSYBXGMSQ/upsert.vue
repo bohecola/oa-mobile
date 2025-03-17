@@ -22,7 +22,6 @@
   </van-field>
 
   <DatePicker
-    v-if="form.qq_insuranceExpirationStartDate"
     v-model="form.qq_insuranceExpirationStartDate"
     v-show-field="['qq_insuranceExpirationStartDate', includeFields]"
     name="qq_insuranceExpirationStartDate"
@@ -31,7 +30,6 @@
   />
 
   <DatePicker
-    v-if="form.qq_insuranceExpirationEndDate"
     v-model="form.qq_insuranceExpirationEndDate"
     v-show-field="['qq_insuranceExpirationEndDate', includeFields]"
     name="qq_insuranceExpirationEndDate"
@@ -170,7 +168,7 @@
     v-model="form.qq_isOldInsuranceTerminationReason"
     v-show-field="['qq_isOldInsuranceTerminationReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="原特殊商业保险终止原因说明"
     name="qq_isOldInsuranceTerminationReason"
@@ -194,7 +192,7 @@
     v-show-field="['qq_notBelongDeptPurchaseInsuranceSpecialReason', includeFields]"
     label="不属于该项目部人员购买保险原因"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     name="qq_notBelongDeptPurchaseInsuranceSpecialReason"
     :rules="computedRules.qq_notBelongDeptPurchaseInsuranceSpecialReason"
@@ -214,7 +212,7 @@
     v-show-field="['qq_purchaseInsuranceReason', includeFields]"
     label="购买保险原因"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     name="qq_purchaseInsuranceReason"
     :rules="computedRules.qq_purchaseInsuranceReason"
@@ -224,7 +222,7 @@
     v-model="form.qq_purchaseInsuranceSpecialExplain"
     v-show-field="['qq_purchaseInsuranceSpecialExplain', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="保险购买特殊说明"
     name="qq_purchaseInsuranceSpecialExplain"
@@ -235,7 +233,6 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

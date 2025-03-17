@@ -7,7 +7,6 @@
     dict-type="oa_file_type"
     :multiple="true"
     :rules="computedRules.fileType"
-    
   />
 
   <van-field
@@ -25,7 +24,10 @@
     v-model.trim="form.kk_applicationMaterials"
     v-show-field="['kk_applicationMaterials', includeFields]"
     label="申请资料"
-    placeholder="请输入"
+    type="textarea"
+    rows="1"
+    autosize
+    placeholder="请输入合同相关文件、公司资质扫码件/授权书及其他对外证明文件（申请事由）"
     name="kk_applicationMaterials"
     :rules="computedRules.kk_applicationMaterials"
   />
@@ -35,9 +37,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

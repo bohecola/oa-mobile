@@ -24,6 +24,7 @@
     v-model.number="form.ff_age"
     v-show-field="['ff_age', includeFields]"
     label="年龄"
+    type="digit"
     placeholder="请输入"
     name="ff_age"
     :rules="computedRules.ff_age"
@@ -37,7 +38,6 @@
     dict-type="sys_user_sex"
     :multiple="false"
     :rules="computedRules.ff_sex"
-    
   />
 
   <DictPicker
@@ -48,7 +48,6 @@
     dict-type="ff_nation"
     :multiple="false"
     :rules="computedRules.ff_nation"
-    
   />
 
   <DictPicker
@@ -59,7 +58,6 @@
     dict-type="oa_education_type"
     :multiple="false"
     :rules="computedRules.ff_education"
-    
   />
 
   <DictPicker
@@ -70,7 +68,6 @@
     dict-type="oa_document_type"
     :multiple="true"
     :rules="computedRules.ff_certificates"
-    
   />
 
   <DatePicker
@@ -170,7 +167,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

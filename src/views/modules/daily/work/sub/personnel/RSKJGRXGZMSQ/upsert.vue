@@ -30,7 +30,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" :rules="computedRules.sealUseType">
+  <van-field v-if="form.isUseSeal === 'Y'" v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" :rules="computedRules.sealUseType">
     <template #input>
       <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" :is-filter-use-seal="false" />
     </template>

@@ -88,6 +88,7 @@
     v-show-field="['gg_fixedNumber', includeFields]"
     label="现项目部定员数"
     placeholder="请输入"
+    type="digit"
     name="gg_fixedNumber"
     :rules="computedRules.gg_fixedNumber"
   />
@@ -97,6 +98,7 @@
     v-show-field="['gg_changeAfterFixedNumber', includeFields]"
     label="变更后项目部定员数"
     placeholder="请输入"
+    type="digit"
     name="gg_changeAfterFixedNumber"
     :rules="computedRules.gg_changeAfterFixedNumber"
   />
@@ -150,7 +152,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

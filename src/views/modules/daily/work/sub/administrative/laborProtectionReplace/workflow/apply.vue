@@ -3,7 +3,7 @@
   <template v-else>
     <!-- 劳保用品更换申请 -->
     <div v-if="taskDefinitionKey === 'Activity_1laam19'">
-      <upsertupsert />
+      <upsert />
     </div>
 
     <!-- 其他审批通用节点 -->

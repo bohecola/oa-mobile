@@ -35,9 +35,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

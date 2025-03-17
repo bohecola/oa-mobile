@@ -3,6 +3,9 @@
     v-model.trim="form.oo_evacuationMaterialPlan"
     v-show-field="['oo_evacuationMaterialPlan', includeFields]"
     label="撤场物资处理方案"
+    type="textarea"
+    rows="1"
+    autosize
     name="oo_evacuationMaterialPlan"
     placeholder="请输入返回公司（需邮寄回公司物资清单），项目分流（分流到其他项目物资清单），情况说明（遗失、损坏等无法交回情况）"
     :rules="computedRules.oo_evacuationMaterialPlan"
@@ -13,9 +16,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 const props = withDefaults(

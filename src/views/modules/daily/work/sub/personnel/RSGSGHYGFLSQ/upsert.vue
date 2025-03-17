@@ -7,7 +7,6 @@
     dict-type="oa_daily_work_rsgsghygflsq_welfare_category"
     :multiple="false"
     :rules="computedRules.m_welfareCategory"
-    
   />
 
   <van-field-number
@@ -23,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

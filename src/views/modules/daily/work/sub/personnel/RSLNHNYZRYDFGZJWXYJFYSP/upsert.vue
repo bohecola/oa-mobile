@@ -22,6 +22,16 @@
   />
 
   <van-field-number
+    v-model.number="form.j_number"
+    v-show-field="['j_number', includeFields]"
+    label="所发工资人数"
+    type="digit"
+    name="j_number"
+    :rules="computedRules.j_number"
+    clearable
+  />
+
+  <van-field-number
     v-model.number="form.j_amount"
     v-show-field="['j_amount', includeFields]"
     label="应发工资总额（元）"
@@ -43,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -53,7 +62,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['j_userId', 'j_deptIds', 'j_month', 'j_amount', 'j_scAmount', 'reason', 'ossIdList'],
+    includeFields: () => ['j_userId', 'j_deptIds', 'j_month', 'j_number', 'j_amount', 'j_scAmount', 'reason', 'ossIdList'],
   },
 )
 

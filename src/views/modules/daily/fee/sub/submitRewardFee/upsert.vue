@@ -13,7 +13,7 @@
   <van-field
     v-show-field="['d_articleDetail', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autozize
     label="投稿详情"
     name="d_articleDetail"

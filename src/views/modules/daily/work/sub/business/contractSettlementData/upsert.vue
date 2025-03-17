@@ -29,7 +29,6 @@
     dict-type="oa_file_type"
     :multiple="true"
     :rules="computedRules.fileType"
-    
   />
 
   <van-field
@@ -47,6 +46,9 @@
     v-model.trim="form.mm_contractSettlementNature"
     v-show-field="['mm_contractSettlementNature', includeFields]"
     label="合同结算性质"
+    type="textarea"
+    rows="1"
+    autosize
     placeholder="请输入预付款、进场费、月结款、季度款、半年款、进度款、验收款、质保金、考核预留款、全款、奖励款、其他"
     name="mm_contractSettlementNature"
     :rules="computedRules.mm_contractSettlementNature"
@@ -66,9 +68,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useUserStore } from '@/store/user'
 
 const props = withDefaults(

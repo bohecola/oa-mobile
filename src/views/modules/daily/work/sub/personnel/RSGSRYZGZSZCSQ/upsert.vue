@@ -19,16 +19,15 @@
     :rules="computedRules.y_name"
   />
 
-  <van-field
+  <DictPicker
+    v-model="form.y_certificateLevel"
     v-show-field="['y_certificateLevel', includeFields]"
     label="证书等级"
     name="y_certificateLevel"
+    dict-type="oa_certificate_level"
+    :multiple="false"
     :rules="computedRules.y_certificateLevel"
-  >
-    <template #input>
-      <DictSelect v-model="form.y_certificateLevel" dict-type="oa_certificate_level" />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-show-field="['y_otherCompanyUseStatus', includeFields]"
@@ -49,7 +48,6 @@
     dict-type="sys_normal_disable"
     :multiple="false"
     :rules="computedRules.y_certificateStatus"
-    
   />
 
   <van-field
@@ -84,6 +82,7 @@
     name="y_recheckDate"
     label="复审时间"
     :rules="computedRules.y_recheckDate"
+    :required="false"
   />
 
   <DatePicker
@@ -92,6 +91,7 @@
     name="y_startDate"
     label="开始日期"
     :rules="computedRules.y_startDate"
+    :required="false"
   />
 
   <DatePicker
@@ -100,6 +100,7 @@
     name="y_endDate"
     label="结束日期"
     :rules="computedRules.y_endDate"
+    :required="false"
   />
 
   <van-field
@@ -138,6 +139,8 @@ const props = withDefaults(
     includeFields: () => [
       'y_type',
       'y_name',
+      'y_certificateLevel',
+      'y_otherCompanyUseStatus',
       'y_certificateStatus',
       'y_speciality',
       'y_no',

@@ -6,13 +6,15 @@
     name="contractCategory"
     dict-type="oa_contract_category_in"
     :rules="computedRules.contractCategory"
-    
   />
 
   <van-field
     v-model="form.jj_type"
     v-show-field="['jj_type', includeFields]"
     label="业务类型"
+    type="textarea"
+    rows="1"
+    autosize
     placeholder="请输入履约保函、投标保函、预付款保函、工程维修保函、质量保函、付款保函"
     name="jj_type"
     :rules="computedRules.jj_type"
@@ -23,9 +25,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

@@ -7,7 +7,6 @@
     dict-type="oa_file_use_type"
     :multiple="false"
     :rules="computedRules.fileUseType"
-    
   />
 
   <DictPicker
@@ -18,7 +17,6 @@
     dict-type="oa_seal_file_category"
     :multiple="false"
     :rules="computedRules.sealFileCategory"
-    
   />
 
   <DictPicker
@@ -29,7 +27,6 @@
     dict-type="oa_seal_use_type"
     :multiple="true"
     :rules="computedRules.sealUseType"
-    
   />
 
   <BaseUpsert :include-fields="includeFields" />
@@ -37,9 +34,8 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{

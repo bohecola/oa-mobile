@@ -6,10 +6,11 @@
     </template>
   </van-field>
 
-  <van-field
-    v-model="form.z_postNumber"
+  <van-field-number
+    v-model.number="form.z_postNumber"
     v-show-field="['z_postNumber', includeFields]"
     label="新增岗位个数"
+    type="digit"
     placeholder="请输入"
     name="z_postNumber"
     :rules="computedRules.z_postNumber"

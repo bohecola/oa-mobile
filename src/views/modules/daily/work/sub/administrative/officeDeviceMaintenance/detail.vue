@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import BaseDetail from '../../../../components/BaseDetail.vue'
-
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 withDefaults(

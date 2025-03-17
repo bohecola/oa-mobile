@@ -5,7 +5,7 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包员工">
+  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包劳动合同到期员工">
     <template #input>
       <UserSelect v-model="form.x_userId" :multiple="true" readonly />
     </template>

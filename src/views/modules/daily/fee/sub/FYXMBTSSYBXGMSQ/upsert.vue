@@ -174,7 +174,7 @@
     v-model="form.e_isOldInsuranceTerminationReason"
     v-show-field="['e_isOldInsuranceTerminationReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="原特殊商业保险终止原因说明"
     name="e_isOldInsuranceTerminationReason"
@@ -209,7 +209,8 @@
   <van-field
     v-show-field="['e_purchaseInsuranceReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="购买保险原因"
     name="e_purchaseInsuranceReason"
     readonly
@@ -219,7 +220,8 @@
     v-model="form.e_purchaseInsuranceSpecialExplain"
     v-show-field="['e_purchaseInsuranceSpecialExplain', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="保险购买特殊说明"
     name="e_purchaseInsuranceSpecialExplain"
     readonly

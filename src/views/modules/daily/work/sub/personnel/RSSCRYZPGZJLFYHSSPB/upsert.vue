@@ -1,7 +1,7 @@
 <template>
   <van-field
     v-show-field="['customizeApprover', includeFields]" l
-    abel="审核人"
+    label="审核人"
     name="customizeApprover"
     :rules="computedRules.customizeApprover"
   >

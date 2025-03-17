@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
-import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 const props = withDefaults(
   defineProps<{
@@ -37,8 +36,4 @@ const props = withDefaults(
     includeFields: () => ['g_userId', 'g_deptId', 'g_postIds', 'reason', 'ossIdList'],
   },
 )
-
-const form = inject<Ref<DailyWorkForm>>('form')
-// 指令
-const vShowField = createFieldVisibilityDirective<DailyWorkForm>(form)
 </script>

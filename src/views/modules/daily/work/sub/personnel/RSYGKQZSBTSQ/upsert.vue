@@ -43,7 +43,6 @@
     v-model="form.yy_name"
     v-show-field="['yy_name', includeFields]"
     label="申请注册/使用证书名称"
-    placeholder="请输入"
     name="yy_name"
     :readonly="true"
   />
@@ -88,7 +87,6 @@
     v-model="form.yy_no"
     v-show-field="['yy_no', includeFields]"
     label="编号"
-    placeholder="请输入"
     name="yy_no"
     readonly
   />
