@@ -99,6 +99,9 @@ const extraInitFormData: DailyWorkForm = {
   k_signeContractStartDate: undefined,
   k_signeContractEndDate: undefined,
   k_signeContractSpecialInstructions: undefined,
+  k_isBudget: undefined,
+  k_isBudgetStandards: undefined,
+  k_supplementaryExplanation: undefined,
 
   // 开具个人相关证明申请
   l_userId: undefined,
@@ -424,6 +427,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
   k_signeContractEndDate: [{ required: true, message: `合同签订结束时间${baseMsg}`, trigger: 'onBlur' }],
   k_signeContractSpecialInstructions: [{ required: true, message: `合同签订特殊说明${baseMsg}`, trigger: 'onBlur' }],
   k_isBudget: [{ required: true, message: `是否有预算${baseMsg}`, trigger: 'onBlur' }],
+  k_isBudgetStandards: [{ required: true, message: `是否符合预算标准${baseMsg}`, trigger: 'onBlur' }],
+  k_supplementaryExplanation: [{ required: true, message: `补充说明${baseMsg}`, trigger: 'onBlur' }],
 
   // 开具个人相关证明申请
   l_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],

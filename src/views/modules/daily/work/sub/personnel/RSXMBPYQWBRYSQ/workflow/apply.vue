@@ -8,7 +8,7 @@
 
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
       <detail :include-fields="detailFields" />
-      <detail :include-fields="['k_userType']" />
+      <!-- <detail :include-fields="['k_userType']" /> -->
       <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 
@@ -62,6 +62,8 @@ const applyFields = ref(
     k_signeContractEndDate: true,
     k_signeContractSpecialInstructions: true,
     k_isBudget: true,
+    k_isBudgetStandards: true,
+    k_supplementaryExplanation: true,
     reason: true,
     ossIdList: true,
   }),
@@ -99,7 +101,10 @@ const detailFields = ref(
     k_signeContractStartDate: true,
     k_signeContractEndDate: true,
     k_signeContractSpecialInstructions: true,
+    k_userType: true,
     k_isBudget: true,
+    k_isBudgetStandards: true,
+    k_supplementaryExplanation: true,
   }),
 )
 </script>

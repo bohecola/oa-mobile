@@ -168,12 +168,6 @@
     </div>
   </div>
 
-  <van-field v-show-field="['k_isBudget', includeFields]" name="k_isBudget" label="是否有预算" input-align="left">
-    <template #input>
-      <YesNoSwitch v-model="form.k_isBudget" readonly />
-    </template>
-  </van-field>
-
   <van-field v-if="['0', '1', '3', '4', '5', '6'].includes(form.k_category)" v-show-field="['k_employInformation', includeFields]" label="聘用人员信息" name="k_employInformation" input-align="left">
     <template #input>
       <TextareaView :value="form.k_employInformation" />
@@ -183,6 +177,24 @@
   <van-field v-if="['1', '2', '3', '4'].includes(form.k_category)" v-show-field="['k_changeReason', includeFields]" label="变更原因" name="k_changeReason" input-align="left">
     <template #input>
       <TextareaView :value="form.k_changeReason" />
+    </template>
+  </van-field>
+
+  <van-field v-show-field="['k_isBudget', includeFields]" name="k_isBudget" label="是否有预算" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.k_isBudget" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-if="form.k_isBudget === 'Y'" v-show-field="['k_isBudgetStandards', includeFields]" name="k_isBudgetStandards" label="是否符合预算标准" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.k_isBudgetStandards" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-if="form.k_isBudgetStandards === 'N' && form.k_isBudget === 'Y'" v-show-field="['k_supplementaryExplanation', includeFields]" label="补充说明" name="k_supplementaryExplanation" input-align="left">
+    <template #input>
+      <TextareaView :value="form.k_supplementaryExplanation" />
     </template>
   </van-field>
 
@@ -200,7 +212,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['k_deptId', 'k_userType', 'k_isKeyAccountsVP', 'k_nature', 'k_category', 'k_postId', 'k_number', 'k_isUniform', 'k_workwearType', 'k_quantityAndSize', 'k_isUseOriginalSalaryStandard', 'k_originalSalaryStandard', 'k_newSalaryStandard', 'k_effectiveDate', 'k_monthlyWorkingMode', 'k_salaryStandards', 'k_specialInstructions', 'k_otherDistribution', 'k_originalDistribution', 'k_changeAfterDistribution', 'k_changeReason', 'k_startDate', 'k_endDate', 'k_signeContractType', 'k_purchaseInsuranceType', 'k_employInformation', 'k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions', 'k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions', 'k_isBudget', 'reason', 'ossIdList'],
+    includeFields: () => ['k_deptId', 'k_userType', 'k_isKeyAccountsVP', 'k_nature', 'k_category', 'k_postId', 'k_number', 'k_isUniform', 'k_workwearType', 'k_quantityAndSize', 'k_isUseOriginalSalaryStandard', 'k_originalSalaryStandard', 'k_newSalaryStandard', 'k_effectiveDate', 'k_monthlyWorkingMode', 'k_salaryStandards', 'k_specialInstructions', 'k_otherDistribution', 'k_originalDistribution', 'k_changeAfterDistribution', 'k_changeReason', 'k_startDate', 'k_endDate', 'k_signeContractType', 'k_purchaseInsuranceType', 'k_employInformation', 'k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions', 'k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions', 'k_isBudget', 'k_isBudgetStandards', 'k_supplementaryExplanation', 'reason', 'ossIdList'],
   },
 )
 
