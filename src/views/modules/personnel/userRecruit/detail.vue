@@ -30,7 +30,9 @@
         </template>
       </van-field>
 
-      <van-field v-if="!isNil(form.no)" v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="left" />
+      <van-field v-model="form.no" v-show-field="['no', includeFields]" name="no" label="招聘编号" input-align="left" />
+
+      <van-field v-model="form.projectDeptNumber" v-show-field="['projectDeptNumber', includeFields]" name="projectDeptNumber" label="项目部定员人数" input-align="left" />
 
       <van-field v-model="form.applyReason" v-show-field="['applyReason', includeFields]" name="applyReason" label="申请原因" input-align="left">
         <template #input>

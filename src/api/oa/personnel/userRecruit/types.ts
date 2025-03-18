@@ -91,6 +91,11 @@ export interface UserRecruitForm extends BaseEntity {
   address?: string
 
   /**
+   * 项目部定员人数
+   */
+  projectDeptNumber?: number
+
+  /**
    * 招聘开始日期
    */
   recruitStartDate?: string

@@ -169,6 +169,7 @@ export interface RSXMBPYQWBRYSQ {
   k_signeContractStartDate?: string
   k_signeContractEndDate?: string
   k_signeContractSpecialInstructions?: string
+  k_isBudget?: string
 }
 
 // 开具个人相关证明申请

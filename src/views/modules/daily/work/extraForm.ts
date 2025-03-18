@@ -423,6 +423,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   k_signeContractStartDate: [{ required: true, message: `合同签订开始时间${baseMsg}`, trigger: 'onBlur' }],
   k_signeContractEndDate: [{ required: true, message: `合同签订结束时间${baseMsg}`, trigger: 'onBlur' }],
   k_signeContractSpecialInstructions: [{ required: true, message: `合同签订特殊说明${baseMsg}`, trigger: 'onBlur' }],
+  k_isBudget: [{ required: true, message: `是否有预算${baseMsg}`, trigger: 'onBlur' }],
 
   // 开具个人相关证明申请
   l_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],

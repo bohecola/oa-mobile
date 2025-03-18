@@ -61,6 +61,7 @@ const applyFields = ref(
     k_signeContractStartDate: true,
     k_signeContractEndDate: true,
     k_signeContractSpecialInstructions: true,
+    k_isBudget: true,
     reason: true,
     ossIdList: true,
   }),
@@ -98,6 +99,7 @@ const detailFields = ref(
     k_signeContractStartDate: true,
     k_signeContractEndDate: true,
     k_signeContractSpecialInstructions: true,
+    k_isBudget: true,
   }),
 )
 </script>

@@ -54,6 +54,7 @@ const includeFields = ref(
     hopeArriveDate: true,
     applyReason: true,
     address: true,
+    projectDeptNumber: true,
     remark: false,
     userRecruitPostBoList: true,
     ossIdList: true,
