@@ -256,18 +256,22 @@
               clearable
             />
 
-            <van-field
+            <DictSelect
               v-model="item.taxRate"
-              label="税率"
-              placeholder="请输入"
+              label="税率（%）"
               :name="`taxRate.${index}.taxRate`"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
-              clearable
+              dict-type="oa_contract_tax_rate"
             />
-
             <template #footer>
               <div class="text-right">
-                <van-button type="danger" icon="delete" size="small" :disabled="form.taxRate.length === 1" @click="handleRemove(item, index)" />
+                <van-button
+                  type="danger"
+                  icon="delete"
+                  size="small"
+                  :disabled="form.taxRate.length === 1"
+                  @click="handleRemove(item, index)"
+                />
               </div>
             </template>
           </TableCard>

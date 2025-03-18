@@ -1,6 +1,9 @@
 <template>
   <div class="w-full">
-    <van-field v-if="readonly">
+    <van-field
+      v-if="parentForm.props.readonly || readonly"
+      v-bind="attrs"
+    >
       <template #input>
         <dict-tag :options="options" :value="ids" />
       </template>
@@ -9,19 +12,51 @@
     <van-field
       v-else
       :model-value="presentText"
+      :is-link="component === 'combine'"
       placeholder="请选择"
-      is-link
       v-bind="attrs"
-      value-class=""
       @click="onFieldClick"
     >
       <template v-for="(_, name) in slots" #[name]="scope">
         <slot :name="name" v-bind="scope" />
       </template>
+
+      <template v-if="!multiple && component === 'radio'">
+        <van-radio-group
+          v-model="ids"
+          direction="horizontal"
+          @change="onChange"
+        >
+          <van-radio
+            v-for="(item) in options"
+            :key="item.value"
+            :name="item.value"
+          >
+            {{ item.label }}
+          </van-radio>
+        </van-radio-group>
+      </template>
+
+      <template v-if="multiple && component === 'checkbox'" #input>
+        <!-- @vue-ignore -->
+        <van-checkbox-group
+          v-model="ids"
+          @change="onChange"
+        >
+          <van-checkbox
+            v-for="(item) in options"
+            :key="item.value"
+            :name="item.value"
+          >
+            {{ item.label }}
+          </van-checkbox>
+        </van-checkbox-group>
+      </template>
     </van-field>
 
     <!-- 弹出层 -->
     <van-popup
+      v-if="component === 'combine'"
       v-model:show="visible"
       position="bottom"
       round
@@ -33,15 +68,13 @@
         <div>
           <PickerToolbar
             :title="`${attrs.label}`"
-            @confirm="onCustomPickerConfirm(ids)"
-            @cancel="onPickerCancel"
+            @confirm="onCheckboxPickerConfirm(checked)"
+            @cancel="onCheckboxPickerCancel"
           />
 
           <div class="h-72 overflow-y-auto">
             <!-- @vue-ignore -->
-            <van-checkbox-group
-              v-model="ids"
-            >
+            <van-checkbox-group v-model="checked">
               <van-cell-group>
                 <van-cell
                   v-for="(item, index) in options"
@@ -79,9 +112,10 @@
 </template>
 
 <script setup lang="ts">
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import type { CheckboxInstance } from 'vant'
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import PickerToolbar from 'vant/es/picker/PickerToolbar'
+import { useParentForm } from '@/hooks'
 
 const props = withDefaults(
   defineProps<{
@@ -90,34 +124,43 @@ const props = withDefaults(
     multiple?: boolean
     dictType?: string
     options?: DictDataOption[]
+    component?: 'combine' | 'radio' | 'checkbox'
     isFilterUseSeal?: boolean
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
   }>(),
   {
-    modelValue: undefined,
-    readonly: false,
-    multiple: false,
+    component: 'combine',
     isFilterUseSeal: true,
   },
 )
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
+const attrs = useAttrs()
+const slots = useSlots()
+
+const parentForm = useParentForm()
+
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const checkboxRefs = ref<CheckboxInstance[]>([])
 
-const attrs = useAttrs()
-const slots = useSlots()
+// 字典
+const dictRefs = toRefs(
+  !isNil(props.dictType)
+    ? proxy.useDict(props.dictType)
+    : reactive<Record<string, DictDataOption[]>>({}),
+)
 
 // 显示
 const visible = ref(false)
 
-// 字典
-const dictRefs = toRefs(!isNil(props.dictType) ? proxy.useDict(props.dictType) : reactive<Record<string, DictDataOption[]>>({}))
 // 选中值
 const ids = ref<string | string[]>(deserialize(props.modelValue))
 
-// Picker 回显
+// 多选绑定值
+const checked = ref<string[]>([])
+
+// 单选 Picker 回显
 const pickerValue = computed(() => isArray(ids.value) ? ids.value : [ids.value])
 
 // 选项数据
@@ -136,7 +179,7 @@ const options = computed(() => {
   return dictRefs[props.dictType].value
 })
 
-// 选项数据转换为符合 van-picker 组件的 columns 属性的数据
+// 选项数据转换为符合 van-picker 组件中 columns 属性的数据
 const columns = computed(() => {
   return options.value.map((e) => {
     return {
@@ -159,26 +202,38 @@ const presentText = computed(() => {
     .join('、')
 })
 
-// 取消
-function onPickerCancel() {
+// RadioGroup / CheckboxGroup 选择
+function onChange(val: string | string[]) {
+  const payload = serialize(val)
+  emit('update:modelValue', payload)
+  emit('change', payload)
   closePopup()
 }
 
-// 多选确认
-function onCustomPickerConfirm(val: string | string[]) {
-  const payload = serialize(val)
-
-  emit('update:modelValue', payload)
-  emit('change', payload)
+// 单选取消
+function onPickerCancel() {
   closePopup()
 }
 
 // 单选确认
 function onPickerConfirm({ selectedValues }) {
   const [value] = selectedValues
-
   emit('update:modelValue', value)
   emit('change', value)
+  closePopup()
+}
+
+// 多选取消
+function onCheckboxPickerCancel() {
+  checked.value = ids.value as string[]
+  closePopup()
+}
+
+// 多选确认
+function onCheckboxPickerConfirm(values: string[]) {
+  const payload = serialize(values)
+  emit('update:modelValue', payload)
+  emit('change', payload)
   closePopup()
 }
 
@@ -230,6 +285,13 @@ watch(
   () => props.modelValue,
   (val) => {
     ids.value = deserialize(val)
+
+    if (props.multiple) {
+      checked.value = ids.value as string[]
+    }
+  },
+  {
+    immediate: true,
   },
 )
 </script>

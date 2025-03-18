@@ -3,7 +3,7 @@ import type { FormInstance } from 'vant'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import { addContract, getContract, updateContract } from '@/api/oa/business/contract'
 
-export type _ContractForm = Override<ContractForm, { taxRate: { amount?: number, taxRate?: number }[] }>
+export type _ContractForm = Override<ContractForm, { taxRate: { amount?: number, taxRate?: string }[] }>
 export type ContractMode = 'two' | 'three' | 'four'
 export interface Options<T = any> {
   success?: (data?: T) => void

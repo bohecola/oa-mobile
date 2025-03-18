@@ -2,7 +2,6 @@
   <div class="w-full">
     <div class="mb-2">
       <span class="flex justify-between mb-2">
-        <span class="text-sm indent-2 text-[--van-cell-group-title-color]">关联采购申请</span>
         <van-button v-if="!readonly" type="primary" class="ml-auto" icon="Plus" plain @click="open"> 新增 </van-button>
       </span>
 
