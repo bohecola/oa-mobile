@@ -13,16 +13,21 @@
       v-else
       :model-value="presentText"
       :is-link="component === 'combine'"
+      type="textarea"
+      rows="1"
       placeholder="请选择"
       v-bind="attrs"
+      readonly
+      autosize
       @click="onFieldClick"
     >
       <template v-for="(_, name) in slots" #[name]="scope">
         <slot :name="name" v-bind="scope" />
       </template>
 
-      <template v-if="!multiple && component === 'radio'">
+      <template v-if="component === 'radio' || component === 'checkbox'" #input>
         <van-radio-group
+          v-if="!multiple && component === 'radio' "
           v-model="ids"
           direction="horizontal"
           @change="onChange"
@@ -35,11 +40,10 @@
             {{ item.label }}
           </van-radio>
         </van-radio-group>
-      </template>
 
-      <template v-if="multiple && component === 'checkbox'" #input>
         <!-- @vue-ignore -->
         <van-checkbox-group
+          v-if="multiple && component === 'checkbox'"
           v-model="ids"
           @change="onChange"
         >
@@ -115,7 +119,7 @@
 import type { CheckboxInstance } from 'vant'
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import PickerToolbar from 'vant/es/picker/PickerToolbar'
-import { useParentForm } from '@/hooks'
+import { useParentForm, usePopup } from '@/hooks'
 
 const props = withDefaults(
   defineProps<{
@@ -141,6 +145,8 @@ const slots = useSlots()
 
 const parentForm = useParentForm()
 
+const { visible, openPopup, closePopup } = usePopup()
+
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const checkboxRefs = ref<CheckboxInstance[]>([])
 
@@ -150,9 +156,6 @@ const dictRefs = toRefs(
     ? proxy.useDict(props.dictType)
     : reactive<Record<string, DictDataOption[]>>({}),
 )
-
-// 显示
-const visible = ref(false)
 
 // 选中值
 const ids = ref<string | string[]>(deserialize(props.modelValue))
@@ -240,16 +243,6 @@ function onCheckboxPickerConfirm(values: string[]) {
 // 点击
 function onFieldClick() {
   openPopup()
-}
-
-// 打开
-function openPopup() {
-  visible.value = true
-}
-
-// 关闭
-function closePopup() {
-  visible.value = false
 }
 
 function serialize(value?: string | string[]) {

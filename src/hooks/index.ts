@@ -19,3 +19,21 @@ export function useParentForm() {
 
   return parent
 }
+
+export function usePopup() {
+  const visible = ref(false)
+
+  function openPopup() {
+    visible.value = true
+  }
+
+  function closePopup() {
+    visible.value = false
+  }
+
+  return {
+    visible,
+    openPopup,
+    closePopup,
+  }
+}
