@@ -70,6 +70,7 @@
       round
       destroy-on-close
       safe-area-inset-bottom
+      @click-overlay="onCancel"
     >
       <!-- 多选 -->
       <template v-if="multiple">
@@ -77,7 +78,7 @@
           <PickerToolbar
             :title="`${attrs.label}`"
             @confirm="onCheckboxPickerConfirm(checked)"
-            @cancel="onCheckboxPickerCancel"
+            @cancel="onCancel"
           />
 
           <div class="h-72 overflow-y-auto">
@@ -112,7 +113,7 @@
           :model-value="pickerValue"
           :columns="columns"
           @confirm="onPickerConfirm"
-          @cancel="onPickerCancel"
+          @cancel="onCancel"
         />
       </template>
     </van-popup>
@@ -212,35 +213,39 @@ const presentText = computed(() => {
 // RadioGroup / CheckboxGroup 选择
 function onChange(val: string | string[]) {
   const payload = serialize(val)
+
   emit('update:modelValue', payload)
   emit('change', payload)
+
   closePopup()
 }
 
-// 单选取消
-function onPickerCancel() {
+// 取消
+function onCancel() {
+  if (props.multiple) {
+    checked.value = ids.value as string[]
+  }
+
   closePopup()
 }
 
 // 单选确认
 function onPickerConfirm({ selectedValues }) {
   const [value] = selectedValues
+
   emit('update:modelValue', value)
   emit('change', value)
-  closePopup()
-}
 
-// 多选取消
-function onCheckboxPickerCancel() {
-  checked.value = ids.value as string[]
   closePopup()
 }
 
 // 多选确认
 function onCheckboxPickerConfirm(values: string[]) {
   const payload = serialize(values)
+
   emit('update:modelValue', payload)
   emit('change', payload)
+
   closePopup()
 }
 
