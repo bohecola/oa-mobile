@@ -16,5 +16,5 @@ const isIOS = computed(() => /iPhone|iPad|iPod/i.test(navigator.userAgent))
 </template>
 
 <style lang="scss">
-  @import './assets/styles/index.scss';
+  @use './assets/styles/index.scss' as *;
 </style>

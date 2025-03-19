@@ -1,39 +1,101 @@
 <template>
-  <van-skeleton :loading="isLoading" animated class="h-6 flex items-center">
-    <template #template>
-      <van-skeleton-paragraph class="!h-[60%]" />
-    </template>
-    <template #default>
-      <div v-if="readonly">
-        {{ selectedLabel }}
+  <div class="w-full">
+    <div v-if="readonly">
+      {{ selectedLabel }}
+    </div>
+
+    <van-field
+      v-else
+      :model-value="selectedLabel"
+      type="textarea"
+      placeholder="请选择"
+      is-link
+      readonly
+      autosize
+      v-bind="attrs"
+      @click="onFieldClick"
+    >
+      <template v-for="(_, name) in slots" #[name]="scope">
+        <slot :name="name" v-bind="scope" />
+      </template>
+    </van-field>
+
+    <van-popup
+      v-model:show="visible"
+      position="bottom"
+      round
+      destroy-on-close
+      safe-area-inset-bottom
+      class="h-full"
+      @click-overlay="onCancel"
+    >
+      <PickerToolbar
+        :title="`${attrs.label}（${multiple ? '多选' : '单选'}）`"
+        @cancel="onCancel"
+        @confirm="onConfirm(ids)"
+      />
+      <div class="py-2 px-4 h-[calc(100vh-var(--van-picker-toolbar-height)-env(safe-area-inset-bottom))] overflow-y-auto">
+        <BaseTree
+          ref="BaseTreeRef"
+          v-model="treeData"
+          text-key="label"
+          class="mtl-tree"
+          tree-line
+          :default-open="false"
+          :stat-handler="statHandler"
+          @click:node="onNodeClick"
+        >
+          <template #default="{ node, stat }">
+            <OpenIcon
+              v-if="stat.children.length"
+              :open="stat.open"
+              class="mtl-mr [&>svg]:w-6"
+              @click.stop="stat.open = !stat.open"
+            />
+
+            <div
+              v-if="multiple && !isEmpty(node.children)"
+              class="w-full text-lg"
+            >
+              {{ node.label }}
+            </div>
+
+            <van-checkbox
+              v-else
+              :model-value="stat.customChecked"
+              :name="node.id"
+              shape="square"
+              icon-size="20"
+              class="w-full"
+            >
+              <template v-if="stat.checked === 0" #icon>
+                <div class="w-3 h-3 bg-[--van-primary-color] flex items-center justify-center">
+                  <span class="w-[6px] h-[2px] !bg-[--white]" />
+                </div>
+              </template>
+
+              <div class="w-full text-lg">
+                {{ node.label }}
+              </div>
+            </van-checkbox>
+          </template>
+        </BaseTree>
       </div>
-      <!-- <el-tree-select
-        v-show="!readonly"
-        ref="TreeSelectRef"
-        v-model="ids"
-        :data="data"
-        :render-after-expand="false"
-        :check-strictly="multiple ? false : true"
-        :filter-node-method="filterNodeMethod"
-        :placeholder="placeholder"
-        :clearable="clearable"
-        :multiple="multiple"
-        node-key="id"
-        value-key="id"
-        filterable
-        @change="onChange"
-      /> -->
-    </template>
-  </van-skeleton>
+    </van-popup>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { listDept } from '@/api/system/dept'
+import { BaseTree, OpenIcon } from '@he-tree/vue'
+import PickerToolbar from 'vant/es/picker/PickerToolbar'
+import type { Stat } from 'node_modules/@he-tree/vue/dist/v3/components/TreeProcessorVue'
 import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
+import { listDept } from '@/api/system/dept'
+import { usePopup } from '@/hooks'
 
 type DeptTreeSelectValue = string | number | (string | number)[]
-type _DeptVO = DeptVO & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
+type _DeptVO = Partial<DeptVO> & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
 
 interface DataConfig {
   disabledKey: string
@@ -48,24 +110,32 @@ const props = withDefaults(
     readonly?: boolean
     clearable?: boolean
     multiple?: boolean
+    checkStrictly?: boolean
     withDefaultRootNode?: boolean
     defaultExpandedKeys?: Array<string | number>
     dataConfig?: DataConfig
     params?: Partial<DeptQuery>
+    disabled?: boolean
   }>(),
   {
     placeholder: '请选择',
-    withDefaultRootNode: false,
-    defaultExpandedKeys: () => [0],
+    checkStrictly: undefined,
   },
 )
 
 const emit = defineEmits(['update:modelValue', 'update:value', 'change', 'nodeClick'])
 
+const attrs = useAttrs()
+const slots = useSlots()
+
+const route = useRoute()
+
+const { visible, openPopup, closePopup } = usePopup()
+
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const route = useRoute()
+const BaseTreeRef = ref()
 
 // 节点数据加载状态
 const isLoading = ref(false)
@@ -91,15 +161,13 @@ const treeData = computed(() => {
 
   const data = dataConfig
     ? raw.map(e => ({
-      ...e,
-      disabled: e[dataConfig.disabledKey] === dataConfig.disabledValue ? dataConfig.enabled : e.disabled,
-    }))
+        ...e,
+        disabled: e[dataConfig.disabledKey] === dataConfig.disabledValue ? dataConfig.enabled : e.disabled,
+      }))
     : raw
 
   const options = proxy?.handleTree<_DeptVO>(data)
-  if (props.withDefaultRootNode) {
-    return [{ label: '根节点', id: 0, children: options }]
-  }
+
   return options
 })
 
@@ -136,8 +204,98 @@ function computedLabel(id: string | number) {
   return node.deptName
 }
 
-// 筛选函数
-const filterNodeMethod = (value: string, data: _DeptVO) => data.label.includes(value)
+// 数据初始时处理每一个 stat（钩子函数）
+function statHandler(stat: Stat<_DeptVO>) {
+  stat = { ...stat, customChecked: false }
+
+  // 默认展开第一级
+  if (stat.level === 1) {
+    return {
+      ...stat,
+      open: true,
+    }
+  }
+
+  return stat
+}
+
+// 表单项点击
+function onFieldClick() {
+  openPopup()
+
+  // 回显选中效果
+  nextTick(() => {
+    const { statsFlat, openNodeAndParents } = BaseTreeRef.value
+    statsFlat.forEach((e: Stat<_DeptVO>) => {
+      const { id } = e.data
+      const isChecked = isArray(ids.value) ? ids.value.includes(id) : id === ids.value
+
+      if (isChecked) {
+        e.customChecked = true
+        openNodeAndParents(e)
+      }
+    })
+  })
+}
+
+// 节点点击
+function onNodeClick(stat: Stat<_DeptVO>) {
+  const { statsFlat } = BaseTreeRef.value
+
+  // 单选
+  if (!props.multiple) {
+    statsFlat.forEach((e: Stat<_DeptVO>) => {
+      const isCurrent = e.data.id === stat.data.id
+
+      if (isCurrent) {
+        e.customChecked = !e.customChecked
+      }
+      else {
+        e.customChecked = false
+      }
+    })
+
+    ids.value = stat.customChecked ? stat.data.id : undefined
+  }
+  // 多选
+  else {
+    // 不是叶子节点，不修改状态
+    if (!isEmpty(stat.data.children)) {
+      stat.open = !stat.open
+      return
+    }
+
+    stat.customChecked = !stat.customChecked
+
+    const checkedStats = statsFlat.filter((e: Stat<_DeptVO>) => e.customChecked)
+
+    ids.value = checkedStats.map((e: Stat<_DeptVO>) => e.data.id)
+  }
+}
+
+// 取消
+function onCancel() {
+  ids.value = deserialize(props.modelValue)
+  closePopup()
+}
+
+// 确认
+function onConfirm(value: DeptTreeSelectValue) {
+  const payload = serialize(value)
+
+  emit('update:modelValue', payload)
+  emit('change', payload)
+
+  emit('update:value', payload)
+
+  // 单选 nodeClick 事件
+  if (!props.multiple) {
+    const deptVO = rawData.value.find(e => e.id === value)
+    emit('nodeClick', deptVO)
+  }
+
+  closePopup()
+}
 
 // 获取部门数据
 async function getData() {
@@ -157,30 +315,17 @@ async function getData() {
 
   const { data } = await listDept(queryParams).finally(() => (isLoading.value = false))
 
-  const rootNode = { label: '根节点', id: '0', deptId: '0', deptName: '根节点', type: -1 }
+  const rootNode = { label: '根节点', deptId: '0', deptName: '根节点', type: -1 } as any
 
-  const formatFormData = item => ({
-    ...item,
-    id: !isNil(item.deptId) ? String(item.deptId) : item.deptId,
-    label: item.deptName,
-  })
+  function formatFormData(item: Partial<DeptVO>): _DeptVO {
+    return {
+      ...item,
+      id: !isNil(item.deptId) ? String(item.deptId) : item.deptId,
+      label: item.deptName,
+    }
+  }
 
   rawData.value = props.withDefaultRootNode ? [rootNode, ...data].map(formatFormData) : data.map(formatFormData)
-}
-
-// change 事件
-function onChange(value: string | string[]) {
-  const payload = serialize(value)
-
-  emit('update:modelValue', payload)
-  emit('change', payload)
-
-  emit('update:value', payload)
-}
-
-// node-click 事件
-function nodeClick(deptVO: _DeptVO) {
-  emit('nodeClick', deptVO)
 }
 
 function serialize(value: DeptTreeSelectValue) {
@@ -201,7 +346,7 @@ function deserialize(value: string | number) {
   if (!isNil(value)) {
     value = isNumber(value) ? String(value) : value
     if (props.multiple) {
-      return (value as string).split(',').map(e => e)
+      return (value as string).split(',')
     }
     else {
       return value

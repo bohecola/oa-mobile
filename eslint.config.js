@@ -14,5 +14,13 @@ export default antfu({
     'vue/block-order': 'off',
     'vue/custom-event-name-casing': 'off',
     'vue/component-name-in-template-casing': 'off',
+    // 'vue/max-attributes-per-line': ['error', {
+    //   singleline: {
+    //     max: 1,
+    //   },
+    //   multiline: {
+    //     max: 1,
+    //   },
+    // }],
   },
 })

@@ -154,18 +154,13 @@
       </template>
     </van-field>
 
-    <van-field
+    <DeptSelect
+      v-model="form.deptId"
       v-show-field="['deptId', includeFields]"
       name="deptId"
       label="需求部门"
-      placeholder="请选择"
       :rules="computedRules.deptId"
-      is-link
-    >
-      <template #input>
-        <DeptSelect v-model="form.deptId" />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-show-field="['projectId', includeFields]"

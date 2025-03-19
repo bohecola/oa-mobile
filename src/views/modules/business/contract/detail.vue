@@ -331,7 +331,7 @@
 </template>
 
 <script setup lang='ts'>
-import { isEmpty, isNil } from 'lodash-es'
+import { isNil } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect/index.vue'

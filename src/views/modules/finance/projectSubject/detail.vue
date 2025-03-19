@@ -67,7 +67,7 @@
     </div>
 
     <TableCard v-show-field="['ossIdList', includeFields]" :is-empty="isEmpty(form.ossIdList)" title="附件列表" class="mx-4">
-      <UploadFile v-model="form.ossIdList" readonly  />
+      <UploadFile v-model="form.ossIdList" readonly />
     </TableCard>
   </van-form>
 </template>
@@ -78,7 +78,6 @@ import { BaseTree, OpenIcon } from '@he-tree/vue'
 import { useForm } from './form'
 import type { ProjectSubjectForm } from '@/api/oa/finance/projectSubject/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import '@he-tree/vue/style/default.css'
 
 withDefaults(
   defineProps<{
