@@ -1,7 +1,15 @@
 <template>
-  <van-field v-show-field="['t_userId', includeFields]" label="被解除劳动合同员工" name="t_userId" :rules="computedRules.t_userId">
+  <van-field
+    v-model="form.t_userId"
+    v-show-field="['t_userId', includeFields]"
+    label="被解除劳动合同员工"
+    name="t_userId"
+    is-link
+    :rules="computedRules.t_userId"
+    @click="UserSelectRef?.open"
+  >
     <template #input>
-      <UserSelect v-model="form.t_userId" @update:selected-value="onUserSelectValueChange" />
+      <UserSelect ref="UserSelectRef" v-model="form.t_userId" @confirm="onUserSelectValueChange" />
     </template>
   </van-field>
 
@@ -28,6 +36,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { UserVO } from '@/api/system/user/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -45,6 +54,8 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 

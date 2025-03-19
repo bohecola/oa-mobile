@@ -2,7 +2,7 @@
   <!-- <el-row :gutter="20">
       <el-col v-show-field="['cc_userId', includeFields]" :span="24">
         <el-form-item prop="cc_userId" label="申请人">
-          <UserSelectPro v-model="form.cc_userId" :multiple="true"  />
+          <UserSelectPro v-model="form.cc_userId" multiple  />
         </el-form-item>
       </el-col>
     </el-row> -->
@@ -14,23 +14,22 @@
       </el-col>
     </el-row> -->
 
-  <DictPicker
+  <DictSelect
     v-model="form.cc_socialSecurityProcessingCategory"
     v-show-field="['cc_socialSecurityProcessingCategory', includeFields]"
     label="社保办理类别"
     name="cc_socialSecurityProcessingCategory"
     dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type"
-    :multiple="true"
     :rules="computedRules.cc_socialSecurityProcessingCategory"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.cc_insuranceType"
     v-show-field="['cc_insuranceType', includeFields]"
     label="险种"
     name="cc_insuranceType"
     dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.cc_insuranceType"
   />
 

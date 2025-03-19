@@ -5,11 +5,16 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['d_proveType', includeFields]" label="证明类别" name="d_proveType" :rules="computedRules.d_proveType">
-    <template #input>
-      <dict-select v-model="form.d_proveType" component="checkbox" dict-type="oa_daily_work_rskjxgzmhrsxgzzdsq_prove_category" multiple />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.d_proveType"
+    v-show-field="['d_proveType', includeFields]"
+    label="证明类别"
+    name="d_proveType"
+    multiple
+    component="checkbox"
+    dict-type="oa_daily_work_rskjxgzmhrsxgzzdsq_prove_category"
+    :rules="computedRules.d_proveType"
+  />
 
   <BaseUpsert :include-fields="includeFields" />
 </template>

@@ -11,13 +11,16 @@
   </van-field>
 
   <van-field
+    v-model="form.aa_userId"
     v-show-field="['aa_userId', includeFields]"
     name="aa_userId"
     label="申请人员名单"
     :rules="computedRules.aa_userId"
+    is-link
+    @click="UserSelectRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.aa_userId" :multiple="true" />
+      <UserSelect ref="UserSelectRef" v-model="form.aa_userId" :multiple="true" />
     </template>
   </van-field>
 
@@ -34,6 +37,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
@@ -51,6 +55,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

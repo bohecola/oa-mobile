@@ -10,7 +10,6 @@
     v-show-field="['s_costCategory', includeFields]"
     label="申请费用类别"
     name="s_costCategory"
-    readonly
   />
 
   <van-field
@@ -18,7 +17,6 @@
     v-show-field="['s_transportationStandards', includeFields]"
     label="拟申请交通工具标准"
     name="s_transportationStandards"
-    readonly
   />
 
   <van-field
@@ -26,7 +24,6 @@
     v-show-field="['s_transportationFeeAmount', includeFields]" l
     abel="拟申请交通费金额（元/单趟）"
     name="s_transportationFeeAmount"
-    readonly
   />
 
   <van-field v-model="form.s_startDate" v-show-field="['s_startDate', includeFields]" label="开始时间" name="s_startDate" input-align="left" />
@@ -38,7 +35,6 @@
     v-show-field="['s_subsidyStandardDetails', includeFields]"
     label="驻勤补助标准明细"
     name="s_subsidyStandardDetails"
-    readonly
   />
 
   <BaseDetail :include-fields="includeFields" />

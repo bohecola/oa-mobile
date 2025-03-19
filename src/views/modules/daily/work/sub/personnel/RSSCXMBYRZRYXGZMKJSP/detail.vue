@@ -1,7 +1,14 @@
 <template>
-  <van-field v-show-field="['e_deptId', includeFields]" name="e_deptId" label="部门/项目部">
+  <van-field
+    v-show-field="['e_deptId', includeFields]"
+    name="e_deptId"
+    label="部门/项目部"
+  >
     <template #input>
-      <DeptSelect v-model="form.e_deptId" readonly />
+      <DeptSelect
+        v-model="form.e_deptId"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -9,17 +16,16 @@
     v-model.number="form.e_userCounts"
     v-show-field="['e_deptId', includeFields]"
     name="e_deptId"
-    label="证明开具人数" readonly
+    label="证明开具人数"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.e_proveType"
     v-show-field="['e_proveType', includeFields]"
     label="证明类型"
-    name="q_type"
+    name="e_proveType"
+    multiple
     dict-type="oa_daily_work_rsscxmbyrzryxgzmkjsp_prove_type"
-    :multiple="true"
-    :readonly="true"
   />
 
   <BaseDetail :include-fields="includeFields" />

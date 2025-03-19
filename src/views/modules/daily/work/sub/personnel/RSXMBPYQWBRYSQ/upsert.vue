@@ -22,24 +22,22 @@
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.k_nature"
     v-show-field="['k_nature', includeFields]"
     label="聘用人员性质"
     placeholder="请选择临聘人员(指项目部非生产辅助人员，如：厨师、保洁、司机等）、劳务人员(指短时间内从事生产工作的人员)"
     name="k_nature"
     dict-type="oa_daily_work_employ_personnel_type"
-    :multiple="false"
     :rules="computedRules.k_nature"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.k_category"
     v-show-field="['k_category', includeFields]"
     label="聘用类别"
     name="k_category"
     dict-type="oa_daily_work_rsxmbpywbrysq_employ_category"
-    :multiple="false"
     :rules="computedRules.k_category"
   />
 
@@ -75,15 +73,14 @@
   </van-field>
 
   <div v-if="form.k_isUniform === 'Y'">
-    <DictPicker
+    <DictSelect
       v-model="form.k_workwearType"
       v-show-field="['k_workwearType', includeFields]"
       label="工服类型"
       name="k_workwearType"
       dict-type="oa_daily_work_rsxmbpywbrysq_workwear_type"
-      :multiple="true"
+      multiple
       :rules="computedRules.k_workwearType"
-
       @change="onCategoryChange"
     />
 
@@ -225,13 +222,12 @@
       :rules="computedRules.k_endDate"
     />
 
-    <DictPicker
+    <DictSelect
       v-model="form.k_signeContractType"
       v-show-field="['k_signeContractType', includeFields]"
       label="聘用人员签订合同类型"
       name="k_signeContractType"
       dict-type="oa_daily_work_rsxmbpywbrysq_signe_contract_type"
-      :multiple="false"
       :rules="computedRules.k_signeContractType"
       @change="onSigneContractTypeChange"
     />
@@ -264,13 +260,12 @@
       />
     </div>
 
-    <DictPicker
+    <DictSelect
       v-model="form.k_purchaseInsuranceType"
       v-show-field="['k_purchaseInsuranceType', includeFields]"
       label="聘用人员购买保险类型"
       name="k_purchaseInsuranceType"
       dict-type="oa_daily_work_rsxmbpywbrysq_insurance_type"
-      :multiple="false"
       :rules="computedRules.k_purchaseInsuranceType"
       @change="onPurchaseInsuranceTypeChange"
     />

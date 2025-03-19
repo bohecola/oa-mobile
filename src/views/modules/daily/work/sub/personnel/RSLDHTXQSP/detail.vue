@@ -17,11 +17,13 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_sex', includeFields]" label="性别" name="b_sex">
-    <template #input>
-      <DictSelect v-model="form.b_sex" dict-type="sys_user_sex" readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.b_sex"
+    v-show-field="['b_sex', includeFields]"
+    label="性别"
+    name="b_sex"
+    dict-type="sys_user_sex"
+  />
 
   <!-- <el-row :gutter="20">
     <el-col v-show-field="['b_age', includeFields]" :span="24">
@@ -31,13 +33,21 @@
     </el-col>
   </el-row> -->
 
-  <DatePicker v-model="form.b_contractEndTime" v-show-field="['b_contractEndTime', includeFields]" name="b_contractEndTime" label="合同到期时间" readonly />
+  <DatePicker
+    v-model="form.b_contractEndTime"
+    v-show-field="['b_contractEndTime', includeFields]"
+    name="b_contractEndTime"
+    label="合同到期时间"
+  />
 
-  <van-field v-show-field="['b_contractType', includeFields]" label="合同类型" name="b_contractType">
-    <template #input>
-      <dict-select v-model="form.b_contractType" component="checkbox" dict-type="oa_daily_work_rsldhtxqsp_contract_type" multiple readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.b_contractType"
+    v-show-field="['b_contractType', includeFields]"
+    label="合同类型"
+    name="b_contractType"
+    component="radio"
+    dict-type="oa_daily_work_rsldhtxqsp_contract_type"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

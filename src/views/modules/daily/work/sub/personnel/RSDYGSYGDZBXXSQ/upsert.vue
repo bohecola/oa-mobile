@@ -6,21 +6,28 @@
         </el-form-item>
       </el-col>
     </el-row> -->
-  <van-field v-show-field="['f_deptId', includeFields]" label="部门" name="f_deptId" :rules="computedRules.f_deptId">
+  <van-field
+    v-show-field="['f_deptId', includeFields]"
+    label="部门"
+    name="f_deptId"
+    :rules="computedRules.f_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.f_deptId" clearable />
+      <DeptSelect
+        v-model="form.f_deptId"
+        clearable
+      />
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.f_fileType"
     v-show-field="['f_fileType', includeFields]"
     label="资料类别"
     name="f_fileType"
     dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.f_fileType"
-    :readonly="true"
   />
 
   <BaseUpsert :include-fields="includeFields" />

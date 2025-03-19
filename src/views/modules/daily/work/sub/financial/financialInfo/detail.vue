@@ -1,16 +1,22 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     label="资料类型"
     name="fileType"
-    :dict-data-list="oa_file_type"
-    :multiple="true"
-    :readonly="true"
+    dict-type="oa_file_type"
+    multiple
   />
 
-  <van-field v-show-field="['isSeal', includeFields]" label="是否加盖公章" name="isSeal">
+  <van-field
+    v-show-field="['isSeal', includeFields]"
+    label="是否加盖公章"
+    name="isSeal"
+  >
     <template #input>
-      <YesNoSwitch v-model="form.isSeal" readonly />
+      <YesNoSwitch
+        v-model="form.isSeal"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -19,7 +25,6 @@
     v-show-field="['ii_applicationMaterials', includeFields]"
     label="申请资料"
     name="ii_applicationMaterials"
-    readonly
   />
 
   <BaseDetail :include-fields="includeFields" />

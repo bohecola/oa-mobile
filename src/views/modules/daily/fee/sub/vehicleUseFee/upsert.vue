@@ -58,31 +58,37 @@
   />
 
   <van-field
+    v-model="form.b_maintenanceAddress"
     v-show-field="['b_maintenanceAddress', includeFields]"
     type="textarea"
     rows="1"
     autosize
     label="车辆维修/保养地点"
+    placeholder="请输入"
     name="b_maintenanceAddress"
     :rules="computedRules.d_articleName"
   />
 
   <van-field
+    v-model="form.b_problemDescription"
     v-show-field="['b_problemDescription', includeFields]"
     type="textarea"
     rows="1"
     autosize
     label="问题描述"
+    placeholder="请输入"
     name="b_problemDescription"
     :rules="computedRules.d_articleName"
   />
 
   <van-field
+    v-model="form.b_maintenanceItemsAndUnitPrice"
     v-show-field="['b_maintenanceItemsAndUnitPrice', includeFields]"
     type="textarea"
     rows="1"
     autosize
     label="维修/保养项目及单价"
+    placeholder="请输入"
     name="b_maintenanceItemsAndUnitPrice"
     :rules="computedRules.d_articleName"
   />
@@ -112,6 +118,7 @@
   />
 
   <van-field
+    v-model="form.b_oilContent"
     v-show-field="['b_oilContent', includeFields]"
     type="textarea"
     rows="1"
@@ -132,11 +139,13 @@
   />
 
   <van-field
+    v-model="form.b_useReason"
     v-show-field="['b_useReason', includeFields]"
     type="textarea"
     rows="1"
     autosize
     label="使用事由"
+    placeholder="请输入"
     name="b_useReason"
     :rules="computedRules.d_articleName"
   />

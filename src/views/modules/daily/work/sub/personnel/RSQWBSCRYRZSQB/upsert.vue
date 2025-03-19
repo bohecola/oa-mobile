@@ -6,9 +6,13 @@
     :rules="computedRules.ff_userId"
   >
     <template #input>
-      <PreUserSelect v-model="form.ff_userId" @get-row="getPreUser" />
+      <PreUserSelect
+        v-model="form.ff_userId"
+        @get-row="getPreUser"
+      />
     </template>
   </van-field>
+
   <van-field
     v-show-field="['ff_deptId', includeFields]"
     label="项目部"
@@ -30,43 +34,40 @@
     :rules="computedRules.ff_age"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_sex"
     v-show-field="['ff_sex', includeFields]"
     label="性别"
     name="ff_sex"
     dict-type="sys_user_sex"
-    :multiple="false"
     :rules="computedRules.ff_sex"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_nation"
     v-show-field="['ff_nation', includeFields]"
     label="民族"
     name="ff_nation"
     dict-type="ff_nation"
-    :multiple="false"
     :rules="computedRules.ff_nation"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_education"
     v-show-field="['ff_education', includeFields]"
     label="学历"
     name="ff_education"
     dict-type="oa_education_type"
-    :multiple="false"
     :rules="computedRules.ff_education"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_certificates"
     v-show-field="['ff_certificates', includeFields]"
     label="持证情况"
     name="ff_certificates"
     dict-type="oa_document_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.ff_certificates"
   />
 
@@ -75,7 +76,6 @@
     v-show-field="['ff_interviewDate', includeFields]"
     name="ff_interviewDate"
     label="面试日期"
-    placeholder="请输入"
     :rules="computedRules.ff_interviewDate"
   />
 
@@ -83,7 +83,7 @@
     v-model.trim="form.ff_employmentMethod"
     v-show-field="['ff_employmentMethod', includeFields]"
     label="入职方式"
-    placeholder="请输入"
+    placeholder="请输入公司、项目部"
     name="ff_employmentMethod"
     :rules="computedRules.ff_employmentMethod"
   />
@@ -92,7 +92,7 @@
     v-model.trim="form.ff_employmentPost"
     v-show-field="['ff_employmentPost', includeFields]"
     label="入职岗位"
-    placeholder="请输入"
+    placeholder="请输入风电检修班长、风电检修员、风电见习检修员、光伏电站检修班长、光伏电站检修员、光伏电站见习检修员、电工"
     name="ff_employmentPost"
     :rules="computedRules.ff_employmentPost"
   />
@@ -101,7 +101,7 @@
     v-model.trim="form.ff_employmentNature"
     v-show-field="['ff_employmentNature', includeFields]"
     label="入职性质"
-    placeholder="请输入"
+    placeholder="请输入杰而森全外包人员"
     name="ff_employmentNature"
     :rules="computedRules.ff_employmentNature"
   />
@@ -157,11 +157,7 @@
     name="ff_performanceWages"
     label="试用期薪资发放标准"
     :rules="computedRules.ff_performanceWages"
-  >
-    <template #input>
-      <span>{{ form.ff_performanceWages }}%</span>
-    </template>
-  </van-field>
+  />
 
   <BaseUpsert :include-fields="includeFields" />
 </template>

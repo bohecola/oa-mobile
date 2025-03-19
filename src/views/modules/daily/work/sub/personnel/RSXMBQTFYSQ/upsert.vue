@@ -64,6 +64,9 @@
     v-model.trim="form.ee_distributionCycle"
     v-show-field="['ee_distributionCycle', includeFields]"
     label="发放周期"
+    type="textarea"
+    rows="1"
+    autosize
     placeholder="请输入一次性发放、连续发放（如果是连续发放，需选择执行结束日期、执行结束日期说明）"
     name="ee_distributionCycle"
     :rules="computedRules.ee_distributionCycle"
@@ -91,6 +94,9 @@
     v-model.trim="form.ee_distributionMethod"
     v-show-field="['ee_distributionMethod', includeFields]"
     label="发放方式"
+    type="textarea"
+    rows="1"
+    autosize
     placeholder="请输入随月度工资发放/随发票报销/其他(详细说明)"
     name="ee_distributionMethod"
     :rules="computedRules.ee_distributionMethod"

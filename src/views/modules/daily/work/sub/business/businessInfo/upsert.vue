@@ -1,11 +1,11 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
     dict-type="oa_file_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.fileType"
   />
 

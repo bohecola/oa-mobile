@@ -6,11 +6,15 @@
     :rules="computedRules.a_contractId"
   >
     <template #input>
-      <ContractSelect v-model="form.a_contractId" :params="{ type: 'in' }" @update:selected-value="onContractSelectValueChange" />
+      <ContractSelect
+        v-model="form.a_contractId"
+        :params="{ type: 'in' }"
+        @update:selected-value="onContractSelectValueChange"
+      />
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.a_businessType"
     v-show-field="['a_businessType', includeFields]"
     label="项目类别"
@@ -45,7 +49,10 @@
     :rules="computedRules.a_partyA"
   >
     <template #input>
-      <SCSelect v-model="form.a_partyA" multiple />
+      <SCSelect
+        v-model="form.a_partyA"
+        multiple
+      />
     </template>
   </van-field>
 
@@ -57,7 +64,10 @@
     :rules="computedRules.customizeApprover"
   >
     <template #input>
-      <UserSelect v-model="form.customizeApprover" multiple />
+      <UserSelect
+        v-model="form.customizeApprover"
+        multiple
+      />
     </template>
   </van-field>
 

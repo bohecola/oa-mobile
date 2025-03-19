@@ -1,12 +1,11 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
     dict-type="oa_file_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
   <van-field
@@ -15,7 +14,10 @@
     name="isSeal"
   >
     <template #input>
-      <YesNoSwitch v-model="form.isSeal" readonly />
+      <YesNoSwitch
+        v-model="form.isSeal"
+        readonly
+      />
     </template>
   </van-field>
 

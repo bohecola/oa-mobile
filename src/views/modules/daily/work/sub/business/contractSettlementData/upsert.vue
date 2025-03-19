@@ -1,12 +1,18 @@
 <template>
   <van-field
+    v-model="form.customizeApprover"
     v-show-field="['customizeApprover', includeFields]"
+    is-link
     label="审核人"
     name="customizeApprover"
     :rules="computedRules.customizeApprover"
+    @click="UserSelectRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.customizeApprover" />
+      <UserSelect
+        ref="UserSelectRef"
+        v-model="form.customizeApprover"
+      />
     </template>
   </van-field>
 
@@ -21,7 +27,7 @@
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
@@ -68,6 +74,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useUserStore } from '@/store/user'
@@ -99,4 +106,6 @@ const tractFieldsArr
     : props.includeFields.filter(field => field !== 'customizeTransactor')
 
 trackFields(tractFieldsArr)
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 </script>

@@ -1,11 +1,10 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.sealType"
     v-show-field="['sealType', includeFields]"
     label="申请类型"
     name="sealType"
     dict-type="oa_seal_type"
-    :multiple="false"
     :rules="computedRules.sealType"
   />
 

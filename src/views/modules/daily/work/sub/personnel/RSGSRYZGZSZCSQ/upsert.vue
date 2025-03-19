@@ -1,14 +1,13 @@
 <template>
-  <van-field
+  <DictSelect
+    v-model="form.y_type"
     v-show-field="['y_type', includeFields]"
     label="申请注册/使用证书类型"
     name="y_type"
+    dict-type="oa_document_type"
+    :filter-fn="(item) => !['0', '1', '2', '3'].includes(item.value)"
     :rules="computedRules.y_type"
-  >
-    <template #input>
-      <DictSelect v-model="form.y_type" dict-type="oa_document_type" :filter-fn="(item) => !['0', '1', '2', '3'].includes(item.value)" />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-model.trim="form.y_name"
@@ -19,13 +18,12 @@
     :rules="computedRules.y_name"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.y_certificateLevel"
     v-show-field="['y_certificateLevel', includeFields]"
     label="证书等级"
     name="y_certificateLevel"
     dict-type="oa_certificate_level"
-    :multiple="false"
     :rules="computedRules.y_certificateLevel"
   />
 
@@ -40,13 +38,12 @@
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.y_certificateStatus"
     v-show-field="['y_certificateStatus', includeFields]"
     label="证书状态"
     name="y_certificateStatus"
     dict-type="sys_normal_disable"
-    :multiple="false"
     :rules="computedRules.y_certificateStatus"
   />
 

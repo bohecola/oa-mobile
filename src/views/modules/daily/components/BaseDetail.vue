@@ -6,7 +6,7 @@
     type="textarea"
     label="申请事由"
     input-align="left"
-    rows="2"
+    rows="1"
     autosize
     :right-icon="!isEmpty(form.wfRemark) ? 'info-o' : ''"
     @click-right-icon="handleIconClick"
@@ -54,7 +54,7 @@ const vShowField = createFieldVisibilityDirective<DailyForm>(form)
 function handleIconClick() {
   showDialog({
     title: '申请事由填写说明',
-    message: () => <van-field v-model={form.value.wfRemark} type="textarea" rows="2" autosize />,
+    message: () => <van-field v-model={form.value.wfRemark} type="textarea" rows="1" autosize />,
   })
 }
 </script>

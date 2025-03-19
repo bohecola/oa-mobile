@@ -1,31 +1,29 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileUseType"
     v-show-field="['fileUseType', includeFields]"
     label="使用方式"
     name="fileUseType"
     dict-type="oa_file_use_type"
-    :multiple="false"
     :rules="computedRules.fileUseType"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.sealFileCategory"
     v-show-field="['sealFileCategory', includeFields]"
     label="文件类别"
     name="sealFileCategory"
     dict-type="oa_seal_file_category"
-    :multiple="false"
     :rules="computedRules.sealFileCategory"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.sealUseType"
     v-show-field="['sealUseType', includeFields]"
     label="用印类型"
     name="sealUseType"
     dict-type="oa_seal_use_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.sealUseType"
   />
 

@@ -11,11 +11,13 @@
   />
 
   <van-field
+    v-model="form.d_articleDetail"
     v-show-field="['d_articleDetail', includeFields]"
     type="textarea"
     rows="1"
     autozize
     label="投稿详情"
+    placeholder="请输入"
     name="d_articleDetail"
     :rules="computedRules.d_articleDetail"
   />

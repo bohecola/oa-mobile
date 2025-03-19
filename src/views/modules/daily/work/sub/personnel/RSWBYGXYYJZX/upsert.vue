@@ -5,9 +5,21 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['x_userId', includeFields]" name="x_userId" label="外包劳动合同到期员工" :rules="computedRules.x_userId">
+  <van-field
+    v-show-field="['x_userId', includeFields]"
+    name="x_userId"
+    label="外包劳动合同到期员工"
+    :rules="computedRules.x_userId"
+    is-link
+    @click="UserSelectRef?.open"
+  >
     <template #input>
-      <UserSelect v-model="form.x_userId" :multiple="true" @update:selected-value="onUserSelectValueChange" />
+      <UserSelect
+        ref="UserSelectRef"
+        value-type="object"
+        multiple
+        @confirm="onUserSelectValueChange"
+      />
     </template>
   </van-field>
 
@@ -23,7 +35,7 @@
     v-model="form.x_contractSigningTime"
     v-show-field="['x_contractSigningTime', includeFields]"
     name="x_contractSigningTime"
-    label="合同签订时间"
+    label="外包合同签订时间"
     :rules="computedRules.x_contractSigningTime"
   />
 
@@ -31,7 +43,7 @@
     v-model="form.x_contractEndTime"
     v-show-field="['x_contractEndTime', includeFields]"
     name="x_contractEndTime"
-    label="合同到期时间"
+    label="外包合同到期时间"
     :rules="computedRules.x_contractEndTime"
   />
 
@@ -51,6 +63,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { UserVO } from '@/api/system/user/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -78,6 +91,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

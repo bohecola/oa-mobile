@@ -22,7 +22,7 @@
     v-model="form.x_contractSigningTime"
     v-show-field="['x_contractSigningTime', includeFields]"
     name="x_contractSigningTime"
-    label="合同签订时间"
+    label="外包合同签订时间"
     readonly
   />
 
@@ -30,7 +30,7 @@
     v-model="form.x_contractEndTime"
     v-show-field="['x_contractEndTime', includeFields]"
     name="x_contractEndTime"
-    label="合同到期时间"
+    label="外包合同到期时间"
     readonly
   />
 

@@ -10,7 +10,6 @@
     v-show-field="['ee_salesContractNo', includeFields]"
     label="销售合同编号"
     name="ee_salesContractNo"
-    readonly
   />
 
   <van-field
@@ -18,7 +17,6 @@
     v-show-field="['ee_category', includeFields]"
     label="申请类别"
     name="ee_category"
-    readonly
   />
 
   <van-field
@@ -26,7 +24,6 @@
     v-show-field="['ee_subsidyAmountStandard', includeFields]"
     label="申请补助金额标准"
     name="ee_subsidyAmountStandard"
-    readonly
   />
 
   <van-field
@@ -34,7 +31,6 @@
     v-show-field="['ee_recipientsNumber', includeFields]"
     label="发放人数"
     name="ee_recipientsNumber"
-    readonly
   />
 
   <van-field
@@ -42,7 +38,6 @@
     v-show-field="['ee_subsidyTotalAmountMonth', includeFields]"
     label="申请补助总金额(元/月)"
     name="ee_subsidyTotalAmountMonth"
-    readonly
   />
 
   <van-field
@@ -50,7 +45,6 @@
     v-show-field="['ee_subsidyTotalAmountDay', includeFields]"
     label="申请补助总金额(元/天)"
     name="ee_subsidyTotalAmountDay"
-    readonly
   />
 
   <van-field
@@ -58,7 +52,6 @@
     v-show-field="['ee_distributionCycle', includeFields]"
     label="发放周期"
     name="ee_distributionCycle"
-    readonly
   />
 
   <DatePicker
@@ -67,7 +60,6 @@
     v-show-field="['ee_startDate', includeFields]"
     name="ee_startDate"
     label="执行开始日期"
-    readonly
   />
 
   <DatePicker
@@ -76,7 +68,6 @@
     v-show-field="['ee_endDate', includeFields]"
     name="ee_endDate"
     label="执行结束日期"
-    readonly
   />
 
   <van-field

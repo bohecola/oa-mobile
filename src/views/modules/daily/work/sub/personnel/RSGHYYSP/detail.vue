@@ -14,14 +14,13 @@
     readonly
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.c_sealType"
     v-show-field="['c_sealType', includeFields]"
     label="用印类型"
     name="c_sealType"
     dict-type="oa_daily_work_rsghyysp_seal_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
   <BaseDetail :include-fields="includeFields" />

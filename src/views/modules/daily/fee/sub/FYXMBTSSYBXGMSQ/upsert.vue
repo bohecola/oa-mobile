@@ -11,20 +11,23 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['e_deptId', includeFields]" label="部门/项目部" name="e_deptId" :rules="computedRules.e_deptId">
+  <van-field
+    v-show-field="['e_deptId', includeFields]"
+    label="部门/项目部"
+    name="e_deptId"
+    :rules="computedRules.e_deptId"
+  >
     <template #input>
       <DeptSelect v-model="form.e_deptId" />
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.e_personnelCategory"
     v-show-field="['e_personnelCategory', includeFields]"
     label="人员类别"
     name="e_personnelCategory"
     dict-type="oa_daily_work_personnel_category"
-    :multiple="false"
-    :rules="computedRules.f_applyNumber"
   />
 
   <van-field
@@ -43,7 +46,6 @@
     v-show-field="['e_insuranceExpirationStartDate', includeFields]"
     name="e_insuranceExpirationStartDate"
     label="建议保险开始日期"
-    readonly
   />
 
   <DatePicker
@@ -51,7 +53,6 @@
     v-show-field="['e_insuranceExpirationEndDate', includeFields]"
     name="e_insuranceExpirationEndDate"
     label="建议保险截止日期"
-    readonly
   />
 
   <DatePicker
@@ -59,7 +60,6 @@
     v-show-field="['e_latestPurchaseDate', includeFields]"
     name="e_latestPurchaseDate"
     label="保险最晚购买日期"
-    readonly
   />
 
   <van-field-number
@@ -68,17 +68,14 @@
     label="购买保险人数"
     type="digit"
     name="e_purchaseInsuranceNumber"
-    readonly
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.e_purchaseInsuranceCategory"
     v-show-field="['e_purchaseInsuranceCategory', includeFields]"
     label="购买保险类别"
     name="e_purchaseInsuranceCategory"
     dict-type="oa_daily_work_purchase_insurance_category"
-    :multiple="false"
-    readonly
   />
 
   <van-field-number
@@ -86,7 +83,6 @@
     v-show-field="['e_insuranceLimit', includeFields]"
     label="购买保险额度(万元)"
     name="e_insuranceLimit"
-    readonly
   />
 
   <van-field
@@ -95,7 +91,10 @@
     name="e_isHighVoltageOperation"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_isHighVoltageOperation" readonly />
+      <YesNoSwitch
+        v-model="form.e_isHighVoltageOperation"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -105,7 +104,10 @@
     name="e_isClimbingHomework"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_isClimbingHomework" readonly />
+      <YesNoSwitch
+        v-model="form.e_isClimbingHomework"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -115,7 +117,6 @@
     v-show-field="['e_distanceRange', includeFields]"
     label="登高作业位置到地面的距离范围(米)"
     name="e_distanceRange"
-    readonly
   />
 
   <van-field
@@ -124,7 +125,10 @@
     name="e_isNewHiredPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_isNewHiredPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.e_isNewHiredPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -134,7 +138,10 @@
     name="e_transferInDeptPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_transferInDeptPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.e_transferInDeptPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -144,7 +151,10 @@
     name="e_transferOutDeptNoPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_transferOutDeptNoPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.e_transferOutDeptNoPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -154,7 +164,10 @@
     name="e_isEarlyStagePurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_isEarlyStagePurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.e_isEarlyStagePurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -165,7 +178,10 @@
     name="e_isOldInsuranceTermination"
   >
     <template #input>
-      <YesNoSwitch v-model="form.e_isOldInsuranceTermination" readonly />
+      <YesNoSwitch
+        v-model="form.e_isOldInsuranceTermination"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -173,16 +189,24 @@
     v-if="form.e_isOldInsuranceTermination === 'Y'"
     v-model="form.e_isOldInsuranceTerminationReason"
     v-show-field="['e_isOldInsuranceTerminationReason', includeFields]"
-    type="textarea"
-    rows="1"
-    autosize
     label="原特殊商业保险终止原因说明"
     name="e_isOldInsuranceTerminationReason"
-  />
-
-  <van-field v-show-field="['e_isBelong', includeFields]" label="人员是否属于该项目部" name="e_isBelong">
+  >
     <template #input>
-      <YesNoSwitch v-model="form.e_isBelong" readonly />
+      <TextareaView :value="form.e_isOldInsuranceTerminationReason" />
+    </template>
+  </van-field>
+
+  <van-field
+    v-show-field="['e_isBelong', includeFields]"
+    label="人员是否属于该项目部"
+    name="e_isBelong"
+  >
+    <template #input>
+      <YesNoSwitch
+        v-model="form.e_isBelong"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -203,29 +227,28 @@
     v-show-field="['e_insurancePeriod', includeFields]"
     label="保险期限"
     name="e_insurancePeriod"
-    readonly
   />
 
   <van-field
     v-show-field="['e_purchaseInsuranceReason', includeFields]"
-    type="textarea"
-    rows="1"
-    autosize
     label="购买保险原因"
     name="e_purchaseInsuranceReason"
-    readonly
-  />
+  >
+    <template #input>
+      <TextareaView :value="form.e_purchaseInsuranceReason" />
+    </template>
+  </van-field>
 
   <van-field
     v-model="form.e_purchaseInsuranceSpecialExplain"
     v-show-field="['e_purchaseInsuranceSpecialExplain', includeFields]"
-    type="textarea"
-    rows="1"
-    autosize
     label="保险购买特殊说明"
     name="e_purchaseInsuranceSpecialExplain"
-    readonly
-  />
+  >
+    <template #input>
+      <TextareaView :value="form.e_purchaseInsuranceSpecialExplain" />
+    </template>
+  </van-field>
 
   <FeeBaseUpsert :include-fields="includeFields2" />
 </template>

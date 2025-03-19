@@ -7,19 +7,24 @@
       </el-col>
     </el-row> -->
 
-  <van-field v-show-field="['q_deptId', includeFields]" label="项目部" name="q_deptId" :rules="computedRules.q_deptId">
+  <van-field
+    v-show-field="['q_deptId', includeFields]"
+    label="项目部"
+    name="q_deptId"
+    :rules="computedRules.q_deptId"
+  >
     <template #input>
       <DeptSelect v-model="form.q_deptId" />
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.q_type"
     v-show-field="['q_type', includeFields]"
     label="申请类型"
     name="q_type"
     dict-type="oa_daily_work_rsscxmbryydxffglbzfysq_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.q_type"
     @change="onTypeChange"
   />
@@ -55,13 +60,12 @@
   />
 
   <van-field-number
-    v-if="!isNil(form.q_type)"
     v-model.number="form.q_totalAmount"
     v-show-field="['q_totalAmount', includeFields]"
     label="合计金额（元）"
     name="q_totalAmount"
     :rules="computedRules.q_totalAmount"
-    clearable
+    :disabled="true"
   />
 
   <BaseUpsert :include-fields="includeFields" />

@@ -1,5 +1,10 @@
 <template>
-  <van-field v-show-field="['e_deptId', includeFields]" name="e_deptId" label="部门/项目部" :rules="computedRules.e_deptId">
+  <van-field
+    v-show-field="['e_deptId', includeFields]"
+    name="e_deptId"
+    label="部门/项目部"
+    :rules="computedRules.e_deptId"
+  >
     <template #input>
       <DeptSelect v-model="form.e_deptId" />
     </template>
@@ -14,13 +19,13 @@
     :rules="computedRules.e_userCounts"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.e_proveType"
     v-show-field="['e_proveType', includeFields]"
     label="证明类型"
-    name="q_type"
+    name="e_proveType"
+    multiple
     dict-type="oa_daily_work_rsscxmbyrzryxgzmkjsp_prove_type"
-    :multiple="true"
     :rules="computedRules.e_proveType"
   />
 

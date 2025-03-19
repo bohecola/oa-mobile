@@ -1,12 +1,11 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.certificateType"
     v-show-field="['certificateType', includeFields]"
     label="证件类型"
     name="certificateType"
+    multiple
     dict-type="oa_security_train_certificate_type"
-    :multiple="true"
-    :readonly="true"
   />
 
   <FeeBaseDetail :include-fields="includeFields" />

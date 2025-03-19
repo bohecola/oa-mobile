@@ -1,21 +1,20 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.administrationFileType"
     v-show-field="['administrationFileType', includeFields]"
     label="申请资料"
     name="administrationFileType"
     dict-type="oa_administration_file_type"
-    :multiple="true"
     :rules="computedRules.administrationFileType"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
     dict-type="oa_file_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.administrationFileType"
   />
 

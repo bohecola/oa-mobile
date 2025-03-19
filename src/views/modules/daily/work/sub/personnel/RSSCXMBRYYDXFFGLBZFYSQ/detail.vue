@@ -7,20 +7,26 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['q_deptId', includeFields]" label="项目部" name="q_deptId">
+  <van-field
+    v-show-field="['q_deptId', includeFields]"
+    label="项目部"
+    name="q_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.q_deptId" readonly />
+      <DeptSelect
+        v-model="form.q_deptId"
+        readonly
+      />
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.q_type"
     v-show-field="['q_type', includeFields]"
     label="申请类型"
     name="q_type"
     dict-type="oa_daily_work_rsscxmbryydxffglbzfysq_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
   <van-field
@@ -31,7 +37,10 @@
   >
     <template #input>
       {{ form.q_defectEliminationAmount }}
-      <span v-if="!isNil(form.q_defectEliminationAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_defectEliminationAmount) }}</span>
+      <span
+        v-if="!isNil(form.q_defectEliminationAmount)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.q_defectEliminationAmount) }}</span>
     </template>
   </van-field>
 
@@ -43,7 +52,10 @@
   >
     <template #input>
       {{ form.q_trafficAmount }}
-      <span v-if="!isNil(form.q_trafficAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_trafficAmount) }}</span>
+      <span
+        v-if="!isNil(form.q_trafficAmount)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.q_trafficAmount) }}</span>
     </template>
   </van-field>
 
@@ -55,7 +67,10 @@
   >
     <template #input>
       {{ form.q_personnelReuseSubsidyAmount }}
-      <span v-if="!isNil(form.q_personnelReuseSubsidyAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_personnelReuseSubsidyAmount) }}</span>
+      <span
+        v-if="!isNil(form.q_personnelReuseSubsidyAmount)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.q_personnelReuseSubsidyAmount) }}</span>
     </template>
   </van-field>
 
@@ -67,7 +82,10 @@
   >
     <template #input>
       {{ form.q_totalAmount }}
-      <span v-if="!isNil(form.q_totalAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_totalAmount) }}</span>
+      <span
+        v-if="!isNil(form.q_totalAmount)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.q_totalAmount) }}</span>
     </template>
   </van-field>
 

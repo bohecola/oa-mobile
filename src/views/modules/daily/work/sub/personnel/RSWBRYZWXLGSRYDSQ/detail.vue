@@ -16,7 +16,6 @@
     v-show-field="['aa_effectiveDate', includeFields]"
     name="aa_effectiveDate"
     label="生效日期"
-    readonly
   />
 
   <BaseDetail :include-fields="includeFields" />

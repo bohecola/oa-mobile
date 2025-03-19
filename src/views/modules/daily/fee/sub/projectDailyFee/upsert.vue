@@ -1,14 +1,14 @@
 <template>
   <FeeBaseUpsert :include-fields="includeFields1" />
 
-  <DictPicker
+  <DictSelect
     v-if="form.no === 'PXFY'"
     v-model="form.certificateType"
     v-show-field="['certificateType', includeFields]"
     label="证件类型"
     name="certificateType"
     dict-type="oa_project_daily_fee_certificate_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.certificateType"
   />
 

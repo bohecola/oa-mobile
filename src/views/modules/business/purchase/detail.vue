@@ -182,7 +182,7 @@
       label="采购说明"
       name="description"
       type="textarea"
-      rows="2"
+      rows="1"
       autosize
     />
 
@@ -192,7 +192,7 @@
       label="备注"
       name="remark"
       type="textarea"
-      rows="2"
+      rows="1"
       autosize
     />
 
@@ -388,7 +388,7 @@
               :name="`itemList.${index}.remark`"
               type="textarea"
               label="备注"
-              rows="2"
+              rows="1"
               autosize
             />
           </TableCard>

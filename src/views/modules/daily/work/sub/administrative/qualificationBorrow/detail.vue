@@ -1,22 +1,19 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
     dict-type="oa_file_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.fileUseType"
     v-show-field="['fileUseType', includeFields]"
     label="使用方式"
     name="fileUseType"
     dict-type="oa_file_use_type"
-    :multiple="false"
-    :readonly="false"
   />
 
   <van-field
@@ -26,7 +23,10 @@
     input-align="left"
   >
     <template #input>
-      <YesNoSwitch v-model="form.isSeal" readonly />
+      <YesNoSwitch
+        v-model="form.isSeal"
+        readonly
+      />
     </template>
   </van-field>
 

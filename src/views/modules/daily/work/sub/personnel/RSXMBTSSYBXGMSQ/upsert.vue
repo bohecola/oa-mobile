@@ -6,20 +6,21 @@
     :rules="computedRules.qq_deptId"
   >
     <template #input>
-      <DeptSelect v-model="form.qq_deptId" @change="onDeptChange" />
+      <DeptSelect
+        v-model="form.qq_deptId"
+        @change="onDeptChange"
+      />
     </template>
   </van-field>
 
-  <van-field
+  <DictSelect
+    v-model="form.qq_personnelCategory"
     v-show-field="['qq_personnelCategory', includeFields]"
     label="人员类别"
     name="qq_personnelCategory"
-    :rules="computedRules.z_deptId"
-  >
-    <template #input>
-      <DictSelect v-model="form.qq_personnelCategory" dict-type="oa_daily_work_personnel_category" />
-    </template>
-  </van-field>
+    dict-type="oa_daily_work_personnel_category"
+    :rules="computedRules.qq_personnelCategory"
+  />
 
   <DatePicker
     v-model="form.qq_insuranceExpirationStartDate"
@@ -55,13 +56,12 @@
     :rules="computedRules.qq_purchaseInsuranceNumber"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.qq_purchaseInsuranceCategory"
     v-show-field="['qq_purchaseInsuranceCategory', includeFields]"
     label="购买保险类别"
     name="qq_purchaseInsuranceCategory"
     dict-type="oa_daily_work_purchase_insurance_category"
-    :multiple="false"
     :rules="computedRules.qq_purchaseInsuranceCategory"
   />
 
@@ -97,9 +97,9 @@
     </template>
   </van-field>
 
-  <van-field
+  <van-field-number
     v-if="form.qq_isClimbingHomework === 'Y'"
-    v-model="form.qq_distanceRange"
+    v-model.number="form.qq_distanceRange"
     v-show-field="['qq_distanceRange', includeFields]"
     label="登高作业位置到地面的距离范围(米)"
     placeholder="请输入"

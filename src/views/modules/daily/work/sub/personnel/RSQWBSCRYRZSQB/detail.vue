@@ -1,12 +1,27 @@
 <template>
-  <van-field v-show-field="['ff_userId', includeFields]" label="员工" name="ff_deptId">
+  <van-field
+    v-show-field="['ff_userId', includeFields]"
+    label="员工"
+    name="ff_deptId"
+  >
     <template #input>
-      <PreUserSelect v-model="form.ff_userId" readonly />
+      <PreUserSelect
+        v-model="form.ff_userId"
+        readonly
+      />
     </template>
   </van-field>
-  <van-field v-show-field="['ff_deptId', includeFields]" label="项目部" name="ff_deptId">
+
+  <van-field
+    v-show-field="['ff_deptId', includeFields]"
+    label="项目部"
+    name="ff_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.ff_deptId" readonly />
+      <DeptSelect
+        v-model="form.ff_deptId"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -15,47 +30,39 @@
     v-show-field="['ff_age', includeFields]"
     label="年龄"
     name="ff_age"
-    readonly
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_sex"
     v-show-field="['ff_sex', includeFields]"
     label="性别"
     name="ff_sex"
     dict-type="sys_user_sex"
-    :multiple="false"
-    :readonly="true"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_nation"
     v-show-field="['ff_nation', includeFields]"
     label="民族"
     name="ff_nation"
     dict-type="ff_nation"
-    :multiple="false"
-    :readonly="true"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_education"
     v-show-field="['ff_education', includeFields]"
     label="学历"
     name="ff_education"
     dict-type="oa_education_type"
-    :multiple="false"
-    :readonly="true"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.ff_certificates"
     v-show-field="['ff_certificates', includeFields]"
     label="持证情况"
     name="ff_certificates"
     dict-type="oa_document_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
   <DatePicker
@@ -63,7 +70,6 @@
     v-show-field="['ff_interviewDate', includeFields]"
     name="ff_interviewDate"
     label="面试日期"
-    readonly
   />
 
   <van-field
@@ -71,7 +77,6 @@
     v-show-field="['ff_employmentMethod', includeFields]"
     label="入职方式"
     name="ff_employmentMethod"
-    readonly
   />
 
   <van-field
@@ -79,7 +84,6 @@
     v-show-field="['ff_employmentPost', includeFields]"
     label="入职岗位"
     name="ff_employmentPost"
-    readonly
   />
 
   <van-field
@@ -87,7 +91,6 @@
     v-show-field="['ff_employmentNature', includeFields]"
     label="入职性质"
     name="ff_employmentNature"
-    readonly
   />
 
   <DatePicker
@@ -95,13 +98,20 @@
     v-show-field="['ff_hopeDate', includeFields]"
     name="ff_hopeDate"
     label="预计到岗日期"
-    readonly
   />
 
-  <van-field v-model="form.ff_wages" v-show-field="['ff_wages', includeFields]" name="ff_wages" label="月工资总额（元/月）">
+  <van-field
+    v-model="form.ff_wages"
+    v-show-field="['ff_wages', includeFields]"
+    name="ff_wages"
+    label="月工资总额（元/月）"
+  >
     <template #input>
       <span>{{ form.ff_wages }}</span>
-      <span v-if="!isNil(form.ff_wages)" class="ml-3 text-red-400">{{ toCnMoney(form.ff_wages) }}</span>
+      <span
+        v-if="!isNil(form.ff_wages)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.ff_wages) }}</span>
     </template>
   </van-field>
 
@@ -110,12 +120,18 @@
     v-show-field="['ff_otherBenefits', includeFields]"
     label="其他福利"
     name="ff_otherBenefits"
-    readonly
   />
 
-  <van-field v-show-field="['ff_isProbation', includeFields]" name="ff_isProbation" label="是否有试用期">
+  <van-field
+    v-show-field="['ff_isProbation', includeFields]"
+    name="ff_isProbation"
+    label="是否有试用期"
+  >
     <template #input>
-      <YesNoSwitch v-model="form.ff_isProbation" readonly />
+      <YesNoSwitch
+        v-model="form.ff_isProbation"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -124,14 +140,18 @@
     v-show-field="['ff_probationCycle', includeFields]"
     name="ff_probationCycle"
     label="试用期时长(月)"
-    readonly
   />
 
-  <van-field v-show-field="['ff_performanceWages', includeFields]" name="ff_performanceWages" label="试用期薪资发放标准" readonly>
+  <van-field
+    v-show-field="['ff_performanceWages', includeFields]"
+    name="ff_performanceWages"
+    label="试用期薪资发放标准"
+  >
     <template #input>
       <span>{{ form.ff_performanceWages }}%</span>
     </template>
   </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 

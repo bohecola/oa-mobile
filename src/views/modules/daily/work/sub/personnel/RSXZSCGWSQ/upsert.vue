@@ -17,7 +17,7 @@
   />
 
   <van-field
-    v-model="form.z_postNames"
+    v-model.trim="form.z_postNames"
     v-show-field="['z_postNames', includeFields]"
     label="本次所有新增岗位名称"
     placeholder="请输入"

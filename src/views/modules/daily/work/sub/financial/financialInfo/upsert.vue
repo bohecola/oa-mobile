@@ -1,11 +1,11 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.fileType"
     v-show-field="['fileType', includeFields]"
     label="资料类型"
     name="fileType"
     dict-type="oa_file_type"
-    :multiple="true"
+    multiple
     :rules="computedRules.fileType"
   />
 
@@ -25,6 +25,9 @@
     v-show-field="['ii_applicationMaterials', includeFields]"
     label="申请资料"
     placeholder="请输入成本资料（项目成本等）、财税资料（财务报告、报表，税务资料及其他）"
+    type="textarea"
+    rows="1"
+    autosize
     name="ii_applicationMaterials"
     :rules="computedRules.ii_applicationMaterials"
   />

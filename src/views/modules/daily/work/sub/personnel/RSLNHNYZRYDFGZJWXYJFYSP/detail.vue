@@ -12,7 +12,13 @@
     </template>
   </van-field>
 
-  <DatePicker v-model="form.j_month" v-show-field="['j_month', includeFields]" name="j_month" label="所发工资月份" :columns-type="['year', 'month']" readonly />
+  <DatePicker
+    v-model="form.j_month"
+    v-show-field="['j_month', includeFields]"
+    name="j_month"
+    label="所发工资月份"
+    :columns-type="['year', 'month']"
+  />
 
   <van-field-number
     v-model.number="form.j_number"

@@ -6,7 +6,6 @@
       is-link
       :name="name"
       :label="label"
-      :readonly="readonly"
       :placeholder="placeholder"
 
       @click="showPicker = true"
@@ -25,10 +24,6 @@ const props = defineProps(
     modelValue: {
       type: String,
       default: '',
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
     },
     label: {
       type: String,
@@ -69,7 +64,3 @@ watch(() => props.modelValue, (newVal) => {
   date.value = newVal
 })
 </script>
-
-<style scoped>
-
-</style>

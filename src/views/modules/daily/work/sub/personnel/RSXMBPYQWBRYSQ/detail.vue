@@ -1,62 +1,87 @@
 <template>
-  <van-field v-show-field="['k_deptId', includeFields]" name="k_deptId" label="项目部">
+  <van-field
+    v-show-field="['k_deptId', includeFields]"
+    name="k_deptId"
+    label="项目部"
+  >
     <template #input>
-      <DeptSelect v-model="form.k_deptId" readonly />
+      <DeptSelect
+        v-model="form.k_deptId"
+        readonly
+      />
     </template>
   </van-field>
 
-  <van-field v-show-field="['k_userType', includeFields]" name="k_userType" label="人员类别" readonly>
+  <van-field
+    v-show-field="['k_userType', includeFields]"
+    name="k_userType"
+    label="人员类别"
+    readonly
+  >
     <template #input>
       {{ form.k_userType }}
     </template>
   </van-field>
 
-  <DictPicker
+  <DictSelect
     v-model="form.k_nature"
     v-show-field="['k_nature', includeFields]"
     label="聘用人员性质"
     name="k_nature"
     dict-type="oa_daily_work_employ_personnel_type"
-    :multiple="false"
-    :readonly="true"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.k_category"
     v-show-field="['k_category', includeFields]"
     label="聘用类别"
     name="k_category"
     dict-type="oa_daily_work_rsxmbpywbrysq_employ_category"
-    :multiple="false"
-    :readonly="true"
   />
 
-  <van-field v-model="form.k_postId" v-show-field="['k_postId', includeFields]" label="人员岗位" name="k_postId" readonly />
+  <van-field
+    v-model="form.k_postId"
+    v-show-field="['k_postId', includeFields]"
+    label="人员岗位"
+    name="k_postId"
+  />
 
-  <van-field v-model="form.k_number" v-show-field="['k_number', includeFields]" label="人员数量" name="k_number" readonly />
+  <van-field
+    v-model="form.k_number"
+    v-show-field="['k_number', includeFields]"
+    label="人员数量"
+    name="k_number"
+  />
 
-  <van-field v-show-field="['k_isUniform', includeFields]" name="k_isUniform" label="是否配备公司工作服">
+  <van-field
+    v-show-field="['k_isUniform', includeFields]"
+    name="k_isUniform"
+    label="是否配备公司工作服"
+  >
     <template #input>
-      <YesNoSwitch v-model="form.k_isUniform" readonly />
+      <YesNoSwitch
+        v-model="form.k_isUniform"
+        readonly
+      />
     </template>
   </van-field>
 
   <div v-if="form.k_isUniform === 'Y'">
-    <DictPicker
+    <DictSelect
       v-model="form.k_workwearType"
       v-show-field="['k_workwearType', includeFields]"
       label="工服类型"
       name="k_workwearType"
       dict-type="oa_daily_work_rsxmbpywbrysq_workwear_type"
-      :multiple="true"
-      :readonly="true"
+      multiple
     />
 
-    <van-field v-show-field="['k_quantityAndSize', includeFields]" name="k_quantityAndSize" label="数量与尺寸">
-      <template #input>
-        <TextareaView :value="form.k_quantityAndSize" />
-      </template>
-    </van-field>
+    <van-field
+      v-model="form.k_quantityAndSize"
+      v-show-field="['k_quantityAndSize', includeFields]"
+      name="k_quantityAndSize"
+      label="数量与尺寸"
+    />
   </div>
 
   <DatePicker
@@ -64,7 +89,6 @@
     v-show-field="['k_effectiveDate', includeFields]"
     name="k_effectiveDate"
     label="生效日期"
-    readonly
   />
 
   <van-field
@@ -72,7 +96,6 @@
     v-show-field="['k_monthlyWorkingMode', includeFields]"
     label="月度上班及休假模式"
     name="k_monthlyWorkingMode"
-    readonly
   />
 
   <div v-if="['3', '5'].includes(form.k_category)">
@@ -82,7 +105,10 @@
       label="是否延用原工资标准"
     >
       <template #input>
-        <YesNoSwitch v-model="form.k_isUseOriginalSalaryStandard" readonly />
+        <YesNoSwitch
+          v-model="form.k_isUseOriginalSalaryStandard"
+          readonly
+        />
       </template>
     </van-field>
 
@@ -94,7 +120,10 @@
       >
         <template #input>
           {{ form.k_originalSalaryStandard }}
-          <span v-if="!isNil(form.k_originalSalaryStandard)" class="ml-3 text-red-400">{{ toCnMoney(form.k_originalSalaryStandard) }}</span>
+          <span
+            v-if="!isNil(form.k_originalSalaryStandard)"
+            class="ml-3 text-red-400"
+          >{{ toCnMoney(form.k_originalSalaryStandard) }}</span>
         </template>
       </van-field>
 
@@ -105,7 +134,10 @@
       >
         <template #input>
           {{ form.k_newSalaryStandard }}
-          <span v-if="!isNil(form.k_newSalaryStandard)" class="ml-3 text-red-400">{{ toCnMoney(form.k_newSalaryStandard) }}</span>
+          <span
+            v-if="!isNil(form.k_newSalaryStandard)"
+            class="ml-3 text-red-400"
+          >{{ toCnMoney(form.k_newSalaryStandard) }}</span>
         </template>
       </van-field>
     </div>
@@ -153,17 +185,21 @@
   </van-field>
 
   <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
-    <van-field v-show-field="['k_otherDistribution', includeFields]" label="其他补助、发放标准及发放形式" name="k_otherDistribution">
+    <van-field
+      v-show-field="['k_otherDistribution', includeFields]"
+      label="其他补助、发放标准及发放形式"
+      name="k_otherDistribution"
+    >
       <template #input>
         <TextareaView :value="form.k_otherDistribution" />
       </template>
     </van-field>
+
     <DatePicker
       v-model="form.k_startDate"
       v-show-field="['k_startDate', includeFields]"
       name="k_startDate"
       label="聘用开始日期"
-      readonly
     />
 
     <DatePicker
@@ -171,17 +207,14 @@
       v-show-field="['k_endDate', includeFields]"
       name="k_endDate"
       label="聘用结束日期"
-      readonly
     />
 
-    <DictPicker
+    <DictSelect
       v-model="form.k_signeContractType"
       v-show-field="['k_signeContractType', includeFields]"
       label="聘用人员签订合同类型"
       name="k_signeContractType"
       dict-type="oa_daily_work_rsxmbpywbrysq_signe_contract_type"
-      :multiple="false"
-      :readonly="true"
     />
 
     <div v-if="['0', '1'].includes(form.k_signeContractType)">
@@ -190,7 +223,6 @@
         v-show-field="['k_signeContractStartDate', includeFields]"
         name="k_signeContractStartDate"
         label="合同签订开始时间"
-        readonly
       />
 
       <DatePicker
@@ -198,7 +230,6 @@
         v-show-field="['k_signeContractEndDate', includeFields]"
         name="k_signeContractEndDate"
         label="合同签订结束时间"
-        readonly
       />
 
       <van-field
@@ -212,14 +243,12 @@
       </van-field>
     </div>
 
-    <DictPicker
+    <DictSelect
       v-model="form.k_purchaseInsuranceType"
       v-show-field="['k_purchaseInsuranceType', includeFields]"
       label="聘用人员购买保险类型"
       name="k_purchaseInsuranceType"
       dict-type="oa_daily_work_rsxmbpywbrysq_insurance_type"
-      :multiple="false"
-      :readonly="true"
     />
 
     <div v-if="['0', '1', '2'].includes(form.k_purchaseInsuranceType)">
@@ -228,7 +257,6 @@
         v-show-field="['k_insuranceStartDate', includeFields]"
         name="k_insuranceStartDate"
         label="保险开始时间"
-        readonly
       />
 
       <DatePicker
@@ -236,7 +264,6 @@
         v-show-field="['k_insuranceEndDate', includeFields]"
         name="k_insuranceEndDate"
         label="保险结束时间"
-        readonly
       />
 
       <van-field

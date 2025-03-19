@@ -74,6 +74,7 @@
     rows="1"
     autosize
     label="招待地点"
+    placeholder="请输入"
     name="a_entertainAddress"
     :rules="computedRules.a_entertainAddress"
   />
@@ -85,6 +86,7 @@
     rows="1"
     autosize
     label="招待事由"
+    placeholder="请输入"
     name="a_entertainReason"
     :rules="computedRules.a_entertainReason"
   />

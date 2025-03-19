@@ -1,12 +1,19 @@
 <template>
   <van-field
-    v-show-field="['customizeApprover', includeFields]" l
+    v-model="form.customizeApprover"
+    v-show-field="['customizeApprover', includeFields]"
+    is-link
     label="审核人"
     name="customizeApprover"
     :rules="computedRules.customizeApprover"
+    @click="UserSelectRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.customizeApprover" multiple />
+      <UserSelect
+        ref="UserSelectRef"
+        v-model="form.customizeApprover"
+        multiple
+      />
     </template>
   </van-field>
 
@@ -15,6 +22,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
@@ -32,6 +40,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

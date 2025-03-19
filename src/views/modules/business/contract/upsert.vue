@@ -328,7 +328,7 @@
       name="description"
       label="合同描述"
       placeholder="请输入"
-      rows="2"
+      rows="1"
       autosize
     />
 

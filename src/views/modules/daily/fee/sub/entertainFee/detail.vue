@@ -7,52 +7,46 @@
     name="isAdministration"
   >
     <template #input>
-      <YesNoSwitch v-model="form.isAdministration" readonly />
+      <YesNoSwitch
+        v-model="form.isAdministration"
+        readonly
+      />
     </template>
   </van-field>
 
   <van-field
-    v-model.trim="form.a_entertainObject"
+    v-model="form.a_entertainObject"
     v-show-field="['a_entertainObject', includeFields]"
     label="招待对象"
-    placeholder="请输入"
     name="a_entertainObject"
-    readonly
   />
 
   <van-field
-    v-model.trim="form.a_entertainCompany"
+    v-model="form.a_entertainCompany"
     v-show-field="['a_entertainCompany', includeFields]"
     label="招待单位"
-    placeholder="请输入"
     name="a_entertainCompany"
-    readonly
   />
 
   <van-field-number
-    v-model.number="form.a_customerNumber"
+    v-model="form.a_customerNumber"
     v-show-field="['a_customerNumber', includeFields]"
     label="客户人数"
-    placeholder="请输入"
     name="a_customerNumber"
-    readonly
   />
 
   <van-field-number
-    v-model.number="form.a_accompanyNumber"
+    v-model="form.a_accompanyNumber"
     v-show-field="['a_accompanyNumber', includeFields]"
-    label="陪同人数" placeholder="请输入"
+    label="陪同人数"
     name="a_accompanyNumber"
-    readonly
   />
 
   <van-field
-    v-model.trim="form.a_entertainForm"
+    v-model="form.a_entertainForm"
     v-show-field="['a_entertainForm', includeFields]"
     label="招待形式"
-    placeholder="请输入"
     name="a_entertainForm"
-    readonly
   />
 
   <DatePicker
@@ -60,29 +54,26 @@
     v-show-field="['a_entertainDate', includeFields]"
     name="a_entertainDate"
     label="招待日期"
-    readonly
   />
 
   <van-field
     v-model="form.a_entertainAddress"
     v-show-field="['a_entertainAddress', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="招待地点"
     name="a_entertainAddress"
-    readonly
   />
 
   <van-field
     v-model="form.a_entertainReason"
     v-show-field="['a_entertainReason', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
     autosize
     label="招待事由"
     name="a_entertainReason"
-    readonly
   />
 
   <FeeBaseDetail :include-fields="includeFields2" />

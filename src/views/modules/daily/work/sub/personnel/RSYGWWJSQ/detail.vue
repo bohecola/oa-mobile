@@ -16,20 +16,26 @@
     readonly
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.n_giftGoldCategory"
     v-show-field="['n_giftGoldCategory', includeFields]"
     label="礼（慰问）金类别"
     name="n_giftGoldCategory"
     dict-type="oa_daily_work_rsygwwjsq_gift_gold_category"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
-  <van-field v-show-field="['n_amount', includeFields]" name="n_amount" label="本月礼（慰问）金合计">
+  <van-field
+    v-show-field="['n_amount', includeFields]"
+    name="n_amount"
+    label="本月礼（慰问）金合计"
+  >
     <template #input>
       {{ form.n_amount }}
-      <span v-if="!isNil(form.n_amount)" class="ml-3 text-red-400">{{ toCnMoney(form.n_amount) }}</span>
+      <span
+        v-if="!isNil(form.n_amount)"
+        class="ml-3 text-red-400"
+      >{{ toCnMoney(form.n_amount) }}</span>
     </template>
   </van-field>
 

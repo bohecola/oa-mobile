@@ -1,11 +1,10 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.m_welfareCategory"
     v-show-field="['m_welfareCategory', includeFields]"
     label="福利类别"
     name="m_welfareCategory"
     dict-type="oa_daily_work_rsgsghygflsq_welfare_category"
-    :multiple="false"
     :rules="computedRules.m_welfareCategory"
   />
 

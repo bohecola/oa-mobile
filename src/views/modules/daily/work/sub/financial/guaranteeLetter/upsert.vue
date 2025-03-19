@@ -1,5 +1,5 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.contractCategory"
     v-show-field="['contractCategory', includeFields]"
     label="销售合同类别"

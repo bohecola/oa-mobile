@@ -38,6 +38,7 @@
     name="h_effectiveDate"
     label="生效日期"
     :rules="computedRules.h_effectiveDate"
+    :columns-type="['year', 'month']"
   />
 
   <BaseUpsert :include-fields="includeFields" />

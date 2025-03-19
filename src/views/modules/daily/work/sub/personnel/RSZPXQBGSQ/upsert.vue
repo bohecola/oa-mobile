@@ -37,25 +37,23 @@
     :rules="computedRules.gg_contractNo"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.gg_changeType"
     v-show-field="['gg_changeType', includeFields]"
     label="变更类型"
     name="gg_changeType"
     dict-type="oa_daily_work_rszpxqbgsq_change_type"
-    :multiple="false"
     :rules="computedRules.gg_changeType"
-
     @change="onTypeChange"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.gg_changeDetails"
     v-show-field="['gg_changeDetails', includeFields]"
     label="变更明细"
     name="gg_changeDetails"
     dict-type="oa_daily_work_rszpxqbgsq_change_details"
-    :multiple="true"
+    multiple
     :rules="computedRules.gg_changeDetails"
   />
 

@@ -8,7 +8,6 @@
     v-show-field="['b_vehicleNo', includeFields]"
     label="车牌号"
     name="b_vehicleNo"
-    readonly
   />
 
   <!-- 保养维修 -->
@@ -17,7 +16,6 @@
     v-show-field="['b_vehicleModel', includeFields]"
     label="车型"
     name="b_vehicleModel"
-    readonly
   />
 
   <van-field
@@ -25,7 +23,6 @@
     v-show-field="['b_vehicleMileageToday', includeFields]"
     label="今行车里程（公里）"
     name="c_invoiceType"
-    readonly
   />
 
   <DatePicker
@@ -33,7 +30,6 @@
     v-show-field="['b_lastRepairDate', includeFields]"
     name="b_lastRepairDate"
     label="上次维修日期"
-    readonly
   />
 
   <van-field
@@ -41,7 +37,6 @@
     v-show-field="['b_maintenanceIntervalMileage', includeFields]"
     label="保养间隔里程数（公里）"
     name="b_maintenanceIntervalMileage"
-    readonly
   />
 
   <van-field
@@ -49,7 +44,6 @@
     v-show-field="['b_type', includeFields]"
     label="申请类型"
     name="b_type"
-    readonly
   />
 
   <van-field
@@ -102,7 +96,6 @@
     v-show-field="['b_useTime', includeFields]"
     name="b_useTime"
     label="使用时间"
-    readonly
   />
 
   <van-field
@@ -120,7 +113,6 @@
     v-show-field="['b_useMethod', includeFields]"
     label="使用方式"
     name="b_useMethod"
-    readonly
   />
 
   <van-field
@@ -139,7 +131,6 @@
     v-show-field="['b_annualReviewExpirationDate', includeFields]"
     name="b_annualReviewExpirationDate"
     label="使用时间"
-    readonly
   />
 
   <DatePicker
@@ -147,7 +138,6 @@
     v-show-field="['b_verificationDate', includeFields]"
     name="b_verificationDate"
     label="审验日期"
-    readonly
   />
 
   <van-field
@@ -155,7 +145,6 @@
     v-show-field="['b_annualReviewMethod', includeFields]"
     label="年审方式"
     name="b_annualReviewMethod"
-    readonly
   />
 
   <!-- 公司车辆保险费 -->
@@ -164,7 +153,6 @@
     v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
     name="b_lastStrongInsuranceExpirationDate"
     label="年审到期时间"
-    readonly
   />
 
   <DatePicker
@@ -172,7 +160,6 @@
     v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
     name="b_lastCommercialInsuranceExpirationDate"
     label="审验日期"
-    readonly
   />
 
   <van-field
@@ -180,7 +167,6 @@
     v-show-field="['b_strongInsuranceAmount', includeFields]"
     label="本次交强险金额"
     name="b_strongInsuranceAmount"
-    readonly
   />
 
   <van-field
@@ -188,7 +174,6 @@
     v-show-field="['b_commercialInsuranceAmount', includeFields]"
     label="本次商业险金额"
     name="b_commercialInsuranceAmount"
-    readonly
   />
 
   <van-field
@@ -196,7 +181,6 @@
     v-show-field="['b_totalAmount', includeFields]"
     label="总计金额"
     name="b_totalAmount"
-    readonly
   />
 
   <FeeBaseDetail :include-fields="includeFields2" />

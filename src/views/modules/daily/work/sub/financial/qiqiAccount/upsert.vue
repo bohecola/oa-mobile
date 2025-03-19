@@ -34,21 +34,24 @@
     v-model.trim="form.hh_type"
     v-show-field="['hh_type', includeFields]"
     label="申请类型"
-    placeholder="请输入"
+    placeholder="请输入账号新增"
     name="hh_type"
     :rules="computedRules.hh_type"
   />
 
-  <!-- <van-field
+  <van-field
+    v-model="form.hh_superiorLeaders"
     v-show-field="['hh_superiorLeaders', includeFields]"
     label="上级主管领导"
     name="hh_superiorLeaders"
     :rules="computedRules.hh_superiorLeaders"
+    is-link
+    @click="UserSelectRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.hh_superiorLeaders" :multiple="false" />
+      <UserSelect ref="UserSelectRef" v-model="form.hh_superiorLeaders" />
     </template>
-  </van-field> -->
+  </van-field>
 
   <van-field
     v-show-field="['hh_isApprovalAuthority', includeFields]"
@@ -80,6 +83,7 @@
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import UserSelect from '@/components/UserSelect/index.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -94,6 +98,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

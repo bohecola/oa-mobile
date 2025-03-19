@@ -1,27 +1,56 @@
 <template>
-  <van-field v-show-field="['b_userId', includeFields]" label="员工" name="b_userId" :rules="computedRules.b_userId">
+  <van-field
+    v-model="form.b_userId"
+    v-show-field="['b_userId', includeFields]"
+    label="员工"
+    name="b_userId"
+    :rules="computedRules.b_userId"
+    is-link
+    @click="UserSelectRef?.open"
+  >
     <template #input>
-      <UserSelect v-model="form.b_userId" @update:selected-value="onUserSelectValueChange" />
+      <UserSelect
+        ref="UserSelectRef"
+        value-type="object"
+        @confirm="onUserSelectValueChange"
+      />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_deptId', includeFields]" label="部门/项目部" name="b_deptId" :rules="computedRules.b_deptId">
+  <van-field
+    v-show-field="['b_deptId', includeFields]"
+    label="部门/项目部"
+    name="b_deptId"
+    :rules="computedRules.b_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.b_deptId" />
+      <DeptSelect v-model="form.b_deptId" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_postIds', includeFields]" label="岗位" name="b_postIds" :rules="computedRules.b_postIds">
+  <van-field
+    v-show-field="['b_postIds', includeFields]"
+    label="岗位"
+    name="b_postIds"
+    :rules="computedRules.b_postIds"
+  >
     <template #input>
-      <PostSelect v-model="form.b_postIds" :dept-id="form.b_deptId" multiple />
+      <PostSelect
+        v-model="form.b_postIds"
+        :dept-id="form.b_deptId"
+        multiple
+        readonly
+      />
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_sex', includeFields]" label="性别" name="b_sex" :rules="computedRules.b_sex">
-    <template #input>
-      <DictSelect v-model="form.b_sex" dict-type="sys_user_sex" />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.b_sex"
+    v-show-field="['b_sex', includeFields]"
+    label="性别"
+    name="b_sex"
+    dict-type="sys_user_sex"
+  />
 
   <!-- <el-row :gutter="20">
       <el-col v-show-field="['b_age', includeFields]" :span="24">
@@ -39,11 +68,14 @@
     :rules="computedRules.b_contractEndTime"
   />
 
-  <van-field v-show-field="['b_contractType', includeFields]" label="合同类型" name="b_contractType" :rules="computedRules.b_contractType">
-    <template #input>
-      <dict-select v-model="form.b_contractType" component="checkbox" dict-type="oa_daily_work_rsldhtxqsp_contract_type" multiple />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.b_contractType"
+    v-show-field="['b_contractType', includeFields]"
+    label="合同类型"
+    name="b_contractType"
+    component="radio"
+    dict-type="oa_daily_work_rsldhtxqsp_contract_type"
+  />
 
   <BaseUpsert :include-fields="includeFields" />
 </template>
@@ -54,6 +86,7 @@ import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { UserVO } from '@/api/system/user/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import PostSelect from '@/views/modules/personnel/components/PostSelect.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -69,6 +102,8 @@ const form = inject<Ref<DailyWorkForm>>('form')
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')

@@ -61,6 +61,7 @@
     placeholder="请输入"
     type="textarea"
     rows="1"
+    autosize
     :rules="computedRules.pp_remark"
   />
 
@@ -77,7 +78,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['pp_contractCategory', 'pp_contractNature', 'pp_contractNo', 'pp_customerName', 'pp_projectName', 'pp_projectOwnership', 'pp_remark', 'reason', 'ossIdList'],
+    includeFields: () => ['pp_contractCategory', 'pp_contractNature', 'pp_contractNo', 'pp_customerName', 'pp_projectName', 'pp_projectOwnership', 'pp_remark', 'ossIdList'],
   },
 )
 

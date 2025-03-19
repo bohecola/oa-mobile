@@ -58,7 +58,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['isYwlProject', 'isPersonnelTransfer', 'll_letterType', 'll_fileType', 'reason', 'ossIdList'],
+    includeFields: () => ['needDepts', 'isYwlProject', 'isPersonnelTransfer', 'll_letterType', 'll_fileType', 'reason', 'ossIdList'],
   },
 )
 

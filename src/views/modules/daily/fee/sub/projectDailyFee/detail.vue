@@ -1,15 +1,14 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <DictPicker
+  <DictSelect
     v-if="form.no === 'PXFY'"
     v-model="form.certificateType"
     v-show-field="['certificateType', includeFields]"
     label="证件类型"
     name="certificateType"
     dict-type="oa_project_daily_fee_certificate_type"
-    :multiple="true"
-    :readonly="true"
+    multiple
   />
 
   <DatePicker
@@ -17,7 +16,6 @@
     v-show-field="['c_startDate', includeFields]"
     name="c_startDate"
     label="开始时间"
-    readonly
   />
 
   <DatePicker
@@ -25,7 +23,6 @@
     v-show-field="['c_endDate', includeFields]"
     name="c_endDate"
     label="结束时间"
-    readonly
   />
 
   <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod"  />

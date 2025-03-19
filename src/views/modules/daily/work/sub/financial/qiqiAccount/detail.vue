@@ -43,6 +43,7 @@
       <UserSelect v-model="form.hh_superiorLeaders" :multiple="false" readonly />
     </template>
   </van-field>
+
   <van-field
     v-show-field="['hh_isApprovalAuthority', includeFields]"
     label="是否有审批权"
@@ -57,10 +58,15 @@
     v-model="form.hh_applyForAWebsite"
     v-show-field="['hh_applyForAWebsite', includeFields]"
     type="textarea"
-    rows="2"
+    rows="1"
+    autosize
     label="申请站点"
     name="hh_applyForAWebsite"
-  />
+  >
+    <template #input>
+      <TextareaView :value="form.hh_applyForAWebsite" />
+    </template>
+  </van-field>
 
   <BaseDetail :include-fields="includeFields" />
 </template>

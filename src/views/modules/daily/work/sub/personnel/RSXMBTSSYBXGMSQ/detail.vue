@@ -1,15 +1,24 @@
 <template>
-  <van-field v-show-field="['qq_deptId', includeFields]" label="部门/项目部" name="qq_deptId">
+  <van-field
+    v-show-field="['qq_deptId', includeFields]"
+    label="部门/项目部"
+    name="qq_deptId"
+  >
     <template #input>
-      <DeptSelect v-model="form.qq_deptId" readonly />
+      <DeptSelect
+        v-model="form.qq_deptId"
+        readonly
+      />
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_personnelCategory', includeFields]" label="人员类别" name="qq_personnelCategory">
-    <template #input>
-      <DictSelect v-model="form.qq_personnelCategory" dict-type="oa_daily_work_personnel_category" readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.qq_personnelCategory"
+    v-show-field="['qq_personnelCategory', includeFields]"
+    label="人员类别"
+    name="qq_personnelCategory"
+    dict-type="oa_daily_work_personnel_category"
+  />
 
   <van-field
     v-if="!isEmpty(form.qq_insuranceExpirationDate)"
@@ -29,7 +38,6 @@
     v-show-field="['qq_insuranceExpirationStartDate', includeFields]"
     name="qq_insuranceExpirationStartDate"
     label="建议保险开始日期"
-    readonly
   />
 
   <DatePicker
@@ -38,7 +46,6 @@
     v-show-field="['qq_insuranceExpirationEndDate', includeFields]"
     name="qq_insuranceExpirationEndDate"
     label="建议保险截止日期"
-    readonly
   />
 
   <DatePicker
@@ -46,7 +53,6 @@
     v-show-field="['qq_latestPurchaseDate', includeFields]"
     name="qq_latestPurchaseDate"
     label="保险最晚购买日期"
-    readonly
   />
 
   <van-field
@@ -56,14 +62,12 @@
     name="qq_purchaseInsuranceNumber"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.qq_purchaseInsuranceCategory"
     v-show-field="['qq_purchaseInsuranceCategory', includeFields]"
     label="购买保险类别"
     name="qq_purchaseInsuranceCategory"
     dict-type="oa_daily_work_purchase_insurance_category"
-    :multiple="false"
-    :readonly="true"
   />
 
   <van-field
@@ -79,7 +83,10 @@
     name="qq_isHighVoltageOperation"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isHighVoltageOperation" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isHighVoltageOperation"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -89,7 +96,10 @@
     name="qq_isClimbingHomework"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isClimbingHomework" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isClimbingHomework"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -113,25 +123,36 @@
     name="qq_isNewHiredPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isNewHiredPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isNewHiredPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
+
   <van-field
     v-show-field="['qq_transferInDeptPurchaseInsurance', includeFields]"
     label="调入该项目部是否购买此类保险"
     name="qq_transferInDeptPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_transferInDeptPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.qq_transferInDeptPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
+
   <van-field
     v-show-field="['qq_transferOutDeptNoPurchaseInsurance', includeFields]"
     label="调出该项目部是否取消购买此类保险"
     name="qq_transferOutDeptNoPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_transferOutDeptNoPurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.qq_transferOutDeptNoPurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -141,7 +162,10 @@
     name="qq_isEarlyStagePurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isEarlyStagePurchaseInsurance" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isEarlyStagePurchaseInsurance"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -152,7 +176,10 @@
     name="qq_isOldInsuranceTermination"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isOldInsuranceTermination" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isOldInsuranceTermination"
+        readonly
+      />
     </template>
   </van-field>
 
@@ -174,7 +201,10 @@
     name="qq_isBelong"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isBelong" readonly />
+      <YesNoSwitch
+        v-model="form.qq_isBelong"
+        readonly
+      />
     </template>
   </van-field>
 

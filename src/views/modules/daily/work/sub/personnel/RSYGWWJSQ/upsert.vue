@@ -16,13 +16,14 @@
     :rules="computedRules.n_mounth"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.n_giftGoldCategory"
     v-show-field="['n_giftGoldCategory', includeFields]"
     label="礼（慰问）金类别"
     name="n_giftGoldCategory"
     dict-type="oa_daily_work_rsygwwjsq_gift_gold_category"
-    :multiple="true"
+    multiple
+    component="checkbox"
     :rules="computedRules.n_giftGoldCategory"
   />
 

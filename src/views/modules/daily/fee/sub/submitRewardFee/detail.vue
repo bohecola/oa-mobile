@@ -2,10 +2,10 @@
   <FeeBaseDetail :include-fields="includeFields1" />
 
   <van-field
-    v-model="form.d_articleName" v-show-field="['d_articleName', includeFields]"
+    v-model="form.d_articleName"
+    v-show-field="['d_articleName', includeFields]"
     label="投稿名称"
     name="d_articleName"
-    readonly
   />
 
   <van-field

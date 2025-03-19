@@ -32,7 +32,6 @@
     name="h_effectiveDate"
     label="生效日期"
     :columns-type="['year', 'month']"
-    readonly
   />
 
   <BaseDetail :include-fields="includeFields" />

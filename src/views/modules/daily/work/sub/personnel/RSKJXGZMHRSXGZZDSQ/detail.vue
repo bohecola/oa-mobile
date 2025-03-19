@@ -5,11 +5,15 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['d_proveType', includeFields]" label="证明类别" name="d_proveType">
-    <template #input>
-      <dict-select v-model="form.d_proveType" component="checkbox" dict-type="oa_daily_work_rskjxgzmhrsxgzzdsq_prove_category" multiple readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.d_proveType"
+    v-show-field="['d_proveType', includeFields]"
+    label="证明类别"
+    name="d_proveType"
+    multiple
+    component="checkbox"
+    dict-type="oa_daily_work_rskjxgzmhrsxgzzdsq_prove_category"
+  />
 
   <BaseDetail :include-fields="includeFields" />
 </template>

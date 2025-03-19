@@ -29,6 +29,8 @@
         <van-radio-group
           v-if="!multiple && component === 'radio' "
           v-model="ids"
+          class="gap-1"
+          icon-size="16"
           direction="horizontal"
           @change="onChange"
         >
@@ -45,6 +47,8 @@
         <van-checkbox-group
           v-if="multiple && component === 'checkbox'"
           v-model="ids"
+          class="gap-1"
+          icon-size="16"
           @change="onChange"
         >
           <van-checkbox

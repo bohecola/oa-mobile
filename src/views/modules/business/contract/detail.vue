@@ -266,7 +266,7 @@
       type="textarea"
       name="description"
       label="合同描述"
-      rows="2"
+      rows="1"
       autosize
     />
 

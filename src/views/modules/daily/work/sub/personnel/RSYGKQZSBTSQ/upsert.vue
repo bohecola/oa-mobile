@@ -18,7 +18,6 @@
     v-show-field="['yy_entryCompanyDate', includeFields]"
     name="yy_entryCompanyDate"
     label="入职时间"
-    readonly
   />
 
   <van-field-number
@@ -29,14 +28,12 @@
     :rules="computedRules.yy_subsidyStandards"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.yy_type"
     v-show-field="['yy_type', includeFields]"
     label="申请注册/使用证书类型"
     name="yy_type"
     dict-type="oa_document_type"
-    :multiple="false"
-    :readonly="true"
   />
 
   <van-field
@@ -44,17 +41,14 @@
     v-show-field="['yy_name', includeFields]"
     label="申请注册/使用证书名称"
     name="yy_name"
-    :readonly="true"
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.yy_certificateLevel"
     v-show-field="['yy_certificateLevel', includeFields]"
     label="证书等级"
     name="yy_certificateLevel"
     dict-type="oa_certificate_level"
-    :multiple="false"
-    :readonly="true"
   />
 
   <DatePicker
@@ -62,17 +56,14 @@
     v-show-field="['yy_registrationCompanyDate', includeFields]"
     name="yy_registrationCompanyDate"
     label="注册到公司日期"
-    readonly
   />
 
-  <DictPicker
+  <DictSelect
     v-model="form.yy_certificateStatus"
     v-show-field="['yy_certificateStatus', includeFields]"
     label="证书状态"
     name="yy_certificateStatus"
     dict-type="sys_normal_disable"
-    :multiple="false"
-    :readonly="true"
   />
 
   <van-field
@@ -80,7 +71,6 @@
     v-show-field="['yy_speciality', includeFields]"
     label="专业名称"
     name="yy_speciality"
-    readonly
   />
 
   <van-field
@@ -88,7 +78,6 @@
     v-show-field="['yy_no', includeFields]"
     label="编号"
     name="yy_no"
-    readonly
   />
 
   <DatePicker
@@ -96,7 +85,6 @@
     v-show-field="['yy_issuanceDate', includeFields]"
     name="yy_issuanceDate"
     label="发证时间"
-    readonly
   />
 
   <DatePicker
@@ -104,7 +92,6 @@
     v-show-field="['yy_recheckDate', includeFields]"
     name="yy_recheckDate"
     label="复审时间"
-    readonly
   />
 
   <DatePicker
@@ -112,7 +99,6 @@
     v-show-field="['yy_startDate', includeFields]"
     name="yy_startDate"
     label="开始日期"
-    readonly
   />
 
   <DatePicker
@@ -120,7 +106,6 @@
     v-show-field="['yy_endDate', includeFields]"
     name="yy_endDate"
     label="结束日期"
-    readonly
   />
 
   <van-field
@@ -128,7 +113,6 @@
     v-show-field="['yy_unit', includeFields]"
     label="发证单位"
     name="yy_unit"
-    readonly
   />
 
   <van-field
@@ -137,7 +121,10 @@
     name="yy_isTraining"
   >
     <template #input>
-      <YesNoSwitch v-model="form.yy_isTraining" readonly />
+      <YesNoSwitch
+        v-model="form.yy_isTraining"
+        readonly
+      />
     </template>
   </van-field>
   <BaseUpsert :include-fields="includeFields" />

@@ -1,13 +1,15 @@
 <template>
   <van-field
+    v-model="form.reason"
     v-show-field="['reason', includeFields]"
     name="reason"
     label="申请事由"
     value-class="flex-nowrap"
-    rows="2"
+    rows="1"
     placeholder="请输入"
     :right-icon="!isEmpty(form.wfRemark) ? 'info-o' : ''"
     autosize
+    :rules="computedRules.reason"
     @click-right-icon="handleIconClick"
   />
 
@@ -62,7 +64,7 @@ const vShowField = createFieldVisibilityDirective<DailyForm>(form)
 function handleIconClick() {
   showDialog({
     title: '申请事由填写说明',
-    message: () => <van-field v-model={form.value.wfRemark} type="textarea" rows="2" autosize />,
+    message: () => <van-field v-model={form.value.wfRemark} type="textarea" rows="1" autosize />,
   })
 }
 </script>

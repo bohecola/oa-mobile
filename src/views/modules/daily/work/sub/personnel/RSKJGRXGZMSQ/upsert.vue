@@ -8,33 +8,48 @@
     </el-row> -->
 
   <!-- TODO -->
-  <van-field v-show-field="['l_userType', includeFields]" label="人员类别" name="l_userType" :rules="computedRules.l_userType">
-    <template #input>
-      {{ form.l_userType }}
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.l_userType"
+    v-show-field="['l_userType', includeFields]"
+    label="人员类别"
+    name="l_userType"
+    :options="[{ label: '咸林', value: '咸林' }, { label: '杰而森', value: '杰而森' }]"
+    :rules="computedRules.l_userType"
+  />
 
-  <DictPicker
+  <DictSelect
     v-model="form.l_proveType"
     v-show-field="['l_proveType', includeFields]"
     label="证明类别"
     name="l_proveType"
     dict-type="oa_daily_work_rskjgrxgzmsq_prove_type"
-    :multiple="false"
     :rules="computedRules.l_proveType"
   />
 
-  <van-field v-show-field="['isUseSeal', includeFields]" label="是否用印" name="isUseSeal" :rules="computedRules.isUseSeal">
+  <van-field
+    v-show-field="['isUseSeal', includeFields]"
+    label="是否用印"
+    name="isUseSeal"
+    :rules="computedRules.isUseSeal"
+  >
     <template #input>
-      <YesNoSwitch v-model="form.isUseSeal" @change="onIsUseSealChange" />
+      <YesNoSwitch
+        v-model="form.isUseSeal"
+        @change="onIsUseSealChange"
+      />
     </template>
   </van-field>
 
-  <van-field v-if="form.isUseSeal === 'Y'" v-show-field="['sealUseType', includeFields]" label="用印类型" name="sealUseType" :rules="computedRules.sealUseType">
-    <template #input>
-      <dict-select v-model="form.sealUseType" dict-type="oa_seal_use_type" :is-filter-use-seal="false" />
-    </template>
-  </van-field>
+  <DictSelect
+    v-if="form.isUseSeal === 'Y'"
+    v-model="form.sealUseType"
+    v-show-field="['sealUseType', includeFields]"
+    label="用印类型"
+    name="sealUseType"
+    dict-type="oa_seal_use_type"
+    :is-filter-use-seal="false"
+    :rules="computedRules.sealUseType"
+  />
 
   <BaseUpsert :include-fields="includeFields" />
 </template>

@@ -1,12 +1,10 @@
 <template>
-  <DictPicker
+  <DictSelect
     v-model="form.sealType"
     v-show-field="['sealType', includeFields]"
     label="申请类型"
     name="sealType"
     dict-type="oa_seal_type"
-    :multiple="false"
-    :readonly="true"
   />
 
   <van-field
@@ -15,7 +13,10 @@
     name="isReturnSeal"
   >
     <template #input>
-      <YesNoSwitch v-model="form.isReturnSeal" readonly />
+      <YesNoSwitch
+        v-model="form.isReturnSeal"
+        readonly
+      />
     </template>
   </van-field>
 

@@ -11,13 +11,16 @@
   </van-field>
 
   <van-field
+    v-model="form.recipient"
     v-show-field="['recipient', includeFields]"
     name="recipient"
     label="接收人"
     :rules="computedRules.recipient"
+    is-link
+    @click="UserSelectRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.recipient" />
+      <UserSelect ref="UserSelectRef" v-model="form.recipient" />
     </template>
   </van-field>
 
@@ -37,6 +40,7 @@
 
 <script setup lang="ts">
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
+import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
@@ -61,4 +65,6 @@ trackFields(props.includeFields)
 
 const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('needDepts', false)
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 </script>
