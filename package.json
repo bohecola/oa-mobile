@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@automattic/format-currency": "^2.0.0",
-    "@he-tree/vue": "^2.9.2",
+    "@he-tree/vue": "^2.9.4",
     "@morev/vue-transitions": "^3.0.2",
     "@tanstack/vue-query": "^5.55.4",
     "@vant/touch-emulator": "^1.4.0",
