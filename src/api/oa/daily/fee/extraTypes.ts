@@ -85,6 +85,7 @@ export interface FYXMBTSSYBXGMSQ {
   e_notBelongDeptPurchaseInsuranceSpecialReason?: string
   e_isOldInsuranceTermination?: string
   e_isOldInsuranceTerminationReason?: string
+  e_isContractPurchaseInsurance?: string // 合同中是否要求购买此类保险
 
 }
 // 生产项目部临聘人员月度食堂补助费用审批

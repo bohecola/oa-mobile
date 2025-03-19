@@ -46,19 +46,25 @@
 
   <van-field v-model="form.e_insuranceLimit" v-show-field="['e_insuranceLimit', includeFields]" label="购买保险额度(万元)" name="e_insuranceLimit" input-align="left" />
 
-  <van-field v-show-field="['e_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="e_isHighVoltageOperation" input-align="left">
+  <van-field v-if="form.e_isHighVoltageOperation" v-show-field="['e_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="e_isHighVoltageOperation" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.e_isHighVoltageOperation" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['e_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="e_isClimbingHomework" input-align="left">
+  <van-field v-if="form.e_isClimbingHomework" v-show-field="['e_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="e_isClimbingHomework" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.e_isClimbingHomework" readonly />
     </template>
   </van-field>
 
   <van-field v-if="form.e_isClimbingHomework === 'Y'" v-model="form.e_distanceRange" v-show-field="['e_distanceRange', includeFields]" label="登高作业位置到地面的距离范围(米)" name="e_distanceRange" input-align="left" />
+
+  <van-field v-show-field="['e_isContractPurchaseInsurance', includeFields]" label="合同中是否要求购买此类保险" name="e_isContractPurchaseInsurance" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.e_isContractPurchaseInsurance" readonly />
+    </template>
+  </van-field>
 
   <van-field v-show-field="['e_isNewHiredPurchaseInsurance', includeFields]" label="该项目部新入职人员是否购买此类保险" name="e_isNewHiredPurchaseInsurance" input-align="left">
     <template #input>
@@ -134,7 +140,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'e_deptId', 'e_personnelCategory', 'e_insuranceExpirationDate', 'e_insuranceExpirationStartDate', 'e_insuranceExpirationEndDate', 'e_latestPurchaseDate', 'e_purchaseInsuranceReason', 'e_purchaseInsuranceNumber', 'e_purchaseInsuranceCategory', 'e_insuranceLimit', 'e_isHighVoltageOperation', 'e_isClimbingHomework', 'e_distanceRange', 'e_insurancePeriod', 'e_purchaseInsuranceSpecialExplain', 'e_isNewHiredPurchaseInsurance', 'e_transferInDeptPurchaseInsurance', 'e_transferOutDeptNoPurchaseInsurance', 'e_isEarlyStagePurchaseInsurance', 'e_isBelong', 'e_notBelongDeptPurchaseInsuranceSpecialReason', 'e_isOldInsuranceTermination', 'e_isOldInsuranceTerminationReason', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'e_deptId', 'e_personnelCategory', 'e_insuranceExpirationDate', 'e_insuranceExpirationStartDate', 'e_insuranceExpirationEndDate', 'e_latestPurchaseDate', 'e_purchaseInsuranceReason', 'e_purchaseInsuranceNumber', 'e_purchaseInsuranceCategory', 'e_insuranceLimit', 'e_isHighVoltageOperation', 'e_isClimbingHomework', 'e_distanceRange', 'e_insurancePeriod', 'e_purchaseInsuranceSpecialExplain', 'e_isNewHiredPurchaseInsurance', 'e_transferInDeptPurchaseInsurance', 'e_transferOutDeptNoPurchaseInsurance', 'e_isEarlyStagePurchaseInsurance', 'e_isBelong', 'e_notBelongDeptPurchaseInsuranceSpecialReason', 'e_isOldInsuranceTermination', 'e_isOldInsuranceTerminationReason', 'e_isContractPurchaseInsurance', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 const form = inject<Ref<DailyFeeForm>>('form')

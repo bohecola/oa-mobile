@@ -75,6 +75,7 @@ const extraInitFormData: DailyFeeForm = {
   e_notBelongDeptPurchaseInsuranceSpecialReason: undefined,
   e_isOldInsuranceTermination: undefined,
   e_isOldInsuranceTerminationReason: undefined,
+  e_isContractPurchaseInsurance: undefined, // 默认值'Y'需要上传合同中要求购买此类保险的原文截图,不能修改如果是N的话不能发起
 
   // 生产项目部临聘人员月度食堂补助费用审批
   f_applyNumber: undefined,

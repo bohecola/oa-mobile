@@ -45,19 +45,25 @@
 
   <van-field v-model="form.qq_insuranceLimit" v-show-field="['qq_insuranceLimit', includeFields]" label="购买保险额度(万元)" name="qq_insuranceLimit" input-align="left" />
 
-  <van-field v-show-field="['qq_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="qq_isHighVoltageOperation" input-align="left">
+  <van-field v-if="form.qq_isHighVoltageOperation" v-show-field="['qq_isHighVoltageOperation', includeFields]" label="是否涉及高压电作业" name="qq_isHighVoltageOperation" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.qq_isHighVoltageOperation" readonly />
     </template>
   </van-field>
 
-  <van-field v-show-field="['qq_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="qq_isClimbingHomework" input-align="left">
+  <van-field v-if="form.qq_isClimbingHomework" v-show-field="['qq_isClimbingHomework', includeFields]" label="是否涉及登高作业" name="qq_isClimbingHomework" input-align="left">
     <template #input>
       <YesNoSwitch v-model="form.qq_isClimbingHomework" readonly />
     </template>
   </van-field>
 
   <van-field v-if="form.qq_isClimbingHomework === 'Y'" v-model="form.qq_distanceRange" v-show-field="['qq_distanceRange', includeFields]" label="登高作业位置到地面的距离范围(米)" name="qq_distanceRange" input-align="left" />
+
+  <van-field v-show-field="['qq_isContractPurchaseInsurance', includeFields]" label="合同中是否要求购买此类保险" name="qq_isContractPurchaseInsurance" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.qq_isContractPurchaseInsurance" readonly />
+    </template>
+  </van-field>
 
   <van-field v-show-field="['qq_isNewHiredPurchaseInsurance', includeFields]" label="该项目部新入职人员是否购买此类保险" name="qq_isNewHiredPurchaseInsurance" input-align="left">
     <template #input>
@@ -157,6 +163,7 @@ withDefaults(
       'qq_notBelongDeptPurchaseInsuranceSpecialReason',
       'qq_isOldInsuranceTermination',
       'qq_isOldInsuranceTerminationReason',
+      'qq_isContractPurchaseInsurance',
       'reason',
       'ossIdList',
     ],

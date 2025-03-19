@@ -480,4 +480,5 @@ export interface RSXMBTSSYBXGMSQ {
   qq_notBelongDeptPurchaseInsuranceSpecialReason?: string
   qq_isOldInsuranceTermination?: string
   qq_isOldInsuranceTerminationReason?: string
+  qq_isContractPurchaseInsurance?: string // 合同中是否要求购买此类保险
 }

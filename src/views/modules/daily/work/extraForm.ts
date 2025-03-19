@@ -334,6 +334,7 @@ const extraInitFormData: DailyWorkForm = {
   qq_distanceRange: undefined,
   qq_insurancePeriod: undefined,
   qq_purchaseInsuranceSpecialExplain: undefined,
+  qq_isContractPurchaseInsurance: undefined, // 默认值'Y'需要上传合同中要求购买此类保险的原文截图,不能修改如果是N的话不能发起
 }
 
 const baseMsg = '不能为空'
