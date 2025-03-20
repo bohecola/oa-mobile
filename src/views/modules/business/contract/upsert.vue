@@ -160,6 +160,7 @@
       name="deptId"
       label="需求部门"
       :rules="computedRules.deptId"
+      clearable
     />
 
     <van-field
@@ -279,6 +280,7 @@
       v-show-field="['startDate', includeFields]"
       name="startDate"
       label="开始日期"
+      clearable
     />
 
     <DateSelect
@@ -286,6 +288,7 @@
       v-show-field="['endDate', includeFields]"
       name="endDate"
       label="结束日期"
+      clearable
     />
 
     <DateSelect
@@ -293,6 +296,7 @@
       v-show-field="['signDate', includeFields]"
       name="signDate"
       label="签订日期"
+      clearable
     />
 
     <van-field

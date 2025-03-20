@@ -25,6 +25,10 @@
         <slot :name="name" v-bind="scope" />
       </template>
 
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" @click.stop="onClear" />
+      </template>
+
       <template v-if="component === 'radio' || component === 'checkbox'" #input>
         <van-radio-group
           v-if="!multiple && component === 'radio' "
@@ -132,8 +136,9 @@ import { useParentForm, usePopup } from '@/hooks'
 const props = withDefaults(
   defineProps<{
     modelValue?: string
-    readonly?: boolean
     multiple?: boolean
+    readonly?: boolean
+    clearable?: boolean
     dictType?: string
     options?: DictDataOption[]
     component?: 'combine' | 'radio' | 'checkbox'
@@ -212,6 +217,14 @@ const presentText = computed(() => {
     .map(e => e.label)
     .join('、')
 })
+
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
+// 清空点击
+function onClear() {
+  emit('update:modelValue', undefined)
+  emit('change', undefined)
+}
 
 // RadioGroup / CheckboxGroup 选择
 function onChange(val: string | string[]) {

@@ -14,6 +14,10 @@
       <template v-for="(_, name) in slots" #[name]="scope">
         <slot :name="name" v-bind="scope" />
       </template>
+
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" @click.stop="onClear" />
+      </template>
     </van-field>
 
     <!-- http://github.com/youzan/vant/issues/2310 -->
@@ -223,6 +227,12 @@ function statHandler(stat: Stat<_DeptVO>) {
   }
 
   return stat
+}
+
+// 清空点击
+function onClear() {
+  emit('update:modelValue', undefined)
+  emit('change', undefined)
 }
 
 // 表单项点击

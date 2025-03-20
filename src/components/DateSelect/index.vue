@@ -2,8 +2,8 @@
   <div class="w-full">
     <van-field
       :model-value="modelValue"
-      placeholder="请选择"
       :is-link="!isReadonly"
+      placeholder="请选择"
       readonly
       v-bind="attrs"
       @click="onFieldClick"
@@ -12,8 +12,8 @@
         <slot :name="name" v-bind="scope" />
       </template>
 
-      <template v-if="!isReadonly && !isNil(modelValue)" #right-icon>
-        <van-icon name="clear" @click.stop="onRightIconClick" />
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" @click.stop="onClear" />
       </template>
     </van-field>
 
@@ -67,6 +67,7 @@ const props = withDefaults(
     valueFormat?: string
     rangeSeparator?: string
     readonly?: boolean
+    clearable?: boolean
     minDate?: Date
     maxDate?: Date
     // calendar
@@ -105,7 +106,8 @@ const currentDate = computed(() => props.modelValue?.split('-'))
 
 const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
-function onRightIconClick() {
+// 清空点击
+function onClear() {
   emit('update:modelValue', undefined)
   emit('confirm', undefined)
 }
