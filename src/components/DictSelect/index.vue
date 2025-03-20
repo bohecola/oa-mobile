@@ -62,6 +62,9 @@
       </template>
     </van-field>
 
+    <!-- http://github.com/youzan/vant/issues/2310 -->
+    <van-field class="!hidden" readonly />
+
     <!-- 弹出层 -->
     <van-popup
       v-if="component === 'combine'"

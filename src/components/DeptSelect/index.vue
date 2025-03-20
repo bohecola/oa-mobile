@@ -1,15 +1,11 @@
 <template>
   <div class="w-full">
-    <div v-if="readonly">
-      {{ selectedLabel }}
-    </div>
-
     <van-field
-      v-else
       :model-value="selectedLabel"
-      type="textarea"
+      :is-link="!isReadonly"
       placeholder="请选择"
-      is-link
+      type="textarea"
+      rows="1"
       readonly
       autosize
       v-bind="attrs"
@@ -20,13 +16,18 @@
       </template>
     </van-field>
 
+    <!-- http://github.com/youzan/vant/issues/2310 -->
+    <van-field class="!hidden" readonly />
+
     <van-popup
+      v-if="!isReadonly"
       v-model:show="visible"
+      class="h-full"
       position="bottom"
+      teleport="body"
       round
       destroy-on-close
       safe-area-inset-bottom
-      class="h-full"
       @click-overlay="onCancel"
     >
       <PickerToolbar
@@ -92,7 +93,7 @@ import PickerToolbar from 'vant/es/picker/PickerToolbar'
 import type { Stat } from 'node_modules/@he-tree/vue/dist/v3/components/TreeProcessorVue'
 import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
 import { listDept } from '@/api/system/dept'
-import { usePopup } from '@/hooks'
+import { useParentForm, usePopup } from '@/hooks'
 
 type DeptTreeSelectValue = string | number | (string | number)[]
 type _DeptVO = Partial<DeptVO> & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
@@ -130,6 +131,8 @@ const slots = useSlots()
 
 const route = useRoute()
 
+const parentForm = useParentForm()
+
 const { visible, openPopup, closePopup } = usePopup()
 
 // 实例
@@ -155,6 +158,7 @@ const queryParams: DeptQuery = reactive({
   type: undefined,
 })
 
+// 树形数据
 const treeData = computed(() => {
   const dataConfig = props.dataConfig
   const raw = rawData.value
@@ -187,6 +191,8 @@ const selectedLabel = computed(() => {
   }
   return ''
 })
+
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 计算回显 Label
 function computedLabel(id: string | number) {
@@ -221,6 +227,10 @@ function statHandler(stat: Stat<_DeptVO>) {
 
 // 表单项点击
 function onFieldClick() {
+  if (isReadonly.value) {
+    return
+  }
+
   openPopup()
 
   // 回显选中效果

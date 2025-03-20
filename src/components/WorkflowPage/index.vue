@@ -23,24 +23,29 @@
               text="当前节点存在需要填写的字段，请暂时在PC端审批"
             />
 
-            <van-form label-width="auto" class="reset-label" label-align="top">
+            <van-form
+              class="reset-label"
+              label-width="auto"
+              label-align="top"
+              input-align="left"
+              readonly
+            >
               <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
-                <van-field label="流程ID" input-align="left">
+                <van-field label="流程ID">
                   <template #input>
                     <span>{{ entityVariables.id }}</span>
                   </template>
                 </van-field>
-                <van-field label="发起人" input-align="left">
+                <van-field label="发起人">
                   <template #input>
                     <span>{{ entityVariables.initiator.nickName }}</span>
                   </template>
                 </van-field>
-                <van-field label="部门" input-align="left">
-                  <template #input>
-                    <DeptSelect v-model="entityVariables.initiator.deptId!" readonly />
-                  </template>
-                </van-field>
-                <van-field label="发起时间" input-align="left">
+                <DeptSelect
+                  v-model="entityVariables.initiator.deptId!"
+                  label="部门"
+                />
+                <van-field label="发起时间">
                   <template #input>
                     <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
                   </template>
