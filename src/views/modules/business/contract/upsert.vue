@@ -274,41 +274,29 @@
       </template>
     </van-field>
 
-    <van-field
+    <DateSelect
       v-model="form.startDate"
       v-show-field="['startDate', includeFields]"
       name="startDate"
       label="开始日期"
-    >
-      <template #input>
-        {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
+    />
 
-    <van-field
+    <DateSelect
       v-model="form.endDate"
       v-show-field="['endDate', includeFields]"
       name="endDate"
       label="结束日期"
-    >
-      <template #input>
-        {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
+    />
 
-    <van-field
+    <DateSelect
       v-model="form.signDate"
       v-show-field="['signDate', includeFields]"
       name="signDate"
       label="签订日期"
-    >
-      <template #input>
-        {{ parseTime(form.signDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
+    />
 
     <van-field
-      v-model="form.paymentWay"
+      v-model.trim="form.paymentWay"
       v-show-field="['paymentWay', includeFields]"
       name="paymentWay"
       label="付款方式"
@@ -317,7 +305,7 @@
     />
 
     <van-field
-      v-model="form.description"
+      v-model.trim="form.description"
       v-show-field="['description', includeFields]"
       type="textarea"
       name="description"
