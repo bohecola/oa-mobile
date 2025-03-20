@@ -16,7 +16,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.bb_effectiveDate"
     v-show-field="['bb_effectiveDate', includeFields]"
     name="bb_effectiveDate"

@@ -1,14 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.needDepts"
     v-show-field="['needDepts', includeFields]"
     name="needDepts"
     label="需求部门"
     :rules="computedRules.needDepts"
-  >
-    <template #input>
-      <DeptSelect v-model="form.needDepts" multiple />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-model="form.recipient"

@@ -1,10 +1,10 @@
 <template>
-  <van-field v-show-field="['s_deptId', includeFields]" label="项目部" name="s_deptId">
-    <template #input>
-      <DeptSelect v-model="form.s_deptId" readonly />
-    </template>
-  </van-field>
-
+  <DeptSelect
+    v-model="form.s_deptId"
+    v-show-field="['s_deptId', includeFields]"
+    name="s_deptId"
+    label="项目部"
+  />
   <van-field
     v-model="form.s_costCategory"
     v-show-field="['s_costCategory', includeFields]"

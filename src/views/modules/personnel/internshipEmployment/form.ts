@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios'
 import type { FormInstance } from 'vant'
 import type { InternshipEmploymentForm } from '@/api/oa/personnel/internshipEmployment/types'
+import { addInternshipEmployment, updateInternshipEmployment } from '@/api/oa/personnel/internshipEmployment'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -8,6 +9,10 @@ export interface Options<T = any> {
 }
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+export interface SuccessData {
+  id: InternshipEmploymentForm['id']
+
+}
 
 // 表单
 export function useForm() {
@@ -88,9 +93,38 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
+  // 提交
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
     const { success, fail } = options ?? {}
+    await Form.value
+      ?.validate()
+      .then(async () => {
+        updateLoading.value = true
+        if (form.value.id) {
+          await updateInternshipEmployment(form.value)
+        }
+        else {
+          const { data: id } = await addInternshipEmployment(form.value)
+          form.value.id = id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<InternshipEmploymentForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
+  // 工作流中回显
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {
@@ -98,12 +132,12 @@ export function useForm() {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -114,8 +148,8 @@ export function useForm() {
     updateLoading,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

@@ -13,16 +13,13 @@
     </template>
   </van-field>
 
-  <van-field
+  <DeptSelect
+    v-model="form.ff_deptId"
     v-show-field="['ff_deptId', includeFields]"
-    label="项目部"
     name="ff_deptId"
+    label="项目部"
     :rules="computedRules.ff_deptId"
-  >
-    <template #input>
-      <DeptSelect v-model="form.ff_deptId" />
-    </template>
-  </van-field>
+  />
 
   <van-field-number
     v-model.number="form.ff_age"
@@ -71,7 +68,7 @@
     :rules="computedRules.ff_certificates"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.ff_interviewDate"
     v-show-field="['ff_interviewDate', includeFields]"
     name="ff_interviewDate"
@@ -106,7 +103,7 @@
     :rules="computedRules.ff_employmentNature"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.ff_hopeDate"
     v-show-field="['ff_hopeDate', includeFields]"
     name="ff_hopeDate"

@@ -94,7 +94,7 @@ export interface UserTransferForm extends BaseEntity {
   /**
    * 用户id
    */
-  userId?: string
+  userId?: string | number
 
   /**
    * 用户名称

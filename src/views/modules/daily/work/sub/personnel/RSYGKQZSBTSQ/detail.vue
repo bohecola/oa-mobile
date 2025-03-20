@@ -91,36 +91,32 @@
     name="yy_no"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.yy_issuanceDate"
     v-show-field="['yy_issuanceDate', includeFields]"
     name="yy_issuanceDate"
     label="发证时间"
-    readonly
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.yy_recheckDate"
     v-show-field="['yy_recheckDate', includeFields]"
     name="yy_recheckDate"
     label="复审时间"
-    readonly
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.yy_startDate"
     v-show-field="['yy_startDate', includeFields]"
     name="yy_startDate"
     label="开始日期"
-    readonly
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.yy_endDate"
     v-show-field="['yy_endDate', includeFields]"
     name="yy_endDate"
     label="结束日期"
-    readonly
   />
 
   <van-field

@@ -1,5 +1,5 @@
 import type { FormInstance } from 'vant'
-import { getUserTrain } from '@/api/oa/personnel/userTrain'
+import { addUserTrain, getUserTrain, updateUserTrain } from '@/api/oa/personnel/userTrain'
 import type { OssMessageAllBo, UserTrainForm } from '@/api/oa/personnel/userTrain/types'
 
 export interface Options<T = any> {
@@ -8,7 +8,10 @@ export interface Options<T = any> {
 }
 type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-
+export interface SuccessData {
+  id: UserTrainForm['id']
+  ossMessageAllBoList: UserTrainForm['ossMessageAllBoList']
+}
 // 表单
 export function useForm() {
   // 实例
@@ -119,23 +122,57 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // 工作流中回显
-  async function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  // 提交表单
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
 
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          const { data } = await updateUserTrain(form.value)
+          form.value.ossMessageAllBoList = (data.ossMessageAllBoList || []).map((item: OssMessageAllBo) => ({ ...item }))
+        }
+        else {
+          const { data } = await addUserTrain(form.value)
+          form.value.id = data.id
+          form.value.ossMessageAllBoList = (data.ossMessageAllBoList || []).map((item: OssMessageAllBo) => ({ ...item }))
+        }
+        success?.({
+          id: form.value.id,
+          ossMessageAllBoList: form.value.ossMessageAllBoList,
+        })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserTrainForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
+  // 工作流中回显
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
-      nextTick(async () => {
+      nextTick(() => {
         Object.assign(form.value, {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -144,11 +181,11 @@ export function useForm() {
     rules,
     isLoading,
     updateLoading,
-    initOssMessage,
+    initOssMessageList,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

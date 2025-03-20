@@ -1,16 +1,10 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.qq_deptId"
     v-show-field="['qq_deptId', includeFields]"
-    label="部门/项目部"
     name="qq_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.qq_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="部门/项目部"
+  />
 
   <DictSelect
     v-model="form.qq_personnelCategory"
@@ -32,7 +26,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-if="form.qq_insuranceExpirationStartDate"
     v-model="form.qq_insuranceExpirationStartDate"
     v-show-field="['qq_insuranceExpirationStartDate', includeFields]"
@@ -40,7 +34,7 @@
     label="建议保险开始日期"
   />
 
-  <DatePicker
+  <DateSelect
     v-if="form.qq_insuranceExpirationEndDate"
     v-model="form.qq_insuranceExpirationEndDate"
     v-show-field="['qq_insuranceExpirationEndDate', includeFields]"
@@ -48,7 +42,7 @@
     label="建议保险截止日期"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.qq_latestPurchaseDate"
     v-show-field="['qq_latestPurchaseDate', includeFields]"
     name="qq_latestPurchaseDate"

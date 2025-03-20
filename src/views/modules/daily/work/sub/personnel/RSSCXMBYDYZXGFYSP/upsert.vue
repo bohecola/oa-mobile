@@ -7,11 +7,13 @@
       </el-col>
     </el-row> -->
 
-  <van-field v-show-field="['o_deptId', includeFields]" name="o_deptId" label="申请部门" :rules="computedRules.o_deptId">
-    <template #input>
-      <DeptSelect v-model="form.o_deptId" />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.o_deptId"
+    v-show-field="['o_deptId', includeFields]"
+    name="o_deptId"
+    label="申请部门"
+    :rules="computedRules.o_deptId"
+  />
 
   <van-field-number
     v-model.number="form.o_amount"

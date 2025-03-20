@@ -12,7 +12,7 @@
     :rules="computedRules.certificateType"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.c_startDate"
     v-show-field="['c_startDate', includeFields]"
     name="c_startDate"
@@ -20,7 +20,7 @@
     :rules="computedRules.c_startDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.c_endDate"
     v-show-field="['c_endDate', includeFields]"
     name="c_endDate"

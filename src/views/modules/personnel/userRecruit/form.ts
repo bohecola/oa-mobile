@@ -1,6 +1,6 @@
 import type { FormInstance } from 'vant'
 import type { UserRecruitForm, UserRecruitPostBo } from '@/api/oa/personnel/userRecruit/types'
-import { getUserRecruit } from '@/api/oa/personnel/userRecruit'
+import { addUserRecruit, getUserRecruit, updateUserRecruit } from '@/api/oa/personnel/userRecruit'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -8,7 +8,10 @@ export interface Options<T = any> {
 }
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-
+export interface SuccessData {
+  id: UserRecruitForm['id']
+  userRecruitPostBoList: UserRecruitForm['userRecruitPostBoList']
+}
 export function useForm() {
   // 实例
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}
@@ -87,9 +90,68 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
+  // TODO 检查是否有重复的岗位名称
+  function hasDuplicatePosts(data: UserRecruitPostBo[]): boolean {
+    const seenPosts = new Set()
+    const duplicates = data.some((item) => {
+      if (seenPosts.has(item.postId)) {
+        return true // 发现了重复
+      }
+      seenPosts.add(item.postId)
+      return false
+    })
+    if (duplicates) {
+      proxy.$modal.msgError('岗位名称不能重复')
+      return true // 返回true表示有重复
+    }
+    return false // 返回false表示没有重复
+  }
+
+  // 提交
+  async function submit(options?: SubmitOptions<SuccessData>) {
     const { success, fail } = options ?? {}
+
+    if (hasDuplicatePosts(form.value.userRecruitPostBoList)) {
+      return false
+    }
+
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          const { data } = await updateUserRecruit(form.value)
+          form.value.userRecruitPostBoList = (data.userRecruitPostList || []).map((item: UserRecruitPostBo, index: number) => ({
+            ...item,
+            postName: form.value.userRecruitPostBoList[index].postName,
+          }))
+        }
+        else {
+          const { data } = await addUserRecruit(form.value)
+          form.value.id = data.id
+          form.value.userRecruitPostBoList = (data.userRecruitPostList || []).map((item: UserRecruitPostBo, index: number) => ({
+            ...item,
+            postName: form.value.userRecruitPostBoList[index].postName,
+          }))
+        }
+        success?.({ id: form.value.id, userRecruitPostBoList: form.value.userRecruitPostBoList })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserRecruitForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
+  // 工作流中回显
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {
@@ -97,12 +159,12 @@ export function useForm() {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -114,8 +176,8 @@ export function useForm() {
     initRecruitPostForm,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

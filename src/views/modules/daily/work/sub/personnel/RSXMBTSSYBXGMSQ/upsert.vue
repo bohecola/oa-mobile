@@ -1,17 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.qq_deptId"
     v-show-field="['qq_deptId', includeFields]"
-    label="部门/项目部"
     name="qq_deptId"
+    label="部门/项目部"
     :rules="computedRules.qq_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.qq_deptId"
-        @change="onDeptChange"
-      />
-    </template>
-  </van-field>
+  />
 
   <DictSelect
     v-model="form.qq_personnelCategory"
@@ -22,7 +16,7 @@
     :rules="computedRules.qq_personnelCategory"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.qq_insuranceExpirationStartDate"
     v-show-field="['qq_insuranceExpirationStartDate', includeFields]"
     name="qq_insuranceExpirationStartDate"
@@ -30,7 +24,7 @@
     :rules="computedRules.qq_insuranceExpirationStartDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.qq_insuranceExpirationEndDate"
     v-show-field="['qq_insuranceExpirationEndDate', includeFields]"
     name="qq_insuranceExpirationEndDate"
@@ -38,7 +32,7 @@
     :rules="computedRules.qq_insuranceExpirationEndDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.qq_latestPurchaseDate"
     v-show-field="['qq_latestPurchaseDate', includeFields]"
     name="qq_latestPurchaseDate"
@@ -106,6 +100,17 @@
     name="qq_distanceRange"
     :rules="computedRules.qq_distanceRange"
   />
+
+  <!-- <van-field
+    v-show-field="['qq_isContractPurchaseInsurance', includeFields]"
+    label="合同中是否要求购买此类保险"
+    name="qq_isContractPurchaseInsurance"
+    :rules="computedRules.qq_isContractPurchaseInsurance"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.qq_isClimbingHomework" readonly />
+    </template>
+  </van-field> -->
 
   <van-field
     v-show-field="['qq_isNewHiredPurchaseInsurance', includeFields]"
@@ -268,6 +273,7 @@ const props = withDefaults(
       'qq_notBelongDeptPurchaseInsuranceSpecialReason',
       'qq_isOldInsuranceTermination',
       'qq_isOldInsuranceTerminationReason',
+      // 'qq_isContractPurchaseInsurance',
       'reason',
       'ossIdList',
     ],
@@ -275,6 +281,7 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
+// form.value.qq_isContractPurchaseInsurance = 'Y'
 const Form = inject<Ref<FormInstance>>('Form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()

@@ -32,7 +32,7 @@
     :rules="computedRules.h_openingStatus"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.h_effectiveDate"
     v-show-field="['h_effectiveDate', includeFields]"
     name="h_effectiveDate"

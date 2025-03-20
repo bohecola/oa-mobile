@@ -9,12 +9,13 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.dd_month"
     v-show-field="['dd_month', includeFields]"
     name="dd_month"
     label="发薪月"
-    :columns-type="['year', 'month']" readonly
+    :columns-type="['year', 'month']"
+    component="date-picker"
   />
 
   <van-field v-show-field="['dd_totalAmount', includeFields]" label="总金额（元）" name="dd_totalAmount">

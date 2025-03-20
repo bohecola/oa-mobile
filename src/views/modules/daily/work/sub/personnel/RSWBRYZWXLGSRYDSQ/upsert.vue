@@ -1,14 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.aa_deptId"
     v-show-field="['aa_deptId', includeFields]"
     name="aa_deptId"
     label="项目部"
     :rules="computedRules.aa_deptId"
-  >
-    <template #input>
-      <DeptSelect v-model="form.aa_deptId" />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-model="form.aa_userId"
@@ -24,7 +21,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.aa_effectiveDate"
     v-show-field="['aa_effectiveDate', includeFields]"
     name="aa_effectiveDate"

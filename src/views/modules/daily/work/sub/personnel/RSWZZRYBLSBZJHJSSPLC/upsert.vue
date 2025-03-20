@@ -33,12 +33,13 @@
     :rules="computedRules.cc_insuranceType"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.cc_effectiveMonth"
     v-show-field="['cc_effectiveMonth', includeFields]"
     name="cc_effectiveMonth"
     label="生效月份"
     :columns-type="['year', 'month']"
+    component="date-picker"
   />
 
   <BaseUpsert

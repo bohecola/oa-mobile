@@ -1,14 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.k_deptId"
     v-show-field="['k_deptId', includeFields]"
     name="k_deptId"
     label="项目部"
     :rules="computedRules.k_deptId"
-  >
-    <template #input>
-      <DeptSelect v-model="form.k_deptId" />
-    </template>
-  </van-field>
+  />
 
   <!-- TODO -->
   <van-field
@@ -97,7 +94,7 @@
     />
   </div>
 
-  <DatePicker
+  <DateSelect
     v-model="form.k_effectiveDate"
     v-show-field="['k_effectiveDate', includeFields]"
     name="k_effectiveDate"
@@ -132,6 +129,7 @@
         v-model.number="form.k_originalSalaryStandard"
         v-show-field="['k_originalSalaryStandard', includeFields]"
         label="原工资标准（人/元/月）"
+        placeholder="请输入"
         name="k_originalSalaryStandard"
         :rules="computedRules.k_originalSalaryStandard"
         clearable
@@ -141,6 +139,7 @@
         v-model.number="form.k_newSalaryStandard"
         v-show-field="['k_newSalaryStandard', includeFields]"
         label="新工资标准（人/元/月）"
+        placeholder="请输入"
         name="k_newSalaryStandard"
         :rules="computedRules.k_newSalaryStandard"
         clearable
@@ -148,9 +147,9 @@
     </div>
   </div>
 
-  <van-field
+  <van-field-number
     v-if="['0', '1', '2'].includes(form.k_category)"
-    v-model="form.k_salaryStandards"
+    v-model.number="form.k_salaryStandards"
     v-show-field="['k_salaryStandards', includeFields]"
     label="工资标准（人/元/月）"
     placeholder="请输入"
@@ -166,6 +165,7 @@
       rows="1"
       autosize
       label="原补助、发放标准及发放形式"
+      placeholder="请输入"
       name="k_originalDistribution"
       :rules="computedRules.k_originalDistribution"
     />
@@ -177,6 +177,7 @@
       rows="1"
       autosize
       label="变更后补助、发放标准及发放形式"
+      placeholder="请输入"
       name="k_changeAfterDistribution"
       :rules="computedRules.k_changeAfterDistribution"
     />
@@ -190,8 +191,9 @@
     rows="1"
     autosize
     label="工资发放特殊说明"
+    placeholder="请输入"
     name="k_specialInstructions"
-    :rules="computedRules.i_deptIds"
+    :rules="computedRules.k_specialInstructions"
   />
 
   <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
@@ -202,11 +204,12 @@
       rows="1"
       autosize
       label="其他补助、发放标准及发放形式"
+      placeholder="请输入"
       name="k_otherDistribution"
-      :rules="computedRules.i_deptIds"
+      :rules="computedRules.k_otherDistribution"
     />
 
-    <DatePicker
+    <DateSelect
       v-model="form.k_startDate"
       v-show-field="['k_startDate', includeFields]"
       name="k_startDate"
@@ -214,7 +217,7 @@
       :rules="computedRules.k_startDate"
     />
 
-    <DatePicker
+    <DateSelect
       v-model="form.k_endDate"
       v-show-field="['k_endDate', includeFields]"
       name="k_endDate"
@@ -233,7 +236,7 @@
     />
 
     <div v-if="['0', '1'].includes(form.k_signeContractType)">
-      <DatePicker
+      <DateSelect
         v-model="form.k_signeContractStartDate"
         v-show-field="['k_signeContractStartDate', includeFields]"
         name="k_signeContractStartDate"
@@ -241,7 +244,7 @@
         :rules="computedRules.k_signeContractStartDate"
       />
 
-      <DatePicker
+      <DateSelect
         v-model="form.k_signeContractEndDate"
         v-show-field="['k_signeContractEndDate', includeFields]"
         name="k_signeContractEndDate"
@@ -250,11 +253,13 @@
       />
 
       <van-field
+        v-model="form.k_signeContractSpecialInstructions"
         v-show-field="['k_signeContractSpecialInstructions', includeFields]"
         type="textarea"
         rows="1"
         autosize
         label="合同签订特殊说明"
+        placeholder="请输入"
         name="k_signeContractSpecialInstructions"
         :rules="computedRules.k_signeContractSpecialInstructions"
       />
@@ -271,7 +276,7 @@
     />
 
     <div v-if="['0', '1', '2'].includes(form.k_purchaseInsuranceType)">
-      <DatePicker
+      <DateSelect
         v-model="form.k_insuranceStartDate"
         v-show-field="['k_insuranceStartDate', includeFields]"
         name="k_insuranceStartDate"
@@ -279,7 +284,7 @@
         :rules="computedRules.k_insuranceStartDate"
       />
 
-      <DatePicker
+      <DateSelect
         v-model="form.k_insuranceEndDate"
         v-show-field="['k_insuranceEndDate', includeFields]"
         name="k_insuranceEndDate"
@@ -294,6 +299,7 @@
         rows="1"
         autosize
         label="保险购买特殊情况说明"
+        placeholder="请输入"
         name="k_insuranceSpecialInstructions"
         :rules="computedRules.k_insuranceSpecialInstructions"
       />
@@ -321,6 +327,7 @@
     rows="1"
     autosize
     label="变更原因"
+    placeholder="请输入"
     name="k_changeReason"
     :rules="computedRules.k_changeReason"
   />

@@ -1,9 +1,10 @@
 <template>
-  <van-field v-show-field="['d_deptId', includeFields]" label="部门/项目部" name="d_deptId">
-    <template #input>
-      <DeptSelect v-model="form.d_deptId" clearable readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.d_deptId"
+    v-show-field="['d_deptId', includeFields]"
+    name="d_deptId"
+    label="部门/项目部"
+  />
 
   <DictSelect
     v-model="form.d_proveType"

@@ -1,14 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.s_deptId"
     v-show-field="['s_deptId', includeFields]"
-    label="项目部"
     name="s_deptId"
+    label="项目部"
     :rules="computedRules.s_deptId"
-  >
-    <template #input>
-      <DeptSelect v-model="form.s_deptId" />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-model.trim="form.s_costCategory"

@@ -1,14 +1,16 @@
 import type { FormInstance } from 'vant'
-import { getDept } from '@/api/system/dept'
+import { addDept, getDept, updateDept } from '@/api/system/dept'
 import type { DeptForm } from '@/api/system/dept/types'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-type SubmitOptions = Options<string | number>
+export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-
+export interface SuccessData {
+  id: DeptForm['id']
+}
 // 表单
 export function useForm() {
   // 实例
@@ -86,22 +88,52 @@ export function useForm() {
     isLoading.value = false
   }
 
+  // 提交表单
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          await updateDept(form.value)
+        }
+        else {
+          const { data: id } = await addDept(form.value)
+          form.value.id = id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<DeptForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
+
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -112,6 +144,8 @@ export function useForm() {
     updateLoading,
     reset,
     view,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

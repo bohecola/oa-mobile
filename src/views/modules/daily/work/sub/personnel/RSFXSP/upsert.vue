@@ -15,7 +15,7 @@
     v-show-field="['dd_month', includeFields]"
     is-link
     readonly
-    name="datePicker"
+    name="DateSelect"
     label="发薪月"
     placeholder="选择时间"
     @click="showPicker = true"
@@ -24,12 +24,13 @@
     <van-date-picker @confirm="onConfirm" @cancel="showPicker = false" />
   </van-popup> -->
 
-  <DatePicker
+  <DateSelect
     v-model="form.dd_month"
     v-show-field="['dd_month', includeFields]"
     name="dd_month"
     label="发薪月"
     :columns-type="['year', 'month']"
+    component="date-picker"
     :rules="computedRules.dd_month"
   />
 

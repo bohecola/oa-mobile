@@ -7,13 +7,13 @@
     </el-col>
   </el-row> -->
 
-  <DatePicker
+  <DateSelect
     v-model="form.n_mounth"
     v-show-field="['n_mounth', includeFields]"
     name="n_mounth"
     label="申请月份"
     :columns-type="['year', 'month']"
-    readonly
+    component="date-picker"
   />
 
   <DictSelect

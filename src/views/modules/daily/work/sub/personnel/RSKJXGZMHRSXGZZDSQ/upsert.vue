@@ -1,9 +1,11 @@
 <template>
-  <van-field v-show-field="['d_deptId', includeFields]" label="部门/项目部" name="d_deptId" :rules="computedRules.d_deptId">
-    <template #input>
-      <DeptSelect v-model="form.d_deptId" clearable />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.d_deptId"
+    v-show-field="['d_deptId', includeFields]"
+    name="d_deptId"
+    label="部门/项目部"
+    :rules="computedRules.d_deptId"
+  />
 
   <DictSelect
     v-model="form.d_proveType"

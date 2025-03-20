@@ -53,6 +53,7 @@ const extraInitFormData: DailyFeeForm = {
 
   // 项目部特殊商业保险购买申请
   e_deptId: undefined,
+  e_dailyWorkId: undefined,
   e_personnelCategory: undefined,
   e_insuranceExpirationDate: undefined,
   e_insuranceExpirationStartDate: undefined,

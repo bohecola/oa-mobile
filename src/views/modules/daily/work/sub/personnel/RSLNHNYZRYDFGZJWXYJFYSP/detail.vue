@@ -6,18 +6,21 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <van-field v-show-field="['j_deptIds', includeFields]" label="项目部" name="j_deptIds">
-    <template #input>
-      <DeptSelect v-model="form.j_deptIds" multiple readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.j_deptIds"
+    v-show-field="['j_deptIds', includeFields]"
+    name="j_deptIds"
+    label="项目部"
+    multiple
+  />
 
-  <DatePicker
+  <DateSelect
     v-model="form.j_month"
     v-show-field="['j_month', includeFields]"
     name="j_month"
     label="所发工资月份"
     :columns-type="['year', 'month']"
+    component="date-picker"
   />
 
   <van-field-number

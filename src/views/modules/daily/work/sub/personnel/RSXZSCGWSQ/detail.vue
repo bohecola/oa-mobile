@@ -1,10 +1,10 @@
 <template>
-  <van-field v-show-field="['z_deptId', includeFields]" name="z_deptId" label="项目部">
-    <template #input>
-      <!-- TODO 筛选部门 -->
-      <DeptSelect v-model="form.z_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.z_deptId"
+    v-show-field="['z_deptId', includeFields]"
+    name="z_deptId"
+    label="项目部"
+  />
 
   <van-field v-model="form.z_postNumber" v-show-field="['z_postNumber', includeFields]" label="新增岗位个数" name="z_postNumber" />
 

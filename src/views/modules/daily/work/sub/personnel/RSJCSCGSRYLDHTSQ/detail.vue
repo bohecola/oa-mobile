@@ -5,11 +5,12 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['t_deptId', includeFields]" label="所在部门/项目部" name="t_deptId">
-    <template #input>
-      <DeptSelect v-model="form.t_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.t_deptId"
+    v-show-field="['t_deptId', includeFields]"
+    name="t_deptId"
+    label="所在部门/项目部"
+  />
 
   <van-field v-show-field="['t_postIds', includeFields]" label="岗位" name="t_postIds">
     <template #input>

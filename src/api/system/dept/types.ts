@@ -21,6 +21,7 @@ export interface DeptVO extends BaseEntity {
   parentId: number | string
   children: DeptVO[]
   deptId: number | string
+  companyId: number | string
   deptName: string
   deptCategory: string
   orderNum: number
@@ -28,13 +29,15 @@ export interface DeptVO extends BaseEntity {
   phone: string
   email: string
   status: string
+  specialCommercialInsurance: string
+  insuranceLimit: number
   delFlag: string
   ancestors: string
   menuId: string | number
   type: string
   responsibility: string
   purview: string
-  adress: string
+  address: string
   deptPostVoList: []
 }
 
@@ -42,29 +45,32 @@ export interface DeptVO extends BaseEntity {
  * 部门表单类型
  */
 export interface DeptForm {
+  id?: string | number
   parentName?: string
   parentId?: number | string
   children?: DeptForm[]
   deptId?: number | string
   deptName?: string
+  companyId?: string | number
   deptCategory?: string
   businessType?: string // 业务类型
+  specialCommercialInsurance?: string // 购买特殊商业保险
+  insuranceLimit?: number
   responsibility?: string // 部门职能
   purview?: string // 部门权限
   address?: string // 地址
   type?: string
   orderNum?: number
   leader?: string
+  leaderName?: string
   phone?: string
   email?: string
-  specialCommercialInsurance?: string // 购买特殊商业保险
-  insuranceLimit?: number
   status?: string
   delFlag?: string
   ancestors?: string
+  deptPostVoList?: [] // 岗位配置表
   redFile?: string
-  ossIdList?: string
-  deptPostVoList?: []
+  ossIdList?: string[]
 }
 
 export interface TreeVO {

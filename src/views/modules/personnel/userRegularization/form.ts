@@ -57,9 +57,18 @@ export function useForm() {
   // 回显加载
   const isLoading = ref(false)
 
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserRegularizationForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {
@@ -67,19 +76,21 @@ export function useForm() {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
+
   return {
     Form,
     form,
     rules,
     isLoading,
     reset,
+    workflowSubmit,
     workflowView,
   }
 }

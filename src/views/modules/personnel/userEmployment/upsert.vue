@@ -1,0 +1,499 @@
+<template>
+  <van-form
+    ref="Form"
+    v-loading="isLoading && showLoading"
+    class="reset-label"
+    label-width="auto"
+    label-align="top"
+    input-align="left"
+    required="auto"
+    scroll-to-error
+  >
+    <van-field
+      v-model="form.name"
+      v-show-field="['name', includeFields]"
+      name="name"
+      label="员工"
+      :rules="computedRules.name"
+    >
+      <template #input>
+        <span v-if="form.name">{{ form.name }}</span>
+        <!-- <PreUserSelect v-else v-model="form.preEmploymentId" @get-row="getPreUser" /> -->
+      </template>
+    </van-field>
+
+    <DeptSelect
+      v-model="form.deptId"
+      v-show-field="['deptId', includeFields]"
+      name="deptId"
+      label="部门"
+      :rules="computedRules.deptId"
+      @change="deptChange"
+    />
+
+    <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
+      <template #input>
+        <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple @change="postChange" />
+      </template>
+    </van-field>
+
+    <DictSelect
+      v-model="form.sex"
+      v-show-field="['sex', includeFields]"
+      label="性别"
+      name="sex"
+      dict-type="sys_user_sex"
+      :rules="computedRules.sex"
+    />
+
+    <van-field-number
+      v-model.number="form.phonenumber"
+      v-show-field="['phonenumber', includeFields]"
+      name="phonenumber"
+      type="tel"
+      maxlegth="11"
+      label="手机号"
+      :rules="computedRules.phonenumber"
+      @change="phonenumberChange"
+    />
+
+    <van-field-number
+      v-model.number="form.age"
+      v-show-field="['age', includeFields]"
+      name="age"
+      type="digit"
+      label="年龄"
+      :rules="computedRules.age"
+    />
+
+    <DateSelect
+      v-model="form.hopeDate"
+      v-show-field="['hopeDate', includeFields]"
+      name="hopeDate"
+      label="预计到岗时间"
+      :rules="computedRules.hopeDate"
+    />
+
+    <DictSelect
+      v-model="form.nation"
+      v-show-field="['nation', includeFields]"
+      label="民族"
+      name="nation"
+      dict-type="oa_nation"
+      :rules="computedRules.nation"
+    />
+
+    <DictSelect
+      v-model="form.education"
+      v-show-field="['education', includeFields]"
+      label="学历"
+      name="education"
+      dict-type="oa_education_type"
+      :rules="computedRules.education"
+    />
+
+    <van-field-number
+      v-model.number="form.wages"
+      v-show-field="['wages', includeFields]"
+      label="工资"
+      name="wages"
+      :rules="computedRules.wages"
+      @change="wagesChange"
+    />
+
+    <van-field-number
+      v-model.number="form.baseWages"
+      v-show-field="['baseWages', includeFields]"
+      name="baseWages"
+      label="基本工资"
+      :rules="computedRules.baseWages"
+      @change="manualWagesChange"
+    />
+
+    <van-field-number
+      v-model.number="form.postWages"
+      v-show-field="['postWages', includeFields]"
+      name="postWages"
+      label="岗位工资"
+      :rules="computedRules.postWages"
+      @change="manualWagesChange"
+    />
+
+    <van-field-number
+      v-model.number="form.performanceWages"
+      v-show-field="['performanceWages', includeFields]"
+      name="performanceWages"
+      label="绩效工资"
+      :rules="computedRules.performanceWages"
+      @change="manualWagesChange"
+    />
+
+    <div v-if="form.level >= 38">
+      <DateSelect
+        v-model="form.interviewDate"
+        v-show-field="['interviewDate', includeFields]"
+        name="interviewDate"
+        label="面试日期"
+        :rules="computedRules.interviewDate"
+      />
+
+      <DictSelect
+        v-model="form.interviewWay"
+        v-show-field="['interviewWay', includeFields]"
+        label="面试形式"
+        name="interviewWay"
+        dict-type="oa_interview"
+        :rules="computedRules.interviewWay"
+      />
+
+      <van-field
+        v-show-field="['isOwnerInterview', includeFields]"
+        name="isOwnerInterview"
+        label="是否需要业主面试"
+        :rules="computedRules.isOwnerInterview"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isOwnerInterview" />
+        </template>
+      </van-field>
+    </div>
+
+    <van-field
+      v-show-field="['isOutsource', includeFields]"
+      name="isOutsource"
+      label="是否为外包人员"
+      :rules="computedRules.isOutsource"
+    >
+      <template #input>
+        <YesNoSwitch v-model="form.isOutsource" />
+      </template>
+    </van-field>
+
+    <div v-if="form.postCode !== 'JXYWRY'">
+      <van-field
+        v-show-field="['isIntern', includeFields]"
+        name="isIntern"
+        label="是否实习生"
+        :rules="computedRules.isIntern"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isIntern" />
+        </template>
+      </van-field>
+
+      <van-field
+        v-show-field="['isProbation', includeFields]"
+        name="isProbation"
+        :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
+        :rules="computedRules.isProbation"
+        @change="isProbationChange"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isProbation" />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.isIntern === 'Y' && form.isProbation === 'Y'"
+        v-model="form.internshipExplain"
+        v-show-field="['internshipExplain', includeFields]"
+        name="internshipExplain"
+        label="实习期时长说明"
+        :rules="computedRules.internshipExplain"
+      />
+
+      <van-field
+        v-if="form.isIntern === 'N' && form.isProbation === 'Y'"
+        v-model="form.probationCycle"
+        v-show-field="['probationCycle', includeFields]"
+        name="probationCycle"
+        label="试用期时长(月)"
+        :rules="computedRules.probationCycle"
+      />
+
+      <van-field
+        v-if="form.isProbation === 'Y'"
+        v-show-field="['probationWagesRate', includeFields]"
+        name="probationWagesRate"
+        label="试用期薪资发放标准(%)"
+        :rules="computedRules.probationWagesRate"
+      />
+    </div>
+
+    <DateSelect
+      v-model="form.realDate"
+      v-show-field="['realDate', includeFields]"
+      name="realDate"
+      label="实际到岗日期"
+      :rules="computedRules.realDate"
+    />
+
+    <van-field
+      v-model.trim="form.userAccount"
+      v-show-field="['userAccount', includeFields]"
+      name="userAccount"
+      label="系统账号"
+      :rules="computedRules.userAccount"
+      @change="userAccountChange"
+    />
+
+    <van-field
+      v-show-field="['isRecommend', includeFields]"
+      name="isRecommend"
+      label="是否推荐"
+      :rules="computedRules.isRecommend"
+    >
+      <template #input>
+        <YesNoSwitch v-model="form.isRecommend" />
+      </template>
+    </van-field>
+
+    <DictSelect
+      v-if="form.level >= 38"
+      v-model="form.certificates"
+      v-show-field="['certificates', includeFields]"
+      label="持证情况"
+      name="certificates"
+      dict-type="oa_document_type"
+      multiple
+      :rules="computedRules.certificates"
+    />
+
+    <van-field
+      v-if="form.isRecommend === 'Y'"
+      v-model="form.reference"
+      v-show-field="['reference', includeFields]"
+      name="reference"
+      label="推荐来源"
+      :rules="computedRules.reference"
+    />
+
+    <van-field
+      v-if="!isNil(form.certificates) && form.certificates.includes('9')"
+      v-model="form.otherCertificates"
+      v-show-field="['otherCertificates', includeFields]"
+      label="其他证书"
+      type="textarea"
+      rows="1"
+      autosize
+      name="otherCertificates"
+      :rules="computedRules.otherCertificates"
+    />
+
+    <van-field
+      v-if="form.level >= 38"
+      v-model="form.employmentEvaluate"
+      v-show-field="['employmentEvaluate', includeFields]"
+      label="面试评价"
+      type="textarea"
+      rows="1"
+      autosize
+      name="employmentEvaluate"
+      :rules="computedRules.employmentEvaluate"
+    />
+
+    <van-field
+      v-model="form.description"
+      v-show-field="['description', includeFields]"
+      label="其他"
+      type="textarea"
+      rows="1"
+      autosize
+      name="description"
+      :rules="computedRules.description"
+    />
+
+    <van-field
+      v-model="form.remark"
+      v-show-field="['remark', includeFields]"
+      name="remark"
+      type="textarea"
+      rows="1"
+      autosize
+      label="备注"
+      :rules="computedRules.remark"
+    />
+
+    <!-- 附件列表 -->
+    <van-field
+      v-show-field="['ossIdList', includeFields]"
+      name="ossIdList"
+      label="附件列表"
+      placeholder="请选择"
+      :rules="computedRules.ossIdList"
+    >
+      <template #input>
+        <UploadFile v-model="form.ossIdList" value-type="array" />
+      </template>
+    </van-field>
+  </van-form>
+</template>
+
+<script setup lang="ts">
+import { isNil } from 'lodash-es'
+import PostSelect from '../components/PostSelect.vue'
+import PreUserSelect from './workflow/components/PreUserSelect.vue'
+import { useForm } from './form'
+import { checkPhoneUnique, checkUserNameUnique } from '@/api/system/user'
+import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
+import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import { getPost } from '@/api/system/post'
+import { checkPrePhoneUnique } from '@/api/oa/personnel/userPreEmployment'
+import type { UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
+
+const props = withDefaults(
+  defineProps<{
+    includeFields?: (keyof UserEmploymentForm)[]
+    showLoading?: boolean
+  }>(),
+  {
+    includeFields: () => {
+      const { form } = useForm()
+      return Object.keys(form.value) as (keyof UserEmploymentForm)[]
+    },
+    showLoading: true,
+  },
+)
+
+// 表单
+const { Form, form, rules, isLoading, updateLoading, reset, submit, view, workflowSubmit, workflowView } = useForm()
+
+// 指令
+const vShowField = createFieldVisibilityDirective<UserEmploymentForm>()
+
+// 校验
+const computedRules = computed(() => {
+  const newRules: FormRules<UserEmploymentForm> = {}
+  for (const [key, value] of Object.entries(rules.value)) {
+    if (props.includeFields.includes(key as any)) {
+      newRules[key] = value
+    }
+  }
+  return newRules
+})
+
+// 检验用户名的唯一
+async function userAccountChange(value: string) {
+  try {
+    await checkUserNameUnique({ userName: value })
+  }
+  catch (err) {
+    // 重复账号清空重新填写
+    form.value.userAccount = undefined
+  }
+}
+
+// 获取选择的预入职的员工row和岗位级别
+function getPreUser(row: UserPreEmploymentVO) {
+  // TODO 表单的值赋值一部分
+  // form.value = { ...row, checked: true, preEmploymentId: row.id, id: undefined }
+  form.value.isOutsource = 'N'
+  // 获取岗位级别
+  getPostLevel(row.postId)
+}
+
+// 是否通过面试入职的复选框 清空部门、岗位、性别、试用期、手机号
+// function checkedChange() {
+//   // TODO 清空表单一部分
+//   form.value.preEmploymentId = undefined
+//   form.value.name = undefined
+//   form.value.deptId = undefined
+//   form.value.postId = undefined
+//   form.value.sex = undefined
+//   form.value.phonenumber = undefined
+//   form.value.probationCycle = undefined
+//   form.value.isRecommend = 'N'
+//   form.value.reference = undefined
+//   form.value.employmentEvaluate = undefined
+// }
+
+// 部门change事件
+function deptChange() {
+  form.value.postId = undefined
+  form.value.level = undefined
+}
+
+// 获取岗位级别
+async function getPostLevel(postId: string | number) {
+  if (postId) {
+    const res = await getPost(postId)
+    form.value.level = Number(res.data.level)
+    form.value.postCode = res.data.postCode
+  }
+}
+
+async function postChange(postId: string | number) {
+  await getPostLevel(postId)
+
+  // 如果选择的岗位是见习运维人员
+  if (form.value.postCode === 'JXYWRY') {
+    form.value.isIntern = 'Y'
+    form.value.isProbation = 'N'
+    form.value.probationCycle = undefined
+  }
+  else {
+    form.value.isIntern = 'N'
+    form.value.isProbation = 'Y'
+    form.value.probationCycle = 3
+  }
+
+  // 清空面试日期、面试形式、是否业主面、是否实习生、是否试用期、是否推荐、持证情况
+  form.value.interviewWay = undefined
+  form.value.interviewDate = undefined
+  form.value.isOwnerInterview = 'N'
+  form.value.isRecommend = 'N'
+  form.value.certificates = undefined
+  form.value.employmentEvaluate = undefined
+}
+
+// 新部门的change事件
+async function phonenumberChange(value: string) {
+  try {
+    await checkPhoneUnique({ phonenumber: value })
+
+    await checkPrePhoneUnique({ phonenumber: value })
+  }
+  catch (error) {
+    // 重复手机号清空重新填写
+    form.value.phonenumber = ''
+  }
+}
+
+// 是否有试用期的change
+function isProbationChange(value: string) {
+  if (value === 'Y') {
+    form.value.probationCycle = 3
+  }
+  else {
+    form.value.probationCycle = undefined
+    form.value.probationWagesRate = undefined
+  }
+}
+
+// 初始工资
+const originalWages = ref<number>()
+function wagesChange(value: number) {
+  if (!originalWages.value) {
+    originalWages.value = value
+  }
+  form.value.baseWages = value * 0.4
+  form.value.postWages = value * 0.4
+  form.value.performanceWages = value * 0.2
+}
+
+// 手动修改基本工资、岗位工资、绩效工资、需要重新计算总工资
+function manualWagesChange() {
+  form.value.wages = form.value.baseWages + form.value.postWages + form.value.performanceWages
+  originalWages.value = form.value.wages
+}
+
+defineExpose({
+  isLoading,
+  updateLoading,
+  reset,
+  view,
+  submit,
+  workflowSubmit,
+  workflowView,
+})
+</script>

@@ -11,14 +11,14 @@
     multiple
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.c_startDate"
     v-show-field="['c_startDate', includeFields]"
     name="c_startDate"
     label="开始时间"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.c_endDate"
     v-show-field="['c_endDate', includeFields]"
     name="c_endDate"

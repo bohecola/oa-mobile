@@ -12,18 +12,12 @@
     </template>
   </van-field>
 
-  <van-field
+  <DeptSelect
+    v-model="form.ff_deptId"
     v-show-field="['ff_deptId', includeFields]"
-    label="项目部"
     name="ff_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.ff_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="项目部"
+  />
 
   <van-field
     v-model="form.ff_age"
@@ -65,7 +59,7 @@
     multiple
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.ff_interviewDate"
     v-show-field="['ff_interviewDate', includeFields]"
     name="ff_interviewDate"
@@ -93,7 +87,7 @@
     name="ff_employmentNature"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.ff_hopeDate"
     v-show-field="['ff_hopeDate', includeFields]"
     name="ff_hopeDate"

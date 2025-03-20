@@ -49,7 +49,7 @@
     name="a_entertainForm"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.a_entertainDate"
     v-show-field="['a_entertainDate', includeFields]"
     name="a_entertainDate"

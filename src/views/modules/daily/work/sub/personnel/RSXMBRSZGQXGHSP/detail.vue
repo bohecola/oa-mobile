@@ -1,10 +1,10 @@
 <template>
-  <van-field v-show-field="['r_deptId', includeFields]" name="z_deptId" label="部门/项目部">
-    <template #input>
-      <!-- TODO 筛选部门 -->
-      <DeptSelect v-model="form.r_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.r_deptId"
+    v-show-field="['r_deptId', includeFields]"
+    name="r_deptId"
+    label="部门/项目部"
+  />
 
   <van-field v-show-field="['r_oldUserId', includeFields]" name="r_oldUserId" label="原主管权限人员">
     <template #input>
@@ -18,7 +18,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.r_effectiveDate"
     v-show-field="['r_effectiveDate', includeFields]"
     name="r_effectiveDate"

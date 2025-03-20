@@ -6,19 +6,14 @@
         </el-form-item>
       </el-col>
     </el-row> -->
-  <van-field
+
+  <DeptSelect
+    v-model="form.f_deptId"
     v-show-field="['f_deptId', includeFields]"
-    label="部门"
     name="f_deptId"
+    label="部门"
     :rules="computedRules.f_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.f_deptId"
-        clearable
-      />
-    </template>
-  </van-field>
+  />
 
   <DictSelect
     v-model="form.f_fileType"

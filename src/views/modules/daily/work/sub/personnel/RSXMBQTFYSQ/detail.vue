@@ -1,9 +1,10 @@
 <template>
-  <van-field v-show-field="['ee_deptId', includeFields]" label="项目部" name="ee_deptId">
-    <template #input>
-      <DeptSelect v-model="form.ee_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.ee_deptId"
+    v-show-field="['ee_deptId', includeFields]"
+    name="ee_deptId"
+    label="项目部"
+  />
 
   <van-field
     v-model="form.ee_salesContractNo"
@@ -54,7 +55,7 @@
     name="ee_distributionCycle"
   />
 
-  <DatePicker
+  <DateSelect
     v-if="form.ee_distributionCycle === '连续发放'"
     v-model="form.ee_startDate"
     v-show-field="['ee_startDate', includeFields]"
@@ -62,7 +63,7 @@
     label="执行开始日期"
   />
 
-  <DatePicker
+  <DateSelect
     v-if="form.ee_distributionCycle === '连续发放'"
     v-model="form.ee_endDate"
     v-show-field="['ee_endDate', includeFields]"

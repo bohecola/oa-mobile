@@ -6,12 +6,11 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <DatePicker
+  <DateSelect
     v-model="form.c_useDate"
     v-show-field="['c_useDate', includeFields]"
     name="c_useDate"
     label="用印日期"
-    readonly
   />
 
   <DictSelect

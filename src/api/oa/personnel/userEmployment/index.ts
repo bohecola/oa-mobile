@@ -53,7 +53,7 @@ export function updateUserEmployment(data: UserEmploymentForm) {
 
 /**
  * 删除员工入职申请
- * @param id
+ * @param ids
  */
 export function delUserEmployment(ids: string | number | Array<string | number>) {
   return request({

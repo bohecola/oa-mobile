@@ -1,6 +1,7 @@
 import type { FormInstance } from 'vant'
-import { getUserTransfer } from '@/api/oa/personnel/userTransfer'
+import { addUserTransfer, getUserTransfer, updateUserTransfer } from '@/api/oa/personnel/userTransfer'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
+import { useUserStore } from '@/store/user'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -9,6 +10,9 @@ export interface Options<T = any> {
 type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
 
+export interface SuccessData {
+  id: UserTransferForm['id']
+}
 // 表单
 export function useForm() {
   // 实例
@@ -16,6 +20,9 @@ export function useForm() {
 
   // 引用
   const Form = ref<FormInstance>()
+
+  // 获取当前登录的用户信息
+  const userInfo = useUserStore()
 
   // 初始数据
   const initFormData: UserTransferForm = {
@@ -55,7 +62,7 @@ export function useForm() {
       newDeptId: [{ required: true, message: '新部门/项目部不能为空', trigger: 'onBlur' }],
       newPostId: [{ required: true, message: '新岗位不能为空', trigger: 'onBlur' }],
       startDate: [{ required: true, message: '生效日期不能为空', trigger: 'onBlur' }],
-      newSalary: [{ required: true, message: '薪资情况不能为空', trigger: 'onBlur' }],
+      // newSalary: [{ required: true, message: '薪资情况不能为空', trigger: 'onBlur' }],
       commanderPowerHandover: [{ required: true, message: '主管交接人不能为空', trigger: 'onBlur' }],
       reason: [{ required: true, message: '调用原因不能为空', trigger: 'onBlur' }],
     },
@@ -85,33 +92,64 @@ export function useForm() {
     isLoading.value = false
   }
 
+  // 提交表单
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          await updateUserTransfer(form.value)
+        }
+        else {
+          const { data: id } = await addUserTransfer(form.value)
+          form.value.id = id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserTransferForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
-      nextTick(async () => {
+      nextTick(() => {
         Object.assign(form.value, {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
+
   return {
     Form,
     form,
     rules,
     isLoading,
     updateLoading,
+    userInfo,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

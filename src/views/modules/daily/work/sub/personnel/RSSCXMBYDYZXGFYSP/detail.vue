@@ -7,11 +7,12 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['o_deptId', includeFields]" name="o_deptId" label="申请部门">
-    <template #input>
-      <DeptSelect v-model="form.o_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.o_deptId"
+    v-show-field="['o_deptId', includeFields]"
+    name="o_deptId"
+    label="申请部门"
+  />
 
   <van-field v-show-field="['o_amount', includeFields]" name="o_amount" label="总金额（元）">
     <template #input>

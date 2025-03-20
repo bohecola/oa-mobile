@@ -63,6 +63,7 @@ export interface AQLPXFY {}
 // 项目部特殊商业保险购买申请
 export interface FYXMBTSSYBXGMSQ {
   e_deptId?: string
+  e_dailyWorkId?: string
   e_personnelCategory?: string
   e_insuranceExpirationDate?: string
   e_insuranceExpirationStartDate?: string

@@ -5,11 +5,12 @@
     </template>
   </van-field>
 
-  <van-field v-show-field="['b_deptId', includeFields]" label="部门/项目部" name="b_deptId">
-    <template #input>
-      <DeptSelect v-model="form.b_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.b_deptId"
+    v-show-field="['b_deptId', includeFields]"
+    name="b_deptId"
+    label="部门/项目部"
+  />
 
   <van-field v-show-field="['b_postIds', includeFields]" label="岗位" name="b_postIds">
     <template #input>
@@ -33,7 +34,7 @@
     </el-col>
   </el-row> -->
 
-  <DatePicker
+  <DateSelect
     v-model="form.b_contractEndTime"
     v-show-field="['b_contractEndTime', includeFields]"
     name="b_contractEndTime"

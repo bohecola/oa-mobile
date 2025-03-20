@@ -1,9 +1,10 @@
 <template>
-  <van-field v-show-field="['aa_deptId', includeFields]" name="aa_deptId" label="项目部">
-    <template #input>
-      <DeptSelect v-model="form.aa_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.aa_deptId"
+    v-show-field="['aa_deptId', includeFields]"
+    name="aa_deptId"
+    label="项目部"
+  />
 
   <van-field v-show-field="['aa_userId', includeFields]" name="aa_userId" label="申请人员名单">
     <template #input>
@@ -11,7 +12,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.aa_effectiveDate"
     v-show-field="['aa_effectiveDate', includeFields]"
     name="aa_effectiveDate"

@@ -1,10 +1,11 @@
 <template>
-  <van-field v-show-field="['z_deptId', includeFields]" name="z_deptId" label="项目部" :rules="computedRules.z_deptId">
-    <template #input>
-      <!-- TODO 筛选部门 -->
-      <DeptSelect v-model="form.z_deptId" />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.z_deptId"
+    v-show-field="['z_deptId', includeFields]"
+    name="z_deptId"
+    label="项目部"
+    :rules="computedRules.z_deptId"
+  />
 
   <van-field-number
     v-model.number="form.z_postNumber"

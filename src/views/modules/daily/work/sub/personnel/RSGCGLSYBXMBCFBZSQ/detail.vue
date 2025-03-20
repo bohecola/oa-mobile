@@ -7,11 +7,12 @@
     </el-col>
   </el-row> -->
 
-  <van-field v-show-field="['p_deptId', includeFields]" label="项目部" name="p_deptId">
-    <template #input>
-      <DeptSelect v-model="form.p_deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.p_deptId"
+    v-show-field="['p_deptId', includeFields]"
+    name="p_deptId"
+    label="项目部"
+  />
 
   <van-field v-show-field="['p_amount', includeFields]" label="餐费补助总金额（元）" name="p_amount">
     <template #input>

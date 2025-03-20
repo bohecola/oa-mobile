@@ -7,18 +7,12 @@
     </el-col>
   </el-row> -->
 
-  <van-field
+  <DeptSelect
+    v-model="form.q_deptId"
     v-show-field="['q_deptId', includeFields]"
-    label="项目部"
     name="q_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.q_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="项目部"
+  />
 
   <DictSelect
     v-model="form.q_type"

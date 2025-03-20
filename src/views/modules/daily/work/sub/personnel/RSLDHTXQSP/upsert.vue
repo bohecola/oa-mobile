@@ -17,16 +17,13 @@
     </template>
   </van-field>
 
-  <van-field
+  <DeptSelect
+    v-model="form.b_deptId"
     v-show-field="['b_deptId', includeFields]"
-    label="部门/项目部"
     name="b_deptId"
+    label="部门/项目部"
     :rules="computedRules.b_deptId"
-  >
-    <template #input>
-      <DeptSelect v-model="form.b_deptId" readonly />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-show-field="['b_postIds', includeFields]"
@@ -60,7 +57,7 @@
       </el-col>
     </el-row> -->
 
-  <DatePicker
+  <DateSelect
     v-model="form.b_contractEndTime"
     v-show-field="['b_contractEndTime', includeFields]"
     name="b_contractEndTime"

@@ -1,4 +1,3 @@
-import type { AxiosResponse } from 'axios'
 import type { FormInstance } from 'vant'
 import { addUserEmploymentHandle, updateUserEmploymentHandle } from '@/api/oa/personnel/pendingEmployment/index'
 import type { UserPendingEmploymentForm } from '@/api/oa/personnel/pendingEmployment/types'
@@ -9,12 +8,11 @@ export interface Options<T = any> {
 }
 export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-
+export interface SuccessData {
+  id: UserPendingEmploymentForm['id']
+}
 // 表单
 export function useForm() {
-  // 实例
-  const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
   // 引用
   const Form = ref<FormInstance>()
 
@@ -84,7 +82,7 @@ export function useForm() {
       certificates: [{ required: true, message: '持证情况不能为空', trigger: 'onBlur' }],
       otherCertificates: [{ required: true, message: '其他证件不能为空', trigger: 'onBlur' }],
       interviewDate: [{ required: true, message: '面试日期不能为空', trigger: 'onBlur' }],
-      interviewEvaluation: [{ required: true, message: '面试评价不能为空', trigger: 'onBlur' }],
+      // interviewEvaluation: [{ required: true, message: '面试评价不能为空', trigger: 'onBlur' }],
       isOwnerInterview: [{ required: true, message: '是否需要业主不能为空', trigger: 'onBlur' }],
       isOutsource: [{ required: true, message: '是否为外包人员不能为空', trigger: 'onBlur' }],
     },
@@ -112,9 +110,42 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
+  // 提交
+  async function submit(options?: SubmitOptions<SuccessData>) {
     const { success, fail } = options ?? {}
+
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          await updateUserEmploymentHandle(form.value).finally(() => (updateLoading.value = false))
+        }
+        else {
+          const { data: id } = await addUserEmploymentHandle(form.value).finally(() => (updateLoading.value = false))
+          form.value.id = id
+        }
+        success?.({
+          id: form.value.id,
+
+        })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserPendingEmploymentForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
+  // 工作流中回显
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {
@@ -122,12 +153,12 @@ export function useForm() {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -138,8 +169,8 @@ export function useForm() {
     updateLoading,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

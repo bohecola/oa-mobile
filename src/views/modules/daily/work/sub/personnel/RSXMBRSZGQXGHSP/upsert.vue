@@ -1,15 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.r_deptId"
     v-show-field="['r_deptId', includeFields]"
-    name="z_deptId"
+    name="r_deptId"
     label="部门/项目部"
     :rules="computedRules.r_deptId"
-  >
-    <template #input>
-      <!-- TODO 筛选部门 -->
-      <DeptSelect v-model="form.r_deptId" />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-model="form.r_oldUserId"
@@ -39,7 +35,7 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.r_effectiveDate"
     v-show-field="['r_effectiveDate', includeFields]"
     name="r_effectiveDate"

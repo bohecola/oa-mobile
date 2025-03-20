@@ -1,18 +1,12 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" />
 
-  <van-field
+  <DeptSelect
+    v-model="form.e_deptId"
     v-show-field="['e_deptId', includeFields]"
-    label="部门/项目部"
     name="e_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.e_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="部门/项目部"
+  />
 
   <DictSelect
     v-model="form.e_personnelCategory"
@@ -34,21 +28,21 @@
     </template>
   </van-field>
 
-  <DatePicker
+  <DateSelect
     v-model="form.e_insuranceExpirationStartDate"
     v-show-field="['e_insuranceExpirationStartDate', includeFields]"
     name="e_insuranceExpirationStartDate"
     label="建议保险开始日期"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.e_insuranceExpirationEndDate"
     v-show-field="['e_insuranceExpirationEndDate', includeFields]"
     name="e_insuranceExpirationEndDate"
     label="建议保险截止日期"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.e_latestPurchaseDate"
     v-show-field="['e_latestPurchaseDate', includeFields]"
     name="e_latestPurchaseDate"

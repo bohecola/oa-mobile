@@ -6,19 +6,12 @@
       </el-form-item>
     </el-col>
   </el-row> -->
-  <van-field
+  <DeptSelect
+    v-model="form.f_deptId"
     v-show-field="['f_deptId', includeFields]"
-    label="部门"
     name="f_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.f_deptId"
-        clearable
-        readonly
-      />
-    </template>
-  </van-field>
+    label="部门"
+  />
 
   <DictSelect
     v-model="form.f_fileType"

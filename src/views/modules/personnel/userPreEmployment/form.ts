@@ -1,14 +1,17 @@
 import type { FormInstance } from 'vant'
-import { getUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
+import { addUserPreEmployment, getUserPreEmployment, updateUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 import type { UserPreEmploymentEvaluateBo, UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 
 export interface Options<T = any> {
+  operation?: BaseEntity['operation']
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions = Options<string | number>
+export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
-
+export interface SuccessData {
+  id: UserPreEmploymentForm['id']
+}
 // 表单
 export function useForm() {
   // 实例
@@ -101,93 +104,63 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // const checkstatus = ref<boolean>(false);
-  // const childTableCheck = (list: any[]) => {
-  //   // some方法找到这个空的就会直接跳出循环
-  //   checkstatus.value = false;
-  //   list.some((item: any) => {
-  //     for (const key in item) {
-  //       if (key === 'result') {
-  //         if (item[key] === null || item[key] === '' || item[key] === undefined) {
-  //           proxy?.$modal.alertWarning('评价结果不能为空');
-  //           checkstatus.value = true;
-  //           return true;
-  //         }
-  //       }
-  //     }
-  //     return false;
-  //   });
-  //   return !checkstatus.value;
-  // };
+  const checkstatus = ref<boolean>(false)
+  const childTableCheck = (list: any[]) => {
+    // some方法找到这个空的就会直接跳出循环
+    checkstatus.value = false
+    list.some((item: any) => {
+      for (const key in item) {
+        if (key === 'result') {
+          if (item[key] === null || item[key] === '' || item[key] === undefined) {
+            proxy?.$modal.alertWarning('评价结果不能为空')
+            checkstatus.value = true
+            return true
+          }
+        }
+      }
+      return false
+    })
+    return !checkstatus.value
+  }
+
   // 提交
-  // const submit = (options: SubmitOptions) => {
-  //   const { success, fail } = options ?? {};
+  async function submit(options?: SubmitOptions<SuccessData>) {
+    const { operation = 'submit', success, fail } = options ?? {}
+    form.value.operation = operation
 
-  //   let res: AxiosResponse<UserPreEmploymentForm['id']>;
-  //   const valid = Form.value?.validate(async (valid: boolean) => {
-  //     try {
-  //       // 持证没有校验，如果没有值报错，有值再赋值
-  //       let certificates = '';
-  //       if (form.value.certificates) {
-  //         certificates = form.value.certificates.join(',');
-  //       }
-  //       // 数据
-  //       const data: UserPreEmploymentForm = {
-  //         ...form.value,
-  //         certificates: certificates
-  //       };
-  //       // 请求
-  //       if (valid) {
-  //         if (childTableCheck(form.value.userPreEmploymentEvaluateBoList)) {
-  //           updateLoading.value = true;
-  //           if (form.value.id) {
-  //             res = await updateUserPreEmployment(data).finally(() => (updateLoading.value = false));
-  //           } else {
-  //             res = await addUserPreEmployment(data).finally(() => (updateLoading.value = false));
-  //             form.value.id = res.data;
-  //           }
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       fail && fail(err);
-  //     }
-  //     success && success(res.data);
-  //   });
+    if (!childTableCheck(form.value.userPreEmploymentEvaluateBoList)) {
+      return false
+    }
 
-  //   return valid;
-  // };
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          await updateUserPreEmployment(form.value)
+        }
+        else {
+          const { data } = await addUserPreEmployment(form.value)
+          form.value.id = data.id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
 
   // 工作流中提交表单
-  // async function workflowSubmit(options?: SubmitOptions) {
-  //   const { success } = options ?? {};
-
-  //   let data: UserPreEmploymentForm;
-
-  //   const valid = await Form.value?.validate(async (valid: boolean) => {
-  //     // 持证没有校验，如果没有值报错，有值再赋值
-  //     let certificates = '';
-  //     if (form.value.certificates) {
-  //       certificates = form.value.certificates.join(',');
-  //     }
-  //     data = {
-  //       ...form.value,
-  //       certificates: certificates
-  //     };
-  //     if (valid) {
-  //       success && success();
-  //     }
-  //   });
-
-  //   return {
-  //     valid,
-  //     data
-  //   };
-  // }
+  async function workflowSubmit(options: SubmitOptions<UserPreEmploymentForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
 
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {
@@ -195,12 +168,12 @@ export function useForm() {
           ...entity,
         })
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -211,8 +184,8 @@ export function useForm() {
     updateLoading,
     reset,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

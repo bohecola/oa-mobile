@@ -1,16 +1,10 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.gg_deptId"
     v-show-field="['gg_deptId', includeFields]"
-    label="部门/项目部"
     name="gg_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.gg_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="部门/项目部"
+  />
 
   <van-field
     v-model="form.gg_recruitmentNo"
@@ -89,7 +83,7 @@
     name="gg_changeAfterNumberPost"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.gg_effectiveDate"
     v-show-field="['gg_effectiveDate', includeFields]"
     name="gg_effectiveDate"

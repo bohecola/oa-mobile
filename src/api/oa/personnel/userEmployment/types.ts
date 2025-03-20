@@ -9,6 +9,9 @@ export interface UserEmploymentVO {
    */
   preEmploymentId: string | number
 
+  /**
+   * 预入职员工名称
+   */
   preEmploymentName?: string
 
   /**
@@ -45,6 +48,11 @@ export interface UserEmploymentVO {
    * 基本工资
    */
   baseWages: number
+
+  /**
+   * 岗位工资
+   */
+  postWages: number
 
   /**
    * 绩效工资

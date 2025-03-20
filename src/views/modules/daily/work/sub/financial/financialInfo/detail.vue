@@ -45,9 +45,6 @@ withDefaults(
   },
 )
 
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_file_type } = toRefs<any>(proxy?.useDict('oa_file_type'))
-
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>(form)

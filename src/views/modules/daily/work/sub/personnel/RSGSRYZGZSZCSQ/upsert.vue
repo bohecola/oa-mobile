@@ -65,7 +65,7 @@
     :rules="computedRules.y_no"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.y_issuanceDate"
     v-show-field="['y_issuanceDate', includeFields]"
     name="y_issuanceDate"
@@ -73,31 +73,28 @@
     :rules="computedRules.y_issuanceDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.y_recheckDate"
     v-show-field="['y_recheckDate', includeFields]"
     name="y_recheckDate"
     label="复审时间"
     :rules="computedRules.y_recheckDate"
-    :required="false"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.y_startDate"
     v-show-field="['y_startDate', includeFields]"
     name="y_startDate"
     label="开始日期"
     :rules="computedRules.y_startDate"
-    :required="false"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.y_endDate"
     v-show-field="['y_endDate', includeFields]"
     name="y_endDate"
     label="结束日期"
     :rules="computedRules.y_endDate"
-    :required="false"
   />
 
   <van-field

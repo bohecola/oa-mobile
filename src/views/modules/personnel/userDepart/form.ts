@@ -1,14 +1,18 @@
 import type { FormInstance } from 'vant'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
-import { getUserDepart } from '@/api/oa/personnel/userDepart'
+import { addUserDepart, getUserDepart, updateUserDepart } from '@/api/oa/personnel/userDepart'
+import { useUserStore } from '@/store/user'
 // import useUserStore from '@/store/user'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-type SubmitOptions = Options<string | number>
+export type SubmitOptions<T = string | number> = Options<T>
 export type ViewOptions = Options
+export interface SuccessData {
+  id: UserDepartForm['id']
+}
 
 // 表单
 export function useForm() {
@@ -19,7 +23,7 @@ export function useForm() {
   const Form = ref<FormInstance>()
 
   // 获取当前登录的用户信息
-  // const user = useUserStore()
+  const user = useUserStore()
   // 初始数据
   const initFormData: UserDepartForm = {
     id: undefined,
@@ -81,23 +85,52 @@ export function useForm() {
     isLoading.value = false
   }
 
+  // 提交表单
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+
+        if (form.value.id) {
+          await updateUserDepart(form.value)
+        }
+        else {
+          const { data: id } = await addUserDepart(form.value)
+          form.value.id = id
+        }
+        success?.({ id: form.value.id })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
+
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<UserDepartForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
+
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
+
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
         })
-        form.value.userName = entity.initiator.nickName
       })
+      success?.(entity)
     }
     catch (err) {
       console.error(err)
       fail?.(err)
     }
-    success?.(entity)
   }
 
   return {
@@ -106,9 +139,11 @@ export function useForm() {
     rules,
     isLoading,
     updateLoading,
-    // user,
+    user,
     reset,
     view,
     workflowView,
+    submit,
+    workflowSubmit,
   }
 }

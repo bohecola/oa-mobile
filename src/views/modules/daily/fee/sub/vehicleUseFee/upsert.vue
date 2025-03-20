@@ -31,7 +31,7 @@
     :rules="computedRules.c_invoiceType"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.b_lastRepairDate"
     v-show-field="['b_lastRepairDate', includeFields]"
     name="b_lastRepairDate"
@@ -109,7 +109,7 @@
   </van-field>
 
   <!-- 零星加油费 -->
-  <DatePicker
+  <DateSelect
     v-model="form.b_useTime"
     v-show-field="['b_useTime', includeFields]"
     name="b_useTime"
@@ -151,7 +151,7 @@
   />
 
   <!-- 年审费用 -->
-  <DatePicker
+  <DateSelect
     v-model="form.b_annualReviewExpirationDate"
     v-show-field="['b_annualReviewExpirationDate', includeFields]"
     name="b_annualReviewExpirationDate"
@@ -159,7 +159,7 @@
     :rules="computedRules.b_annualReviewExpirationDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.b_verificationDate"
     v-show-field="['b_verificationDate', includeFields]"
     name="b_verificationDate"
@@ -177,7 +177,7 @@
   />
 
   <!-- 公司车辆保险费 -->
-  <DatePicker
+  <DateSelect
     v-model="form.b_lastStrongInsuranceExpirationDate"
     v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
     name="b_lastStrongInsuranceExpirationDate"
@@ -185,7 +185,7 @@
     :rules="computedRules.b_lastStrongInsuranceExpirationDate"
   />
 
-  <DatePicker
+  <DateSelect
     v-model="form.b_lastCommercialInsuranceExpirationDate"
     v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
     name="b_lastCommercialInsuranceExpirationDate"

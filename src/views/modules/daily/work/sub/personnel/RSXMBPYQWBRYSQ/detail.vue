@@ -1,16 +1,10 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.k_deptId"
     v-show-field="['k_deptId', includeFields]"
     name="k_deptId"
     label="项目部"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.k_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-show-field="['k_userType', includeFields]"
@@ -84,7 +78,7 @@
     />
   </div>
 
-  <DatePicker
+  <DateSelect
     v-model="form.k_effectiveDate"
     v-show-field="['k_effectiveDate', includeFields]"
     name="k_effectiveDate"
@@ -195,14 +189,14 @@
       </template>
     </van-field>
 
-    <DatePicker
+    <DateSelect
       v-model="form.k_startDate"
       v-show-field="['k_startDate', includeFields]"
       name="k_startDate"
       label="聘用开始日期"
     />
 
-    <DatePicker
+    <DateSelect
       v-model="form.k_endDate"
       v-show-field="['k_endDate', includeFields]"
       name="k_endDate"
@@ -218,14 +212,14 @@
     />
 
     <div v-if="['0', '1'].includes(form.k_signeContractType)">
-      <DatePicker
+      <DateSelect
         v-model="form.k_signeContractStartDate"
         v-show-field="['k_signeContractStartDate', includeFields]"
         name="k_signeContractStartDate"
         label="合同签订开始时间"
       />
 
-      <DatePicker
+      <DateSelect
         v-model="form.k_signeContractEndDate"
         v-show-field="['k_signeContractEndDate', includeFields]"
         name="k_signeContractEndDate"
@@ -252,14 +246,14 @@
     />
 
     <div v-if="['0', '1', '2'].includes(form.k_purchaseInsuranceType)">
-      <DatePicker
+      <DateSelect
         v-model="form.k_insuranceStartDate"
         v-show-field="['k_insuranceStartDate', includeFields]"
         name="k_insuranceStartDate"
         label="保险开始时间"
       />
 
-      <DatePicker
+      <DateSelect
         v-model="form.k_insuranceEndDate"
         v-show-field="['k_insuranceEndDate', includeFields]"
         name="k_insuranceEndDate"
@@ -335,10 +329,6 @@ const props = withDefaults(
     includeFields: () => ['k_deptId', 'k_userType', 'k_isKeyAccountsVP', 'k_nature', 'k_category', 'k_postId', 'k_number', 'k_isUniform', 'k_workwearType', 'k_quantityAndSize', 'k_isUseOriginalSalaryStandard', 'k_originalSalaryStandard', 'k_newSalaryStandard', 'k_effectiveDate', 'k_monthlyWorkingMode', 'k_salaryStandards', 'k_specialInstructions', 'k_otherDistribution', 'k_originalDistribution', 'k_changeAfterDistribution', 'k_changeReason', 'k_startDate', 'k_endDate', 'k_signeContractType', 'k_purchaseInsuranceType', 'k_employInformation', 'k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions', 'k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions', 'k_isBudget', 'k_isBudgetStandards', 'k_supplementaryExplanation', 'reason', 'ossIdList'],
   },
 )
-
-// 依赖收集
-const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
-trackFields(props.includeFields)
 
 const form = inject<Ref<DailyWorkForm>>('form')
 // 指令

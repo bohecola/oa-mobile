@@ -1,13 +1,11 @@
 <template>
-  <van-field
+  <DeptSelect
+    v-model="form.needDepts"
     v-show-field="['needDepts', includeFields]"
     name="needDepts"
     label="需求部门"
-  >
-    <template #input>
-      <DeptSelect v-model="form.needDepts" multiple readonly />
-    </template>
-  </van-field>
+  />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 

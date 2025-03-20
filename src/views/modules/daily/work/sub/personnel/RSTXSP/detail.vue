@@ -11,7 +11,12 @@
     </template>
   </van-field>
 
-  <DatePicker v-model="form.bb_effectiveDate" v-show-field="['bb_effectiveDate', includeFields]" name="bb_effectiveDate" label="调薪生效日期" readonly />
+  <DateSelect
+    v-model="form.bb_effectiveDate"
+    v-show-field="['bb_effectiveDate', includeFields]"
+    name="bb_effectiveDate"
+    label="调薪生效日期"
+  />
 
   <van-field v-show-field="['bb_changeSalaryAfter', includeFields]" name="bb_changeSalaryAfter" label="调薪后基本工资">
     <template #input>

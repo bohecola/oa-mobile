@@ -21,18 +21,12 @@
     dict-type="oa_project_business_type"
   />
 
-  <van-field
+  <DeptSelect
+    v-model="form.a_deptId"
     v-show-field="['a_deptId', includeFields]"
-    label="部门"
     name="a_deptId"
-  >
-    <template #input>
-      <DeptSelect
-        v-model="form.a_deptId"
-        readonly
-      />
-    </template>
-  </van-field>
+    label="部门"
+  />
 
   <van-field
     v-show-field="['a_contractNo', includeFields]"
