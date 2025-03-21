@@ -2,7 +2,6 @@
   <van-form
     ref="Form"
     v-loading="isLoading && showLoading"
-    class="reset-label"
     label-width="auto"
     label-align="top"
     input-align="left"
@@ -15,11 +14,9 @@
       name="userId"
       label="员工"
       :rules="computedRules.userId"
-      is-link
-      @click="UserSelectRef?.open"
     >
       <template #input>
-        <UserSelect ref="UserSelectRef" v-model="form.userId" />
+        <UserSelect v-model="form.userId" readonly />
       </template>
     </van-field>
 
@@ -238,7 +235,6 @@ const { Form, form, rules, isLoading, updateLoading, userInfo, reset, submit, vi
 // 指令
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
 
-const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 const CommanderPowerHandoverSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 // 校验

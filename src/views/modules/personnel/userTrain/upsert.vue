@@ -2,7 +2,6 @@
   <van-form
     ref="Form"
     v-loading="isLoading"
-    class="reset-label"
     label-width="auto"
     label-align="top"
     input-align="left"
