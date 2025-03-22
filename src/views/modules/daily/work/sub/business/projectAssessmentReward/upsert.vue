@@ -39,19 +39,14 @@
     :rules="computedRules.a_contractNo"
   />
 
-  <van-field
+  <SCSelect
+    v-model="form.a_partyA"
     v-show-field="['a_partyA', includeFields]"
     label="甲方名称"
     name="a_partyA"
     :rules="computedRules.a_partyA"
-  >
-    <template #input>
-      <SCSelect
-        v-model="form.a_partyA"
-        multiple
-      />
-    </template>
-  </van-field>
+    multiple
+  />
 
   <van-field
     v-if="!isNil(form.a_businessType) && form.a_businessType !== '0'"
@@ -95,9 +90,9 @@ import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
+import type { ContractVO } from '@/api/oa/business/contract/types'
 import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
 import SCSelect from '@/views/modules/business/components/SCSelect.vue'
-import type { ContractVO } from '@/api/oa/business/contract/types'
 
 const props = withDefaults(
   defineProps<{

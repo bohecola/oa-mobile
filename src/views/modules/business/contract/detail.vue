@@ -21,65 +21,44 @@
       label="合同编号"
     />
 
-    <van-field
+    <SCSelect
       v-model="form.partyA"
       v-show-field="['partyA', includeFields]"
       name="partyA"
       label="甲方"
-    >
-      <template #input>
-        <SCSelect
-          v-model="form.partyA"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
-    <van-field
+      multiple
+      readonly
+    />
+
+    <SCSelect
       v-model="form.partyB"
       v-show-field="['partyB', includeFields]"
       name="partyB"
       label="乙方"
-    >
-      <template #input>
-        <SCSelect
-          v-model="form.partyB"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      multiple
+      readonly
+    />
+
     <template v-if="contractMode !== 'two'">
-      <van-field
+      <SCSelect
         v-if="contractMode === 'three' || contractMode === 'four'"
         v-model="form.partyC"
         v-show-field="['partyC', includeFields]"
         name="partyC"
         label="丙方"
-      >
-        <template #input>
-          <SCSelect
-            v-model="form.partyC"
-            multiple
-            readonly
-          />
-        </template>
-      </van-field>
-      <van-field
+        multiple
+        readonly
+      />
+
+      <SCSelect
         v-if="contractMode === 'four'"
         v-model="form.partyD"
         v-show-field="['partyD', includeFields]"
         name="partyD"
         label="丁方"
-      >
-        <template #input>
-          <SCSelect
-            v-model="form.partyD"
-            multiple
-            readonly
-          />
-        </template>
-      </van-field>
+        multiple
+        readonly
+      />
     </template>
 
     <DictSelect

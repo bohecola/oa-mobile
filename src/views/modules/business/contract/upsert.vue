@@ -44,64 +44,52 @@
       </template>
     </van-field>
 
-    <van-field
+    <SCSelect
       v-model="form.partyA"
       v-show-field="['partyA', includeFields]"
       name="partyA"
       label="甲方"
-      placeholder="请选择"
+      :exclude="exclude"
       :rules="computedRules.partyA"
-      is-link
-    >
-      <template #input>
-        <SCSelect v-model="form.partyA" multiple :exclude="exclude" />
-      </template>
-    </van-field>
+      multiple
+      clearable
+    />
 
-    <van-field
+    <SCSelect
       v-model="form.partyB"
       v-show-field="['partyB', includeFields]"
       name="partyB"
       label="乙方"
-      placeholder="请选择"
+      :exclude="exclude"
       :rules="computedRules.partyB"
-      is-link
-    >
-      <template #input>
-        <SCSelect v-model="form.partyB" multiple :exclude="exclude" />
-      </template>
-    </van-field>
+      multiple
+      clearable
+    />
 
     <template v-if="contractMode === 'three' || contractMode === 'four'">
-      <van-field
+      <SCSelect
         v-if="contractMode === 'three' || contractMode === 'four'"
         v-model="form.partyC"
         v-show-field="['partyC', includeFields]"
         name="partyC"
         label="丙方"
-        placeholder="请选择"
+        :exclude="exclude"
         :rules="computedRules.partyC"
-        is-link
-      >
-        <template #input>
-          <SCSelect v-model="form.partyC" multiple :exclude="exclude" />
-        </template>
-      </van-field>
+        multiple
+        clearable
+      />
 
-      <van-field
+      <SCSelect
         v-if="contractMode === 'four'"
         v-model="form.partyD"
         v-show-field="['partyD', includeFields]"
         name="partyD"
         label="丁方"
-        placeholder="请选择"
-        :rules="computedRules.partyC"
-        is-link
-      >
-        <template #input>
-          <SCSelect v-model="form.partyD" multiple :exclude="exclude" />
-        </template>
-      </van-field>
+        :exclude="exclude"
+        :rules="computedRules.partyD"
+        multiple
+        clearable
+      />
     </template>
 
     <DictSelect

@@ -1,191 +1,180 @@
 <template>
-  <div class="w-full min-h-8">
-    <!-- 禁用状态 -->
-    <div
-      v-if="disabled"
-      class="pl-2 h-full w-full border border-solid border-gray-6/20 cursor-not-allowed bg-[var(--el-fill-color-light)] opacity-60 text-truncate"
+  <div class="w-full">
+    <van-field
+      :model-value="modelValue"
+      placeholder="请选择"
+      readonly
+      autosize
+      :is-link="!isReadonly"
+      v-bind="attrs"
+      @click="onFieldClick"
     >
-      <template v-if="!isEmpty(selectedList)">
-        <!-- 单选回显 -->
-        <div v-if="!multiple">
-          <span>{{ selectedList[0].name }}</span>
-        </div>
-
-        <!-- 多选回显 -->
-        <template v-else>
-          <div class="py-1 flex flex-wrap gap-1">
-            <SelectTag v-for="(selected, index) in selectedList" :key="selected.id" readonly>
-              <span>{{ selected.name }}</span>
-              <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
-            </SelectTag>
-          </div>
-        </template>
-      </template>
-    </div>
-
-    <!-- 可选择状态 -->
-    <template v-else>
-      <template v-if="readonly">
-        <div class="w-full">
-          <template v-if="!isEmpty(selectedList)">
-            <!-- 单选回显 -->
-            <span v-if="!multiple">{{ selectedList[0].name }}</span>
-
-            <!-- 多选回显 -->
-            <template v-else>
-              <template v-for="(selected, index) in selectedList" :key="selected.id">
-                <span>{{ selected.name }}</span>
-                <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
-              </template>
-            </template>
-          </template>
-        </div>
+      <template v-for="(_, name) in slots" #[name]="scope">
+        <slot :name="name" v-bind="scope" />
       </template>
 
-      <!-- <template v-else>
-        <div class="w-full border border-solid border-[var(--el-border-color)] hover:border-[var(--el-border-color-hover)]" @click="open">
-          <div class="pl-2 flex items-center min-h-8 hover:cursor-text group">
-            <template v-if="!isEmpty(selectedList)">
-              <div v-if="!multiple" class="text-truncate">
-                <span>{{ selectedList[0].name }}</span>
-              </div>
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" @click.stop="onClear" />
+      </template>
 
-              <template v-else>
-                <div class="py-1 flex flex-wrap gap-1">
-                  <SelectTag v-for="item in selectedList" :key="item.id" closeable @close="remove(item)">
-                    {{ item.name }}
-                  </SelectTag>
-                </div>
-              </template>
-
-              <span class="flex-1" />
-              <span v-if="clearable" class="hidden group-hover:flex mr-2 cursor-pointer opacity-30 hover:opacity-100" @click.stop="clear">
-                <el-icon><Close /></el-icon>
-              </span>
-            </template>
-            <input v-else :placeholder="placeholder" class="el-input__inner" readonly>
-            <span class="flex mr-1 opacity-30">
-              <el-icon><Search /></el-icon>
-            </span>
-          </div>
+      <template v-if="!isNil(modelValue)" #input>
+        <!-- 回显列表 -->
+        <div class="flex flex-wrap gap-2">
+          <van-tag
+            v-for="e in selectedList"
+            :key="e.id"
+            type="primary"
+          >
+            {{ e.name }}
+          </van-tag>
         </div>
       </template>
-      <el-dialog v-model="dialogVisible" title="供应商选择" width="70%" append-to-body>
-        <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model.trim="queryParams.name" placeholder="请输入名称" clearable @keyup.enter="handleQuery" />
-          </el-form-item>
-          <el-form-item label="类型" prop="type">
-            <dict-select v-model="queryParams.type" dict-type="oa_supplier_customer_type" multiple clearable />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">
+    </van-field>
+
+    <van-field class="!hidden" readonly />
+
+    <van-popup
+      v-model:show="visible"
+      class="h-full"
+      position="bottom"
+      round
+      destroy-on-close
+      safe-area-inset-top
+      safe-area-inset-bottom
+      @open="onOpen"
+    >
+      <NavBar
+        :title="`${attrs.label}`"
+        :is-left-click-back="false"
+        @click-left="onCancel"
+      />
+
+      <van-form input-align="left" action="/">
+        <van-search
+          v-model.trim="searchText"
+          show-action
+          placeholder="请输入搜索关键词"
+          @search="handleQuery"
+          @clear="onSearchClear"
+        >
+          <template #action>
+            <div @click="handleQuery">
               搜索
-            </el-button>
-            <el-button icon="Refresh" @click="resetQuery">
-              重置
-            </el-button>
-          </el-form-item>
-        </el-form>
+            </div>
+          </template>
+        </van-search>
+      </van-form>
 
-        <el-table v-loading="loading" :data="tableData">
-          <el-table-column label="名称" align="left" prop="name" />
-          <el-table-column label="类型" align="center" prop="type">
-            <template #default="scope">
-              <dict-tag :options="oa_supplier_customer_type" :value="scope.row.type.split(',')" />
-            </template>
-          </el-table-column>
+      <van-list
+        v-model:loading="loading"
+        finished-text="没有更多了"
+        class="search-list overflow-y-auto px-2"
+        @load="onLoad"
+      >
+        <van-cell
+          v-for="item in list"
+          :key="item.id"
+          :title="item.name"
+          :class="{ '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) }"
+          @click="onCellClick(item)"
+        >
+          <template #label>
+            <div class="grid grid-cols-1 text-gray-400">
+              <div class="flex">
+                类型：<dict-tag :options="oa_supplier_customer_type" :value="item.type.split(',')" />
+              </div>
+              <div v-if="!isNil(item.contacts)">
+                联系人：{{ item.contacts }}
+              </div>
+              <div v-if="!isNil(item.contactPhone)">
+                电话：{{ item.contactPhone }}
+              </div>
+            </div>
+          </template>
+        </van-cell>
+      </van-list>
 
-          <el-table-column label="联系人" align="center" prop="contacts" width="120px" />
-          <el-table-column label="电话" align="center" prop="contactPhone" />
-          <el-table-column label="状态" align="center" prop="status" width="120px">
-            <template #default="scope">
-              <dict-tag :options="sys_use_stop" :value="scope.row.status" />
-            </template>
-          </el-table-column>
-          <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="80px">
-            <template #default="scope">
-              <el-button
-                circle
-                icon="Select"
-                :type="`${selectedIdList.includes(scope.row.id) ? 'primary' : ''}`"
-                :disabled="exclude.includes(scope.row.id)"
-                @click.stop="handleSelectClick(scope.row)"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-
-        <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
-
-        <template v-if="multiple" #footer>
-          <div class="dialog-footer">
-            <el-button @click="cancel">
-              取消
-            </el-button>
-            <el-button type="primary" :disabled="loading" @click="confirm">
-              确定
-            </el-button>
+      <div class="px-3 h-14 flex items-center whitespace-nowrap border-t">
+        <div class="w-full flex items-center justify-between gap-2">
+          <div class="text-sm">
+            已选择 {{ selectedList.length }}
           </div>
-        </template>
-      </el-dialog> -->
-    </template>
+
+          <div class="flex-1 flex gap-2 overflow-x-auto">
+            <van-tag
+              v-for="e in selectedList"
+              :key="e.id"
+              type="primary"
+              size="medium"
+              closeable
+              @close="onItemRemove(e)"
+            >
+              {{ e.name }}
+            </van-tag>
+          </div>
+
+          <van-button
+            type="primary"
+            size="small"
+            @click="onConfirm"
+          >
+            确定
+          </van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
-<script setup lang="ts">
-import { isEmpty, isNil } from 'lodash-es'
-import type { FormInstance } from 'vant'
-import SelectTag from './SelectTag.vue'
+<script setup lang='ts'>
+import { isEmpty, isNil, isNumber } from 'lodash-es'
+import { useParentForm, usePopup } from '@/hooks'
 import type { SupplierCustomerQuery, SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
 import { listSupplierCustomer } from '@/api/oa/business/supplierCustomer'
 
-// 属性
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number | undefined
-    placeholder?: string
-    clearable?: boolean
-    exclude?: string[]
+    modelValue?: string | number
     multiple?: boolean
     readonly?: boolean
-    disabled?: boolean
+    clearable?: boolean
+    exclude?: (string | number)[]
     limit?: number
     params?: Partial<SupplierCustomerQuery>
   }>(),
   {
-    placeholder: '请选择',
-    clearable: false,
-    multiple: false,
-    readonly: false,
-    disabled: false,
     exclude: () => [],
   },
 )
 
-// 事件
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'confirm', 'clear'])
+
+const attrs = useAttrs()
+const slots = useSlots()
+
+const parentForm = useParentForm()
+
+const { visible, openPopup, closePopup } = usePopup()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { oa_supplier_customer_type } = toRefs(proxy.useDict('oa_supplier_customer_type'))
-const { sys_use_stop } = toRefs(proxy.useDict('sys_use_stop'))
+
+// 搜索词
+const searchText = ref('')
 
 // 状态
-const dialogVisible = ref(false)
 const loading = ref(false)
-const tableData = ref<SupplierCustomerVO[]>([])
+const finished = ref(false)
+const list = ref<SupplierCustomerVO[]>([])
 const total = ref(0)
+
 const viewLoading = ref(false)
 
 const selectedList = ref<SupplierCustomerVO[]>([])
-const selectedIdList = computed(() => selectedList.value?.map(item => item.id) ?? [])
-const selectedIdsStr = computed(() => selectedIdList.value.join(','))
+const selectedIdList = computed(() => selectedList.value.map(e => e.id))
 
-// 引用
-const queryFormRef = ref<FormInstance>()
-
-// 参数
+// 查询参数
 const queryParams: SupplierCustomerQuery = reactive({
   pageNum: 1,
   pageSize: 10,
@@ -197,6 +186,9 @@ const queryParams: SupplierCustomerQuery = reactive({
   params: {},
 })
 
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
 // 查询
 async function getList() {
   loading.value = true
@@ -206,105 +198,118 @@ async function getList() {
   }
 
   const res = await listSupplierCustomer(queryParams)
-  tableData.value = res.rows
+  list.value = res.rows
   total.value = res.total
   loading.value = false
 }
 
+// 清空点击
+function onClear() {
+  emit('update:modelValue', undefined)
+  emit('clear')
+}
+
+// 选项点击
+function onFieldClick() {
+  openPopup()
+}
+
+// 输入清空
+function onSearchClear() {
+  queryParams.name = searchText.value
+}
+
 // 搜索
 function handleQuery() {
+  queryParams.name = searchText.value
   queryParams.pageNum = 1
   getList()
 }
 
-// 重置
-function resetQuery() {
-  queryFormRef.value?.resetValidation()
-  handleQuery()
+// 触底加载
+async function onLoad() {
+  if (!isNil(props.params)) {
+    Object.assign(queryParams, props.params)
+  }
+  const { rows } = await listSupplierCustomer(queryParams)
+
+  list.value.push(...rows)
+
+  loading.value = false
+
+  if (rows.length < queryParams.pageSize) {
+    finished.value = true
+  }
+  else {
+    queryParams.pageNum++
+  }
 }
 
 // 打开
-function open() {
-  if (props.disabled) {
-    return
-  }
-  dialogVisible.value = true
+function onOpen() {
+
 }
 
-// 选择
-function handleSelectClick(row: SupplierCustomerVO) {
-  const index = selectedIdList.value.findIndex(e => e === row.id)
-  const isSelected = index !== -1
+// 单元格点击
+function onCellClick(item: SupplierCustomerVO) {
+  const { exclude, modelValue } = props
+
+  // 已排除的不可选中
+  if (exclude.includes(item.id) && !String(modelValue).includes(item.id)) {
+    return false
+  }
+
+  // 是否已选中
+  const index = selectedList.value.findIndex(e => e.id === item.id)
+  const isChecked = index !== -1
 
   // 单选
   if (!props.multiple) {
-    selectedList.value = [row]
-    // 单选完自动确定
-    confirm()
+    selectedList.value = [item]
   }
+  // 多选
   else {
-    // 多选
-    if (isSelected) {
+    if (isChecked) {
       selectedList.value.splice(index, 1)
     }
     else {
-      selectedList.value.push(row)
+      selectedList.value.push(item)
     }
   }
-}
-
-// 确定
-function confirm() {
-  if (props.multiple) {
-    if (!isNil(props.limit)) {
-      if (selectedList.value.length > props.limit) {
-        return proxy?.$modal.msgWarning(`最多只能选择${props.limit}个预算`)
-      }
-    }
-  }
-
-  const payload = selectedIdsStr.value
-  emit('update:modelValue', payload)
-  emit('change', payload)
-  dialogVisible.value = false
 }
 
 // 取消
-async function cancel() {
-  dialogVisible.value = false
+async function onCancel() {
+  selectedList.value = selectedList.value = await getEchoList()
 
-  if (props.modelValue) {
-    selectedList.value = await getEchoList()
-  }
-  else {
-    selectedList.value = []
-  }
+  closePopup()
 }
 
-// 删除
-function remove(item: SupplierCustomerVO) {
-  const index = selectedIdList.value.findIndex(e => e === item.id)
-  const isSelected = index !== -1
+// 移除
+function onItemRemove(item: SupplierCustomerVO) {
+  const index = selectedList.value.findIndex(e => e.id === item.id)
+  const isChecked = index !== -1
 
-  if (isSelected) {
+  if (isChecked) {
     selectedList.value.splice(index, 1)
-    emit('update:modelValue', selectedIdsStr.value)
-    emit('change', selectedIdsStr.value)
   }
 }
 
-// 清除
-function clear() {
-  emit('update:modelValue', undefined)
-  emit('change', undefined)
-}
+// 确认
+function onConfirm() {
+  const { multiple, limit } = props
 
-// 刷新
-watch(dialogVisible, (val) => {
-  if (val) {
-    resetQuery()
+  // 超出提示
+  if (multiple && isNumber(limit) && selectedList.value.length > limit) {
+    return proxy.$modal.msg(`最多只能选择${limit}个`)
   }
-})
+
+  const payload = !isEmpty(selectedIdList.value) ? selectedIdList.value.join(',') : undefined
+  emit('update:modelValue', payload)
+  emit('confirm', payload)
+
+  closePopup()
+}
 
 // 反查回显列表
 async function getEchoList() {
@@ -314,7 +319,7 @@ async function getEchoList() {
       ids: (props.modelValue as string).split(','),
     }).finally(() => (viewLoading.value = false))
 
-    return rows ?? []
+    return rows
   }
 
   return []
@@ -323,16 +328,24 @@ async function getEchoList() {
 // 回显
 watch(
   () => props.modelValue,
-  async (val) => {
-    if (val) {
-      selectedList.value = await getEchoList()
-    }
-    else {
-      selectedList.value = []
-    }
+  async () => {
+    selectedList.value = await getEchoList()
   },
   {
     immediate: true,
   },
 )
 </script>
+
+<style lang="scss" scoped>
+$topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+$bottomHeight: theme('spacing.14');
+
+.search-list {
+  height: calc(100vh - $topHeight - $bottomHeight);
+}
+
+:deep(.van-field__body) {
+  align-items: start;
+}
+</style>

@@ -38,19 +38,13 @@
     </template>
   </van-field>
 
-  <van-field
+  <SCSelect
+    v-model="form.a_partyA"
     v-show-field="['a_partyA', includeFields]"
     label="甲方名称"
     name="a_partyA"
-  >
-    <template #input>
-      <SCSelect
-        v-model="form.a_partyA"
-        multiple
-        readonly
-      />
-    </template>
-  </van-field>
+    multiple
+  />
 
   <van-field
     v-if="!isNil(form.a_businessType) && form.a_businessType !== '0'"
