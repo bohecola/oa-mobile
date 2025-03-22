@@ -90,7 +90,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'confirm'])
+const emit = defineEmits(['update:modelValue', 'confirm', 'clear'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -101,15 +101,16 @@ const { visible, openPopup, closePopup } = usePopup()
 
 const CalenderRef = ref<CalendarInstance>()
 
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
 // Picker 回显值
 const currentDate = computed(() => props.modelValue?.split('-'))
-
-const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 清空点击
 function onClear() {
   emit('update:modelValue', undefined)
-  emit('confirm', undefined)
+  emit('clear')
 }
 
 // 选项点击

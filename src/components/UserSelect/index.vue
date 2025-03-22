@@ -37,7 +37,7 @@
 
     <div v-loading="listLoading" :class="`${isSearchFocused ? 'pt-safe' : ''}`">
       <!-- 搜索 注: form[action="/"] 作用：IOS 键盘显示搜索按钮 -->
-      <form action="/">
+      <van-form input-align="left" action="/">
         <van-search
           v-model="searchText"
           placeholder="搜索"
@@ -45,7 +45,7 @@
           @focus="handleSearchFocus"
           @cancel="handleSearchCancel"
         />
-      </form>
+      </van-form>
       <div v-show="!isSearchFocused" class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-theme(space.14)-env(safe-area-inset-top)-env(safe-area-inset-bottom))] overflow-y-auto">
         <van-index-bar
           class="pb-28"
@@ -146,7 +146,7 @@ const userList = computed(() => Object.values(userListMap.value).flat())
 
 // 选择列表
 const selectedList = ref<SysUserMobileVO[]>([])
-const selectedIdList = computed(() => selectedList.value.map((e => e.userId)))
+const selectedIdList = computed(() => selectedList.value.map(e => e.userId))
 const selectedNum = computed(() => selectedList.value.length)
 const existSelectedList = computed(() => selectedList.value.length > 0)
 

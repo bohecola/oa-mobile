@@ -16,9 +16,9 @@
       type="textarea"
       rows="1"
       placeholder="请选择"
-      v-bind="attrs"
       readonly
       autosize
+      v-bind="attrs"
       @click="onFieldClick"
     >
       <template v-for="(_, name) in slots" #[name]="scope">
@@ -176,6 +176,9 @@ const ids = ref<string | string[]>(deserialize(props.modelValue))
 // 多选绑定值
 const checked = ref<string[]>([])
 
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
 // 单选 Picker 回显
 const pickerValue = computed(() => isArray(ids.value) ? ids.value : [ids.value])
 
@@ -217,8 +220,6 @@ const presentText = computed(() => {
     .map(e => e.label)
     .join('、')
 })
-
-const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 清空点击
 function onClear() {
@@ -265,7 +266,7 @@ function onCheckboxPickerConfirm(values: string[]) {
   closePopup()
 }
 
-// 点击
+// 选项点击
 function onFieldClick() {
   openPopup()
 }

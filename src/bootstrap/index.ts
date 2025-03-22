@@ -1,15 +1,21 @@
 import type { App } from 'vue'
 import { setToastDefaultOptions } from 'vant'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-// import DLUI from '@xuanmo/dl-ui'
 import { plugin as vueTransitionsPlugin } from '@morev/vue-transitions'
 import { setupStore } from '@/store'
 import { setupRouter } from '@/router'
 import { setupDirective } from '@/directive'
 import plugins from '@/plugins'
 
-// import '@xuanmo/dl-ui/dist/index.css'
+import 'vant/es/toast/style'
+import 'vant/es/dialog/style'
+import 'vant/es/image-preview/style'
+import '@vant/touch-emulator'
+
 import '@morev/vue-transitions/styles'
+
+import '@he-tree/vue/style/default.css'
+import '@he-tree/vue/style/material-design.css'
 
 export async function bootstrap(app: App) {
   // 配置状态管理

@@ -162,6 +162,9 @@ const queryParams: DeptQuery = reactive({
   type: undefined,
 })
 
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
 // 树形数据
 const treeData = computed(() => {
   const dataConfig = props.dataConfig
@@ -195,8 +198,6 @@ const selectedLabel = computed(() => {
   }
   return ''
 })
-
-const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 计算回显 Label
 function computedLabel(id: string | number) {
@@ -235,7 +236,7 @@ function onClear() {
   emit('change', undefined)
 }
 
-// 表单项点击
+// 选项点击
 function onFieldClick() {
   if (isReadonly.value) {
     return
