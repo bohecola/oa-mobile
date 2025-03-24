@@ -151,18 +151,14 @@
       clearable
     />
 
-    <van-field
+    <ProjectSelect
+      v-model="form.projectId"
       v-show-field="['projectId', includeFields]"
       name="projectId"
       label="项目"
-      placeholder="请选择"
       :rules="computedRules.projectId"
-      is-link
-    >
-      <template #input>
-        <ProjectSelect v-model="form.projectId" />
-      </template>
-    </van-field>
+      clearable
+    />
 
     <van-field
       v-model.number="form.amount"

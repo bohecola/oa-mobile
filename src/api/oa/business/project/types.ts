@@ -15,6 +15,11 @@ export interface ProjectVO {
   deptId: string | number
 
   /**
+   * 部门名称
+   */
+  deptName: string
+
+  /**
    * 项目名称
    */
   name: string
@@ -33,6 +38,11 @@ export interface ProjectVO {
    * 项目负责人
    */
   projectLeader: string
+
+  /**
+   * 负责人名称
+   */
+  projectLeaderName: string
 
   /**
    * 项目说明

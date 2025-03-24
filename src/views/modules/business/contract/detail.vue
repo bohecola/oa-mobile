@@ -112,18 +112,12 @@
       label="需求部门"
     />
 
-    <van-field
+    <ProjectSelect
+      v-model="form.projectId"
       v-show-field="['projectId', includeFields]"
       name="projectId"
       label="项目"
-    >
-      <template #input>
-        <ProjectSelect
-          v-model="form.projectId"
-          readonly
-        />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-model="form.amount"

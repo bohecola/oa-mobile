@@ -1,6 +1,9 @@
+import { isEmpty, isNil, isNumber } from 'lodash-es'
+
 export * from './settings'
 export * from './workflow'
 export * from './theme'
+export * from './select'
 
 export function useParentForm() {
   const d = getCurrentInstance()
@@ -35,5 +38,45 @@ export function usePopup() {
     visible,
     openPopup,
     closePopup,
+  }
+}
+
+export function useSerializer(options: { multiple: boolean }) {
+  const { multiple } = options
+
+  function serialize(value: string | number | (string | number)[]) {
+    if (!isEmpty(value) || isNumber(value)) {
+      if (multiple) {
+        return (value as (string | number)[]).join(',')
+      }
+      else {
+        return value as string | number
+      }
+    }
+    else {
+      return undefined
+    }
+  }
+
+  function deserialize(value: string | number) {
+    if (!isNil(value)) {
+      if (multiple) {
+        return (value as string)
+          .split(',')
+          // 兼容 id 为 100、101 这种 number 类型的情况
+          .map(e => (e.length < 19 ? Number(e) : e))
+      }
+      else {
+        return value
+      }
+    }
+    else {
+      return undefined
+    }
+  }
+
+  return {
+    serialize,
+    deserialize,
   }
 }

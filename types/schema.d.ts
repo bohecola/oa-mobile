@@ -50,4 +50,14 @@ declare global {
     elTagType?: ElTagType
     elTagClass?: string
   }
+
+  /**
+   * 选择器自定义 label 字段描述符
+   */
+  declare interface LabelDescriptor<T = any> {
+    text: string
+    key: keyof T
+    type: 'dict' | 'time' | 'plain'
+    options?: Ref<DictDataOption[]>
+  }
 }

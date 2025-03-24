@@ -2,10 +2,10 @@
   <div class="w-full">
     <van-field
       :model-value="modelValue"
+      :is-link="!isReadonly"
       placeholder="请选择"
       readonly
       autosize
-      :is-link="!isReadonly"
       v-bind="attrs"
       @click="onFieldClick"
     >
@@ -17,12 +17,13 @@
         <van-icon name="clear" @click.stop="onClear" />
       </template>
 
+      <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
-        <!-- 回显列表 -->
         <div class="flex flex-wrap gap-2">
           <van-tag
             v-for="e in selectedList"
             :key="e.id"
+            size="large"
             type="primary"
           >
             {{ e.name }}
@@ -41,7 +42,6 @@
       destroy-on-close
       safe-area-inset-top
       safe-area-inset-bottom
-      @open="onOpen"
     >
       <NavBar
         :title="`${attrs.label}`"
@@ -54,11 +54,11 @@
           v-model.trim="searchText"
           show-action
           placeholder="请输入搜索关键词"
-          @search="handleQuery"
+          @search="onSearch"
           @clear="onSearchClear"
         >
           <template #action>
-            <div @click="handleQuery">
+            <div @click="onSearch">
               搜索
             </div>
           </template>
@@ -67,6 +67,8 @@
 
       <van-list
         v-model:loading="loading"
+        v-model:error="error"
+        error-text="请求失败，点击重新加载"
         finished-text="没有更多了"
         class="search-list overflow-y-auto px-2"
         @load="onLoad"
@@ -75,20 +77,20 @@
           v-for="item in list"
           :key="item.id"
           :title="item.name"
-          :class="{ '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) }"
+          :class="[
+            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
+            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id) },
+          ]"
           @click="onCellClick(item)"
         >
           <template #label>
             <div class="grid grid-cols-1 text-gray-400">
-              <div class="flex">
-                类型：<dict-tag :options="oa_supplier_customer_type" :value="item.type.split(',')" />
-              </div>
-              <div v-if="!isNil(item.contacts)">
-                联系人：{{ item.contacts }}
-              </div>
-              <div v-if="!isNil(item.contactPhone)">
-                电话：{{ item.contactPhone }}
-              </div>
+              <CellLabelItem
+                v-for="d in labelDescriptors"
+                :key="d.key"
+                :descriptor="d"
+                :item="item"
+              />
             </div>
           </template>
         </van-cell>
@@ -105,7 +107,6 @@
               v-for="e in selectedList"
               :key="e.id"
               type="primary"
-              size="medium"
               closeable
               @close="onItemRemove(e)"
             >
@@ -127,8 +128,8 @@
 </template>
 
 <script setup lang='ts'>
-import { isEmpty, isNil, isNumber } from 'lodash-es'
-import { useParentForm, usePopup } from '@/hooks'
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
+import { useParentForm, usePopup, useSCSelect, useSerializer } from '@/hooks'
 import type { SupplierCustomerQuery, SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
 import { listSupplierCustomer } from '@/api/oa/business/supplierCustomer'
 
@@ -152,27 +153,23 @@ const emit = defineEmits(['update:modelValue', 'confirm', 'clear'])
 const attrs = useAttrs()
 const slots = useSlots()
 
-const parentForm = useParentForm()
-
-const { visible, openPopup, closePopup } = usePopup()
-
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_supplier_customer_type } = toRefs(proxy.useDict('oa_supplier_customer_type'))
 
-// 搜索词
-const searchText = ref('')
+// 表单
+const parentForm = useParentForm()
+
+// 弹窗
+const { visible, openPopup, closePopup } = usePopup()
+
+// 反序列化
+const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const loading = ref(false)
-const finished = ref(false)
-const list = ref<SupplierCustomerVO[]>([])
-const total = ref(0)
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useSCSelect()
 
-const viewLoading = ref(false)
-
-const selectedList = ref<SupplierCustomerVO[]>([])
 const selectedIdList = computed(() => selectedList.value.map(e => e.id))
+const listOfIds = computed(() => list.value.map(e => e.id))
 
 // 查询参数
 const queryParams: SupplierCustomerQuery = reactive({
@@ -191,10 +188,12 @@ const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 查询
 async function getList() {
+  const { params } = props
+
   loading.value = true
 
-  if (!isNil(props.params)) {
-    Object.assign(queryParams, props.params)
+  if (!isNil(params)) {
+    Object.assign(queryParams, params)
   }
 
   const res = await listSupplierCustomer(queryParams)
@@ -211,6 +210,10 @@ function onClear() {
 
 // 选项点击
 function onFieldClick() {
+  if (isReadonly.value) {
+    return
+  }
+
   openPopup()
 }
 
@@ -220,7 +223,7 @@ function onSearchClear() {
 }
 
 // 搜索
-function handleQuery() {
+function onSearch() {
   queryParams.name = searchText.value
   queryParams.pageNum = 1
   getList()
@@ -228,31 +231,35 @@ function handleQuery() {
 
 // 触底加载
 async function onLoad() {
-  if (!isNil(props.params)) {
-    Object.assign(queryParams, props.params)
+  try {
+    const { params } = props
+
+    if (!isNil(params)) {
+      Object.assign(queryParams, params)
+    }
+
+    const { rows } = await listSupplierCustomer(queryParams)
+
+    list.value.push(...rows)
+
+    if (rows.length < queryParams.pageSize) {
+      finished.value = true
+    }
+    else {
+      queryParams.pageNum++
+    }
   }
-  const { rows } = await listSupplierCustomer(queryParams)
-
-  list.value.push(...rows)
-
-  loading.value = false
-
-  if (rows.length < queryParams.pageSize) {
-    finished.value = true
+  catch {
+    error.value = true
   }
-  else {
-    queryParams.pageNum++
+  finally {
+    loading.value = false
   }
-}
-
-// 打开
-function onOpen() {
-
 }
 
 // 单元格点击
 function onCellClick(item: SupplierCustomerVO) {
-  const { exclude, modelValue } = props
+  const { modelValue, multiple, exclude } = props
 
   // 已排除的不可选中
   if (exclude.includes(item.id) && !String(modelValue).includes(item.id)) {
@@ -264,7 +271,7 @@ function onCellClick(item: SupplierCustomerVO) {
   const isChecked = index !== -1
 
   // 单选
-  if (!props.multiple) {
+  if (!multiple) {
     selectedList.value = [item]
   }
   // 多选
@@ -280,7 +287,9 @@ function onCellClick(item: SupplierCustomerVO) {
 
 // 取消
 async function onCancel() {
-  selectedList.value = selectedList.value = await getEchoList()
+  const { modelValue } = props
+
+  selectedList.value = await getViewList(modelValue as string)
 
   closePopup()
 }
@@ -298,13 +307,18 @@ function onItemRemove(item: SupplierCustomerVO) {
 // 确认
 function onConfirm() {
   const { multiple, limit } = props
+  const { msg } = proxy.$modal
 
-  // 超出提示
-  if (multiple && isNumber(limit) && selectedList.value.length > limit) {
-    return proxy.$modal.msg(`最多只能选择${limit}个`)
+  // 校验
+  if (multiple) {
+    if (isNumber(limit) && selectedList.value.length > limit) {
+      return msg(`最多只能选择${limit}个`)
+    }
   }
 
-  const payload = !isEmpty(selectedIdList.value) ? selectedIdList.value.join(',') : undefined
+  const payload = !isEmpty(selectedIdList.value)
+    ? selectedIdList.value.join(',')
+    : undefined
   emit('update:modelValue', payload)
   emit('confirm', payload)
 
@@ -312,24 +326,35 @@ function onConfirm() {
 }
 
 // 反查回显列表
-async function getEchoList() {
-  if (props.modelValue) {
-    viewLoading.value = true
-    const { rows } = await listSupplierCustomer({
-      ids: (props.modelValue as string).split(','),
-    }).finally(() => (viewLoading.value = false))
-
-    return rows
+async function getViewList(value: string) {
+  if (isNil(value)) {
+    return []
   }
 
-  return []
+  const d = deserialize(value)
+  const viewIds = (isArray(d) ? d : [d])
+
+  // 是否存在本地完整数据
+  const isLocalData = viewIds.every(e => listOfIds.value.includes(e as string))
+
+  // 存在本地完整数据取本地数据
+  if (isLocalData) {
+    return list.value.filter(e => viewIds.includes(e.id))
+  }
+
+  // 没有本地完整数据请求接口
+  viewLoading.value = true
+  const { rows } = await listSupplierCustomer({ ids: viewIds as string[] })
+    .finally(() => (viewLoading.value = false))
+
+  return rows
 }
 
 // 回显
 watch(
   () => props.modelValue,
-  async () => {
-    selectedList.value = await getEchoList()
+  async (value) => {
+    selectedList.value = await getViewList(value as string)
   },
   {
     immediate: true,

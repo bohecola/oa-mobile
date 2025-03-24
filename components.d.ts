@@ -10,6 +10,7 @@ declare module 'vue' {
     ApprovalFileTable: typeof import('./src/components/ApprovalFileTable/index.vue')['default']
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
     CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
+    CellLabelItem: typeof import('./src/components/CellLabelItem/index.vue')['default']
     DateSelect: typeof import('./src/components/DateSelect/index.vue')['default']
     DeptSelect: typeof import('./src/components/DeptSelect/index.vue')['default']
     DictSelect: typeof import('./src/components/DictSelect/index.vue')['default']
