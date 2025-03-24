@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <van-field
-      v-if="parentForm.props.readonly || readonly"
+      v-if="isReadonly"
       v-bind="attrs"
     >
       <template #input>

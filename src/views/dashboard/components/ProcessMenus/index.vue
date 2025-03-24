@@ -1,5 +1,5 @@
 <template>
-  <van-collapse v-model="activeNames">
+  <van-collapse v-model="activeNames" v-loading="loading">
     <van-collapse-item v-for="(menus, title) in menusMap" :key="title" :name="title" :border="false">
       <template #title>
         <div class="font-bold text-base">

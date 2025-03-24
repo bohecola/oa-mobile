@@ -1,15 +1,19 @@
 <template>
-  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType">
-    <template #input>
-      <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.subjectType"
+    v-show-field="['subjectType', includeFields]"
+    dict-type="oa_project_subject_type"
+    label="预算类型"
+    name="subjectType"
+    component="radio"
+  />
 
-  <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId">
-    <template #input>
-      <DeptSelect v-model="form.deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.deptId"
+    v-show-field="['deptId', includeFields]"
+    label="需求部门"
+    name="deptId"
+  />
 
   <van-field
     v-show-field="['psId', includeFields]"

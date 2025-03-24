@@ -8,8 +8,8 @@
     rows="1"
     placeholder="请输入"
     :right-icon="!isEmpty(form.wfRemark) ? 'info-o' : ''"
-    autosize
     :rules="computedRules.reason"
+    autosize
     @click-right-icon="handleIconClick"
   />
 
