@@ -68,8 +68,9 @@
       <van-list
         v-model:loading="loading"
         v-model:error="error"
-        error-text="请求失败，点击重新加载"
+        :finished="finished"
         finished-text="没有更多了"
+        error-text="请求失败，点击重新加载"
         class="search-list overflow-y-auto px-2"
         @load="onLoad"
       >
