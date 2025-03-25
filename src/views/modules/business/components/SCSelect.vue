@@ -149,7 +149,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'confirm', 'clear'])
+const emit = defineEmits(['update:modelValue', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -206,6 +206,7 @@ async function getList() {
 // 清空点击
 function onClear() {
   emit('update:modelValue', undefined)
+  emit('change', undefined)
   emit('clear')
 }
 
@@ -321,6 +322,7 @@ function onConfirm() {
     ? selectedIdList.value.join(',')
     : undefined
   emit('update:modelValue', payload)
+  emit('change', payload)
   emit('confirm', payload)
 
   closePopup()

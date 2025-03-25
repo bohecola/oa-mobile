@@ -149,7 +149,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:businessType', 'update:contractNoStr', 'confirm', 'clear'])
+const emit = defineEmits(['update:modelValue', 'update:businessType', 'update:contractNoStr', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -173,7 +173,11 @@ const selectedIdList = computed(() => selectedList.value.map(e => e.id))
 const listOfIds = computed(() => list.value.map(e => e.id))
 
 const businessTypeList = computed(() => selectedList.value.map(item => item.businessType))
-const contractNoStr = computed(() => selectedList.value.map(item => item.contractNo).join(','))
+const contractNoStr = computed(() => {
+  return !isEmpty(selectedList.value)
+    ? selectedList.value.map(item => item.contractNo).filter(Boolean).join(',')
+    : undefined
+})
 
 // 查询参数
 const queryParams: ProjectQuery = reactive({
@@ -209,6 +213,7 @@ async function getList() {
 // 清空点击
 function onClear() {
   emit('update:modelValue', undefined)
+  emit('change', undefined)
   emit('clear')
 
   emit('update:businessType', undefined)
@@ -333,6 +338,7 @@ function onConfirm() {
     ? selectedIdList.value.join(',')
     : undefined
   emit('update:modelValue', payload)
+  emit('change', payload)
   emit('confirm', payload)
 
   const [b] = businessTypeList.value[0]

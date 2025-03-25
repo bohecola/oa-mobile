@@ -90,7 +90,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'confirm', 'clear'])
+const emit = defineEmits(['update:modelValue', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -110,6 +110,7 @@ const currentDate = computed(() => props.modelValue?.split('-'))
 // 清空点击
 function onClear() {
   emit('update:modelValue', undefined)
+  emit('change', undefined)
   emit('clear')
 }
 
