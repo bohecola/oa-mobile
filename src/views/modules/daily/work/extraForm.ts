@@ -149,6 +149,8 @@ const extraInitFormData: DailyWorkForm = {
   s_transportationStandards: undefined,
   s_transportationFeeAmount: undefined,
   s_subsidyStandardDetails: undefined,
+  s_startDate: undefined,
+  s_endDate: undefined,
 
   // 解除生产/公司人员劳动合同申请
   t_userId: undefined,
@@ -477,6 +479,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
   s_transportationStandards: [{ required: true, message: `拟申请交通工具标准${baseMsg}`, trigger: 'onBlur' }],
   s_transportationFeeAmount: [{ required: true, message: `拟申请交通费金额（元/单趟）${baseMsg}`, trigger: 'onBlur' }],
   s_subsidyStandardDetails: [{ required: true, message: `驻勤补助标准明细${baseMsg}`, trigger: 'onBlur' }],
+  s_startDate: [{ required: true, message: `开始时间${baseMsg}`, trigger: 'onBlur' }],
+  s_endDate: [{ required: true, message: `结束时间${baseMsg}`, trigger: 'onBlur' }],
 
   // 解除生产/公司人员劳动合同申请
   t_userId: [{ required: true, message: `被解除劳动合同员工${baseMsg}`, trigger: 'onBlur' }],

@@ -235,6 +235,8 @@ export interface RSSCXMBJTFZQBZBZSQ {
   s_transportationStandards?: string
   s_transportationFeeAmount?: number
   s_subsidyStandardDetails?: string
+  s_startDate?: string
+  s_endDate?: string
 }
 
 // 解除生产/公司人员劳动合同申请

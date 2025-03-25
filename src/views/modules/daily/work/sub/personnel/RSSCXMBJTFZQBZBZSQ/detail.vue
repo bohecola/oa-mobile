@@ -11,6 +11,10 @@
 
   <van-field v-model="form.s_transportationFeeAmount" v-show-field="['s_transportationFeeAmount', includeFields]" label="拟申请交通费金额（元/单趟）" name="s_transportationFeeAmount" input-align="left" />
 
+  <van-field v-model="form.s_startDate" v-show-field="['s_startDate', includeFields]" label="开始时间" name="s_startDate" input-align="left" />
+
+  <van-field v-model="form.s_endDate" v-show-field="['s_endDate', includeFields]" label="结束时间" name="s_endDate" input-align="left" />
+
   <van-field v-model="form.s_subsidyStandardDetails" v-show-field="['s_subsidyStandardDetails', includeFields]" label="驻勤补助标准明细" name="s_subsidyStandardDetails" input-align="left" />
 
   <BaseDetail :include-fields="includeFields" />
@@ -26,7 +30,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['s_deptId', 's_costCategory', 's_transportationStandards', 's_transportationFeeAmount', 's_subsidyStandardDetails', 'reason', 'ossIdList'],
+    includeFields: () => ['s_deptId', 's_costCategory', 's_transportationStandards', 's_transportationFeeAmount', 's_subsidyStandardDetails', 's_startDate', 's_endDate', 'reason', 'ossIdList'],
   },
 )
 
