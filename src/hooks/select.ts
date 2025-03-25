@@ -1,5 +1,6 @@
 import type { ProjectVO } from '@/api/oa/business/project/types'
 import type { SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
+import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 
 export function useSelect<T>() {
   // 搜索词
@@ -30,6 +31,7 @@ export function useSelect<T>() {
   }
 }
 
+// 供应商客户选择
 export function useSCSelect() {
   const selectState = useSelect<SupplierCustomerVO>()
 
@@ -62,6 +64,7 @@ export function useSCSelect() {
   }
 }
 
+// 项目选择
 export function useProjectSelect() {
   const selectState = useSelect<ProjectVO>()
 
@@ -114,6 +117,59 @@ export function useProjectSelect() {
       type: 'dict',
       options: oa_project_status,
     },
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 预算选择
+export function useProjectSubjectSelect() {
+  const selectState = useSelect<ProjectSubjectVO>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  // 字典
+  const {
+    oa_project_business_type,
+    oa_project_subject_status,
+  } = toRefs(proxy.useDict(
+    'oa_project_business_type',
+    'oa_project_subject_status',
+  ))
+
+  // 业务类型
+  const _oa_project_business_type = computed(() => {
+    return [
+      ...oa_project_business_type.value,
+      {
+        label: '部门类',
+        value: 'dept',
+      },
+    ]
+  })
+
+  const labelDescriptors: LabelDescriptor<ProjectVO>[] = [
+    {
+      text: '业务类型',
+      key: 'businessType',
+      type: 'dict',
+      options: _oa_project_business_type,
+    },
+    {
+      text: '合同编号',
+      key: 'contractNo',
+      type: 'plain',
+    },
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: oa_project_subject_status,
+    },
+
   ]
 
   return {

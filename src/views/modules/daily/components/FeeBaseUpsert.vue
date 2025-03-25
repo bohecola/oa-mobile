@@ -6,6 +6,8 @@
     label="预算类型"
     name="subjectType"
     component="radio"
+    :rules="computedRules.subjectType"
+    @change="onSubjectTypeChange"
   />
 
   <DeptSelect
@@ -13,17 +15,33 @@
     v-show-field="['deptId', includeFields]"
     label="需求部门"
     name="deptId"
+    :rules="computedRules.deptId"
+    @change="onDeptSelectChange"
   />
 
-  <van-field
+  <!-- @vue-ignore -->
+  <ProjectSubjectSelect
+    v-model="form.psId"
+    v-model:contract-no="form.contractNo"
     v-show-field="['psId', includeFields]"
     label="预算"
     name="psId"
-  >
-    <template #input>
-      <ProjectSubjectSelect v-model="form.psId" readonly />
-    </template>
-  </van-field>
+    :params="{
+      type: form.subjectType,
+      // 申请部门id：项目预算使用
+      projectDeptId: isProject
+        ? user.info.deptType === '2'
+          ? form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId
+          : undefined
+        : form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId,
+      // 需求部门id：部门预算使用
+      deptDeptId: !isProject ? form.deptId : undefined,
+      status: '5',
+    }"
+    clearable
+    :rules="computedRules.psId"
+    @change="onProjectSubjectChange"
+  />
 
   <van-field
     v-if="isProject && !isNil(form.psId)"
@@ -56,7 +74,7 @@
             class="!items-baseline"
           >
             <template #input>
-              <PurchaseCategorySelect
+              <!-- <PurchaseCategorySelect
                 v-model="item.subjectItemId"
                 v-model:amount="item.budgetAmount"
                 v-model:applying-amount="item.applyingAmount"
@@ -64,7 +82,7 @@
                 v-model:available-amount="item.availableAmount"
                 :params="PurchaseCategorySelectParams"
                 readonly
-              />
+              /> -->
             </template>
           </van-field>
         </template>
@@ -128,7 +146,6 @@ import BaseUpsert from './BaseUpsert.vue'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
-import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -143,6 +160,7 @@ const { user } = useStore()
 
 const Form = inject<Ref<FormInstance>>('Form')
 const form = inject<Ref<DailyFeeForm>>('form')
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
 
 // 依赖收集
@@ -181,18 +199,21 @@ function resetSubjectItemId() {
   })
 }
 
+// TODO 重置表单数据
 // 预算类型修改
 function onSubjectTypeChange() {
   Form.value.resetValidation(['deptId', 'psId', 'contractId', 'contractNo'])
   resetSubjectItemId()
 }
 
+// TODO 重置表单数据
 // 部门修改
 function onDeptSelectChange() {
   Form.value.resetValidation(['psId', 'contractId', 'contractNo'])
   resetSubjectItemId()
 }
 
+// TODO 重置表单数据
 // 预算修改
 function onProjectSubjectChange() {
   Form.value.resetValidation(['contractId', 'contractNo'])

@@ -1,209 +1,184 @@
 <template>
-  <div class="w-full min-h-8">
-    <!-- 禁用状态 -->
-    <div
-      v-if="disabled"
-      class="pl-2 h-full w-full border border-solid border-gray-6/20 cursor-not-allowed bg-[var(--el-fill-color-light)] opacity-60 text-truncate"
+  <div class="w-full">
+    <van-field
+      :model-value="modelValue"
+      :is-link="!isReadonly"
+      placeholder="请选择"
+      readonly
+      autosize
+      v-bind="attrs"
+      @click="onFieldClick"
     >
-      <template v-if="!isEmpty(selectedList)">
-        <!-- 单选回显 -->
-        <div v-if="!multiple">
-          <span>{{ selectedList[0].name }}</span>
-          <span>{{ `（${parseTime(selectedList[0].startDate, '{y}-{m}-{d}')} ~ ${parseTime(selectedList[0].endDate, '{y}-{m}-{d}')}）` }}</span>
-        </div>
-
-        <!-- 多选回显 -->
-        <template v-else>
-          <div class="py-1 flex flex-wrap gap-1">
-            <SelectTag v-for="(selected, index) in selectedList" :key="selected.id" readonly>
-              <span>{{ selected.name }}</span>
-              <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
-            </SelectTag>
-          </div>
-        </template>
-      </template>
-    </div>
-
-    <!-- 可选择状态 -->
-    <template v-else>
-      <template v-if="readonly">
-        <div class="w-full">
-          <template v-if="selectedList.length > 0">
-            <!-- 单选回显 -->
-            <div v-if="!multiple">
-              <span>{{ selectedList[0].name }}</span>
-              <span>{{ `（${parseTime(selectedList[0].startDate, '{y}-{m}-{d}')} ~ ${parseTime(selectedList[0].endDate, '{y}-{m}-{d}')}）` }}</span>
-            </div>
-
-            <!-- 多选回显 -->
-            <template v-else>
-              <div class="py-1 flex flex-wrap gap-1">
-                <SelectTag v-for="(selected, index) in selectedList" :key="selected.id" readonly>
-                  <span>{{ selected.name }}</span>
-                  <span>{{ index === selectedList.length - 1 ? '' : '、' }}</span>
-                </SelectTag>
-              </div>
-            </template>
-          </template>
-        </div>
+      <template v-for="(_, name) in slots" #[name]="scope">
+        <slot :name="name" v-bind="scope" />
       </template>
 
-      <!-- <template v-else>
-        <div class="w-full border border-solid border-[var(--van-border-color)] hover:border-[var(--van-border-color-hover)]" @click="open">
-          <div class="pl-2 flex items-center min-h-8 hover:cursor-text group">
-            <template v-if="!isEmpty(selectedList)">
-              <div v-if="!multiple" class="text-truncate">
-                <span>{{ selectedList[0].name }}</span>
-                <span>{{ `（${parseTime(selectedList[0].startDate, '{y}-{m}-{d}')} ~ ${parseTime(selectedList[0].endDate, '{y}-{m}-{d}')}）` }}</span>
-              </div>
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" @click.stop="onClear" />
+      </template>
 
-              <template v-else>
-                <div class="py-1 flex flex-wrap gap-1">
-                  <SelectTag v-for="item in selectedList" :key="item.id" closeable @close="remove(item)">
-                    {{ item.name }}
-                  </SelectTag>
-                </div>
-              </template>
-
-              <span class="flex-1" />
-              <span v-if="clearable" class="hidden group-hover:flex mr-2 cursor-pointer opacity-30 hover:opacity-100" @click.stop="clear">
-                <el-icon><Close /></el-icon>
-              </span>
-            </template>
-            <input v-else :placeholder="placeholder" class="el-input__inner" readonly>
-            <span class="flex mr-1 opacity-30">
-              <el-icon><Search /></el-icon>
-            </span>
-          </div>
+      <!-- 回显项 -->
+      <template v-if="!isNil(modelValue)" #input>
+        <div class="flex flex-wrap gap-2">
+          <van-tag
+            v-for="e in selectedList"
+            :key="e.id"
+            size="large"
+            type="primary"
+          >
+            {{ e.name }}
+          </van-tag>
         </div>
       </template>
-      <el-dialog v-model="dialogVisible" title="项目/部门预算选择" width="70%" append-to-body>
-        <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-          <el-form-item label="名称" prop="keyword">
-            <el-input v-model.trim="queryParams.keyword" placeholder="请输入" clearable />
-          </el-form-item>
+    </van-field>
 
-          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery({ projectDeptId: undefined })">
-              搜索
-            </el-button>
-            <el-button icon="Refresh" @click="resetQuery">
-              重置
-            </el-button>
-          </el-form-item>
-        </el-form>
+    <van-field class="!hidden" readonly />
 
-        <el-table
-          v-loading="loading"
-          :data="tableData"
-          :row-class-name="(data) => (selectedIdList.includes(data.row.id) ? '!bg-[#ecf5ff] dark:!bg-[#18222c]' : '')"
-          @row-click="handleSelect"
+    <van-popup
+      v-model:show="visible"
+      class="h-full"
+      position="bottom"
+      round
+      destroy-on-close
+      safe-area-inset-top
+      safe-area-inset-bottom
+    >
+      <NavBar
+        :title="`${attrs.label}`"
+        :is-left-click-back="false"
+        @click-left="onCancel"
+      />
+
+      <van-form input-align="left" action="/">
+        <van-search
+          v-model.trim="searchText"
+          show-action
+          placeholder="请输入搜索关键词（搜索时查询全部预算）"
+          @search="onSearch"
+          @clear="onSearchClear"
         >
-          <el-table-column label="名称" align="left" prop="name" width="460" show-overflow-tooltip>
-            <template #default="scope">
-              <span>{{ scope.row.name }}</span>
-              <span>（{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }} ~ {{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}）</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="合同编号" align="center" prop="contractNo" />
-          <el-table-column label="状态" align="center" prop="status" width="80">
-            <template #default="scope">
-              <dict-tag :options="oa_project_subject_status" :value="scope.row.status" />
-            </template>
-          </el-table-column>
-          <el-table-column label="选择" align="center" class-name="small-padding fixed-width" width="80px">
-            <template #default="scope">
-              <el-button
-                circle
-                icon="Select"
-                :type="`${selectedIdList.includes(scope.row.id) ? 'primary' : ''}`"
-                :disabled="exclude.includes(scope.row.id)"
-                @click.stop="handleSelect(scope.row)"
+          <template #action>
+            <div @click="onSearch">
+              搜索
+            </div>
+          </template>
+        </van-search>
+      </van-form>
+
+      <van-list
+        v-model:loading="loading"
+        v-model:error="error"
+        :finished="finished"
+        finished-text="没有更多了"
+        error-text="请求失败，点击重新加载"
+        class="search-list overflow-y-auto px-2"
+        @load="onLoad"
+      >
+        <van-cell
+          v-for="item in list"
+          :key="item.id"
+          :title="`${item.name}（${parseTime(item.startDate, '{y}-{m}-{d}') ?? ''} ~ ${parseTime(item.endDate, '{y}-{m}-{d}') ?? ''}）`"
+          :class="[
+            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
+            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id as string) },
+          ]"
+          @click="onCellClick(item)"
+        >
+          <template #label>
+            <div class="grid grid-cols-1 text-gray-400">
+              <CellLabelItem
+                v-for="d in labelDescriptors"
+                :key="d.key"
+                :descriptor="d"
+                :item="item"
               />
-            </template>
-          </el-table-column>
-        </el-table>
+            </div>
+          </template>
+        </van-cell>
+      </van-list>
 
-        <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
-
-        <template v-if="multiple" #footer>
-          <div class="dialog-footer">
-            <el-button @click="cancel">
-              取消
-            </el-button>
-            <el-button type="primary" :disabled="loading" @click="confirm">
-              确定
-            </el-button>
+      <div class="px-3 h-14 flex items-center whitespace-nowrap border-t">
+        <div class="w-full flex items-center justify-between gap-2">
+          <div class="text-sm">
+            已选择 {{ selectedList.length }}
           </div>
-        </template>
-      </el-dialog> -->
-    </template>
+
+          <div class="flex-1 flex gap-2 overflow-x-auto">
+            <van-tag
+              v-for="e in selectedList"
+              :key="e.id"
+              type="primary"
+              closeable
+              @close="onItemRemove(e)"
+            >
+              {{ e.name }}
+            </van-tag>
+          </div>
+
+          <van-button
+            type="primary"
+            size="small"
+            @click="onConfirm"
+          >
+            确定
+          </van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
-<script setup lang="ts">
-import { isEmpty, isNil } from 'lodash-es'
-import type { FormInstance } from 'vant'
-import SelectTag from './SelectTag.vue'
-import { listProjectSubject } from '@/api/oa/finance/projectSubject'
+<script setup lang='ts'>
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
+import { useParentForm, usePopup, useProjectSubjectSelect, useSerializer } from '@/hooks'
 import type { ProjectSubjectQuery, ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
+import { listProjectSubject } from '@/api/oa/finance/projectSubject'
 
-// 属性
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number | undefined
-    placeholder?: string
-    clearable?: boolean
-    exclude?: string[]
+    modelValue?: string | number
     multiple?: boolean
     readonly?: boolean
-    disabled?: boolean
+    clearable?: boolean
+    exclude?: (string | number)[]
     limit?: number
     params?: Partial<ProjectSubjectQuery>
   }>(),
   {
-    placeholder: '请选择',
-    clearable: false,
-    multiple: false,
-    readonly: false,
-    disabled: false,
     exclude: () => [],
   },
 )
 
-// 事件
-const emit = defineEmits(['update:modelValue', 'change', 'update:contractNo'])
+const emit = defineEmits(['update:modelValue', 'update:contractNo', 'confirm', 'clear', 'change'])
+
+const attrs = useAttrs()
+const slots = useSlots()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-// 预算状态
-const { oa_project_subject_status } = toRefs(proxy.useDict('oa_project_subject_status'))
-const { oa_project_business_type } = toRefs(proxy.useDict('oa_project_business_type'))
+
+// 表单
+const parentForm = useParentForm()
+
+// 弹窗
+const { visible, openPopup, closePopup } = usePopup()
+
+// 反序列化
+const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const dialogVisible = ref(false)
-const loading = ref(false)
-const tableData = ref<ProjectSubjectVO[]>([])
-const total = ref(0)
-const viewLoading = ref(false)
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useProjectSubjectSelect()
 
-const selectedList = ref<ProjectSubjectVO[]>([])
-const selectedIdList = computed(() => selectedList.value.map(item => item.id))
-const selectedIdsStr = computed(() => {
-  if (isEmpty(selectedIdList.value)) {
-    return undefined
-  }
-  return selectedIdList.value.join(',')
-})
+const selectedIdList = computed(() => selectedList.value.map(e => e.id))
+const listOfIds = computed(() => list.value.map(e => e.id))
+
 const contractNoStr = computed(() => {
-  const noStr = selectedList.value.map(e => e.contractNo).join('、')
-  return !isEmpty(noStr) ? noStr : undefined
+  return !isEmpty(selectedList.value)
+    ? selectedList.value.map(item => item.contractNo).filter(Boolean).join('、')
+    : undefined
 })
 
-// 引用
-const queryFormRef = ref<FormInstance>()
-
-// 参数
+// 查询参数
 const queryParams: ProjectSubjectQuery = reactive({
   pageNum: 1,
   pageSize: 10,
@@ -217,12 +192,17 @@ const queryParams: ProjectSubjectQuery = reactive({
   params: {},
 })
 
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
 // 查询
 async function getList(query?: Partial<ProjectSubjectQuery>) {
+  const { params } = props
+
   loading.value = true
 
-  if (!isNil(props.params)) {
-    Object.assign(queryParams, props.params)
+  if (!isNil(params)) {
+    Object.assign(queryParams, params)
   }
 
   if (!isNil(query)) {
@@ -230,139 +210,186 @@ async function getList(query?: Partial<ProjectSubjectQuery>) {
   }
 
   const res = await listProjectSubject(queryParams)
-  tableData.value = res.rows
+  list.value = res.rows
   total.value = res.total
   loading.value = false
 }
 
-// 搜索
-function handleQuery(query?: Partial<ProjectSubjectQuery>) {
-  queryParams.pageNum = 1
-  getList(query)
+// 清空点击
+function onClear() {
+  emit('update:modelValue', undefined)
+  emit('update:contractNo', undefined)
+  emit('change', undefined)
+  emit('clear')
 }
 
-// 重置
-function resetQuery() {
-  queryFormRef.value?.resetValidation()
-  handleQuery()
-}
-
-// 打开
-function open() {
-  if (props.disabled) {
+// 选项点击
+function onFieldClick() {
+  if (isReadonly.value) {
     return
   }
-  dialogVisible.value = true
+
+  openPopup()
 }
 
-// 选择
-function handleSelect(row: ProjectSubjectVO) {
-  const index = selectedIdList.value.findIndex(e => e === row.id)
-  const isSelected = index !== -1
+// 输入清空
+function onSearchClear() {
+  queryParams.keyword = searchText.value
+}
+
+// 搜索
+function onSearch() {
+  queryParams.keyword = searchText.value
+  queryParams.pageNum = 1
+
+  getList(isNil(props.params.deptDeptId) ? undefined : { projectDeptId: undefined })
+}
+
+// 触底加载
+async function onLoad() {
+  try {
+    const { params } = props
+
+    if (!isNil(params)) {
+      Object.assign(queryParams, params)
+    }
+
+    const { rows } = await listProjectSubject(queryParams)
+
+    list.value.push(...rows)
+
+    if (rows.length < queryParams.pageSize) {
+      finished.value = true
+    }
+    else {
+      queryParams.pageNum++
+    }
+  }
+  catch {
+    error.value = true
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+// 单元格点击
+function onCellClick(item: ProjectSubjectVO) {
+  const { modelValue, multiple, exclude } = props
+
+  // 已排除的不可选中
+  if (exclude.includes(item.id) && !String(modelValue).includes(item.id as string)) {
+    return false
+  }
+
+  // 是否已选中
+  const index = selectedList.value.findIndex(e => e.id === item.id)
+  const isChecked = index !== -1
 
   // 单选
-  if (!props.multiple) {
-    selectedList.value = [row]
-    // 单选完自动确定
-    confirm()
+  if (!multiple) {
+    selectedList.value = [item]
   }
+  // 多选
   else {
-    // 多选
-    if (isSelected) {
+    if (isChecked) {
       selectedList.value.splice(index, 1)
     }
     else {
-      selectedList.value.push(row)
+      selectedList.value.push(item)
     }
   }
-}
-
-// 确定
-function confirm() {
-  if (props.multiple) {
-    if (!isNil(props.limit)) {
-      if (selectedList.value.length > props.limit) {
-        return proxy?.$modal.msgWarning(`最多只能选择${props.limit}个预算`)
-      }
-    }
-  }
-
-  const payload = selectedIdsStr.value
-  emit('update:modelValue', payload)
-  emit('change', payload)
-
-  emit('update:contractNo', contractNoStr.value)
-
-  dialogVisible.value = false
 }
 
 // 取消
-async function cancel() {
-  dialogVisible.value = false
+async function onCancel() {
+  const { modelValue } = props
 
-  if (props.modelValue) {
-    selectedList.value = await getEchoList()
-  }
-  else {
-    selectedList.value = []
-  }
+  selectedList.value = await getViewList(modelValue as string)
+
+  closePopup()
 }
 
-// 删除
-function remove(item: ProjectSubjectVO) {
-  const index = selectedIdList.value.findIndex(e => e === item.id)
-  const isSelected = index !== -1
+// 移除
+function onItemRemove(item: ProjectSubjectVO) {
+  const index = selectedList.value.findIndex(e => e.id === item.id)
+  const isChecked = index !== -1
 
-  if (isSelected) {
+  if (isChecked) {
     selectedList.value.splice(index, 1)
-    emit('update:modelValue', selectedIdsStr.value)
-    emit('change', selectedIdsStr.value)
-
-    emit('update:contractNo', contractNoStr.value)
   }
 }
 
-// 清除
-function clear() {
-  emit('update:modelValue', undefined)
-  emit('change', undefined)
-  emit('update:contractNo', undefined)
-}
+// 确认
+function onConfirm() {
+  const { multiple, limit } = props
+  const { msg } = proxy.$modal
 
-// 刷新
-watch(dialogVisible, (val) => {
-  if (val) {
-    resetQuery()
+  // 校验
+  if (multiple) {
+    if (isNumber(limit) && selectedList.value.length > limit) {
+      return msg(`最多只能选择${limit}个`)
+    }
   }
-})
+
+  const payload = !isEmpty(selectedIdList.value)
+    ? selectedIdList.value.join(',')
+    : undefined
+  emit('update:modelValue', payload)
+  emit('change', payload)
+  emit('confirm', payload)
+
+  emit('update:contractNo', contractNoStr.value)
+
+  closePopup()
+}
 
 // 反查回显列表
-async function getEchoList() {
-  if (props.modelValue) {
-    viewLoading.value = true
-    const { rows } = await listProjectSubject({
-      ids: (props.modelValue as string).split(','),
-    }).finally(() => (viewLoading.value = false))
-
-    return rows ?? []
+async function getViewList(value: string) {
+  if (isNil(value)) {
+    return []
   }
 
-  return []
+  const d = deserialize(value)
+  const viewIds = (isArray(d) ? d : [d])
+
+  // 是否存在本地完整数据
+  const isLocalData = viewIds.every(e => listOfIds.value.includes(e as string))
+
+  // 存在本地完整数据取本地数据
+  if (isLocalData) {
+    return list.value.filter(e => viewIds.includes(e.id))
+  }
+
+  // 没有本地完整数据请求接口
+  viewLoading.value = true
+  const { rows } = await listProjectSubject({ ids: viewIds as string[] })
+    .finally(() => (viewLoading.value = false))
+
+  return rows
 }
 
 // 回显
 watch(
   () => props.modelValue,
-  async (val) => {
-    if (val) {
-      selectedList.value = await getEchoList()
-    }
-    else {
-      selectedList.value = []
-    }
+  async (value) => {
+    selectedList.value = await getViewList(value as string)
   },
   {
     immediate: true,
   },
 )
 </script>
+
+<style lang="scss" scoped>
+$topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+$bottomHeight: theme('spacing.14');
+
+.search-list {
+  height: calc(100vh - $topHeight - $bottomHeight);
+}
+
+:deep(.van-field__body) {
+  align-items: start;
+}
+</style>
