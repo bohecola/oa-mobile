@@ -128,10 +128,7 @@
       <template #input>
         <div class="flex flex-col">
           <span>{{ formatCurrency(form.amount) }}</span>
-          <span
-            v-if="!isNil(form.amount)"
-            class="text-red-400"
-          >{{ toCnMoney(form.amount) }}</span>
+          <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
     </van-field>
@@ -177,55 +174,48 @@
       />
     </template>
 
-    <div
-      v-show-field="['taxRate', includeFields]"
-      class="mb-6"
-    >
-      <van-cell-group title="金额/增值税率">
-        <div class="py-2 px-4">
-          <div
-            v-for="(item, index) in form.taxRate"
-            :key="index"
-          >
-            <div class="text-sm flex gap-6 opacity-60">
-              <span>金额(元)：{{ formatCurrency(item.amount) }}</span>
-              <span>增值税率(%)：{{ item.taxRate }}</span>
-            </div>
-          </div>
-        </div>
-      </van-cell-group>
-    </div>
+    <van-field v-show-field="['taxRate', includeFields]" label="金额/增值税率">
+      <template #input>
+        <div class="w-full flex flex-col gap-2">
+          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="`# ${index + 1}`">
+            <van-field
+              :model-value="formatCurrency(item.amount)"
+              :name="`taxRate.${index}.amount`"
+              label="金额（元）"
+            />
 
-    <van-field
-      v-model="form.startDate"
+            <DictSelect
+              v-model="item.taxRate"
+              label="税率（%）"
+              :name="`taxRate.${index}.taxRate`"
+              :options="oa_contract_tax_rate"
+            />
+          </TableCard>
+        </div>
+      </template>
+    </van-field>
+
+    <DateSelect
       v-show-field="['startDate', includeFields]"
+      :model-value="form.startDate"
       name="startDate"
       label="开始日期"
-    >
-      <template #input>
-        {{ parseTime(form.startDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
-    <van-field
-      v-model="form.endDate"
+    />
+
+    <DateSelect
       v-show-field="['endDate', includeFields]"
+      :model-value="form.endDate"
       name="endDate"
       label="结束日期"
-    >
-      <template #input>
-        {{ parseTime(form.endDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
-    <van-field
-      v-model="form.signDate"
+    />
+
+    <DateSelect
       v-show-field="['signDate', includeFields]"
+      :model-value="form.signDate"
       name="signDate"
       label="签订日期"
-    >
-      <template #input>
-        {{ parseTime(form.signDate, '{y}-{m}-{d}') }}
-      </template>
-    </van-field>
+    />
+
     <van-field
       v-model="form.paymentWay"
       v-show-field="['paymentWay', includeFields]"
@@ -331,11 +321,13 @@ const {
   oa_contract_category_in,
   oa_contract_category_out,
   oa_contract_category_agreement,
+  oa_contract_tax_rate,
 } = toRefs(
   proxy.useDict(
     'oa_contract_category_in',
     'oa_contract_category_out',
     'oa_contract_category_agreement',
+    'oa_contract_tax_rate',
   ),
 )
 

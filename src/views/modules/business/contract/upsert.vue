@@ -99,6 +99,7 @@
       label="合同类型"
       dict-type="oa_contract_type"
       :rules="computedRules.type"
+      clearable
       @change="onContractTypeSelectChange"
     />
 
@@ -113,6 +114,7 @@
         : form.type === 'out'
           ? oa_contract_category_out
           : oa_contract_category_agreement"
+      clearable
       @change="onContractCategorySelectChange"
     />
 
@@ -124,6 +126,7 @@
       label="合同评审方式"
       dict-type="oa_contract_review_way"
       :rules="computedRules.reviewWay"
+      clearable
       @change="onReviewWayChange"
     />
 
@@ -183,6 +186,7 @@
       label="发票类型"
       dict-type="oa_contract_invoice_type"
       :rules="computedRules.invoiceType"
+      clearable
     />
 
     <van-field
@@ -242,6 +246,7 @@
               :name="`taxRate.${index}.taxRate`"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
               dict-type="oa_contract_tax_rate"
+              clearable
             />
             <template #footer>
               <div class="text-right">
