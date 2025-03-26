@@ -73,6 +73,22 @@ export interface UserEmploymentVO {
    * 备注
    */
   remark: string
+  /**
+   * 是否实习生
+   */
+  isIntern?: string
+  /**
+   * 是否推荐
+   */
+  isRecommend?: string
+  /**
+   * 推荐来源
+   */
+  reference?: string
+  /**
+   * 状态
+   */
+  status?: string
 }
 
 export interface UserEmploymentForm extends BaseEntity {
@@ -265,6 +281,11 @@ export interface UserEmploymentQuery extends PageQuery {
    * 预入职员工id（user_pre_employment）
    */
   preEmploymentId?: string | number
+
+  /**
+   * 预入职员工名称
+   */
+  preEmploymentName?: string
 
   /**
    * 民族

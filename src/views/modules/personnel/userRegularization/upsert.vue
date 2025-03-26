@@ -8,12 +8,14 @@
     required="auto"
     scroll-to-error
   >
-    <van-field
+    <UserInfoSelect
       v-model="form.userId"
       v-show-field="['userId', includeFields]"
       name="userId"
       label="员工"
       :rules="computedRules.userId"
+      clearable
+      @confirm="confirmUserId"
     />
 
     <div v-if="form.id">
@@ -36,7 +38,7 @@
         v-show-field="['entryCompanyDate', includeFields]"
         name="entryCompanyDate"
         label="入职日期"
-        :rules="computedRules.entryCompanyDate"
+        readonly
       />
 
       <van-field-number
@@ -44,7 +46,7 @@
         v-show-field="['probationPeriod', includeFields]"
         name="probationPeriod"
         label="试用期时长(月)"
-        :rules="computedRules.probationPeriod"
+        readonly
       />
     </div>
 
@@ -73,7 +75,7 @@
       rows="1"
       autosize
       name="description"
-      :rules="computedRules.description"
+      :rules="form.formalType === '0' ? computedRules.description : computedRules.entryCompanyDate"
     />
 
     <!-- 附件列表 -->
@@ -92,7 +94,6 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
 import UserInfoSelect from '../components/UserInfoSelect.vue'
 import { useForm } from './form'
 import type { UserInfoVo } from '@/api/system/user/types'
@@ -132,17 +133,17 @@ const computedRules = computed(() => {
   return newRules
 })
 
-async function getData(row: UserInfoVo) {
-  // 选中当前的用户id是流程id
-  form.value.id = row.id
-  form.value.entryCompanyDate = row.entryCompanyDate
-  form.value.probationPeriod = row.probationPeriod
-  const res = await getUserMessageAll(row.userId)
-  form.value.userName = row.userName
-  form.value.deptId = res.data.userVo.user.deptId
-  form.value.postId = res.data.userVo.postIds.join(',')
-  form.value.postName = res.data.userVo.posts.map(item => item.postName).join('、')
-  form.value.level = res.data.postVo.level
+async function confirmUserId(userId: UserInfoVo) {
+  const { data } = await getUserMessageAll(userId as string)
+  form.value.id = data.userInfoVo?.id
+  // 年月日
+  form.value.entryCompanyDate = data.userInfoVo?.entryCompanyDate.split(' ')[0]
+  form.value.probationPeriod = data.userInfoVo?.probationPeriod
+  form.value.userName = data.user?.nickName
+  form.value.deptId = data.userVo.user?.deptId
+  form.value.postId = data.userVo.postIds?.join(',')
+  form.value.postName = data.userVo.posts?.map(item => item.postName).join('、')
+  form.value.level = data.postVo?.level
   getDeptType(form.value.deptId)
 }
 

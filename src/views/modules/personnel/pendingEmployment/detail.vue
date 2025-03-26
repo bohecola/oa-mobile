@@ -8,18 +8,12 @@
     input-align="left"
     readonly
   >
-    <van-field
+    <PendingUserEmploymentSelect
+      v-model="form.employmentId"
       v-show-field="['employmentId', includeFields]"
       name="employmentId"
       label="员工"
-    >
-      <template #input>
-        <PendingUserEmploymentSelect
-          v-model="form.employmentId"
-          readonly
-        />
-      </template>
-    </van-field>
+    />
 
     <DeptSelect
       v-model="form.deptId"
@@ -270,8 +264,8 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
+import PendingUserEmploymentSelect from '../components/PendingUserEmploymentSelect.vue'
 import { useForm } from './form'
-import PendingUserEmploymentSelect from './components/PendingUserEmploymentSelect.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserPendingEmploymentForm } from '@/api/oa/personnel/pendingEmployment/types'
 

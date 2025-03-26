@@ -29,27 +29,20 @@
       :rules="computedRules.type"
     />
 
-    <van-field
+    <DictSelect
+      v-model="form.oldCompanyId"
       v-show-field="['oldCompanyId', includeFields]"
-      name="oldCompanyId"
       label="原公司"
-      :rules="computedRules.oldCompanyId"
-    >
-      <template #input>
-        <CompanySelect v-model="form.oldCompanyId" />
-      </template>
-    </van-field>
+      name="oldCompanyId"
+      :options="companyData"
+    />
 
-    <van-field
+    <DeptSelect
+      v-model="form.oldDeptId"
       v-show-field="['oldDeptId', includeFields]"
       name="oldDeptId"
       label="原部门/项目部"
-      :rules="computedRules.oldDeptId"
-    >
-      <template #input>
-        <DeptCascader v-model="form.oldDeptId" :company-id="form.oldCompanyId" />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-show-field="['oldPostId', includeFields]"
@@ -58,33 +51,27 @@
       :rules="computedRules.oldPostId"
     >
       <template #input>
-        <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple />
+        <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple readonly />
       </template>
     </van-field>
 
-    <van-field
+    <DictSelect
+      v-model="form.newCompanyId"
       v-show-field="['newCompanyId', includeFields]"
-      name="newCompanyId"
       label="调入公司"
+      name="newCompanyId"
+      :options="companyData"
       :rules="computedRules.newCompanyId"
-      @change="newCompanyChange"
-    >
-      <template #input>
-        <CompanySelect v-model="form.newCompanyId" />
-      </template>
-    </van-field>
+    />
 
-    <van-field
+    <DeptSelect
+      v-model="form.newDeptId"
       v-show-field="['newDeptId', includeFields]"
       name="newDeptId"
       label="调入部门/项目部"
       :rules="computedRules.newDeptId"
       @node-click="newDeptChange"
-    >
-      <template #input>
-        <DeptCascader v-model="form.newDeptId" :company-id="form.newCompanyId" />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-show-field="['newPostId', includeFields]"
@@ -110,7 +97,6 @@
       v-show-field="['endDate', includeFields]"
       name="endDate"
       label="截止日期"
-      :rules="computedRules.endDate"
     />
 
     <van-field
@@ -148,7 +134,7 @@
       :rules="computedRules.oldSpecialCommercialInsurance"
     >
       <template #input>
-        <YesNoSwitch v-model="form.oldSpecialCommercialInsurance" />
+        <YesNoSwitch v-model="form.oldSpecialCommercialInsurance" readonly />
       </template>
     </van-field>
 
@@ -160,7 +146,7 @@
       :rules="computedRules.newSpecialCommercialInsurance"
     >
       <template #input>
-        <YesNoSwitch v-model="form.newSpecialCommercialInsurance" />
+        <YesNoSwitch v-model="form.newSpecialCommercialInsurance" readonly />
       </template>
     </van-field>
 
@@ -203,8 +189,6 @@
 
 <script setup name="userTransferDetail" lang="ts">
 import { isNil } from 'lodash-es'
-// import CompanySelect from '../components/CompanySelect.vue'
-import DeptCascader from '../components/DeptCascader.vue'
 import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { getUserInfoAll } from '@/api/oa/personnel/userTransfer'
@@ -230,7 +214,7 @@ const props = withDefaults(
 )
 
 // 表单
-const { Form, form, rules, isLoading, updateLoading, userInfo, reset, submit, view, workflowSubmit, workflowView } = useForm()
+const { Form, form, rules, isLoading, updateLoading, userInfo, companyData, reset, submit, view, workflowSubmit, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
@@ -272,12 +256,6 @@ async function getUserAll(userId: string | number) {
   if (posts?.length) {
     form.value.oldPostId = posts.length === 1 ? posts[0].postId : posts.map((item: any) => item.postId).join(',')
   }
-}
-
-// 新公司的change事件（清空新部门、新岗位、并且两个下拉框数据）
-function newCompanyChange(value: string | number) {
-  form.value.newDeptId = undefined
-  form.value.newPostId = undefined
 }
 
 // 新部门的change事件（清空新岗位）

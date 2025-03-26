@@ -43,6 +43,7 @@ export function useForm() {
       userId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
       formalDate: [{ required: true, message: '转正时间不能为空', trigger: 'onChange' }],
       formalType: [{ required: true, message: '用人单位意见不能为空', trigger: 'onChange' }],
+      description: [{ required: true, message: '原因说明不能为空', trigger: 'onChange' }],
     },
   })
   // 响应式解构

@@ -104,7 +104,7 @@ export interface UserTransferForm extends BaseEntity {
   /**
    * 原工作公司
    */
-  oldCompanyId: string | number
+  oldCompanyId: string
 
   /**
    * 类型;调动、借调
@@ -129,7 +129,7 @@ export interface UserTransferForm extends BaseEntity {
   /**
    * 新工作公司
    */
-  newCompanyId?: string | number
+  newCompanyId?: string
 
   /**
    * 新原工作部门

@@ -2,6 +2,7 @@ import type { FormInstance } from 'vant'
 import { addUserTransfer, getUserTransfer, updateUserTransfer } from '@/api/oa/personnel/userTransfer'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { useUserStore } from '@/store/user'
+import { getCompany } from '@/api/oa/personnel/userContract'
 
 export interface Options<T = any> {
   success?: (data?: T) => void
@@ -139,6 +140,22 @@ export function useForm() {
     }
   }
 
+  const companyData = ref([])
+  async function getCompanyData() {
+    const { data } = await getCompany('0')
+    companyData.value = data.filter(e => e.status === '0').map((e) => {
+      return {
+        label: e.deptName,
+        value: e.deptId,
+      }
+    })
+    return companyData.value
+  }
+
+  onMounted(() => {
+    getCompanyData()
+  })
+
   return {
     Form,
     form,
@@ -146,6 +163,7 @@ export function useForm() {
     isLoading,
     updateLoading,
     userInfo,
+    companyData,
     reset,
     view,
     submit,

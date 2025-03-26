@@ -253,7 +253,7 @@ export function getUserMobileList(params?: UserMobileListQuery): AxiosPromise<Re
 /**
  * 查询用户信息列表userInfo
  */
-export function getUserInfoList(query: UserInfoListQuery): AxiosPromise<UserInfoVo[]> {
+export function getUserInfoList(query?: UserInfoListQuery): AxiosPromise<UserInfoVo[]> {
   return request({
     url: '/oa/personnel/userInfo/list',
     method: 'get',

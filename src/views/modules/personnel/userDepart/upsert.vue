@@ -51,7 +51,6 @@
       v-show-field="['entryCompanyDate', includeFields]"
       name="entryCompanyDate"
       label="入职时间"
-      :rules="computedRules.entryCompanyDate"
     />
 
     <DateSelect
@@ -70,7 +69,7 @@
         :rules="computedRules.specialCommercialInsurance"
       >
         <template #input>
-          <YesNoSwitch v-model="form.specialCommercialInsurance" />
+          <YesNoSwitch v-model="form.specialCommercialInsurance" readonly />
         </template>
       </van-field>
 
@@ -237,7 +236,7 @@ async function init() {
 
   // 获取入职时间
   const userRes = await getUserInfo(form.value.userId)
-  form.value.entryCompanyDate = userRes.data.entryCompanyDate
+  form.value.entryCompanyDate = userRes.data.entryCompanyDate.split(' ')[0]
 
   // 获取部门类型
   const deptRes = await getDept(form.value.deptId)

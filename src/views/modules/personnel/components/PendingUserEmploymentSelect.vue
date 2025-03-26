@@ -26,7 +26,7 @@
             size="large"
             type="primary"
           >
-            {{ e.userName }}
+            {{ e.preEmploymentName }}
           </van-tag>
         </div>
       </template>
@@ -77,10 +77,10 @@
         <van-cell
           v-for="item in list"
           :key="item.id"
-          :title="item.userName"
+          :title="item.preEmploymentName"
           :class="[
-            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.userId) },
-            { 'opacity-50': exclude.includes(item.userId) && !String(modelValue).includes(item.userId as string) },
+            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
+            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id as string) },
           ]"
           @click="onCellClick(item)"
         >
@@ -111,7 +111,7 @@
               closeable
               @close="onItemRemove(e)"
             >
-              {{ e.userName }}
+              {{ e.preEmploymentName }}
             </van-tag>
           </div>
 
@@ -130,9 +130,9 @@
 
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { useParentForm, usePopup, useSerializer, useUserRegularizationSelect } from '@/hooks'
-import type { UserInfoListQuery, UserInfoVo } from '@/api/system/user/types'
-import { getUserInfoList } from '@/api/system/user'
+import { useParentForm, usePendingUserEmploymentSelect, usePopup, useSerializer } from '@/hooks'
+import { listUserEmployment } from '@/api/oa/personnel/userEmployment'
+import type { UserEmploymentQuery, UserEmploymentVO } from '@/api/oa/personnel/userEmployment/types'
 
 const props = withDefaults(
   defineProps<{
@@ -142,7 +142,7 @@ const props = withDefaults(
     clearable?: boolean
     exclude?: (string | number)[]
     limit?: number
-    params?: Partial<UserInfoListQuery>
+    params?: Partial<UserEmploymentQuery>
   }>(),
   {
     exclude: () => [],
@@ -167,16 +167,17 @@ const { visible, openPopup, closePopup } = usePopup()
 const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserRegularizationSelect()
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = usePendingUserEmploymentSelect()
 
-const selectedIdList = computed(() => selectedList.value.map(e => e.userId))
-const listOfIds = computed(() => list.value.map(e => e.userId))
+const selectedIdList = computed(() => selectedList.value.map(e => e.id))
+const listOfIds = computed(() => list.value.map(e => e.id))
 
 // 查询参数
-const queryParams: UserInfoListQuery = reactive({
+const queryParams: UserEmploymentQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  status: '0',
+  status: '5',
+  params: {},
 })
 
 // 是否只读
@@ -192,7 +193,7 @@ async function getList() {
     Object.assign(queryParams, params)
   }
 
-  const res = await getUserInfoList(queryParams)
+  const res = await listUserEmployment(queryParams)
   list.value = res.rows
   total.value = res.total
   loading.value = false
@@ -215,12 +216,12 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.userName = searchText.value
+  queryParams.preEmploymentName = searchText.value
 }
 
 // 搜索
 function onSearch() {
-  queryParams.userName = searchText.value
+  queryParams.preEmploymentName = searchText.value
   queryParams.pageNum = 1
   getList()
 }
@@ -234,7 +235,7 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows } = await getUserInfoList(queryParams)
+    const { rows } = await listUserEmployment(queryParams)
 
     list.value.push(...rows)
 
@@ -254,16 +255,16 @@ async function onLoad() {
 }
 
 // 单元格点击
-function onCellClick(item: UserInfoVo) {
+function onCellClick(item: UserEmploymentVO) {
   const { modelValue, multiple, exclude } = props
 
   // 已排除的不可选中
-  if (exclude.includes(item.userId) && !String(modelValue).includes(item.userId as string)) {
+  if (exclude.includes(item.id) && !String(modelValue).includes(item.id as string)) {
     return false
   }
 
   // 是否已选中
-  const index = selectedList.value.findIndex(e => e.userId === item.userId)
+  const index = selectedList.value.findIndex(e => e.id === item.id)
   const isChecked = index !== -1
 
   // 单选
@@ -291,8 +292,8 @@ async function onCancel() {
 }
 
 // 移除
-function onItemRemove(item: UserInfoVo) {
-  const index = selectedList.value.findIndex(e => e.userId === item.userId)
+function onItemRemove(item: UserEmploymentVO) {
+  const index = selectedList.value.findIndex(e => e.id === item.id)
   const isChecked = index !== -1
 
   if (isChecked) {
@@ -336,12 +337,12 @@ async function getViewList(value: string) {
 
   // 存在本地完整数据取本地数据
   if (isLocalData) {
-    return list.value.filter(e => viewIds.includes(e.userId))
+    return list.value.filter(e => viewIds.includes(e.id))
   }
 
   // 没有本地完整数据请求接口
   viewLoading.value = true
-  const { rows } = await getUserInfoList(queryParams)
+  const { rows } = await listUserEmployment()
     .finally(() => (viewLoading.value = false))
 
   return rows
@@ -359,15 +360,15 @@ watch(
 )
 </script>
 
-    <style lang="scss" scoped>
-    $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
-    $bottomHeight: theme('spacing.14');
+  <style lang="scss" scoped>
+  $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+  $bottomHeight: theme('spacing.14');
 
-    .search-list {
-      height: calc(100vh - $topHeight - $bottomHeight);
-    }
+  .search-list {
+    height: calc(100vh - $topHeight - $bottomHeight);
+  }
 
-    :deep(.van-field__body) {
-      align-items: start;
-    }
-    </style>
+  :deep(.van-field__body) {
+    align-items: start;
+  }
+  </style>

@@ -26,7 +26,7 @@
             size="large"
             type="primary"
           >
-            {{ e.userName }}
+            {{ e.name }}
           </van-tag>
         </div>
       </template>
@@ -49,7 +49,7 @@
         @click-left="onCancel"
       />
 
-      <!-- <van-form input-align="left" action="/">
+      <van-form input-align="left" action="/">
         <van-search
           v-model.trim="searchText"
           show-action
@@ -63,7 +63,7 @@
             </div>
           </template>
         </van-search>
-      </van-form> -->
+      </van-form>
 
       <van-list
         v-model:loading="loading"
@@ -77,10 +77,10 @@
         <van-cell
           v-for="item in list"
           :key="item.id"
-          :title="item.userName"
+          :title="item.name"
           :class="[
-            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.userId) },
-            { 'opacity-50': exclude.includes(item.userId) && !String(modelValue).includes(item.userId as string) },
+            { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
+            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id as string) },
           ]"
           @click="onCellClick(item)"
         >
@@ -111,7 +111,7 @@
               closeable
               @close="onItemRemove(e)"
             >
-              {{ e.userName }}
+              {{ e.name }}
             </van-tag>
           </div>
 
@@ -130,9 +130,9 @@
 
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { useParentForm, usePopup, useSerializer, useUserRegularizationSelect } from '@/hooks'
-import type { UserInfoListQuery, UserInfoVo } from '@/api/system/user/types'
-import { getUserInfoList } from '@/api/system/user'
+import { useParentForm, usePopup, useSerializer, useUserEmploymentSelect } from '@/hooks'
+import { listUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
+import type { UserPreEmploymentQuery, UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
 
 const props = withDefaults(
   defineProps<{
@@ -142,7 +142,7 @@ const props = withDefaults(
     clearable?: boolean
     exclude?: (string | number)[]
     limit?: number
-    params?: Partial<UserInfoListQuery>
+    params?: Partial<UserPreEmploymentQuery>
   }>(),
   {
     exclude: () => [],
@@ -167,16 +167,28 @@ const { visible, openPopup, closePopup } = usePopup()
 const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserRegularizationSelect()
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserEmploymentSelect()
 
-const selectedIdList = computed(() => selectedList.value.map(e => e.userId))
-const listOfIds = computed(() => list.value.map(e => e.userId))
+const selectedIdList = computed(() => selectedList.value.map(e => e.id))
+const listOfIds = computed(() => list.value.map(e => e.id))
 
 // 查询参数
-const queryParams: UserInfoListQuery = reactive({
+const queryParams: UserPreEmploymentQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  status: '0',
+  recruitPostId: undefined,
+  deptId: undefined,
+  postId: undefined,
+  name: undefined,
+  sex: undefined,
+  phonenumber: undefined,
+  certificates: undefined,
+  interviewWay: undefined,
+  interviewDate: undefined,
+  isOwnerInterview: undefined,
+  isProbation: undefined,
+  probationCycle: undefined,
+  status: '3',
 })
 
 // 是否只读
@@ -192,7 +204,7 @@ async function getList() {
     Object.assign(queryParams, params)
   }
 
-  const res = await getUserInfoList(queryParams)
+  const res = await listUserPreEmployment(queryParams)
   list.value = res.rows
   total.value = res.total
   loading.value = false
@@ -215,12 +227,12 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.userName = searchText.value
+  queryParams.name = searchText.value
 }
 
 // 搜索
 function onSearch() {
-  queryParams.userName = searchText.value
+  queryParams.name = searchText.value
   queryParams.pageNum = 1
   getList()
 }
@@ -234,7 +246,7 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows } = await getUserInfoList(queryParams)
+    const { rows } = await listUserPreEmployment(queryParams)
 
     list.value.push(...rows)
 
@@ -254,16 +266,16 @@ async function onLoad() {
 }
 
 // 单元格点击
-function onCellClick(item: UserInfoVo) {
+function onCellClick(item: UserPreEmploymentVO) {
   const { modelValue, multiple, exclude } = props
 
   // 已排除的不可选中
-  if (exclude.includes(item.userId) && !String(modelValue).includes(item.userId as string)) {
+  if (exclude.includes(item.id) && !String(modelValue).includes(item.id as string)) {
     return false
   }
 
   // 是否已选中
-  const index = selectedList.value.findIndex(e => e.userId === item.userId)
+  const index = selectedList.value.findIndex(e => e.id === item.id)
   const isChecked = index !== -1
 
   // 单选
@@ -291,8 +303,8 @@ async function onCancel() {
 }
 
 // 移除
-function onItemRemove(item: UserInfoVo) {
-  const index = selectedList.value.findIndex(e => e.userId === item.userId)
+function onItemRemove(item: UserPreEmploymentVO) {
+  const index = selectedList.value.findIndex(e => e.id === item.id)
   const isChecked = index !== -1
 
   if (isChecked) {
@@ -336,12 +348,12 @@ async function getViewList(value: string) {
 
   // 存在本地完整数据取本地数据
   if (isLocalData) {
-    return list.value.filter(e => viewIds.includes(e.userId))
+    return list.value.filter(e => viewIds.includes(e.id))
   }
 
   // 没有本地完整数据请求接口
   viewLoading.value = true
-  const { rows } = await getUserInfoList(queryParams)
+  const { rows } = await listUserPreEmployment()
     .finally(() => (viewLoading.value = false))
 
   return rows
@@ -359,15 +371,15 @@ watch(
 )
 </script>
 
-    <style lang="scss" scoped>
-    $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
-    $bottomHeight: theme('spacing.14');
+  <style lang="scss" scoped>
+  $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+  $bottomHeight: theme('spacing.14');
 
-    .search-list {
-      height: calc(100vh - $topHeight - $bottomHeight);
-    }
+  .search-list {
+    height: calc(100vh - $topHeight - $bottomHeight);
+  }
 
-    :deep(.van-field__body) {
-      align-items: start;
-    }
-    </style>
+  :deep(.van-field__body) {
+    align-items: start;
+  }
+  </style>

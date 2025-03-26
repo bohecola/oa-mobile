@@ -8,22 +8,14 @@
     required="auto"
     scroll-to-error
   >
-    <van-field
+    <UserInfoSelect
+      v-model="form.userInfoId"
       v-show-field="['userInfoId', includeFields]"
       name="userInfoId"
       label="员工"
       :rules="computedRules.userInfoId"
-    >
-      <template #input>
-        <UserInfoSelect
-          v-model="form.userInfoId"
-          v-model:user-id="form.userId"
-          v-model:user-name="form.userName"
-          status="-1"
-          @get-row="getUserInfoRow"
-        />
-      </template>
-    </van-field>
+      clearable
+    />
 
     <DeptSelect
       v-model="form.oldDeptId"

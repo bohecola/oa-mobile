@@ -29,32 +29,20 @@
       dict-type="oa_transfer_type"
     />
 
-    <van-field
+    <DictSelect
+      v-model="form.oldCompanyId"
       v-show-field="['oldCompanyId', includeFields]"
-      name="oldCompanyId"
       label="原公司"
-    >
-      <template #input>
-        <CompanySelect
-          v-model="form.oldCompanyId"
-          readonly
-        />
-      </template>
-    </van-field>
+      name="oldCompanyId"
+      :options="companyData"
+    />
 
-    <van-field
+    <DeptSelect
+      v-model="form.oldDeptId"
       v-show-field="['oldDeptId', includeFields]"
       name="oldDeptId"
       label="原部门/项目部"
-    >
-      <template #input>
-        <DeptCascader
-          v-model="form.oldDeptId"
-          :company-id="form.oldCompanyId"
-          readonly
-        />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-show-field="['oldPostId', includeFields]"
@@ -71,37 +59,25 @@
       </template>
     </van-field>
 
-    <van-field
+    <DictSelect
+      v-model="form.newCompanyId"
       v-show-field="['newCompanyId', includeFields]"
+      label="调入公司"
       name="newCompanyId"
-      label="新公司"
-    >
-      <template #input>
-        <CompanySelect
-          v-model="form.newCompanyId"
-          readonly
-        />
-      </template>
-    </van-field>
+      :options="companyData"
+    />
 
-    <van-field
+    <DeptSelect
+      v-model="form.newDeptId"
       v-show-field="['newDeptId', includeFields]"
       name="newDeptId"
-      label="新部门/项目部"
-    >
-      <template #input>
-        <DeptCascader
-          v-model="form.newDeptId"
-          :company-id="form.newCompanyId"
-          readonly
-        />
-      </template>
-    </van-field>
+      label="调入部门/项目部"
+    />
 
     <van-field
       v-show-field="['newPostId', includeFields]"
       name="newPostId"
-      label="新岗位"
+      label="调入岗位"
     >
       <template #input>
         <PostSelect
@@ -221,8 +197,6 @@
 
 <script setup name="userTransferDetail" lang="ts">
 import { isNil } from 'lodash-es'
-import CompanySelect from '../components/ComanySelect.vue'
-import DeptCascader from '../components/DeptCascader.vue'
 import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -242,7 +216,7 @@ withDefaults(
   },
 )
 
-const { Form, form, isLoading, view, reset, workflowView } = useForm()
+const { Form, form, isLoading, companyData, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
 

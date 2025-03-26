@@ -53,6 +53,15 @@
     />
 
     <van-field-number
+      v-model.number="form.age"
+      v-show-field="['age', includeFields]"
+      type="digit"
+      name="age"
+      label="年龄"
+      :rules="computedRules.age"
+    />
+
+    <van-field-number
       v-model.number="form.phonenumber"
       v-show-field="['phonenumber', includeFields]"
       name="phonenumber"
@@ -61,15 +70,6 @@
       label="手机号"
       :rules="computedRules.sex"
       @change="phonenumberChange"
-    />
-
-    <van-field-number
-      v-model.number="form.age"
-      v-show-field="['age', includeFields]"
-      type="digit"
-      name="age"
-      label="年龄"
-      :rules="computedRules.age"
     />
 
     <DictSelect
@@ -83,15 +83,6 @@
       @change="statusChange"
     />
 
-    <DictSelect
-      v-model="form.interviewWay"
-      v-show-field="['interviewWay', includeFields]"
-      label="面试形式"
-      name="interviewWay"
-      dict-type="oa_interview"
-      :rules="computedRules.interviewWay"
-    />
-
     <DateSelect
       v-model="form.interviewDate"
       v-show-field="['interviewDate', includeFields]"
@@ -101,10 +92,19 @@
     />
 
     <DictSelect
+      v-model="form.interviewWay"
+      v-show-field="['interviewWay', includeFields]"
+      label="面试形式"
+      name="interviewWay"
+      dict-type="oa_interview"
+      :rules="computedRules.interviewWay"
+    />
+
+    <DictSelect
       v-if="form.status === '3'"
       v-model="form.isOwnerInterview"
       v-show-field="['isOwnerInterview', includeFields]"
-      label="面试形式"
+      label="是否需要业主面试"
       name="isOwnerInterview"
       dict-type="sys_yes_no"
       :rules="computedRules.isOwnerInterview"

@@ -8,62 +8,133 @@
     required="auto"
     scroll-to-error
   >
-    <van-field
-      v-model="form.name"
-      v-show-field="['name', includeFields]"
-      name="name"
-      label="员工"
-      :rules="computedRules.name"
+    <div>
+      <van-field
+        name="checked"
+        label="面试评价"
+        :rules="computedRules.checked"
+      >
+        <template #input>
+          <van-switch v-model="form.checked" size="18px" @change="checkedChange" />
+        </template>
+      </van-field>
+
+      <UserEmploymentSelect
+        v-if="form.checked"
+        v-model="form.preEmploymentId"
+        v-show-field="['preEmploymentId', includeFields]"
+        name="preEmploymentId"
+        label="员工"
+        :rules="computedRules.preEmploymentId"
+        clearable
+      />
+
+      <van-field
+        v-else
+        v-model="form.name"
+        v-show-field="['name', includeFields]"
+        name="name"
+        label="员工"
+        :rules="computedRules.name"
+      />
+    </div>
+
+    <!-- 面试评价true -->
+    <van-form
+      v-if="form.checked"
+      label-align="top"
+      input-align="left"
+      readonly
     >
-      <template #input>
-        <span v-if="form.name">{{ form.name }}</span>
-        <!-- <PreUserSelect v-else v-model="form.preEmploymentId" @get-row="getPreUser" /> -->
-      </template>
-    </van-field>
+      <DeptSelect
+        v-model="form.deptId"
+        v-show-field="['deptId', includeFields]"
+        name="deptId"
+        label="部门"
+      />
 
-    <DeptSelect
-      v-model="form.deptId"
-      v-show-field="['deptId', includeFields]"
-      name="deptId"
-      label="部门"
-      :rules="computedRules.deptId"
-      @change="deptChange"
-    />
+      <van-field v-if="form.checked" v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
+        <template #input>
+          <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple readonly />
+        </template>
+      </van-field>
 
-    <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
-      <template #input>
-        <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple @change="postChange" />
-      </template>
-    </van-field>
+      <DictSelect
+        v-model="form.sex"
+        v-show-field="['sex', includeFields]"
+        label="性别"
+        name="sex"
+        dict-type="sys_user_sex"
+      />
 
-    <DictSelect
-      v-model="form.sex"
-      v-show-field="['sex', includeFields]"
-      label="性别"
-      name="sex"
-      dict-type="sys_user_sex"
-      :rules="computedRules.sex"
-    />
+      <van-field-number
+        v-model.number="form.phonenumber"
+        v-show-field="['phonenumber', includeFields]"
+        name="phonenumber"
+        type="tel"
+        maxlegth="11"
+        label="手机号"
+      />
 
-    <van-field-number
-      v-model.number="form.phonenumber"
-      v-show-field="['phonenumber', includeFields]"
-      name="phonenumber"
-      type="tel"
-      maxlegth="11"
-      label="手机号"
-      :rules="computedRules.phonenumber"
-      @change="phonenumberChange"
-    />
+      <van-field-number
+        v-model.number="form.age"
+        v-show-field="['age', includeFields]"
+        name="age"
+        type="digit"
+        label="年龄"
+      />
+    </van-form>
 
-    <van-field-number
-      v-model.number="form.age"
-      v-show-field="['age', includeFields]"
-      name="age"
-      type="digit"
-      label="年龄"
-      :rules="computedRules.age"
-    />
+    <!-- 面试评价false -->
+    <van-form
+      v-else
+      label-align="top"
+      input-align="left"
+      required="auto"
+      scroll-to-error
+    >
+      <DeptSelect
+        v-model="form.deptId"
+        v-show-field="['deptId', includeFields]"
+        name="deptId"
+        label="部门"
+        :rules="computedRules.deptId"
+        @change="deptChange"
+      />
+      <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
+        <template #input>
+          <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple @change="postChange" />
+        </template>
+      </van-field>
+      <DictSelect
+        v-model="form.sex"
+        v-show-field="['sex', includeFields]"
+        label="性别"
+        name="sex"
+        dict-type="sys_user_sex"
+        :rules="computedRules.sex"
+      />
+
+      <van-field-number
+        v-model.number="form.phonenumber"
+        v-show-field="['phonenumber', includeFields]"
+        name="phonenumber"
+        type="tel"
+        maxlegth="11"
+        label="手机号"
+        :rules="computedRules.phonenumber"
+        @change="phonenumberChange"
+      />
+
+      <van-field-number
+        v-model.number="form.age"
+        v-show-field="['age', includeFields]"
+        name="age"
+        type="digit"
+        label="年龄"
+        :rules="computedRules.age"
+      />
+    </van-form>
 
     <DateSelect
       v-model="form.hopeDate"
@@ -168,8 +239,90 @@
       </template>
     </van-field>
 
-    <div v-if="form.postCode !== 'JXYWRY'">
+    <!-- 面试评价true -->
+    <van-form
+      v-if="form.checked"
+      label-align="top"
+      input-align="left"
+      readonly
+    >
       <van-field
+        v-if="form.postCode !== 'JXYWRY'"
+        v-show-field="['isIntern', includeFields]"
+        name="isIntern"
+        label="是否实习生"
+        :rules="computedRules.isIntern"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isIntern" readonly />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.postCode !== 'JXYWRY'"
+        v-show-field="['isProbation', includeFields]"
+        name="isProbation"
+        :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
+        :rules="computedRules.isProbation"
+        @change="isProbationChange"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isProbation" readonly />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.isIntern === 'Y' && form.isProbation === 'Y'"
+        v-model="form.internshipExplain"
+        v-show-field="['internshipExplain', includeFields]"
+        name="internshipExplain"
+        label="实习期时长说明"
+      />
+
+      <van-field
+        v-if="form.isIntern === 'N' && form.isProbation === 'Y'"
+        v-model="form.probationCycle"
+        v-show-field="['probationCycle', includeFields]"
+        name="probationCycle"
+        label="试用期时长(月)"
+      />
+
+      <van-field
+        v-if="form.isProbation === 'Y'"
+        v-show-field="['probationWagesRate', includeFields]"
+        name="probationWagesRate"
+        label="试用期薪资发放标准(%)"
+      />
+
+      <van-field
+        v-show-field="['isRecommend', includeFields]"
+        name="isRecommend"
+        label="是否推荐"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isRecommend" readonly />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.isRecommend === 'Y'"
+        v-model="form.reference"
+        v-show-field="['reference', includeFields]"
+        name="reference"
+        label="推荐来源"
+      />
+    </van-form>
+
+    <!-- 面试评价false -->
+    <van-form
+      v-else
+      label-align="top"
+      input-align="left"
+      required="auto"
+      scroll-to-error
+    >
+      <van-field
+        v-if="form.postCode !== 'JXYWRY'"
         v-show-field="['isIntern', includeFields]"
         name="isIntern"
         label="是否实习生"
@@ -181,6 +334,7 @@
       </van-field>
 
       <van-field
+        v-if="form.postCode !== 'JXYWRY'"
         v-show-field="['isProbation', includeFields]"
         name="isProbation"
         :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
@@ -217,7 +371,27 @@
         label="试用期薪资发放标准(%)"
         :rules="computedRules.probationWagesRate"
       />
-    </div>
+
+      <van-field
+        v-show-field="['isRecommend', includeFields]"
+        name="isRecommend"
+        label="是否推荐"
+        :rules="computedRules.isRecommend"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isRecommend" />
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="form.isRecommend === 'Y'"
+        v-model="form.reference"
+        v-show-field="['reference', includeFields]"
+        name="reference"
+        label="推荐来源"
+        :rules="computedRules.reference"
+      />
+    </van-form>
 
     <DateSelect
       v-model="form.realDate"
@@ -236,17 +410,6 @@
       @change="userAccountChange"
     />
 
-    <van-field
-      v-show-field="['isRecommend', includeFields]"
-      name="isRecommend"
-      label="是否推荐"
-      :rules="computedRules.isRecommend"
-    >
-      <template #input>
-        <YesNoSwitch v-model="form.isRecommend" />
-      </template>
-    </van-field>
-
     <DictSelect
       v-if="form.level >= 38"
       v-model="form.certificates"
@@ -256,15 +419,6 @@
       dict-type="oa_document_type"
       multiple
       :rules="computedRules.certificates"
-    />
-
-    <van-field
-      v-if="form.isRecommend === 'Y'"
-      v-model="form.reference"
-      v-show-field="['reference', includeFields]"
-      name="reference"
-      label="推荐来源"
-      :rules="computedRules.reference"
     />
 
     <van-field
@@ -331,7 +485,7 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
-import PreUserSelect from './workflow/components/PreUserSelect.vue'
+import UserEmploymentSelect from '../components/UserEmploymentSelect.vue'
 import { useForm } from './form'
 import { checkPhoneUnique, checkUserNameUnique } from '@/api/system/user'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
@@ -392,19 +546,19 @@ function getPreUser(row: UserPreEmploymentVO) {
 }
 
 // 是否通过面试入职的复选框 清空部门、岗位、性别、试用期、手机号
-// function checkedChange() {
-//   // TODO 清空表单一部分
-//   form.value.preEmploymentId = undefined
-//   form.value.name = undefined
-//   form.value.deptId = undefined
-//   form.value.postId = undefined
-//   form.value.sex = undefined
-//   form.value.phonenumber = undefined
-//   form.value.probationCycle = undefined
-//   form.value.isRecommend = 'N'
-//   form.value.reference = undefined
-//   form.value.employmentEvaluate = undefined
-// }
+function checkedChange() {
+  // TODO 清空表单一部分
+  form.value.preEmploymentId = undefined
+  form.value.name = undefined
+  form.value.deptId = undefined
+  form.value.postId = undefined
+  form.value.sex = undefined
+  form.value.phonenumber = undefined
+  form.value.probationCycle = undefined
+  form.value.isRecommend = 'N'
+  form.value.reference = undefined
+  form.value.employmentEvaluate = undefined
+}
 
 // 部门change事件
 function deptChange() {

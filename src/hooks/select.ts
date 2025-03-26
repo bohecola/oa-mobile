@@ -2,6 +2,9 @@ import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ProjectVO } from '@/api/oa/business/project/types'
 import type { SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
 import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
+import type { UserEmploymentVO } from '@/api/oa/personnel/userEmployment/types'
+import type { UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
+import type { UserInfoVo } from '@/api/system/user/types'
 
 export function useSelect<T>() {
   // 搜索词
@@ -272,6 +275,208 @@ export function useProjectSubjectSelect() {
       options: oa_project_subject_status,
     },
 
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 预入职流程选择员工
+export function usePendingUserEmploymentSelect() {
+  const selectState = useSelect<UserEmploymentVO>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const {
+    oa_education_type,
+    sys_yes_no,
+    oa_employment_status,
+  } = toRefs(proxy.useDict(
+    'oa_education_type',
+    'sys_yes_no',
+    'oa_employment_status',
+  ))
+
+  const labelDescriptors: LabelDescriptor<UserEmploymentVO>[] = [
+    {
+      text: '姓名',
+      key: 'preEmploymentName',
+      type: 'plain',
+    },
+    {
+      text: '学历',
+      key: 'education',
+      type: 'dict',
+      options: oa_education_type,
+    },
+    {
+      text: '是否实习',
+      key: 'isIntern',
+      type: 'dict',
+      options: sys_yes_no,
+    },
+    {
+      text: '是否推荐',
+      key: 'isRecommend',
+      type: 'dict',
+      options: sys_yes_no,
+
+    },
+    {
+      text: '推荐来源',
+      key: 'reference',
+      type: 'plain',
+    },
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: oa_employment_status,
+    },
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 入职流程选择员工
+export function useUserEmploymentSelect() {
+  const selectState = useSelect<UserPreEmploymentVO>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const {
+    sys_user_sex,
+    sys_yes_no,
+    oa_employment_status,
+    oa_interview,
+  } = toRefs(proxy.useDict(
+    'sys_user_sex',
+    'sys_yes_no',
+    'oa_employment_status',
+    'oa_interview',
+  ))
+
+  const labelDescriptors: LabelDescriptor<UserPreEmploymentVO>[] = [
+    {
+      text: '部门',
+      key: 'deptName',
+      type: 'plain',
+    },
+    {
+      text: '岗位',
+      key: 'postName',
+      type: 'plain',
+    },
+    {
+      text: '姓名',
+      key: 'name',
+      type: 'plain',
+    },
+    {
+      text: '用户性别',
+      key: 'sex',
+      type: 'dict',
+      options: sys_user_sex,
+    },
+    {
+      text: '手机号',
+      key: 'phonenumber',
+      type: 'plain',
+    },
+    {
+      text: '面试形式',
+      key: 'interviewWay',
+      type: 'dict',
+      options: oa_interview,
+    },
+    {
+      text: '面试日期',
+      key: 'interviewDate',
+      type: 'time',
+    },
+    {
+      text: '是否有试用期',
+      key: 'isProbation',
+      type: 'dict',
+      options: sys_yes_no,
+    },
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: oa_employment_status,
+    },
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 转正流程选择员工
+export function useUserRegularizationSelect() {
+  const selectState = useSelect<UserInfoVo>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const {
+    oa_education_type,
+    oa_nation,
+    oa_employment_status,
+    oa_user_state,
+  } = toRefs(proxy.useDict(
+    'oa_education_type',
+    'oa_nation',
+    'oa_employment_status',
+    'oa_user_state',
+  ))
+
+  const labelDescriptors: LabelDescriptor<UserInfoVo>[] = [
+    {
+      text: '用户',
+      key: 'userName',
+      type: 'plain',
+    },
+    {
+      text: '部门',
+      key: 'deptName',
+      type: 'plain',
+    },
+    {
+      text: '岗位',
+      key: 'postName',
+      type: 'plain',
+    },
+    {
+      text: '民族',
+      key: 'nation',
+      type: 'dict',
+      options: oa_nation,
+    },
+    {
+      text: '学历',
+      key: 'education',
+      type: 'dict',
+      options: oa_education_type,
+    },
+    {
+      text: '试用期时长',
+      key: 'probationPeriod',
+      type: 'plain',
+    },
+
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: status !== '-1' ? oa_user_state : oa_employment_status,
+    },
   ]
 
   return {

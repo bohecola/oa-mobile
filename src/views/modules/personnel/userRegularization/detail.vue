@@ -8,10 +8,10 @@
     input-align="left"
     readonly
   >
-    <van-field
-      v-model="form.userName"
+    <UserRegularizationSelect
+      v-model="form.userId"
       v-show-field="['userId', includeFields]"
-      name="userName"
+      name="userId"
       label="员工"
     />
 
@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
+import UserRegularizationSelect from '../components/UserInfoSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'

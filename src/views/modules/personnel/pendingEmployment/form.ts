@@ -60,7 +60,7 @@ export function useForm() {
   const data = reactive<Omit<PageData<UserPendingEmploymentForm, object>, 'queryParams'>>({
     form: { ...initFormData },
     rules: {
-      preEmploymentId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
+      employmentId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
       name: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '部门名称不能为空', trigger: 'onBlur' }],
       postId: [{ required: true, message: '岗位名称不能为空', trigger: 'onBlur' }],

@@ -93,7 +93,7 @@
       v-if="form.status === '3'"
       v-model="form.isOwnerInterview"
       v-show-field="['isOwnerInterview', includeFields]"
-      label="面试形式"
+      label="是否需要业主面试"
       name="isOwnerInterview"
       dict-type="sys_yes_no"
     />
@@ -158,14 +158,6 @@
       </template>
     </van-field>
 
-    <DictSelect
-      v-model="form.certificates"
-      v-show-field="['certificates', includeFields]"
-      label="持证情况"
-      name="certificates"
-      dict-type="oa_document_type"
-    />
-
     <van-field
       v-if="form.isRecommend === 'Y'"
       v-model="form.reference"
@@ -177,6 +169,14 @@
         <TextareaView :value="form.reference" />
       </template>
     </van-field>
+
+    <DictSelect
+      v-model="form.certificates"
+      v-show-field="['certificates', includeFields]"
+      label="持证情况"
+      name="certificates"
+      dict-type="oa_document_type"
+    />
 
     <van-field
       v-if="!isNil(form.certificates) && form.certificates.includes('9')"

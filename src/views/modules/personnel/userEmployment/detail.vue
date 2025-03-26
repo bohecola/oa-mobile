@@ -340,7 +340,6 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import PostSelect from '../components/PostSelect.vue'
-import PreUserSelect from './workflow/components/PreUserSelect.vue'
 import { useForm } from './form'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
