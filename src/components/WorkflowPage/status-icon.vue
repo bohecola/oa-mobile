@@ -2,7 +2,7 @@
   <img
     :src="imgObj[businessStatus]"
     alt="流程状态"
-    class="absolute top-[16px] right-[30px] w-14 h-14 opacity-70"
+    class="absolute top-[10px] right-[32px] w-14 h-14 opacity-70"
   >
 </template>
 
