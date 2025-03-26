@@ -1,6 +1,14 @@
 <template>
   <div class="w-full">
     <van-field
+      v-if="isReadonly"
+      :model-value="modelValue"
+      readonly
+      v-bind="attrs"
+    />
+
+    <van-field
+      v-else
       :model-value="modelValue"
       :is-link="!isReadonly"
       placeholder="请选择"
