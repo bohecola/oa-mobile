@@ -10,9 +10,19 @@
       {{ descriptor.text }}：{{ item[descriptor.key] }}
     </template>
 
+    <!-- 金额 -->
+    <template v-if="descriptor.type === 'amount'">
+      {{ descriptor.text }}：{{ formatCurrency(item[descriptor.key]) }}
+    </template>
+
     <!-- 字典 -->
     <template v-else-if="descriptor.type === 'dict'">
-      {{ descriptor.text }}：<dict-tag :options="descriptor.options.value" :value="item[descriptor.key]" />
+      {{ descriptor.text }}：<dict-tag
+        :options="isFunction(descriptor.options)
+          ? descriptor.options(item)
+          : descriptor.options.value"
+        :value="item[descriptor.key]"
+      />
     </template>
 
     <!-- 时间 -->
@@ -23,7 +33,7 @@
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
+import { isFunction, isNil } from 'lodash-es'
 
 defineProps<{
   descriptor: LabelDescriptor

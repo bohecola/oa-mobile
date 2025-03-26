@@ -57,7 +57,7 @@ declare global {
   declare interface LabelDescriptor<T = any> {
     text: string
     key: keyof T
-    type: 'dict' | 'time' | 'plain'
-    options?: Ref<DictDataOption[]>
+    type: 'dict' | 'time' | 'plain' | 'amount'
+    options?: Ref<DictDataOption[]> | ((item: any) => DictDataOption[])
   }
 }

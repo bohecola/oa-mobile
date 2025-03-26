@@ -1,18 +1,14 @@
 <template>
-  <van-field
+  <ContractSelect
+    v-model="form.a_contractId"
     v-show-field="['a_contractId', includeFields]"
     label="合同名称"
     name="a_contractId"
     :rules="computedRules.a_contractId"
-  >
-    <template #input>
-      <ContractSelect
-        v-model="form.a_contractId"
-        :params="{ type: 'in' }"
-        @update:selected-value="onContractSelectValueChange"
-      />
-    </template>
-  </van-field>
+    :params="{ type: 'in' }"
+    clearable
+    @update:selected-list="onContractSelectedListChange"
+  />
 
   <DictSelect
     v-model="form.a_businessType"
@@ -21,6 +17,7 @@
     name="a_businessType"
     :rules="computedRules.a_businessType"
     dict-type="oa_project_business_type"
+    readonly
   />
 
   <DeptSelect
@@ -29,6 +26,7 @@
     name="a_deptId"
     label="部门"
     :rules="computedRules.a_deptId"
+    readonly
   />
 
   <van-field
@@ -37,6 +35,7 @@
     label="合同编号"
     name="a_contractNo"
     :rules="computedRules.a_contractNo"
+    readonly
   />
 
   <SCSelect
@@ -46,6 +45,7 @@
     name="a_partyA"
     :rules="computedRules.a_partyA"
     multiple
+    readonly
   />
 
   <van-field
@@ -91,7 +91,7 @@ import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
-import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
+import ContractSelect from '@/views/modules/business/components/ContractSelect.vue'
 import SCSelect from '@/views/modules/business/components/SCSelect.vue'
 
 const props = withDefaults(
@@ -127,12 +127,16 @@ const Form = inject<Ref<FormInstance>>('Form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
-function onContractSelectValueChange(val?: ContractVO) {
-  form.value.a_deptId = val?.deptId
-  form.value.a_partyA = val?.partyA
-  form.value.a_contractNo = val?.no
-  form.value.a_businessType = val?.businessType
-  form.value.needDepts = val?.deptId as string
+function onContractSelectedListChange(selectedList: ContractVO[]) {
+  const [contract] = selectedList
+
+  form.value.a_deptId = contract?.deptId
+  form.value.a_partyA = contract?.partyA
+  form.value.a_contractNo = contract?.no
+  form.value.a_businessType = contract?.businessType
+  form.value.needDepts = contract?.deptId as string
+
+  // TODO 清空表单数据
   // 清空审核人
   Form.value?.resetValidation(['customizeApprover'])
 }

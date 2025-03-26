@@ -1,17 +1,11 @@
 <template>
-  <van-field
+  <ContractSelect
+    v-model="form.a_contractId"
     v-show-field="['a_contractId', includeFields]"
     label="合同名称"
     name="a_contractId"
-  >
-    <template #input>
-      <ContractSelect
-        v-model="form.a_contractId"
-        :params="{ type: 'in' }"
-        readonly
-      />
-    </template>
-  </van-field>
+    :params="{ type: 'in' }"
+  />
 
   <DictSelect
     v-model="form.a_businessType"
@@ -97,7 +91,7 @@ import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
-import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
+import ContractSelect from '@/views/modules/business/components/ContractSelect.vue'
 import SCSelect from '@/views/modules/business/components/SCSelect.vue'
 
 withDefaults(

@@ -105,6 +105,11 @@ export interface ContractVO {
   deptId: string | number
 
   /**
+   * 需求部门名称
+   */
+  deptName: string
+
+  /**
    * 状态
    */
   status: string
@@ -118,6 +123,11 @@ export interface ContractVO {
    * 合同中项目的业务类型
    */
   businessType: string
+
+  /**
+   * 申请人
+   */
+  createByName: string
 }
 
 export interface ContractForm extends BaseEntity {

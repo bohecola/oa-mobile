@@ -1,3 +1,4 @@
+import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ProjectVO } from '@/api/oa/business/project/types'
 import type { SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
 import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
@@ -116,6 +117,107 @@ export function useProjectSelect() {
       key: 'status',
       type: 'dict',
       options: oa_project_status,
+    },
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 合同选择
+export function useContractSelect() {
+  const selectState = useSelect<ContractVO>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const {
+    oa_contract_type,
+    oa_contract_category_in,
+    oa_contract_category_out,
+    oa_contract_category_agreement,
+    oa_contract_status,
+    oa_project_business_type,
+  } = toRefs(proxy.useDict(
+    'oa_contract_type',
+    'oa_contract_category_in',
+    'oa_contract_category_out',
+    'oa_contract_category_agreement',
+    'oa_contract_status',
+    'oa_project_business_type',
+  ))
+
+  const labelDescriptors: LabelDescriptor<ContractVO>[] = [
+    {
+      text: '流程ID',
+      key: 'id',
+      type: 'plain',
+    },
+    {
+      text: '合同编号',
+      key: 'no',
+      type: 'plain',
+    },
+    {
+      text: '申请人',
+      key: 'createByName',
+      type: 'plain',
+    },
+    {
+      text: '合同类型',
+      key: 'type',
+      type: 'dict',
+      options: oa_contract_type,
+    },
+    {
+      text: '合同类别',
+      key: 'category',
+      type: 'dict',
+      options: (item) => {
+        switch (item.type) {
+          case 'in':
+            return oa_contract_category_in.value
+          case 'out':
+            return oa_contract_category_out.value
+          case 'agreement':
+            return oa_contract_category_agreement.value
+          default:
+            return []
+        }
+      },
+    },
+    {
+      text: '合同金额',
+      key: 'amount',
+      type: 'amount',
+    },
+    {
+      text: '项目类别',
+      key: 'businessType',
+      type: 'dict',
+      options: oa_project_business_type,
+    },
+    {
+      text: '需求部门',
+      key: 'deptName',
+      type: 'plain',
+    },
+    {
+      text: '开始日期',
+      key: 'startDate',
+      type: 'time',
+    },
+    {
+      text: '结束日期',
+      key: 'endDate',
+      type: 'time',
+    },
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: oa_contract_status,
     },
   ]
 
