@@ -405,7 +405,7 @@ const isProject = computed(() => form.value.subjectType === 'project')
 // 是否是部门预算
 const isDept = computed(() => form.value.subjectType === 'dept')
 // 业务类型为运维类
-const isYwl = computed(() => isProject.value && form.value.businessCategory === '0')
+const isYwl = computed(() => isProject.value && ['0', '3'].includes(form.value.businessCategory))
 
 // 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {
