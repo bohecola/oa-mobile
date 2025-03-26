@@ -226,10 +226,6 @@ export function useForm() {
             // 普票-税率0（历史数据统一都需处理）
             item.invoiceType = '0'
             item.taxRate = '0'
-            // // 项目预算-运维类 / 部门预算
-            // if ((entity.subjectType === 'project' && entity.businessCategory === '0') || entity.subjectType === 'dept') {
-
-            // }
 
             return {
               ...item,
