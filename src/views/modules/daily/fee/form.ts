@@ -138,26 +138,33 @@ export function useForm() {
     await Form.value?.validate()
       .then(async () => {
         updateLoading.value = true
-        form.value.receiptInfo = JSON.stringify(form.value.receiptInfo)
+
+        // 拷贝 form
+        const data = cloneDeep(form.value)
+
+        // 将 receiptInfo 转换为字符串
+        data.receiptInfo = JSON.stringify(data.receiptInfo)
 
         // 以 A-Za-a_ 开头的所有字段自动构建为 contentJson
         const regex = /^[A-Z]{1,2}_/i
-        const content = Object.fromEntries(Object.entries(form.value).filter(([key, val]) => regex.test(key) && !isNil(val)))
-        form.value.contentJson = JSON.stringify(content)
+        const content = Object.fromEntries(Object.entries(data).filter(([key, val]) => regex.test(key) && !isNil(val)))
+        data.contentJson = JSON.stringify(content)
 
-        if (form.value.id) {
-          const { data } = await updateDailyFee(form.value)
-          form.value.itemList = data.itemList
+        if (data.id) {
+          // 更新
+          const res = await updateDailyFee(data)
+          data.itemList = res.data.itemList
         }
         else {
-          const { data } = await addDailyFee(form.value)
-          form.value.id = data.id
-          form.value.itemList = data.itemList
+          // 新增
+          const res = await addDailyFee(data)
+          data.id = res.data.id
+          data.itemList = res.data.itemList
         }
 
         success?.({
-          id: form.value.id,
-          itemList: form.value.itemList,
+          id: data.id,
+          itemList: data.itemList,
         })
       })
       .catch(fail)
