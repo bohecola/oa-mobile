@@ -53,12 +53,22 @@
     />
 
     <DictSelect
-      v-if="['0', '3'].includes(form.businessType)"
+      v-if="form.businessType === '0'"
       v-model="form.xmbSubjectFeeType"
       v-show-field="['xmbSubjectFeeType', includeFields]"
       name="xmbSubjectFeeType"
       label="项目部可用费用类型"
       dict-type="oa_subject_fee_type_ywl"
+      multiple
+    />
+
+    <DictSelect
+      v-if="form.businessType === '3'"
+      v-model="form.xmbSubjectFeeType"
+      v-show-field="['xmbSubjectFeeType', includeFields]"
+      name="xmbSubjectFeeType"
+      label="项目部可用费用类型"
+      dict-type="oa_subject_fee_type_grl"
       multiple
     />
 
