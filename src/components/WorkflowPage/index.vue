@@ -23,35 +23,14 @@
               text="当前节点存在需要填写的字段，请暂时在PC端审批"
             />
 
-            <van-form
-              class="reset-label"
-              label-width="auto"
-              label-align="top"
-              input-align="left"
-              readonly
-            >
-              <van-cell-group v-if="!isNil(entityVariables)" inset class="!mt-3">
-                <van-field label="流程ID">
-                  <template #input>
-                    <span>{{ entityVariables.id }}</span>
-                  </template>
-                </van-field>
-                <van-field label="发起人">
-                  <template #input>
-                    <span>{{ entityVariables.initiator.nickName }}</span>
-                  </template>
-                </van-field>
-                <DeptSelect
-                  v-model="entityVariables.initiator.deptId!"
-                  label="部门"
-                />
-                <van-field label="发起时间">
-                  <template #input>
-                    <span>{{ parseTime(entityVariables?.initiator?.createTime, '{y}-{m}-{d}')! }}</span>
-                  </template>
-                </van-field>
-              </van-cell-group>
-            </van-form>
+            <!-- 发起人信息 -->
+            <InitiatorInfo
+              ref="initiatorInfoRef"
+              v-model:dept-id="deptId"
+              :data="entityVariables"
+              :readonly="!isAdd"
+              :reset-form="resetForm"
+            />
 
             <!-- 审批表单 -->
             <van-cell-group v-if="group" inset class="!my-3">
@@ -81,8 +60,8 @@
       <div v-if="saveOrSubmitVisible" class="p-2 pb-safe-offset-2 grid grid-cols-[1fr,4fr] gap-2 bg-[--bg-card]">
         <van-button
           v-if="saveVisible"
-          :loading="tempSaveLoading"
           type="default"
+          :loading="tempSaveLoading"
           :disabled="actionBtnDisabled"
           @click="handleTempSave"
         >
@@ -91,8 +70,8 @@
 
         <van-button
           v-if="submitVisible"
-          :loading="submitLoading"
           type="primary"
+          :loading="submitLoading"
           :disabled="actionBtnDisabled"
           @click="handleSubmit"
         >
@@ -107,13 +86,12 @@
 </template>
 
 <script setup lang='ts'>
-import dayjs from 'dayjs'
 import { isNil } from 'lodash-es'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from './types'
 import ApprovalSteps from './steps.vue'
 import StatusIcon from './status-icon.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
-import { useStore } from '@/store'
+import InitiatorInfo from '@/components/InitiatorInfo/index.vue'
 
 interface EntityVariables {
   initiator: Initiator
@@ -129,24 +107,25 @@ interface Emits {
 const props = withDefaults(
   defineProps<{
     entityVariables?: EntityVariables
-    group?: boolean
     loading?: boolean
+    group?: boolean
+    resetForm?: () => void
   }>(),
   {
     group: true,
-    loading: false,
   },
 )
 
 const emit = defineEmits<Emits>()
 
-const { user } = useStore()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 // 提交组件
 const submitVerifyRef = ref<InstanceType<typeof SubmitVerify>>()
 // 审批记录组件
-const ApprovalStepsRef = ref<InstanceType<typeof ApprovalSteps> | null>()
+const ApprovalStepsRef = ref<InstanceType<typeof ApprovalSteps>>()
+// 发起人信息
+const initiatorInfoRef = ref<InstanceType<typeof InitiatorInfo>>()
 
 // 活跃标签栏
 const active = ref<'form' | 'record'>('form')
@@ -155,7 +134,7 @@ const tempSaveLoading = ref(false)
 // 提交加载
 const submitLoading = ref(false)
 // 发起人部门ID
-const deptId = computed(() => props.entityVariables?.initiator.deptId)
+const deptId = ref(undefined)
 // 依赖提供
 provide('initiatorDeptId', deptId)
 
@@ -195,30 +174,15 @@ const processVisible = computed(() => {
 // 是否查看
 const isView = computed(() => proxy.$route.query.type === 'view')
 
+// 是否新增
+const isAdd = computed(() => proxy.$route.query.type === 'add')
+
 // 流程状态
 const businessStatus = computed(() => proxy.$route.query.wfStatus as string)
 
-// 发起人信息
-function createInitiator(): Initiator {
-  if (props.entityVariables?.initiator) {
-    return props.entityVariables?.initiator
-  }
-
-  const initialValue = {
-    userId: user.info?.userId,
-    deptId: user.info?.deptId,
-    nickName: user.info?.nickName,
-    deptName: user.info?.deptName,
-    maxPostLevel: user.info?.maxPostLevel,
-    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  }
-
-  return initialValue
-}
-
 // 暂存
 function handleTempSave() {
-  const initiator = createInitiator()
+  const initiator = initiatorInfoRef.value?.createInitiator()
   const load = () => (tempSaveLoading.value = true)
   const done = () => (tempSaveLoading.value = false)
   const next = () => {
@@ -237,7 +201,7 @@ function handleTempSave() {
 
 // 提交
 function handleSubmit() {
-  const initiator = createInitiator()
+  const initiator = initiatorInfoRef.value?.createInitiator()
   const load = () => (submitLoading.value = true)
   const done = () => (submitLoading.value = false)
   const payload: SubmitPayload = {

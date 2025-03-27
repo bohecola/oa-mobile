@@ -101,7 +101,7 @@ export interface ProjectSubjectItemTreeVO {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
   /**
    * 显示顺序
    */
@@ -113,7 +113,7 @@ export interface ProjectSubjectItemTreeVO {
   /**
    * 项目预算id
    */
-  psId?: number
+  psId?: string
   /**
    * 备注
    */
@@ -121,7 +121,7 @@ export interface ProjectSubjectItemTreeVO {
   /**
    * 科目核算项目id
    */
-  sciId?: string | number
+  sciId?: string
   /**
    * 核算项目
    */
@@ -133,7 +133,7 @@ export interface ProjectSubjectItemTreeVO {
   /**
    * 科目id
    */
-  subjectId?: number
+  subjectId?: string
   /**
    * 科目名称
    */
@@ -158,7 +158,7 @@ export interface ProjectSubjectVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 预算类型（项目预算、部门预算）
@@ -173,7 +173,7 @@ export interface ProjectSubjectVO {
   /**
    * 项目id
    */
-  projectId?: string | number
+  projectId?: string
 
   /**
    * 项目名称
@@ -220,7 +220,7 @@ export interface ProjectSubjectForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 预算类型（项目预算、部门预算）

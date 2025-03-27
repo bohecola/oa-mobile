@@ -1,93 +1,95 @@
 <template>
-  <van-skeleton :loading="isLoading" animated class="w-full h-8 flex items-center">
-    <template #template>
-      <van-skeleton-paragraph variant="rect" class="!h-[60%] min-w-[180px]" />
-    </template>
-    <template #default>
-      <div v-if="readonly" class="flex gap-2 flex-wrap">
-        <div v-for="(label, index) in selectedLabels" :key="index" class="mr-1">
-          <span>{{ label }}</span>
-          <span v-if="index !== selectedLabels.length - 1">{{ '，' }}</span>
-        </div>
-      </div>
-      <!-- <el-tree-select
-        v-if="component === 'tree-select'"
-        v-show="!readonly"
-        v-model="ids"
-        node-key="uuid"
-        value-key="id"
-        placeholder="选择预算科目"
-        :data="treeData"
-        :render-after-expand="false"
-        :props="{
-          value: 'id',
-          label: 'sciName',
-          children: 'children'
-        }"
-        :multiple="multiple"
-        :disabled="disabled"
-        clearable
-        @change="onChange"
-      >
-        <template #default="{ data: { sciName, treeType, availableAmount } }">
-          <span>{{ sciName }}</span>
-          <span v-if="treeType === 'item'" style="color: gray">（{{ formatCurrency(availableAmount) }}）</span>
-        </template>
-      </el-tree-select>
+  <div>
+    <van-field
+      :model-value="selectedLabels.join(',')"
+      :is-link="!isReadonly"
+      placeholder="请选择"
+      type="textarea"
+      rows="1"
+      autosize
+      readonly
+      v-bind="attrs"
+      @click="onFieldClick"
+    >
+      <template v-for="(_, name) in slots" #[name]="scope">
+        <slot :name="name" v-bind="scope" />
+      </template>
 
-      <div v-if="component === 'cascader'" v-show="!readonly" class="w-full">
-        <el-cascader
-          ref="CascaderRef"
-          v-model="ids"
-          class="w-full"
-          placeholder="请选择预算科目"
-          :options="treeData"
-          :props="{
-            emitPath: false,
-            value: 'id',
-            label: 'sciName',
-            children: 'children',
-            multiple
-          }"
-          :disabled="disabled"
-          clearable
-          @change="onChange"
-        >
-          <template #default="{ data: { sciName, treeType, availableAmount } }">
-            <span>{{ sciName }}</span>
-            <span v-if="treeType === 'item'" style="color: gray">（{{ formatCurrency(availableAmount) }}）</span>
-          </template>
-        </el-cascader>
-      </div> -->
-    </template>
-  </van-skeleton>
+      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+        <van-icon name="clear" class="text-[--van-field-clear-icon-color]" @click.stop="onClear" />
+      </template>
+
+      <!-- 回显项 -->
+      <template v-if="!isNil(modelValue)" #input>
+        <div>{{ selectedLabels.join(',') }}</div>
+      </template>
+    </van-field>
+
+    <van-field class="!hidden" readonly />
+
+    <van-popup
+      v-model:show="visible"
+      position="bottom"
+      round
+      destroy-on-close
+      safe-area-inset-bottom
+    >
+      <van-cascader
+        v-model="cascaderValue"
+        :title="`请选择${attrs.label}`"
+        :options="options"
+        :field-names="{
+          text: 'sciName',
+          value: 'id',
+          children: 'children',
+        }"
+        @close="onClose"
+        @finish="onFinish"
+      >
+        <template #option="{ option: { sciName, treeType, availableAmount } }">
+          <div>
+            <span> {{ sciName }} </span>
+            <span v-if="treeType === 'item'">（{{ formatCurrency(availableAmount) }}）</span>
+          </div>
+        </template>
+        <template v-if="isEmpty(options)" #options-top>
+          <div class="w-full h-1">
+            <van-empty description="暂无数据" />
+          </div>
+        </template>
+      </van-cascader>
+    </van-popup>
+  </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import Big from 'big.js'
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
+import { isEmpty, isNil } from 'lodash-es'
+import type { CascaderOption } from 'vant'
+import { useParentForm, usePopup } from '@/hooks'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
+import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
 import { findPathNodes } from '@/utils'
 
-type PurchaseCategorySelectValue = string | number | (string | number)[]
+interface CascaderPayload {
+  value: string
+  selectedOptions: (CascaderOption & ProjectSubjectItemTreeVO)[]
+  tabIndex: number
+}
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
+    modelValue?: string
     multiple?: boolean
     readonly?: boolean
     disabled?: boolean
-    component?: 'tree-select' | 'cascader'
+    clearable?: boolean
     params: {
       psId: string
       applyDeptId: string | number
     }
   }>(),
-  {
-    multiple: false,
-    component: 'tree-select',
-  },
+  {},
 )
 
 const emit = defineEmits([
@@ -97,85 +99,113 @@ const emit = defineEmits([
   'update:applyingAmount',
   'update:finishAmount',
   'update:availableAmount',
+  'confirm',
   'change',
 ])
+
+const attrs = useAttrs()
+const slots = useSlots()
+
+const parentForm = useParentForm()
+
+const { visible, openPopup, closePopup } = usePopup()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// const CascaderRef = ref<ElCascaderInstance>()
+// 值
+const cascaderValue = ref<string>(undefined)
 
-const ids = ref<PurchaseCategorySelectValue>(deserialize(props.modelValue))
-
+// 加载
 const isLoading = ref(false)
+
+// 原始数据
 const rawData = ref<ProjectSubjectItemTreeVO[]>([])
-const treeData = computed(() => proxy?.handleTree<ProjectSubjectItemTreeVO>(rawData.value, 'uuid'))
+
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+
+// 选项数据
+const options = computed(() => proxy?.handleTree<ProjectSubjectItemTreeVO>(rawData.value, 'uuid'))
 
 // 选中项的 labels 集合
 const selectedLabels = computed(() => {
-  if (props.modelValue && !isEmpty(rawData.value)) {
+  const { modelValue } = props
+
+  if (!isNil(modelValue) && !isEmpty(rawData.value)) {
     // 选中的预算科目项 id 集合
-    const idsArr = isArray(ids.value) ? ids.value : !isNil(ids.value) ? [ids.value] : []
+    const values = !isNil(cascaderValue.value) ? [cascaderValue.value] : []
+
     // 选中的预算科目项的 pathNodes
-    const pathNodesArr = idsArr.reduce<ProjectSubjectItemTreeVO[][]>((prev, curr) => {
-      const nodes = findPathNodes(treeData.value, curr)
+    const pathNodes = values.reduce<ProjectSubjectItemTreeVO[][]>((prev, curr) => {
+      const nodes = findPathNodes(options.value, curr)
       prev.push(nodes)
       return prev
     }, [])
 
-    return pathNodesArr.map(e => e.map(item => item.sciName).join(' / '))
+    return pathNodes.map(e => e.map(item => item.sciName).join(' / '))
   }
-  return ''
+
+  return []
 })
 
-function serialize(value: PurchaseCategorySelectValue) {
-  if (!isEmpty(value) || isNumber(value)) {
-    if (props.multiple) {
-      return (value as (string | number)[]).join(',')
-    }
-    else {
-      return value as string | number
-    }
+// 选项点击
+function onFieldClick() {
+  if (isReadonly.value) {
+    return
   }
-  else {
-    return undefined
-  }
+
+  openPopup()
 }
 
-function deserialize(value: string | number) {
-  if (!isNil(value)) {
-    if (props.multiple) {
-      // 兼容 id 为 100、101 这种 number 类型的情况
-      return (value as string).split(',').map(e => (e.length < 19 ? Number(e) : e))
-    }
-    else {
-      return value
-    }
-  }
-  else {
-    return undefined
-  }
+// 关闭
+function onClose() {
+  closePopup()
 }
 
-function onChange(value?: PurchaseCategorySelectValue) {
-  const payload = serialize(value)
+// 清除
+function onClear() {
+  emit('update:modelValue', undefined)
+  emit('change', undefined)
 
-  emit('update:modelValue', payload)
-  emit('change', payload)
+  updateVars(undefined)
+}
 
-  if (!props.multiple) {
-    const item = rawData.value.find(e => e.id === value)
-    emit('update:deptId', item?.deptId)
-  }
+// 完成
+function onFinish({ value, selectedOptions, tabIndex }: CascaderPayload) {
+  emit('update:modelValue', value)
+  emit('change', value)
+
+  emit('update:deptId', selectedOptions[tabIndex].deptId)
 
   updateVars(value)
+
+  closePopup()
 }
 
-function updateVars(value: PurchaseCategorySelectValue) {
-  // 选中的预算科目项 id 集合
-  const idsArr = isArray(value) ? value : !isNil(value) ? [value] : []
+// 获取数据
+async function getData() {
+  const { params } = props
+
+  if (isNil(params.psId)) {
+    rawData.value = []
+    return
+  }
+
+  isLoading.value = true
+
+  const { data } = await getItemTreeByPsIdAndApplyDeptId(props.params)
+    .finally(() => {
+      isLoading.value = false
+    })
+
+  rawData.value = data
+}
+
+// 更新变量
+function updateVars(value: string) {
   // 选中的预算科目项
-  const items = !isEmpty(value) ? rawData.value.filter(item => idsArr.includes(item.id as string)) : []
+  const items = !isNil(value) ? rawData.value.filter(item => item.id === value) : []
 
   // 预算金额总和
   const amount = items.reduce((prev, curr) => {
@@ -184,7 +214,7 @@ function updateVars(value: PurchaseCategorySelectValue) {
     }
 
     return prev.add(0)
-  }, new Big(0))
+  }, Big(0))
 
   // 申请中金额总和
   const applyingAmount = items.reduce((prev, curr) => {
@@ -193,7 +223,7 @@ function updateVars(value: PurchaseCategorySelectValue) {
     }
 
     return prev.add(0)
-  }, new Big(0))
+  }, Big(0))
 
   // 已申请金额总和
   const finishAmount = items.reduce((prev, curr) => {
@@ -202,7 +232,7 @@ function updateVars(value: PurchaseCategorySelectValue) {
     }
 
     return prev.add(0)
-  }, new Big(0))
+  }, Big(0))
 
   // 剩余金额总和
   const availableAmount = items.reduce((prev, curr) => {
@@ -211,7 +241,7 @@ function updateVars(value: PurchaseCategorySelectValue) {
     }
 
     return prev.add(0)
-  }, new Big(0))
+  }, Big(0))
 
   // 预算金额
   emit('update:amount', amount.toNumber())
@@ -223,33 +253,27 @@ function updateVars(value: PurchaseCategorySelectValue) {
   emit('update:availableAmount', availableAmount.toNumber())
 }
 
-async function getTree() {
-  if (props.params) {
-    if (isEmpty(props.params.psId)) {
-      rawData.value = []
-      return
-    }
-
-    isLoading.value = true
-    const { data } = (await getItemTreeByPsIdAndApplyDeptId(props.params).finally(() => (isLoading.value = false))) ?? {}
-    rawData.value = data ?? []
-  }
-}
-
+// 回显
 watch(
   () => props.modelValue,
-  (val) => {
-    ids.value = deserialize(val)
+  (value) => {
+    cascaderValue.value = value
+  },
+  {
+    immediate: true,
   },
 )
 
-// 查询参数变化
+// 参数变化 => 重新获取数据
 watch(
   () => props.params,
   async () => {
-    await getTree()
-    if (!isNil(props.modelValue)) {
-      updateVars(ids.value)
+    await getData()
+
+    const { modelValue } = props
+
+    if (!isNil(modelValue)) {
+      updateVars(modelValue)
     }
   },
   {
@@ -257,3 +281,9 @@ watch(
   },
 )
 </script>
+
+<style lang="scss" scoped>
+:deep(.van-field__body) {
+  align-items: start;
+}
+</style>

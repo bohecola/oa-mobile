@@ -17,6 +17,7 @@ declare module 'vue' {
     DictSelect: typeof import('./src/components/DictSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
+    InitiatorInfo: typeof import('./src/components/InitiatorInfo/index.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']

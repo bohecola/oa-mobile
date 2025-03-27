@@ -66,17 +66,17 @@ export interface DailyFeeItemVO {
   /**
    * 费用明细
    */
-  id?: string | number
+  id?: string
 
   /**
    * 日常费用申请表id
    */
-  dailyFeeId?: string | number
+  dailyFeeId?: string
 
   /**
    * 项目预算项id（oa_project_subject_item）
    */
-  subjectItemId?: string | number
+  subjectItemId?: string
 
   /**
    * 预算责任部门
@@ -118,7 +118,7 @@ export interface DailyFeeForm extends BaseEntity, ExtraForm {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 预算id
@@ -153,7 +153,7 @@ export interface DailyFeeForm extends BaseEntity, ExtraForm {
   /**
    * 预算科目
    */
-  subjectItemId?: string | number
+  subjectItemId?: string
 
   /**
    * 预算明细表

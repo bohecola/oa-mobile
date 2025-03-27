@@ -1,29 +1,30 @@
 <template>
-  <van-field v-show-field="['subjectType', includeFields]" label="预算类型" name="subjectType">
-    <template #input>
-      <DictSelect v-model="form.subjectType" dict-type="oa_project_subject_type" readonly />
-    </template>
-  </van-field>
+  <DictSelect
+    v-model="form.subjectType"
+    v-show-field="['subjectType', includeFields]"
+    label="预算类型"
+    name="subjectType"
+    dict-type="oa_project_subject_type"
+  />
 
-  <van-field v-show-field="['deptId', includeFields]" label="需求部门" name="deptId">
-    <template #input>
-      <DeptSelect v-model="form.deptId" readonly />
-    </template>
-  </van-field>
+  <DeptSelect
+    v-model="form.deptId"
+    v-show-field="['deptId', includeFields]"
+    label="需求部门"
+    name="deptId"
+  />
 
-  <van-field
+  <ProjectSubjectSelect
+    v-model="form.psId"
     v-show-field="['psId', includeFields]"
     label="预算"
     name="psId"
-  >
-    <template #input>
-      <ProjectSubjectSelect v-model="form.psId" readonly />
-    </template>
-  </van-field>
+  />
 
   <van-field
     v-if="isProject && !isNil(form.psId)"
-    v-model="form.contractNo" v-show-field="['contractNo', includeFields]"
+    v-model="form.contractNo"
+    v-show-field="['contractNo', includeFields]"
     label="合同编号"
     name="contractNo"
   />
@@ -42,74 +43,54 @@
     label="费用明细"
   >
     <template #input>
-      <TableCard v-for="(item, index) in form.itemList" :key="item.id" :default-collapse="true">
-        <template #header>
-          <van-field
+      <div class="w-full flex flex-col gap-2">
+        <TableCard
+          v-for="(item, index) in form.itemList"
+          :key="item.id"
+          :title="`# ${index + 1}`"
+        >
+          <PurchaseCategorySelect
             v-model="item.subjectItemId"
-            :name="`itemList.${index}.subjectItemId`"
-            :border="false"
+            v-model:amount="item.budgetAmount"
+            v-model:applying-amount="item.applyingAmount"
+            v-model:finish-amount="item.finishAmount"
+            v-model:available-amount="item.availableAmount"
             label="预算科目"
-            class="!items-baseline"
-          >
-            <template #input>
-              <PurchaseCategorySelect
-                v-model="item.subjectItemId"
-                v-model:amount="item.budgetAmount"
-                v-model:applying-amount="item.applyingAmount"
-                v-model:finish-amount="item.finishAmount"
-                v-model:available-amount="item.availableAmount"
-                :params="PurchaseCategorySelectParams"
-                readonly
-              />
-            </template>
-          </van-field>
-        </template>
+            :name="`itemList.${index}.subjectItemId`"
+            :params="PurchaseCategorySelectParams"
+          />
 
-        <van-field
-          :name="`itemList.${index}.budgetAmount`"
-          label="预算金额"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].budgetAmount) }}
-          </template>
-        </van-field>
+          <van-field
+            :model-value="formatCurrency(form.itemList[index].budgetAmount)"
+            :name="`itemList.${index}.budgetAmount`"
+            label="预算金额"
+          />
 
-        <van-field
-          :name="`itemList.${index}.applyingAmount`"
-          label="申请中"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].applyingAmount) }}
-          </template>
-        </van-field>
+          <van-field
+            :model-value="formatCurrency(form.itemList[index].applyingAmount)"
+            :name="`itemList.${index}.applyingAmount`"
+            label="申请中"
+          />
 
-        <van-field
-          :name="`itemList.${index}.finishAmount`"
-          label="已申请"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].finishAmount) }}
-          </template>
-        </van-field>
+          <van-field
+            :model-value="formatCurrency(form.itemList[index].finishAmount)"
+            :name="`itemList.${index}.finishAmount`"
+            label="已申请"
+          />
 
-        <van-field
-          :name="`itemList.${index}.availableAmount`"
-          label="剩余金额"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].availableAmount) }}
-          </template>
-        </van-field>
+          <van-field
+            :model-value="formatCurrency(form.itemList[index].availableAmount)"
+            :name="`itemList.${index}.availableAmount`"
+            label="剩余金额"
+          />
 
-        <van-field
-          :name="`itemList.${index}.amount`"
-          label="申请金额（元）"
-        >
-          <template #input>
-            {{ formatCurrency(form.itemList[index].amount) }}
-          </template>
-        </van-field>
-      </TableCard>
+          <van-field-number
+            :model-value="item.amount"
+            :name="`itemList.${index}.amount`"
+            label="申请金额（元）"
+          />
+        </TableCard>
+      </div>
     </template>
   </van-field>
 
