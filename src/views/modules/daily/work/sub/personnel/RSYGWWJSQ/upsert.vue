@@ -15,6 +15,7 @@
     :columns-type="['year', 'month']"
     component="date-picker"
     :rules="computedRules.n_mounth"
+    clearable
   />
 
   <DictSelect
@@ -26,6 +27,7 @@
     multiple
     component="checkbox"
     :rules="computedRules.n_giftGoldCategory"
+    clearable
   />
 
   <van-field-number

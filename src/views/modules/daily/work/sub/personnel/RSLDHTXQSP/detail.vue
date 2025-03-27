@@ -12,11 +12,15 @@
     label="部门/项目部"
   />
 
-  <van-field v-show-field="['b_postIds', includeFields]" label="岗位" name="b_postIds">
-    <template #input>
-      <PostSelect v-model="form.b_postIds" :dept-id="form.b_deptId" multiple readonly />
-    </template>
-  </van-field>
+  <PostSelect
+    v-model="form.b_postIds"
+    v-show-field="['b_postIds', includeFields]"
+    name="b_postIds"
+    label="岗位"
+    multiple
+    :dept-id="form.b_deptId"
+    readonly
+  />
 
   <DictSelect
     v-model="form.b_sex"
@@ -57,7 +61,6 @@
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import PostSelect from '@/views/modules/personnel/components/PostSelect.vue'
 
 withDefaults(
   defineProps<{

@@ -6,6 +6,7 @@
     name="administrationFileType"
     dict-type="oa_administration_file_type"
     :rules="computedRules.administrationFileType"
+    clearable
   />
 
   <DictSelect
@@ -16,6 +17,7 @@
     dict-type="oa_file_type"
     multiple
     :rules="computedRules.administrationFileType"
+    clearable
   />
 
   <van-field

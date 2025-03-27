@@ -6,6 +6,7 @@
     name="sealType"
     dict-type="oa_seal_type"
     :rules="computedRules.sealType"
+    clearable
   />
 
   <van-field

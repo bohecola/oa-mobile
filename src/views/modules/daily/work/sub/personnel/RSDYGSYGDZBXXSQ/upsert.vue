@@ -23,6 +23,7 @@
     dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type"
     multiple
     :rules="computedRules.f_fileType"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

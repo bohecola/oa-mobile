@@ -24,6 +24,7 @@
     :columns-type="['year', 'month']"
     component="date-picker"
     :rules="computedRules.i_month"
+    clearable
   />
 
   <van-field-number

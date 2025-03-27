@@ -53,11 +53,15 @@
         label="部门"
       />
 
-      <van-field v-if="form.checked" v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
-        <template #input>
-          <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple readonly />
-        </template>
-      </van-field>
+      <PostSelect
+        v-model="form.postId"
+        v-show-field="['postId', includeFields]"
+        name="postId"
+        label="岗位"
+        multiple
+        :dept-id="form.deptId"
+        readonly
+      />
 
       <DictSelect
         v-model="form.sex"
@@ -101,11 +105,18 @@
         :rules="computedRules.deptId"
         @change="deptChange"
       />
-      <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
-        <template #input>
-          <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple @change="postChange" />
-        </template>
-      </van-field>
+
+      <PostSelect
+        v-model="form.postId"
+        v-show-field="['postId', includeFields]"
+        name="postId"
+        label="岗位"
+        multiple
+        :dept-id="form.deptId"
+        :rules="computedRules.postId"
+        @change="postChange"
+      />
+
       <DictSelect
         v-model="form.sex"
         v-show-field="['sex', includeFields]"
@@ -484,7 +495,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import UserEmploymentSelect from '../components/UserEmploymentSelect.vue'
 import { useForm } from './form'
 import { checkPhoneUnique, checkUserNameUnique } from '@/api/system/user'
@@ -536,6 +546,7 @@ async function userAccountChange(value: string) {
   }
 }
 
+// TODO 选择预入职的员工
 // 获取选择的预入职的员工row和岗位级别
 function getPreUser(row: UserPreEmploymentVO) {
   // TODO 表单的值赋值一部分

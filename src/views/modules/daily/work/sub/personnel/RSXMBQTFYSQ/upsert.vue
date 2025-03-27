@@ -81,6 +81,7 @@
     name="ee_startDate"
     label="执行开始日期"
     :rules="computedRules.ee_startDate"
+    clearable
   />
 
   <DateSelect
@@ -90,6 +91,7 @@
     name="ee_endDate"
     label="执行结束日期"
     :rules="computedRules.ee_endDate"
+    clearable
   />
 
   <van-field

@@ -25,20 +25,15 @@
       :rules="computedRules.oldDeptId"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.oldPostId"
       v-show-field="['oldPostId', includeFields]"
       name="oldPostId"
-      label="见习岗位"
+      label="岗位"
+      multiple
+      :dept-id="form.oldDeptId"
       :rules="computedRules.oldPostId"
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.oldPostId"
-          :dept-id="form.oldDeptId"
-          multiple
-        />
-      </template>
-    </van-field>
+    />
 
     <DictSelect
       v-model="form.sex"
@@ -253,7 +248,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import UserInfoSelect from '../components/UserInfoSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

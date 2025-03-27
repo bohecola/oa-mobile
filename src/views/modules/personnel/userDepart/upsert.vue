@@ -30,11 +30,15 @@
       :rules="computedRules.deptId"
     />
 
-    <van-field v-show-field="['postId', includeFields]" name="postId" label="岗位" :rules="computedRules.postId">
-      <template #input>
-        <PostSelect v-model="form.postId" :dept-id="form.deptId" multiple />
-      </template>
-    </van-field>
+    <PostSelect
+      v-model="form.postId"
+      v-show-field="['postId', includeFields]"
+      name="postId"
+      label="岗位"
+      multiple
+      :dept-id="form.deptId"
+      :rules="computedRules.postId"
+    />
 
     <DictSelect
       v-if="userTypeVisible"
@@ -160,7 +164,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { getDept } from '@/api/system/dept'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'

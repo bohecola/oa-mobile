@@ -14,11 +14,15 @@
         </template>
       </van-field>
 
-      <van-field v-model="form.postId" v-show-field="['postId', includeFields]" name="postId" label="岗位名称" input-align="left">
-        <template #input>
-          <PostSelect v-model="form.postId" :dept-id="form.deptId" readonly />
-        </template>
-      </van-field>
+      <PostSelect
+        v-model="form.postId"
+        v-show-field="['postId', includeFields]"
+        name="postId"
+        label="岗位"
+        multiple
+        :dept-id="form.deptId"
+        readonly
+      />
 
       <van-field v-model="form.sex" v-show-field="['sex', includeFields]" name="sex" label="性别" input-align="left">
         <template #input>
@@ -140,14 +144,13 @@
     </van-cell-group>
     <!-- 附件列表 -->
     <TableCard v-show-field="['ossIdList', includeFields]" title="附件列表" class="mx-4" :is-empty="isEmpty(form.ossIdList)">
-      <UploadFile v-model="form.ossIdList" readonly  />
+      <UploadFile v-model="form.ossIdList" readonly />
     </TableCard>
   </van-form>
 </template>
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import PreUserSelect from './components/PreUserSelect.vue'
 import { useForm } from './form'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userApplication/types'

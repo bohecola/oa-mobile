@@ -93,6 +93,7 @@
         v-show-field="['attendNumber', includeFields]"
         name="attendNumber"
         label="参加人数"
+        type="digit"
         :rules="computedRules.applicationType"
       />
 

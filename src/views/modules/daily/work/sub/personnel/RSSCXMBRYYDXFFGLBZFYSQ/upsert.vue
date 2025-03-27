@@ -23,6 +23,7 @@
     dict-type="oa_daily_work_rsscxmbryydxffglbzfysq_type"
     multiple
     :rules="computedRules.q_type"
+    clearable
     @change="onTypeChange"
   />
 

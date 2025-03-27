@@ -22,20 +22,15 @@
       label="部门"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.postId"
       v-show-field="['postId', includeFields]"
       name="postId"
       label="岗位"
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.postId"
-          :dept-id="form.deptId"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      multiple
+      :dept-id="form.deptId"
+      readonly
+    />
 
     <DictSelect
       v-model="form.sex"
@@ -263,7 +258,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import PendingUserEmploymentSelect from '../components/PendingUserEmploymentSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

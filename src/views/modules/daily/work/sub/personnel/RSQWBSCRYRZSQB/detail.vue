@@ -1,16 +1,10 @@
 <template>
-  <van-field
+  <UserEmploymentSelect
+    v-model="form.ff_userId"
     v-show-field="['ff_userId', includeFields]"
+    name="ff_userId"
     label="员工"
-    name="ff_deptId"
-  >
-    <template #input>
-      <PreUserSelect
-        v-model="form.ff_userId"
-        readonly
-      />
-    </template>
-  </van-field>
+  />
 
   <DeptSelect
     v-model="form.ff_deptId"
@@ -154,7 +148,7 @@ import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import PreUserSelect from '@/views/modules/personnel/userEmployment/workflow/components/PreUserSelect.vue'
+import UserEmploymentSelect from '@/views/modules/personnel/components/UserEmploymentSelect.vue'
 
 const props = withDefaults(
   defineProps<{

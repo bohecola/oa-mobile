@@ -21,11 +21,15 @@
     :rules="computedRules.t_deptId"
   />
 
-  <van-field v-show-field="['t_postIds', includeFields]" label="岗位" name="t_postIds" :rules="computedRules.t_postIds">
-    <template #input>
-      <PostSelect v-model="form.t_postIds" :dept-id="form.t_deptId" multiple />
-    </template>
-  </van-field>
+  <PostSelect
+    v-model="form.t_postIds"
+    v-show-field="['t_postIds', includeFields]"
+    name="t_postIds"
+    label="岗位"
+    multiple
+    :dept-id="form.t_deptId"
+    :rules="computedRules.t_postIds"
+  />
 
   <van-field v-show-field="['t_isFormal', includeFields]" label="是否已转正" name="t_isFormal" :rules="computedRules.t_isFormal">
     <template #input>
@@ -42,7 +46,6 @@ import UserSelect from '@/components/UserSelect/index.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { UserVO } from '@/api/system/user/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import PostSelect from '@/views/modules/personnel/components/PostSelect.vue'
 
 const props = withDefaults(
   defineProps<{

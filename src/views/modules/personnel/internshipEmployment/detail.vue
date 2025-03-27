@@ -30,20 +30,15 @@
       label="见习部门"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.oldPostId"
       v-show-field="['oldPostId', includeFields]"
       name="oldPostId"
-      label="见习岗位"
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.oldPostId"
-          :dept-id="form.oldDeptId"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      label="岗位"
+      multiple
+      :dept-id="form.oldDeptId"
+      readonly
+    />
 
     <DictSelect
       v-model="form.sex"
@@ -270,7 +265,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import UserInfoSelect from '../components/UserInfoSelect.vue'
 
 import { useForm } from './form'

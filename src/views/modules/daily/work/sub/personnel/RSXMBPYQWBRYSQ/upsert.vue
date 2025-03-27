@@ -27,6 +27,7 @@
     name="k_nature"
     dict-type="oa_daily_work_employ_personnel_type"
     :rules="computedRules.k_nature"
+    clearable
   />
 
   <DictSelect
@@ -36,6 +37,7 @@
     name="k_category"
     dict-type="oa_daily_work_rsxmbpywbrysq_employ_category"
     :rules="computedRules.k_category"
+    clearable
   />
 
   <van-field
@@ -55,6 +57,7 @@
     placeholder="请输入"
     name="k_number"
     :rules="computedRules.k_number"
+    clearable
   />
 
   <van-field
@@ -100,6 +103,7 @@
     name="k_effectiveDate"
     label="生效日期"
     :rules="computedRules.k_effectiveDate"
+    clearable
   />
 
   <van-field
@@ -109,6 +113,7 @@
     placeholder="例如 上五休二或上六休一"
     name="k_monthlyWorkingMode"
     :rules="computedRules.k_monthlyWorkingMode"
+    clearable
   />
 
   <div v-if="['3', '5'].includes(form.k_category)">
@@ -155,6 +160,7 @@
     placeholder="请输入"
     name="k_salaryStandards"
     :rules="computedRules.k_salaryStandards"
+    clearable
   />
 
   <div v-if="['6'].includes(form.k_category)">
@@ -215,6 +221,7 @@
       name="k_startDate"
       label="聘用开始日期"
       :rules="computedRules.k_startDate"
+      clearable
     />
 
     <DateSelect
@@ -223,6 +230,7 @@
       name="k_endDate"
       label="聘用结束日期"
       :rules="computedRules.k_endDate"
+      clearable
     />
 
     <DictSelect
@@ -232,6 +240,7 @@
       name="k_signeContractType"
       dict-type="oa_daily_work_rsxmbpywbrysq_signe_contract_type"
       :rules="computedRules.k_signeContractType"
+      clearable
       @change="onSigneContractTypeChange"
     />
 
@@ -242,6 +251,7 @@
         name="k_signeContractStartDate"
         label="合同签订开始时间"
         :rules="computedRules.k_signeContractStartDate"
+        clearable
       />
 
       <DateSelect
@@ -250,6 +260,7 @@
         name="k_signeContractEndDate"
         label="合同签订结束时间"
         :rules="computedRules.k_signeContractEndDate"
+        clearable
       />
 
       <van-field
@@ -272,6 +283,7 @@
       name="k_purchaseInsuranceType"
       dict-type="oa_daily_work_rsxmbpywbrysq_insurance_type"
       :rules="computedRules.k_purchaseInsuranceType"
+      clearable
       @change="onPurchaseInsuranceTypeChange"
     />
 
@@ -282,6 +294,7 @@
         name="k_insuranceStartDate"
         label="保险开始时间"
         :rules="computedRules.k_insuranceStartDate"
+        clearable
       />
 
       <DateSelect
@@ -290,6 +303,7 @@
         name="k_insuranceEndDate"
         label="保险结束时间"
         :rules="computedRules.k_insuranceEndDate"
+        clearable
       />
 
       <van-field

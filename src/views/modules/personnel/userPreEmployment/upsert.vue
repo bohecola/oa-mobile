@@ -24,16 +24,16 @@
       label="招聘申请"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.postId"
       v-show-field="['postId', includeFields]"
       name="postId"
       label="岗位名称"
+      multiple
+      :dept-id="form.deptId"
       :rules="computedRules.postId"
-    >
-      <template #input>
-        <PostSelect v-model="form.postId" :dept-id="form.deptId" @change="onPostSelectChange" />
-      </template>
-    </van-field>
+      @change="onPostSelectChange"
+    />
 
     <van-field
       v-model.trim="form.name"
@@ -257,7 +257,6 @@
 
 <script setup lang='ts'>
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import type { UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 import { checkPhoneUnique } from '@/api/system/user'

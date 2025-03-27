@@ -13,6 +13,7 @@
     name="c_useDate"
     label="用印日期"
     :rules="computedRules.c_useDate"
+    clearable
   />
 
   <DictSelect
@@ -23,6 +24,7 @@
     dict-type="oa_daily_work_rsghyysp_seal_type"
     multiple
     :rules="computedRules.c_sealType"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

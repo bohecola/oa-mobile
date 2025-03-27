@@ -6,6 +6,7 @@
     name="fileUseType"
     dict-type="oa_file_use_type"
     :rules="computedRules.fileUseType"
+    clearable
   />
 
   <DictSelect
@@ -15,6 +16,7 @@
     name="sealFileCategory"
     dict-type="oa_seal_file_category"
     :rules="computedRules.sealFileCategory"
+    clearable
   />
 
   <DictSelect
@@ -25,6 +27,7 @@
     dict-type="oa_seal_use_type"
     multiple
     :rules="computedRules.sealUseType"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

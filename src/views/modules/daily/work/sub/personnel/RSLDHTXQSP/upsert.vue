@@ -25,21 +25,15 @@
     :rules="computedRules.b_deptId"
   />
 
-  <van-field
+  <PostSelect
+    v-model="form.b_postIds"
     v-show-field="['b_postIds', includeFields]"
-    label="岗位"
     name="b_postIds"
-    :rules="computedRules.b_postIds"
-  >
-    <template #input>
-      <PostSelect
-        v-model="form.b_postIds"
-        :dept-id="form.b_deptId"
-        multiple
-        readonly
-      />
-    </template>
-  </van-field>
+    label="岗位"
+    multiple
+    :dept-id="form.b_deptId"
+    readonly
+  />
 
   <DictSelect
     v-model="form.b_sex"
@@ -72,6 +66,7 @@
     name="b_contractType"
     component="radio"
     dict-type="oa_daily_work_rsldhtxqsp_contract_type"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />
@@ -82,7 +77,6 @@ import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { UserVO } from '@/api/system/user/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import PostSelect from '@/views/modules/personnel/components/PostSelect.vue'
 import UserSelect from '@/components/UserSelect/index.vue'
 
 const props = withDefaults(

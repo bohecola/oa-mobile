@@ -7,6 +7,7 @@
     dict-type="oa_file_type"
     multiple
     :rules="computedRules.fileType"
+    clearable
   />
 
   <DictSelect
@@ -16,6 +17,7 @@
     name="fileUseType"
     dict-type="oa_file_use_type"
     :rules="computedRules.fileUseType"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

@@ -41,6 +41,7 @@
     name="r_effectiveDate"
     label="生效日期"
     :rules="computedRules.r_effectiveDate"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

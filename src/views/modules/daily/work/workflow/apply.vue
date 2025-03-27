@@ -39,12 +39,14 @@
           </template>
         </van-field>
 
-        <van-field v-if="form.dailyWorkType" name="companyId" label="公司">
-          <template #input>
-            <!-- TODO 公司选择 -->
-            <ComanySelect v-model="form.companyId" readonly />
-          </template>
-        </van-field>
+        <!-- TODO 公司选择 -->
+        <CompanySelect
+          v-if="form.dailyWorkType"
+          v-model="form.companyId"
+          name="companyId"
+          label="公司"
+          readonly
+        />
 
         <template v-if="!isNil(form.no)">
           <component :is="isDefaultPage === 'Y' ? SubComponent.DefaultWork : SubComponent[form.no]" :key="form.no" />
@@ -60,7 +62,6 @@ import { isNil } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
-import ComanySelect from '../../../personnel/components/ComanySelect.vue'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'

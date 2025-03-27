@@ -12,11 +12,15 @@
     label="所在部门/项目部"
   />
 
-  <van-field v-show-field="['t_postIds', includeFields]" label="岗位" name="t_postIds">
-    <template #input>
-      <PostSelect v-model="form.t_postIds" :dept-id="form.t_deptId" multiple readonly />
-    </template>
-  </van-field>
+  <PostSelect
+    v-model="form.t_postIds"
+    v-show-field="['t_postIds', includeFields]"
+    name="t_postIds"
+    label="调入岗位"
+    multiple
+    :dept-id="form.t_deptId"
+    readonly
+  />
 
   <van-field v-show-field="['t_isFormal', includeFields]" label="是否已转正" name="t_isFormal">
     <template #input>
@@ -31,7 +35,6 @@
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import PostSelect from '@/views/modules/personnel/components/PostSelect.vue'
 
 const props = withDefaults(
   defineProps<{

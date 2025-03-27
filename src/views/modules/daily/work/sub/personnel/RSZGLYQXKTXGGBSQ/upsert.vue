@@ -12,6 +12,7 @@
     placeholder="请输入开通权限、修改权限、关闭权限"
     name="h_type"
     :rules="computedRules.h_type"
+    clearable
   />
 
   <van-field
@@ -39,6 +40,7 @@
     label="生效日期"
     :rules="computedRules.h_effectiveDate"
     :columns-type="['year', 'month']"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

@@ -6,6 +6,7 @@
     placeholder="请输入"
     name="pp_contractCategory"
     :rules="computedRules.pp_contractCategory"
+    clearable
   />
 
   <van-field

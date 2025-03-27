@@ -14,6 +14,7 @@
     name="qq_personnelCategory"
     dict-type="oa_daily_work_personnel_category"
     :rules="computedRules.qq_personnelCategory"
+    clearable
   />
 
   <DateSelect
@@ -22,6 +23,7 @@
     name="qq_insuranceExpirationStartDate"
     label="建议保险开始日期"
     :rules="computedRules.qq_insuranceExpirationStartDate"
+    clearable
   />
 
   <DateSelect
@@ -30,6 +32,7 @@
     name="qq_insuranceExpirationEndDate"
     label="建议保险截止日期"
     :rules="computedRules.qq_insuranceExpirationEndDate"
+    clearable
   />
 
   <DateSelect
@@ -38,6 +41,7 @@
     name="qq_latestPurchaseDate"
     label="保险最晚购买日期"
     :rules="computedRules.qq_latestPurchaseDate"
+    clearable
   />
 
   <van-field-number
@@ -48,6 +52,7 @@
     placeholder="请输入"
     name="qq_purchaseInsuranceNumber"
     :rules="computedRules.qq_purchaseInsuranceNumber"
+    clearable
   />
 
   <DictSelect
@@ -57,6 +62,7 @@
     name="qq_purchaseInsuranceCategory"
     dict-type="oa_daily_work_purchase_insurance_category"
     :rules="computedRules.qq_purchaseInsuranceCategory"
+    clearable
   />
 
   <van-field-number
@@ -66,6 +72,7 @@
     placeholder="请输入"
     name="qq_insuranceLimit"
     :rules="computedRules.qq_insuranceLimit"
+    clearable
   />
 
   <van-field
@@ -99,6 +106,7 @@
     placeholder="请输入"
     name="qq_distanceRange"
     :rules="computedRules.qq_distanceRange"
+    clearable
   />
 
   <!-- <van-field

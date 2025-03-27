@@ -41,6 +41,7 @@
     name="gg_changeType"
     dict-type="oa_daily_work_rszpxqbgsq_change_type"
     :rules="computedRules.gg_changeType"
+    clearable
     @change="onTypeChange"
   />
 
@@ -52,6 +53,7 @@
     dict-type="oa_daily_work_rszpxqbgsq_change_details"
     multiple
     :rules="computedRules.gg_changeDetails"
+    clearable
   />
 
   <van-field-number
@@ -114,6 +116,7 @@
     name="gg_effectiveDate"
     label="变更生效日期"
     :rules="computedRules.gg_effectiveDate"
+    clearable
   />
 
   <van-field-number

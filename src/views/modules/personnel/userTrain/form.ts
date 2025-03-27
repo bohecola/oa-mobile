@@ -71,6 +71,7 @@ export function useForm() {
       commander: [{ required: true, message: '负责人不能为空', trigger: 'onChange' }],
       type: [{ required: true, message: '培训类型不能为空', trigger: 'onChange' }],
       content: [{ required: true, message: '培训内容不能为空', trigger: 'onBlur' }],
+      applicationType: [{ required: true, message: '申请类型不能为空', trigger: 'onBlur' }],
     },
   })
 

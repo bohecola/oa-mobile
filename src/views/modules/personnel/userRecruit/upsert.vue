@@ -103,15 +103,13 @@
       <template #input>
         <div class="w-full flex flex-col gap-2">
           <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="`# ${index + 1}`">
-            <van-field
+            <PostSelect
+              v-model="item.postId"
               :name="`itemList.${index}.postId`"
               label="岗位名称"
+              :dept-id="form.deptId"
               :rules="[{ required: true, message: '不能为空', trigger: 'onChange' }]"
-            >
-              <template #input>
-                <PostSelect v-model="item.postId" :dept-id="form.deptId" multiple />
-              </template>
-            </van-field>
+            />
 
             <van-field-number
               v-model.number="item.userNum"
@@ -214,7 +212,6 @@
 
 <script setup lang='ts'>
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'

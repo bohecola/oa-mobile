@@ -29,12 +29,11 @@
       dict-type="oa_transfer_type"
     />
 
-    <DictSelect
+    <CompanySelect
       v-model="form.oldCompanyId"
       v-show-field="['oldCompanyId', includeFields]"
       label="原公司"
       name="oldCompanyId"
-      :options="companyData"
     />
 
     <DeptSelect
@@ -44,27 +43,20 @@
       label="原部门/项目部"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.oldPostId"
       v-show-field="['oldPostId', includeFields]"
       name="oldPostId"
       label="原岗位"
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.oldPostId"
-          :dept-id="form.oldDeptId"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      multiple
+      :dept-id="form.oldDeptId"
+    />
 
-    <DictSelect
+    <CompanySelect
       v-model="form.newCompanyId"
       v-show-field="['newCompanyId', includeFields]"
       label="调入公司"
       name="newCompanyId"
-      :options="companyData"
     />
 
     <DeptSelect
@@ -74,20 +66,14 @@
       label="调入部门/项目部"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.newPostId"
       v-show-field="['newPostId', includeFields]"
       name="newPostId"
       label="调入岗位"
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.newPostId"
-          :dept-id="form.newDeptId"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      multiple
+      :dept-id="form.newDeptId"
+    />
 
     <DateSelect
       v-model="form.startDate"
@@ -197,7 +183,6 @@
 
 <script setup name="userTransferDetail" lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
@@ -216,7 +201,7 @@ withDefaults(
   },
 )
 
-const { Form, form, isLoading, companyData, view, reset, workflowView } = useForm()
+const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
 

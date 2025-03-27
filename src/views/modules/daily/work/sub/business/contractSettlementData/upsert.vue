@@ -35,6 +35,7 @@
     dict-type="oa_file_type"
     :multiple="true"
     :rules="computedRules.fileType"
+    clearable
   />
 
   <van-field

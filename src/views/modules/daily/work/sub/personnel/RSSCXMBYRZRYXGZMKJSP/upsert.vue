@@ -24,6 +24,7 @@
     multiple
     dict-type="oa_daily_work_rsscxmbyrzryxgzmkjsp_prove_type"
     :rules="computedRules.e_proveType"
+    clearable
   />
 
   <BaseUpsert :include-fields="includeFields" />

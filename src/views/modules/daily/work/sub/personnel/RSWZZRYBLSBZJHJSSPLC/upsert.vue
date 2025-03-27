@@ -21,6 +21,7 @@
     name="cc_socialSecurityProcessingCategory"
     dict-type="oa_daily_work_rswzzryblsbzjhjssplc_ss_type"
     :rules="computedRules.cc_socialSecurityProcessingCategory"
+    clearable
   />
 
   <DictSelect
@@ -31,6 +32,7 @@
     dict-type="oa_daily_work_rswzzryblsbzjhjssplc_insurance_type"
     multiple
     :rules="computedRules.cc_insuranceType"
+    clearable
   />
 
   <DateSelect
@@ -40,6 +42,7 @@
     label="生效月份"
     :columns-type="['year', 'month']"
     component="date-picker"
+    clearable
   />
 
   <BaseUpsert

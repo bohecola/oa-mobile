@@ -88,19 +88,13 @@
       class="mx-4 mb-2"
       :default-collapse="true"
     >
-      <van-field
+      <PostSelect
+        v-model="item.postId"
         :name="`itemList.${index}.postId`"
         label="岗位名称"
-      >
-        <template #input>
-          <PostSelect
-            v-model="item.postId"
-            :dept-id="form.deptId"
-            multiple
-            readonly
-          />
-        </template>
-      </van-field>
+        :dept-id="form.deptId"
+        readonly
+      />
 
       <van-field
         v-model="item.userNum"
@@ -190,7 +184,6 @@
 
 <script setup lang='ts'>
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'

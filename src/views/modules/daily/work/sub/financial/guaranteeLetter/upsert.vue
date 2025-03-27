@@ -6,6 +6,7 @@
     name="contractCategory"
     dict-type="oa_contract_category_in"
     :rules="computedRules.contractCategory"
+    clearable
   />
 
   <van-field

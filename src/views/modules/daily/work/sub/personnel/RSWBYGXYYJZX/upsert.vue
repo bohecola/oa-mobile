@@ -47,6 +47,7 @@
     name="x_contractEndTime"
     label="外包合同到期时间"
     :rules="computedRules.x_contractEndTime"
+    clearable
   />
 
   <van-field

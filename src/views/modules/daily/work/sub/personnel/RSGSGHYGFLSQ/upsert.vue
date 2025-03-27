@@ -6,6 +6,7 @@
     name="m_welfareCategory"
     dict-type="oa_daily_work_rsgsghygflsq_welfare_category"
     :rules="computedRules.m_welfareCategory"
+    clearable
   />
 
   <van-field-number

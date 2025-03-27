@@ -1,4 +1,5 @@
 import type { FormInstance } from 'vant'
+import { isNumber } from 'lodash-es'
 import { addUserTransfer, getUserTransfer, updateUserTransfer } from '@/api/oa/personnel/userTransfer'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { useUserStore } from '@/store/user'
@@ -140,22 +141,6 @@ export function useForm() {
     }
   }
 
-  const companyData = ref([])
-  async function getCompanyData() {
-    const { data } = await getCompany('0')
-    companyData.value = data.filter(e => e.status === '0').map((e) => {
-      return {
-        label: e.deptName,
-        value: e.deptId,
-      }
-    })
-    return companyData.value
-  }
-
-  onMounted(() => {
-    getCompanyData()
-  })
-
   return {
     Form,
     form,
@@ -163,7 +148,6 @@ export function useForm() {
     isLoading,
     updateLoading,
     userInfo,
-    companyData,
     reset,
     view,
     submit,

@@ -7,6 +7,7 @@
     dict-type="oa_file_type"
     multiple
     :rules="computedRules.fileType"
+    clearable
   />
 
   <van-field

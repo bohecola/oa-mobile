@@ -8,20 +8,32 @@
     input-align="left"
     readonly
   >
-    <van-field
-      v-show-field="['preEmploymentId', includeFields]"
-      name="preEmploymentId"
-      label="员工"
-    >
-      <template #input>
-        <span v-if="form.name">{{ form.name }}</span>
-        <PreUserSelect
-          v-else
-          v-model="form.preEmploymentId"
-          readonly
-        />
-      </template>
-    </van-field>
+    <div>
+      <van-field
+        name="checked"
+        label="面试评价"
+      >
+        <template #input>
+          <van-switch v-model="form.checked" size="18px" />
+        </template>
+      </van-field>
+
+      <UserEmploymentSelect
+        v-if="form.checked"
+        v-model="form.preEmploymentId"
+        v-show-field="['preEmploymentId', includeFields]"
+        name="preEmploymentId"
+        label="员工"
+      />
+
+      <van-field
+        v-else
+        v-model="form.name"
+        v-show-field="['name', includeFields]"
+        name="name"
+        label="员工"
+      />
+    </div>
 
     <DeptSelect
       v-model="form.deptId"
@@ -30,20 +42,15 @@
       label="部门"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.postId"
       v-show-field="['postId', includeFields]"
       name="postId"
-      label="岗位 "
-    >
-      <template #input>
-        <PostSelect
-          v-model="form.postId"
-          :dept-id="form.deptId"
-          multiple
-          readonly
-        />
-      </template>
-    </van-field>
+      label="岗位"
+      multiple
+      :dept-id="form.deptId"
+      readonly
+    />
 
     <DictSelect
       v-model="form.sex"
@@ -259,16 +266,6 @@
       </template>
     </van-field>
 
-    <DictSelect
-      v-if="form.level >= 38"
-      v-model="form.certificates"
-      v-show-field="['certificates', includeFields]"
-      label="持证情况"
-      name="certificates"
-      dict-type="oa_document_type"
-      multiple
-    />
-
     <van-field
       v-if="form.isRecommend === 'Y'"
       v-show-field="['reference', includeFields]"
@@ -279,6 +276,16 @@
         <TextareaView :value="form.reference" />
       </template>
     </van-field>
+
+    <DictSelect
+      v-if="form.level >= 38"
+      v-model="form.certificates"
+      v-show-field="['certificates', includeFields]"
+      label="持证情况"
+      name="certificates"
+      dict-type="oa_document_type"
+      multiple
+    />
 
     <van-field
       v-if="!isNil(form.certificates) && form.certificates.includes('9')"
@@ -339,7 +346,6 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

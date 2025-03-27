@@ -29,12 +29,12 @@
       :rules="computedRules.type"
     />
 
-    <DictSelect
+    <CompanySelect
       v-model="form.oldCompanyId"
       v-show-field="['oldCompanyId', includeFields]"
       label="原公司"
       name="oldCompanyId"
-      :options="companyData"
+      readonly
     />
 
     <DeptSelect
@@ -44,23 +44,21 @@
       label="原部门/项目部"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.oldPostId"
       v-show-field="['oldPostId', includeFields]"
       name="oldPostId"
       label="原岗位"
-      :rules="computedRules.oldPostId"
-    >
-      <template #input>
-        <PostSelect v-model="form.oldPostId" :dept-id="form.oldDeptId" multiple readonly />
-      </template>
-    </van-field>
+      multiple
+      :dept-id="form.oldDeptId"
+      readonly
+    />
 
-    <DictSelect
+    <CompanySelect
       v-model="form.newCompanyId"
       v-show-field="['newCompanyId', includeFields]"
       label="调入公司"
       name="newCompanyId"
-      :options="companyData"
       :rules="computedRules.newCompanyId"
     />
 
@@ -73,16 +71,15 @@
       @node-click="newDeptChange"
     />
 
-    <van-field
+    <PostSelect
+      v-model="form.newPostId"
       v-show-field="['newPostId', includeFields]"
       name="newPostId"
       label="调入岗位"
+      multiple
+      :dept-id="form.newDeptId"
       :rules="computedRules.newPostId"
-    >
-      <template #input>
-        <PostSelect v-model="form.newPostId" :dept-id="form.newDeptId" multiple />
-      </template>
-    </van-field>
+    />
 
     <DateSelect
       v-model="form.startDate"
@@ -90,6 +87,7 @@
       name="startDate"
       label="生效日期"
       :rules="computedRules.startDate"
+      clearable
     />
 
     <DateSelect
@@ -97,6 +95,7 @@
       v-show-field="['endDate', includeFields]"
       name="endDate"
       label="截止日期"
+      clearable
     />
 
     <van-field
@@ -189,12 +188,10 @@
 
 <script setup name="userTransferDetail" lang="ts">
 import { isNil } from 'lodash-es'
-import PostSelect from '../components/PostSelect.vue'
 import { useForm } from './form'
 import { getUserInfoAll } from '@/api/oa/personnel/userTransfer'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
-// import { useDisabledDateFn } from '@/hooks'
 import type { DeptVO } from '@/api/system/dept/types'
 import { getDept } from '@/api/system/dept'
 import UserSelect from '@/components/UserSelect/index.vue'
@@ -214,7 +211,7 @@ const props = withDefaults(
 )
 
 // 表单
-const { Form, form, rules, isLoading, updateLoading, userInfo, companyData, reset, submit, view, workflowSubmit, workflowView } = useForm()
+const { Form, form, rules, isLoading, updateLoading, userInfo, reset, submit, view, workflowSubmit, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<UserTransferForm>()
@@ -243,7 +240,7 @@ async function getUserAll(userId: string | number) {
   const { deptId } = user
 
   // 原公司id
-  form.value.oldCompanyId = companyId
+  form.value.oldCompanyId = String(companyId)
 
   // 原部门
   form.value.oldDeptId = deptId
