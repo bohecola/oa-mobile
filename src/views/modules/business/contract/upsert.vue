@@ -232,6 +232,18 @@
       <template #input>
         <div class="w-full flex flex-col gap-2">
           <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="`# ${index + 1}`">
+            <template #footer>
+              <div class="text-right">
+                <van-button
+                  type="danger"
+                  icon="delete"
+                  size="small"
+                  :disabled="form.taxRate.length === 1"
+                  @click="handleRemove(item, index)"
+                />
+              </div>
+            </template>
+
             <van-field-number
               v-model.number="item.amount"
               label="金额（元）"
@@ -248,17 +260,6 @@
               dict-type="oa_contract_tax_rate"
               clearable
             />
-            <template #footer>
-              <div class="text-right">
-                <van-button
-                  type="danger"
-                  icon="delete"
-                  size="small"
-                  :disabled="form.taxRate.length === 1"
-                  @click="handleRemove(item, index)"
-                />
-              </div>
-            </template>
           </TableCard>
         </div>
       </template>
@@ -485,12 +486,20 @@ function onRadioGroupChange(val: string) {
 
 // 金额/税率新增
 function handleAdd() {
-  form.value.taxRate.push({ amount: undefined, taxRate: undefined })
+  const { confirm } = proxy.$modal
+
+  confirm('点击确定进行添加数据')
+    .then(() => {
+      form.value.taxRate.push({ amount: undefined, taxRate: undefined })
+    })
+    .catch(() => {})
 }
 
 // 金额/税率删除
 function handleRemove(_: any, index: number) {
-  proxy.$modal.confirm('是否删除这条数据？')
+  const { confirm } = proxy.$modal
+
+  confirm('是否删除这条数据？')
     .then(() => {
       form.value.taxRate.splice(index, 1)
     })

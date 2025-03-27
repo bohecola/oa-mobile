@@ -39,6 +39,7 @@ export interface DeptVO extends BaseEntity {
   purview: string
   address: string
   deptPostVoList: []
+  isInternal: string
 }
 
 /**
@@ -70,37 +71,6 @@ export interface DeptForm {
   ancestors?: string
   deptPostVoList?: [] // 岗位配置表
   redFile?: string
+  isInternal?: string
   ossIdList?: string[]
-}
-
-export interface TreeVO {
-  /**
-   * 主键
-   */
-  id: string | number
-
-  /**
-   * 父id
-   */
-  parentId: string | number
-
-  /**
-   * 部门id
-   */
-  deptId: string | number
-
-  /**
-   * 用户id
-   */
-  userId: string | number
-
-  /**
-   * 值
-   */
-  treeName: string
-
-  /**
-   * 子对象
-   */
-  children: TreeVO[]
 }

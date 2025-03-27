@@ -16,7 +16,7 @@
       </template>
 
       <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
-        <van-icon name="clear" @click.stop="onClear" />
+        <van-icon name="clear" class="text-[--van-field-clear-icon-color]" @click.stop="onClear" />
       </template>
     </van-field>
 

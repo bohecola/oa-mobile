@@ -60,3 +60,10 @@ export function delDept(deptId: number | string) {
     method: 'delete',
   })
 }
+
+export function getUserDept(userId: number | string): AxiosPromise<DeptVO[]> {
+  return request({
+    url: `system/dept/selectUserDept/${userId}`,
+    method: 'get',
+  })
+}

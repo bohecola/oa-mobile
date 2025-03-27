@@ -26,7 +26,7 @@
       </template>
 
       <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
-        <van-icon name="clear" @click.stop="onClear" />
+        <van-icon name="clear" class="text-[--van-field-clear-icon-color]" @click.stop="onClear" />
       </template>
 
       <template v-if="component === 'radio' || component === 'checkbox'" #input>
@@ -146,6 +146,7 @@ const props = withDefaults(
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
   }>(),
   {
+    readonly: undefined,
     component: 'combine',
     isFilterUseSeal: true,
   },
@@ -184,18 +185,22 @@ const pickerValue = computed(() => isArray(ids.value) ? ids.value : [ids.value])
 
 // 选项数据
 const options = computed(() => {
-  if (!isNil(props.options)) {
-    return props.options
-  }
-  // oa_seal_use_type 特殊处理
-  if (props.isFilterUseSeal && props.dictType === 'oa_seal_use_type') {
-    return dictRefs[props.dictType].value.filter(e => e.value !== '5')
+  const { options, dictType, isFilterUseSeal, filterFn } = props
+
+  if (!isNil(options)) {
+    return options
   }
 
-  if (!isNil(props.filterFn)) {
-    return dictRefs[props.dictType].value.filter(props.filterFn)
+  // oa_seal_use_type 特殊处理
+  if (isFilterUseSeal && dictType === 'oa_seal_use_type') {
+    return dictRefs[dictType].value.filter(e => e.value !== '5')
   }
-  return dictRefs[props.dictType].value
+
+  if (!isNil(filterFn)) {
+    return dictRefs[dictType].value.filter(filterFn)
+  }
+
+  return dictRefs[dictType].value
 })
 
 // 选项数据转换为符合 van-picker 组件中 columns 属性的数据
