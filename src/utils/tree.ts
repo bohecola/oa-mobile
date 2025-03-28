@@ -142,9 +142,9 @@ export function findPath<T extends BaseTreeNode<T>>(tree: T[], targetValue: stri
   return path
 }
 
-// 返回树中某个元素的路径节点
+// 返回树中某个元素的其路径上的所有节点
 export function findPathNodes<T extends BaseTreeNode<T>>(tree: T[], targetValue: string | number, key: string = 'id') {
-  let nodes = []
+  let nodes: T[] = []
 
   function helper(node: { [key: string]: any }, currentPathNode: any[]) {
     if (!node) {

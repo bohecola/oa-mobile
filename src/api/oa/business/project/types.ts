@@ -2,7 +2,7 @@ export interface ProjectVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 编码

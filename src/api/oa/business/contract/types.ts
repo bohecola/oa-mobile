@@ -2,7 +2,7 @@ export interface ContractVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 编号
@@ -149,7 +149,7 @@ export interface ContractForm extends BaseEntity {
   /**
    * 项目ID
    */
-  projectId?: string | number
+  projectId?: string
 
   /**
    * 项目名称

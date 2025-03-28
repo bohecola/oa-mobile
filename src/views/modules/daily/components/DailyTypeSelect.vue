@@ -8,7 +8,7 @@
       <span v-else class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
       <!-- 弹窗 -->
       <van-popup
-        v-model:show="show"
+        v-model:show="visible"
         position="bottom"
         teleport="body"
         :lazy-render="false"
@@ -23,7 +23,7 @@
             value: 'id',
             text: 'name',
           }"
-          @close="close"
+          @close="closePopup"
           @finish="onFinish"
         />
       </van-popup>
@@ -33,17 +33,17 @@
 
 <script setup lang="ts">
 import { isEmpty, isNil } from 'lodash-es'
-import type { CascaderOption } from 'vant'
 import { useCustomFieldValue } from '@vant/use'
 import type { DailyWorkTypeVO } from '@/api/oa/daily/category/types'
 import { queryByParentDaily } from '@/api/oa/daily/category'
 import { findPathNodes } from '@/utils'
+import { usePopup } from '@/hooks'
 
 type DailyWorkTypeTreeVO = DailyWorkTypeVO & { children?: DailyWorkTypeVO[] }
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
+    modelValue?: string
     no?: string
     wfRemark?: string
     placeholder?: string
@@ -71,10 +71,11 @@ const emit = defineEmits([
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const show = ref(false)
+const { visible, openPopup, closePopup } = usePopup()
+
 const isLoading = ref(false)
 
-const id = ref<string | number>(props.modelValue)
+const id = ref<string>(props.modelValue)
 
 const data = ref<DailyWorkTypeVO[]>([])
 
@@ -92,22 +93,20 @@ async function getData() {
   data.value = res.data
 }
 
-interface Params { value: string | number, selectedOptions: CascaderOption[], tabIndex: number }
-
-function onFinish({ value, selectedOptions }: Params) {
-  show.value = false
+function onFinish({ value }: CascaderParams<DailyWorkTypeTreeVO>) {
   emit('before-finish')
 
   emit('update:modelValue', value)
   emit('finish', value)
 
-  emit('update:presentText', selectedOptions.map(e => e.name).join(' / '))
-
   updateVars(value)
+
+  closePopup()
 }
 
-function updateVars(value: string | number) {
+function updateVars(value: string) {
   const node = data.value.find(e => e.id === value)
+
   emit('update:no', node?.no)
   emit('update:wfRemark', node?.remark)
   emit('update:isDefaultPage', node?.isDefaultPage)
@@ -115,14 +114,8 @@ function updateVars(value: string | number) {
   const nodes = findPathNodes<DailyWorkTypeTreeVO>(options.value, value)
   const [rootNode] = nodes
   emit('update:rootNo', rootNode?.no)
-}
 
-function open() {
-  show.value = true
-}
-
-function close() {
-  show.value = false
+  emit('update:presentText', nodes.map(e => e.name).join(' / '))
 }
 
 useCustomFieldValue(() => id.value)
@@ -144,6 +137,6 @@ onMounted(async () => {
 })
 
 defineExpose({
-  open,
+  open: openPopup,
 })
 </script>

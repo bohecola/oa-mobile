@@ -45,7 +45,6 @@
           v-model="form.companyId"
           name="companyId"
           label="公司"
-          readonly
         />
 
         <template v-if="!isNil(form.no)">
@@ -180,9 +179,9 @@ function trackFields(fields: KeysOfArray<DailyWorkForm>) {
 // 开始流程
 async function handleStartWorkflow(options: StartWorkFlowOptions) {
   const { operation, entity, next } = options
-  const { initiator: { nickName } } = entity
+  const { initiator } = entity
 
-  const processInstanceName = `${presentText.value?.split(' / ')[1]}-${nickName}`
+  const processInstanceName = `${presentText.value?.split(' / ')[1]}-${initiator?.nickName}`
 
   // 业务提交
   await submit({

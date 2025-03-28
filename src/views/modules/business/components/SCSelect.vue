@@ -80,7 +80,7 @@
           :title="item.name"
           :class="[
             { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
-            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id) },
+            { 'opacity-50': exclude.includes(item.id) && !modelValue?.includes(item.id) },
           ]"
           @click="onCellClick(item)"
         >
@@ -136,11 +136,11 @@ import { listSupplierCustomer } from '@/api/oa/business/supplierCustomer'
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
+    modelValue?: string
     multiple?: boolean
     readonly?: boolean
     clearable?: boolean
-    exclude?: (string | number)[]
+    exclude?: string[]
     limit?: number
     params?: Partial<SupplierCustomerQuery>
   }>(),
@@ -264,7 +264,7 @@ function onCellClick(item: SupplierCustomerVO) {
   const { modelValue, multiple, exclude } = props
 
   // 已排除的不可选中
-  if (exclude.includes(item.id) && !String(modelValue).includes(item.id)) {
+  if (exclude.includes(item.id) && !modelValue?.includes(item.id)) {
     return false
   }
 
@@ -291,7 +291,7 @@ function onCellClick(item: SupplierCustomerVO) {
 async function onCancel() {
   const { modelValue } = props
 
-  selectedList.value = await getViewList(modelValue as string)
+  selectedList.value = await getViewList(modelValue)
 
   closePopup()
 }
@@ -357,7 +357,7 @@ async function getViewList(value: string) {
 watch(
   () => props.modelValue,
   async (value) => {
-    selectedList.value = await getViewList(value as string)
+    selectedList.value = await getViewList(value)
   },
   {
     immediate: true,

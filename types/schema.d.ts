@@ -1,11 +1,14 @@
 import type { FieldRule } from 'vant'
+import type { CascaderOption } from 'vant'
 
 export {}
 
 declare global {
   interface BaseEntity {
     createBy?: any
+    createByName?: string
     createDept?: any
+    createDeptName?: string
     createTime?: string
     updateBy?: any
     updateTime?: any
@@ -47,7 +50,7 @@ declare global {
     text: string
     key: keyof T
     type: 'dict' | 'time' | 'plain' | 'amount'
-    options?: Ref<DictDataOption[]> | ((item: any) => DictDataOption[])
+    options?: Ref<DictDataOption[]> | ((item: T) => DictDataOption[])
   }
 
   // 发起人
@@ -88,5 +91,12 @@ declare global {
   // 审批荷载
   interface ApprovalPayload {
     open: (taskId: string) => void
+  }
+
+  // 级联选择器参数
+  interface CascaderParams<T> {
+    value: string
+    selectedOptions: (CascaderOption & T)[]
+    tabIndex: number
   }
 }

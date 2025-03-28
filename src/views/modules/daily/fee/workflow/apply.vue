@@ -155,10 +155,9 @@ function trackFields(fields: KeysOfArray<DailyFeeForm>) {
 // 开始流程
 async function handleStartWorkflow(options: StartWorkFlowOptions) {
   const { operation, entity, next } = options
+  const { initiator } = entity
 
-  const { initiator: { nickName } } = entity
-
-  const processInstanceName = `${presentText.value}-${nickName}`
+  const processInstanceName = `${presentText.value}-${initiator?.nickName}`
 
   // 业务提交
   await submit({

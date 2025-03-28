@@ -65,17 +65,10 @@
 <script setup lang='ts'>
 import Big from 'big.js'
 import { isEmpty, isNil } from 'lodash-es'
-import type { CascaderOption } from 'vant'
 import { useParentForm, usePopup } from '@/hooks'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
 import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
 import { findPathNodes } from '@/utils'
-
-interface CascaderPayload {
-  value: string
-  selectedOptions: (CascaderOption & ProjectSubjectItemTreeVO)[]
-  tabIndex: number
-}
 
 const props = withDefaults(
   defineProps<{
@@ -172,7 +165,7 @@ function onClear() {
 }
 
 // 完成
-function onFinish({ value, selectedOptions, tabIndex }: CascaderPayload) {
+function onFinish({ value, selectedOptions, tabIndex }: CascaderParams<ProjectSubjectItemTreeVO>) {
   emit('update:modelValue', value)
   emit('change', value)
 

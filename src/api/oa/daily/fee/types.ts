@@ -148,7 +148,7 @@ export interface DailyFeeForm extends BaseEntity, ExtraForm {
   /**
    * 费用类型
    */
-  feeType?: number
+  feeType?: string
 
   /**
    * 预算科目

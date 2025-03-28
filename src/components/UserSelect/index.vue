@@ -19,6 +19,7 @@
     </div>
     <span v-if="!existSelectedList && !readonly" class="text-[var(--van-field-placeholder-text-color)]">请选择</span>
   </van-skeleton>
+
   <!-- 弹窗 -->
   <van-popup
     v-model:show="visible"
@@ -114,6 +115,7 @@ import { cloneDeep, isArray, isEmpty, isNumber, isObject, isString } from 'lodas
 import UserCell from './user-cell.vue'
 import type { SysUserMobileVO } from '@/api/system/user/types'
 import { service } from '@/service'
+import { usePopup } from '@/hooks'
 
 type UserSelectValue = SysUserMobileVO['userId'] | SysUserMobileVO['userId'][]
 
@@ -136,7 +138,8 @@ const props = withDefaults(
 
 const emit = defineEmits(['confirm', 'update:modelValue'])
 
-const visible = ref(false)
+const { visible, openPopup, closePopup } = usePopup()
+
 const listLoading = ref(false)
 const echoLoading = ref(false)
 
@@ -173,14 +176,17 @@ function open() {
   }
 
   userListMap.value = {}
-  visible.value = true
+
+  openPopup()
+
   getList()
 }
 
 // 关闭
 async function close() {
-  visible.value = false
   selectedList.value = await getSeletedList(props.modelValue)
+
+  closePopup()
 }
 
 // 弹窗关闭动画结束后
@@ -229,11 +235,12 @@ function handleRemoveUser(user: SysUserMobileVO) {
 
 // 确定
 function confirm() {
-  visible.value = false
   const values = getValues()
   const payload = props.enableDataTransform && props.valueType === 'value' ? serialize(values as UserSelectValue) : values
-  emit('confirm', payload)
+  emit('confirm', payload, selectedList.value)
   emit('update:modelValue', payload)
+
+  closePopup()
 }
 
 function serialize(value: UserSelectValue) {
@@ -343,9 +350,11 @@ async function getSeletedList(value: typeof props.modelValue) {
 watch(
   () => props.modelValue,
   async (value) => {
+    const { enableDataTransform, valueType } = props
+
     if (!isEmpty(value) || isNumber(value)) {
       selectedList.value = await getSeletedList(
-        props.enableDataTransform && props.valueType === 'value'
+        enableDataTransform && valueType === 'value'
           ? deserialize(value as (string | number))
           : value,
       )

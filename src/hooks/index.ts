@@ -58,7 +58,7 @@ export function useSerializer(options: { multiple: boolean }) {
     }
   }
 
-  function deserialize(value: string | number) {
+  function deserialize(value: string) {
     if (!isNil(value)) {
       if (multiple) {
         return (value as string)
