@@ -309,23 +309,16 @@
       autosize
     />
 
-    <van-field
+    <PurchaseProcessSelect
       v-if="isPurchaseContract"
+      v-model="form.purchaseIds"
       v-show-field="['purchaseIds', includeFields]"
       name="purchaseIds"
       label="关联采购申请"
-      placeholder="请选择"
       :rules="computedRules.purchaseIds"
-      is-link
-    >
-      <template #input>
-        <PurchaseProcessSelect
-          v-model="form.purchaseIds"
-          v-show-field="['purchaseIds', includeFields]"
-          multiple
-        />
-      </template>
-    </van-field>
+      multiple
+      clearable
+    />
 
     <van-field
       v-model="form.originalFile"
@@ -372,7 +365,7 @@ import Big from 'big.js'
 import { isNil, isNumber } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
-import PurchaseProcessSelect from '../components/PurchaseProcessSelect/index.vue'
+import PurchaseProcessSelect from '../components/PurchaseProcessSelect.vue'
 import { useForm } from './form'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

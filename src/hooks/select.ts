@@ -1,5 +1,6 @@
 import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ProjectVO } from '@/api/oa/business/project/types'
+import type { PurchaseVO } from '@/api/oa/business/purchase/types'
 import type { SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
 import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 import type { UserEmploymentVO } from '@/api/oa/personnel/userEmployment/types'
@@ -275,6 +276,94 @@ export function useProjectSubjectSelect() {
       options: oa_project_subject_status,
     },
 
+  ]
+
+  return {
+    ...selectState,
+    labelDescriptors,
+  }
+}
+
+// 关联采购流程选择
+export function usePurchaseProcessSelect() {
+  const selectState = useSelect<PurchaseVO>()
+
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const {
+    oa_purchase_type,
+    oa_project_business_type,
+    oa_purchase_business_type,
+    oa_purchase_object_category,
+    oa_purchase_status,
+  } = toRefs(proxy.useDict(
+    'oa_purchase_type',
+    'oa_project_business_type',
+    'oa_purchase_business_type',
+    'oa_purchase_object_category',
+    'oa_purchase_status',
+  ))
+
+  const labelDescriptors: LabelDescriptor<PurchaseVO>[] = [
+    {
+      text: '流程ID',
+      key: 'id',
+      type: 'plain',
+    },
+    {
+      text: '申请部门',
+      key: 'createDeptName',
+      type: 'plain',
+    },
+    {
+      text: '申请人',
+      key: 'createByName',
+      type: 'plain',
+    },
+    {
+      text: '采购类型',
+      key: 'type',
+      type: 'dict',
+      options: oa_purchase_type,
+    },
+    {
+      text: '业务类别',
+      key: 'businessCategory',
+      type: 'dict',
+      options: (item) => {
+        if (item.subjectType === 'project') {
+          return oa_project_business_type.value
+        }
+        return oa_purchase_business_type.value
+      },
+    },
+    {
+      text: '物品类别',
+      key: 'objectCategory',
+      type: 'dict',
+      options: oa_purchase_object_category,
+    },
+    {
+      text: '含税总金额',
+      key: 'amount',
+      type: 'amount',
+    },
+    {
+      text: '实际金额',
+      key: 'realAmount',
+      type: 'amount',
+    },
+    {
+      text: '申请时间',
+      key: 'createTime',
+      type: 'time',
+    },
+    {
+      text: '状态',
+      key: 'status',
+      type: 'dict',
+      options: oa_purchase_status,
+    },
   ]
 
   return {
