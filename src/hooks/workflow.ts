@@ -1,6 +1,8 @@
 import type { AxiosPromise } from 'axios'
 import { isEmpty } from 'lodash-es'
+import type { LocationQuery } from 'vue-router'
 import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
+import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
@@ -17,4 +19,56 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
   }
 
   return res
+}
+
+export function useWorkflow<T>() {
+  // 实例
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const { nodeId, type, procdefName: _procdefName } = proxy.$route.query
+
+  // 加载
+  const loading = ref(false)
+
+  // 流程节点 Key
+  const taskDefinitionKey = ref(nodeId as string)
+
+  // 流程表单
+  const submitFormData = ref<StartProcessBo<T & { initiator: Initiator }>>({
+    businessKey: undefined,
+    tableName: undefined,
+    variables: {},
+    processInstanceName: undefined,
+  })
+
+  // 是否查看
+  const isView = ref(type === 'view')
+
+  // 导航离开时的查询参数
+  const oldRouteQuery = ref<LocationQuery>(undefined)
+
+  // 流程定义名称
+  const procdefName = ref(_procdefName as string)
+
+  provide('taskDefinitionKey', taskDefinitionKey)
+  provide('isView', isView)
+
+  function resetSubmitFormData() {
+    submitFormData.value = {
+      businessKey: undefined,
+      tableName: undefined,
+      variables: {},
+      processInstanceName: undefined,
+    }
+  }
+
+  return {
+    loading,
+    taskDefinitionKey,
+    submitFormData,
+    isView,
+    oldRouteQuery,
+    procdefName,
+    resetSubmitFormData,
+  }
 }

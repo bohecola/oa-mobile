@@ -33,42 +33,26 @@ import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import type { ContractForm } from '@/api/oa/business/contract/types'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
-import { useWorkflowViewData } from '@/hooks'
+import { useWorkflow, useWorkflowViewData } from '@/hooks'
 
 type Entity = ContractForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 加载
-const loading = ref(false)
-// 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId as string)
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-  processInstanceName: '',
-})
-
-// 是否查看
-const isView = ref(proxy.$route.query.type === 'view')
-
-provide('taskDefinitionKey', taskDefinitionKey)
+const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<ContractForm>()
 
 // 引用
-const Detail = ref<InstanceType<typeof detail> | null>()
-const Upsert = ref<InstanceType<typeof upsert> | null>()
+const Detail = ref<InstanceType<typeof detail>>()
+const Upsert = ref<InstanceType<typeof upsert>>()
 
-const ArchiveDetail1 = ref<InstanceType<typeof detail> | null>()
-const ArchiveUpsert = ref<InstanceType<typeof upsert> | null>()
-const ArchiveDetail2 = ref<InstanceType<typeof detail> | null>()
+const ArchiveDetail1 = ref<InstanceType<typeof detail>>()
+const ArchiveUpsert = ref<InstanceType<typeof upsert>>()
+const ArchiveDetail2 = ref<InstanceType<typeof detail>>()
 
-const CommonDetail = ref<InstanceType<typeof detail> | null>()
+const CommonDetail = ref<InstanceType<typeof detail>>()
 
 const allFields: PartialBooleanRecord<ContractForm> = {
   no: true,
@@ -140,10 +124,9 @@ const archiveUpsertFields = filterTruthyKeys<ContractForm>({
 
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
-  const { procdefName } = proxy.$route.query
-  const { no, initiator: { nickName } } = entity
+  const { no, initiator } = entity
 
-  const processInstanceName = `${procdefName}-${no}-${nickName}`
+  const processInstanceName = `${procdefName.value}-${no}-${initiator?.nickName}`
 
   // 业务提交
   await Upsert.value?.submit({
@@ -209,6 +192,7 @@ async function handleApproval({ open }: ApprovalPayload) {
     // 打开审批弹窗
     default:
       open(taskId as string)
+      break
   }
 }
 
@@ -221,10 +205,11 @@ onMounted(async () => {
   if (taskId || processInstanceId) {
     loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { entity, task, processDefinitionName } = res.data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    procdefName.value = processDefinitionName
 
     nextTick(() => {
       try {

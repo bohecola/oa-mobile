@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage
-    :loading="isLoading"
+    :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
     :group="false"
     @temp-save="handleTempSave"
@@ -53,38 +53,19 @@ import { isNil } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
-import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
-import { useWorkflowViewData } from '@/hooks'
+import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import { startWorkFlow } from '@/api/workflow/task'
-
-type Entity = DailyFeeForm & { initiator: Initiator }
-
-interface StartWorkFlowOptions {
-  operation?: BaseEntity['operation']
-  entity: Entity
-  next?: (result: any) => void
-}
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
-const { Form, form, rules, isLoading, reset, submit, workflowSubmit, workflowView } = useForm()
+const { Form, form, rules, reset, submit, workflowSubmit, workflowView } = useForm()
+// 流程
+const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow<DailyFeeForm>()
+
 // 引用
 const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect>>()
-
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: undefined,
-  tableName: undefined,
-  variables: {},
-  processInstanceName: undefined,
-})
-// 流程节点 Key
-const taskDefinitionKey = ref(proxy?.$route.query.nodeId as string)
-// 是否查看
-const isView = ref(proxy.$route.query.type === 'view')
 
 // 日常类型选择器只读
 const dailyTypeSelectReadOnly = ref(!['add', 'update'].includes(proxy.$route.query.type as string))
@@ -110,8 +91,6 @@ const computedRules = computed(() => {
 provide('form', form)
 provide('Form', Form)
 provide('computedRules', computedRules)
-provide('isView', isView)
-provide('taskDefinitionKey', taskDefinitionKey)
 provide('trackFields', trackFields)
 provide('updateRuleRequired', updateRuleRequired)
 
@@ -153,7 +132,7 @@ function trackFields(fields: KeysOfArray<DailyFeeForm>) {
 }
 
 // 开始流程
-async function handleStartWorkflow(options: StartWorkFlowOptions) {
+async function handleStartWorkflow(options: StartWorkFlowOptions<DailyFeeForm>) {
   const { operation, entity, next } = options
   const { initiator } = entity
 
@@ -187,7 +166,7 @@ async function handleTempSave({ load, done, next, initiator, operation }: TempSa
   await workflowSubmit({
     success: async (data) => {
       load()
-      const options: StartWorkFlowOptions = {
+      const options = {
         operation,
         entity: { ...data, initiator },
         next,
@@ -202,7 +181,7 @@ async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
   workflowSubmit({
     success: async (data) => {
       load()
-      const options: StartWorkFlowOptions = {
+      const options = {
         entity: { ...data, initiator },
         next: (res: any) => open(res.data?.taskId),
       }
@@ -233,7 +212,7 @@ onMounted(async () => {
   isView.value = type === 'view'
 
   if (taskId || processInstanceId) {
-    isLoading.value = true
+    loading.value = true
     const { data } = await useWorkflowViewData({ taskId, processInstanceId })
     const { entity, task } = data
 
@@ -248,7 +227,7 @@ onMounted(async () => {
           workflowView(entity)
           break
       }
-      isLoading.value = false
+      loading.value = false
     })
   }
 })

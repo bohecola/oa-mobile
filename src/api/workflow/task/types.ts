@@ -27,6 +27,7 @@ export interface ParticipantVo {
 export interface TaskVO extends BaseEntity {
   id: string
   name: string
+  procinstName?: string
   description?: string
   priority: number
   owner?: string

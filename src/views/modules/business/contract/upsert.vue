@@ -385,6 +385,7 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 const {
   oa_contract_category_in,
   oa_contract_category_out,

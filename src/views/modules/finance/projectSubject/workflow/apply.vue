@@ -14,20 +14,17 @@
     <template v-else>
       <!-- 预算评审申请节点 -->
       <div v-if="taskDefinitionKey === 'Activity_0kwfbrq'">
-        <el-form-item label="选择预算：">
-          <el-select v-model="psId" clearable @change="onPsIdChange">
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :value="item.id"
-              :label="`${item.name}（${parseTime(item.startDate, '{y}-{m}-{d}')} ~ ${parseTime(item.endDate, '{y}-{m}-{d}')}）`"
-            />
-          </el-select>
-        </el-form-item>
+        <DictSelect
+          v-model="psId"
+          label="选择预算"
+          :options="options"
+          clearable
+          @change="onPsIdChange"
+        />
         <detail v-if="!isNil(psId)" ref="ApplyDetail" :include-fields="applyDetailFields" />
-        <div class="mt-6">
+        <!-- <div class="mt-6">
           <upsert v-if="!isNil(psId)" ref="ApplyUpsert" :include-fields="['ossIdList']" />
-        </div>
+        </div> -->
       </div>
 
       <!-- 其他通用审批节点 -->
@@ -44,42 +41,24 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import detail from '../detail.vue'
-// import upsert from '../upsert.vue'
 import { useProjectSubjectOptions } from './helper'
-import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
-import { useWorkflowViewData } from '@/hooks'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
-import { startWorkFlow } from '@/api/workflow/task'
+import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import type { ProjectSubjectForm } from '@/api/oa/finance/projectSubject/types'
 import { filterTruthyKeys } from '@/utils'
-
-type Entity = ProjectSubjectForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 引用
-const Detail = ref<InstanceType<typeof detail> | null>()
-const ApplyDetail = ref<InstanceType<typeof detail> | null>()
-const ApplyUpsert = ref<InstanceType<typeof detail> | null>()
-const CommonDetail = ref<InstanceType<typeof detail> | null>()
-const OssIdDetail = ref<InstanceType<typeof detail> | null>()
+const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<ProjectSubjectForm>()
 
-// 加载
-const loading = ref(false)
-// 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-})
+// 引用
+const Detail = ref<InstanceType<typeof detail>>()
+const ApplyDetail = ref<InstanceType<typeof detail>>()
+const ApplyUpsert = ref<InstanceType<typeof detail>>()
+const CommonDetail = ref<InstanceType<typeof detail>>()
+const OssIdDetail = ref<InstanceType<typeof detail>>()
 
 const { psId, options } = useProjectSubjectOptions()
-
-// 是否查看
-const isView = computed(() => proxy.$route.query.type === 'view')
 
 const overFields: PartialBooleanRecord<ProjectSubjectForm> = {
   type: true,
@@ -94,20 +73,16 @@ const overFields: PartialBooleanRecord<ProjectSubjectForm> = {
 }
 
 // 申请详情字段
-const applyDetailFields = ref(
-  filterTruthyKeys<ProjectSubjectForm>({
-    ...overFields,
-    ossIdList: false,
-  }),
-)
+const applyDetailFields = filterTruthyKeys<ProjectSubjectForm>({
+  ...overFields,
+  ossIdList: false,
+})
 
 // 总览字段
-const overviewFields = ref(
-  filterTruthyKeys<ProjectSubjectForm>({
-    ...overFields,
-    ossIdList: false,
-  }),
-)
+const overviewFields = filterTruthyKeys<ProjectSubjectForm>({
+  ...overFields,
+  ossIdList: false,
+})
 
 // 预算切换
 function onPsIdChange(val: string) {
@@ -179,15 +154,18 @@ async function handleApproval({ open }: ApprovalPayload) {
 
 // 挂载
 onMounted(async () => {
-  const { type, taskId, processInstanceId } = proxy.$route.query
+  const { type, taskId, processInstanceId, nodeId } = proxy.$route.query
+  taskDefinitionKey.value = nodeId as string
+  isView.value = type === 'view'
 
   if (taskId || processInstanceId) {
     loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { entity, task, processDefinitionName } = res.data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    procdefName.value = processDefinitionName
     psId.value = entity.id
 
     proxy?.$router.replace({

@@ -32,17 +32,20 @@
       <template #right>
         <van-button
           v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="primary" text="修改" class="h-full"
+          square type="primary" text="修改"
+          class="h-full"
           @click="handleOpen(row, 'update')"
         />
         <van-button
           v-if="row.businessStatus === 'waiting'"
-          square type="primary" text="撤销" class="h-full"
+          square type="primary" text="撤销"
+          class="h-full"
           @click="handleCancelProcessApply(row)"
         />
         <van-button
           v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="danger" text="删除" class="h-full"
+          square type="danger" text="删除"
+          class="h-full"
           @click="handleDelete(row)"
         />
       </template>

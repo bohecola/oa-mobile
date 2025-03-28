@@ -111,7 +111,7 @@ export function useForm() {
   const updateLoading = ref(false)
 
   // 表单重置
-  const reset = () => {
+  function reset() {
     Form.value?.resetValidation()
     form.value = cloneDeep(initFormData)
     setContractMode('two')

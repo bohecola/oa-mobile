@@ -9,16 +9,17 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export interface SubmitOptions {
+export type SubmitOptions<T = string | number> = {
   updateDataStatus?: (data: ProjectSubjectForm) => void
-  success?: () => void
-}
+} & Options<T>
+
 export type ViewOptions = Options
 
 // 表单
 export function useForm() {
   // 实例
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+  const { oa_finance_project_subject_is_overspend } = toRefs<any>(proxy?.useDict('oa_finance_project_subject_is_overspend'))
 
   // 引用
   const Form = ref<FormInstance>()
@@ -44,7 +45,7 @@ export function useForm() {
     form: cloneDeep(initFormData),
     rules: {
       type: [{ required: true, message: '预算类型不能为空', trigger: 'onBlur' }],
-      projectId: [{ required: true, message: '项目不能为空', trigger: 'onBlur' }],
+      projectIds: [{ required: true, message: '项目不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
       startDate: [{ required: true, message: '开始日期不能为空', trigger: 'onBlur' }],
       endDate: [{ required: true, message: '截至日期不能为空', trigger: 'onBlur' }],
@@ -56,21 +57,21 @@ export function useForm() {
   // 响应式解构
   const { form, rules } = toRefs(data)
 
-  // 表单重置
-  const reset = (cb?: () => void) => {
-    form.value = cloneDeep(initFormData)
-    Form.value?.resetValidation()
-    cb?.()
-  }
-
   // 回显加载
   const isLoading = ref(false)
 
   // 更新加载
   const updateLoading = ref(false)
 
+  // 表单重置
+  function reset(cb?: () => void) {
+    form.value = cloneDeep(initFormData)
+    Form.value?.resetValidation()
+    cb?.()
+  }
+
   // 回显
-  const view = async (id: string | number, cb?: (value: ProjectSubjectForm) => void | Promise<void>) => {
+  async function view(id: string, cb?: (value: ProjectSubjectForm) => void | Promise<void>) {
     isLoading.value = true
     reset()
 
@@ -83,7 +84,7 @@ export function useForm() {
   }
 
   // 根据部门回显
-  const viewByDept = async (id: string | number) => {
+  async function viewByDept(id: string | number) {
     isLoading.value = true
     reset()
 
@@ -94,96 +95,96 @@ export function useForm() {
     isLoading.value = false
   }
 
-  // // 提交
-  // const submit = (options: SubmitOptions) => {
-  //   const submitResult = Form.value?.validate(async (valid: boolean) => {
-  //     // 获取所有叶子节点
-  //     const lastLevelNodes = getLastLevelNodes(form.value.itemList).filter(e => e.treeType === 'item')
-  //     // 部门是否选择完成
-  //     const isDeptSelected = lastLevelNodes.every((e) => {
-  //       if (e.deptId && e.deptName) {
-  //         return true
-  //       }
-  //       else {
-  //         const deptRef = e.deptRef
-  //         deptRef?.focus()
-  //         deptRef.className = 'flash-box'
-  //         setTimeout(() => {
-  //           deptRef.className = ''
-  //         }, 1000)
-  //         return false
-  //       }
-  //     })
+  // 定时器
+  let timer = null
+  // 提交
+  function submit(options: SubmitOptions = {}) {
+    const { updateDataStatus, success, fail } = options
+    clearTimeout(timer)
 
-  //     // 部门未选择提示
-  //     if (!isDeptSelected) {
-  //       return proxy.$modal.msgError('部门未选择完成')
-  //     }
+    // 获取所有叶子节点
+    const lastLevelNodes = getLastLevelNodes(form.value.itemList).filter(e => e.treeType === 'item')
+    // 部门是否选择完成
+    const isDeptSelected = lastLevelNodes.every((e) => {
+      if (e.deptId && e.deptName) {
+        return true
+      }
+      else {
+        const deptRef = e.deptRef
+        deptRef?.focus()
+        deptRef.className = 'flash-box'
+        timer = setTimeout(() => {
+          deptRef.className = ''
+        }, 1000)
+        return false
+      }
+    })
 
-  //     for (const node of lastLevelNodes) {
-  //       if (node.editable) {
-  //         node.amountRef?.focus()
-  //         return proxy.$modal.msgWarning('请完成先保存预算金额')
-  //       }
+    // 部门未选择提示
+    if (!isDeptSelected) {
+      return proxy.$modal.msgError('部门未选择完成')
+    }
 
-  //       // 新增时校验期初支出金额不能超过剩余金额且不能为空
-  //       if (!isNil(node.amount) && !isNil(node.beginAmount)) {
-  //         if (Big(node.beginAmount).gt(Big(node.amount).minus(node.expendAmount))) {
-  //           node.beginAmountRef?.focus()
-  //           return proxy.$modal.msgWarning('期初支出金额不能超过预算金额减去支出金额')
-  //         }
-  //       }
-  //     }
+    if (!isNil(oa_finance_project_subject_is_overspend.value) && oa_finance_project_subject_is_overspend.value[0]?.value === 'Y') {
+      console.warn('当前是期初支出金额不能超过预算金额减去支出金额校验---未生效模式')
+    }
+    else {
+      for (const node of lastLevelNodes) {
+        if (node.editable) {
+          node.amountRef?.focus()
+          return proxy.$modal.msgWarning('请完成先保存预算金额')
+        }
+        // 新增时校验期初支出金额不能超过剩余金额且不能为空
+        if (!isNil(node.amount) && !isNil(node.beginAmount)) {
+          if (Big(node.beginAmount).gt(Big(node.amount).minus(Big(node.expendAmount ?? 0)))) {
+            node.beginAmountRef?.focus()
+            return proxy.$modal.msgWarning('期初支出金额不能超过预算金额减去支出金额')
+          }
+        }
+      }
+    }
 
-  //     // 数据
-  //     const data: ProjectSubjectForm = {
-  //       ...form.value,
-  //       itemList: lastLevelNodes,
-  //     }
+    // 数据
+    const data: ProjectSubjectForm = {
+      ...form.value,
+      itemList: lastLevelNodes,
+    }
 
-  //     // 请求
-  //     if (valid) {
-  //       updateLoading.value = true
-  //       // 更新预算编制状态
-  //       options?.updateDataStatus(data)
-  //       // 更新/新增数据
-  //       if (form.value.id) {
-  //         await updateProjectSubject(data).finally(() => (updateLoading.value = false))
-  //       }
-  //       else {
-  //         await addProjectSubject(data).finally(() => (updateLoading.value = false))
-  //       }
-  //       options?.success()
-  //     }
-  //   })
+    const submitResult = Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
+        // 更新预算编制状态
+        updateDataStatus?.(data)
+        // 更新
+        if (form.value.id) {
+          await updateProjectSubject(data)
+        }
+        else {
+        // 新增
+          await addProjectSubject(data)
+        }
+        success?.()
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
 
-  //   return submitResult
-  // }
+    return submitResult
+  }
 
-  // // 流程提交
-  // async function workflowSubmit(options?: SubmitOptions) {
-  //   const { success } = options ?? {}
+  // 流程提交
+  async function workflowSubmit(options: SubmitOptions<ProjectSubjectForm> = {}) {
+    const { success, fail } = options
 
-  //   let data: ProjectSubjectForm
-
-  //   const valid = await Form.value?.validate(async (valid: boolean) => {
-  //     data = {
-  //       ...form.value,
-  //     }
-  //     if (valid) {
-  //       success?.()
-  //     }
-  //   })
-
-  //   return {
-  //     valid,
-  //     data,
-  //   }
-  // }
+    await Form.value?.validate()
+      .then(async () => {
+        success?.(form.value)
+      })
+      .catch(fail)
+  }
 
   // 流程回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       Object.assign(form.value, entity)
@@ -203,9 +204,10 @@ export function useForm() {
     isLoading,
     updateLoading,
     reset,
-    // submit,
+    submit,
     view,
     viewByDept,
+    workflowSubmit,
     workflowView,
   }
 }
