@@ -23,10 +23,9 @@
 <script setup lang="ts">
 import detail from '../detail.vue'
 import upsert from '../upsert.vue'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { filterTruthyKeys } from '@/utils'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
-import { useWorkflowViewData } from '@/hooks'
+import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { startWorkFlow } from '@/api/workflow/task'
 
@@ -35,10 +34,8 @@ type Entity = UserTransferForm & { initiator: Initiator }
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 加载
-const loading = ref(false)
-// 流程节点 Key
-const taskDefinitionKey = ref(proxy?.$route.query.nodeId ?? '')
+// 流程
+const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserTransferForm>()
 
 // 引用
 const Upsert = ref<InstanceType<typeof upsert> | null>()
@@ -67,16 +64,6 @@ const includeFields = ref(
     ossIdList: true,
   }),
 )
-
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-})
-
-// 是否查看
-const isView = ref(proxy.$route.query.type === 'view')
 
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
@@ -153,10 +140,11 @@ onMounted(async () => {
   if (taskId || processInstanceId) {
     loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { entity, task, processDefinitionName } = res.data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    procdefName.value = processDefinitionName
 
     nextTick(() => {
       try {

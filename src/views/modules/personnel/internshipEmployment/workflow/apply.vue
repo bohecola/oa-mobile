@@ -25,11 +25,10 @@
 <script setup lang="ts">
 import detail from '../detail.vue'
 import upsert from '../upsert.vue'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
 import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
-import { useWorkflowViewData } from '@/hooks'
+import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import type { InternshipEmploymentForm } from '@/api/oa/personnel/internshipEmployment/types'
 
 type Entity = InternshipEmploymentForm & { initiator: Initiator }
@@ -37,10 +36,8 @@ type Entity = InternshipEmploymentForm & { initiator: Initiator }
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 加载
-const loading = ref(false)
-// 流程节点 Key
-const taskDefinitionKey = ref(proxy.$route.query.nodeId ?? '')
+// 流程
+const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<InternshipEmploymentForm>()
 
 // 引用
 const Upsert = ref<InstanceType<typeof upsert> | null>()
@@ -87,19 +84,9 @@ const overviewFields = ref(
   }),
 )
 
-// 流程表单
-const submitFormData = ref<StartProcessBo<Entity>>({
-  businessKey: '',
-  tableName: '',
-  variables: {},
-  processInstanceName: '',
-})
-
-// 是否查看
-const isView = ref(proxy.$route.query.type === 'view')
-
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
+  const processInstanceName = `${procdefName.value}-${entity.userName}`
   // 业务提交
   await Upsert.value?.submit({
     success: async ({ id }) => {
@@ -112,7 +99,7 @@ async function handleStartWorkflow(entity: Entity, next?: (result: any) => void)
             id,
           },
         },
-        processInstanceName: `${proxy.$route.query.procdefName}-${entity.userName}`,
+        processInstanceName,
       }
       // 启动流程
       await startWorkFlow(submitFormData.value).then(next)
@@ -172,10 +159,11 @@ onMounted(async () => {
   if (taskId || processInstanceId) {
     loading.value = true
     const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { entity, task, processDefinitionName } = res.data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
+    procdefName.value = processDefinitionName
 
     nextTick(() => {
       try {
