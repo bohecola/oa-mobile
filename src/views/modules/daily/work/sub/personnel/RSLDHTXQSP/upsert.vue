@@ -11,7 +11,7 @@
     <template #input>
       <UserSelect
         ref="UserSelectRef"
-        value-type="object"
+        v-model="form.b_userId"
         @confirm="onUserSelectValueChange"
       />
     </template>
@@ -22,7 +22,7 @@
     v-show-field="['b_deptId', includeFields]"
     name="b_deptId"
     label="部门/项目部"
-    :rules="computedRules.b_deptId"
+    readonly
   />
 
   <PostSelect
@@ -66,7 +66,7 @@
     name="b_contractType"
     component="radio"
     dict-type="oa_daily_work_rsldhtxqsp_contract_type"
-    clearable
+    :rules="computedRules.b_contractType"
   />
 
   <BaseUpsert :include-fields="includeFields" />
@@ -100,12 +100,12 @@ const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
-function onUserSelectValueChange(val: UserVO) {
-  form.value.needDepts = val?.deptId as string
-  form.value.maxPostLevel = val?.maxPostLevel
+function onUserSelectValueChange(val: UserVO, selectedList: UserVO[]) {
+  form.value.needDepts = selectedList[0].deptId as string
+  form.value.maxPostLevel = selectedList[0].maxPostLevel
 
-  form.value.b_deptId = val?.deptId
-  form.value.b_sex = val?.sex
-  form.value.b_postIds = val?.postIdStr
+  form.value.b_deptId = selectedList[0].deptId
+  form.value.b_sex = selectedList[0].sex
+  form.value.b_postIds = selectedList[0].postIdStr
 }
 </script>

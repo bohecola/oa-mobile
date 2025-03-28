@@ -276,7 +276,7 @@ export interface UserEmploymentForm extends BaseEntity {
   ossIdList?: string[]
 }
 
-export interface UserEmploymentQuery extends PageQuery {
+export interface UserEmploymentQuery extends Partial<PageQuery> {
   /**
    * 预入职员工id（user_pre_employment）
    */

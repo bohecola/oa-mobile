@@ -61,7 +61,7 @@ export interface SWXMKHJLQRD {
 // 人事
 // 劳动合同续签审批
 export interface RSLDHTXQSP {
-  b_userId?: string
+  b_userId?: string | number
   b_deptId?: string | number
   b_postIds?: string
   b_sex?: string

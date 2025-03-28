@@ -135,7 +135,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
   d_rewardAmount: [{ required: true, message: `奖励金额${baseMsg}`, trigger: 'onBlur' }],
 
   // 项目部特殊商业保险购买申请
-  e_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
+  // e_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
+  e_dailyWorkId: [{ required: true, message: `购买申请${baseMsg}`, trigger: 'onBlur' }],
   // e_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
   // e_insuranceExpirationDate: [{ required: true, message: `建议保险开始截至日期${baseMsg}`, trigger: 'onBlur' }],
   // e_insuranceExpirationStartDate: [{ required: true, message: `建议保险开始日期${baseMsg}`, trigger: 'onBlur' }],

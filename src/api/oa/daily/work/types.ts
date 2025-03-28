@@ -116,7 +116,7 @@ export interface DailyWorkForm extends BaseEntity, ExtraForm {
   /**
    * 公司
    */
-  companyId?: string | number
+  companyId?: string
 
   /**
    * 自定义审批人

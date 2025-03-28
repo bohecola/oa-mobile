@@ -78,7 +78,7 @@
     v-show-field="['y_recheckDate', includeFields]"
     name="y_recheckDate"
     label="复审时间"
-    :rules="computedRules.y_recheckDate"
+    clearable
   />
 
   <DateSelect
@@ -86,7 +86,7 @@
     v-show-field="['y_startDate', includeFields]"
     name="y_startDate"
     label="开始日期"
-    :rules="computedRules.y_startDate"
+    clearable
   />
 
   <DateSelect
@@ -94,7 +94,7 @@
     v-show-field="['y_endDate', includeFields]"
     name="y_endDate"
     label="结束日期"
-    :rules="computedRules.y_endDate"
+    clearable
   />
 
   <van-field

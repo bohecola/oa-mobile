@@ -9,12 +9,12 @@
     scroll-to-error
   >
     <DeptSelect
-      v-model="form.deptId"
-      v-show-field="['deptId', includeFields]"
-      name="deptId"
+      v-model="form.parentId"
+      v-show-field="['parentId', includeFields]"
+      name="parentId"
       label="上级部门名称"
       placeholder="请选择上级部门"
-      :rules="computedRules.deptId"
+      :rules="computedRules.parentId"
       with-default-root-node
       @node-click="getNode"
     />
@@ -36,14 +36,6 @@
       :rules="computedRules.type"
     />
 
-    <van-field
-      v-model.trim="form.deptCategory"
-      v-show-field="['deptCategory', includeFields]"
-      name="deptCategory"
-      label="类型编码"
-      :rules="computedRules.deptCategory"
-    />
-
     <DictSelect
       v-model="form.businessType"
       v-show-field="['businessType', includeFields]"
@@ -51,6 +43,26 @@
       name="businessType"
       dict-type="oa_project_business_type"
       :rules="computedRules.businessType"
+    />
+
+    <van-field
+      v-model="form.redFile"
+      v-show-field="['redFile', includeFields]"
+      name="redFile"
+      label="红头文件"
+      :rules="computedRules.redFile"
+    >
+      <template #input>
+        <YesNoSwitch v-model="form.redFile" />
+      </template>
+    </van-field>
+
+    <van-field
+      v-model.trim="form.deptCategory"
+      v-show-field="['deptCategory', includeFields]"
+      name="deptCategory"
+      label="类型编码"
+      :rules="computedRules.deptCategory"
     />
 
     <van-field
@@ -64,18 +76,6 @@
     >
       <template #input>
         <UserSelect ref="UserSelectRef" v-model="form.leader" :multiple="false" />
-      </template>
-    </van-field>
-
-    <van-field
-      v-model="form.redFile"
-      v-show-field="['redFile', includeFields]"
-      name="redFile"
-      label="红头文件"
-      :rules="computedRules.redFile"
-    >
-      <template #input>
-        <YesNoSwitch v-model="form.redFile" />
       </template>
     </van-field>
 

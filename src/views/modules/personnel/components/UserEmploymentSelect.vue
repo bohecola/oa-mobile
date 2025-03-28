@@ -329,7 +329,7 @@ function onConfirm() {
     : undefined
 
   emit('update:modelValue', payload)
-  emit('confirm', payload)
+  emit('confirm', payload, selectedList.value)
 
   closePopup()
 }

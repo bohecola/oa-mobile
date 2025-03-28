@@ -10,8 +10,8 @@
   />
 
   <DateSelect
-    v-model="form.yy_entryCompanyDate"
     v-show-field="['yy_entryCompanyDate', includeFields]"
+    :model-value="`${parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}')}`"
     name="yy_entryCompanyDate"
     label="入职时间"
   />
@@ -49,8 +49,8 @@
     />
 
     <DateSelect
-      v-model="form.yy_registrationCompanyDate"
       v-show-field="['yy_registrationCompanyDate', includeFields]"
+      :model-value="`${parseTime(form.yy_registrationCompanyDate, '{y}-{m}-{d}')}`"
       name="yy_registrationCompanyDate"
       label="注册到公司日期"
     />

@@ -41,7 +41,7 @@
     v-show-field="['ff_nation', includeFields]"
     label="民族"
     name="ff_nation"
-    dict-type="ff_nation"
+    dict-type="oa_nation"
     :rules="computedRules.ff_nation"
   />
 
@@ -187,20 +187,22 @@ const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('ossIdList', true)
 
 // TODO: 通过预入职id获取预入职信息
-async function getPreUser(value: string) {
-  // form.value.ff_deptId = row.deptId
-  const { rows } = await listUserEmployment({ preEmploymentId: value, pageNum: undefined, pageSize: undefined })
-  console.log(rows, 'rows')
+async function getPreUser(value: string, selectedList: UserPreEmploymentVO[]) {
+  const { rows } = await listUserEmployment({ preEmploymentId: value })
+  const [preUser] = selectedList
+  const [ue] = rows
 
-  // form.value.ff_age = row.age
-  // form.value.ff_sex = row.sex
-  // form.value.ff_nation = res.rows[0].nation
-  // form.value.ff_education = res.rows[0].education
-  // form.value.ff_hopeDate = res.rows[0].hopeDate
-  // form.value.ff_interviewDate = row.interviewDate
-  // form.value.ff_isProbation = row.isProbation
-  // form.value.ff_certificates = row.certificates
-  // form.value.ff_wages = res.rows[0].wages
-  // form.value.ff_performanceWages = res.rows[0].performanceWages
+  form.value.ff_deptId = preUser.deptId
+  form.value.ff_age = preUser.age
+  form.value.ff_sex = preUser.sex
+  form.value.ff_interviewDate = preUser.interviewDate.split(' ')[0]
+  form.value.ff_isProbation = preUser.isProbation
+  form.value.ff_certificates = preUser.certificates
+
+  form.value.ff_nation = ue.nation
+  form.value.ff_education = ue.education
+  form.value.ff_hopeDate = ue.hopeDate.split(' ')[0]
+  form.value.ff_wages = ue.wages
+  form.value.ff_performanceWages = ue.performanceWages
 }
 </script>

@@ -564,7 +564,14 @@ export function useUserRegularizationSelect() {
       text: '状态',
       key: 'status',
       type: 'dict',
-      options: status !== '-1' ? oa_user_state : oa_employment_status,
+      options: (item) => {
+        if (item.status !== '-1') {
+          return oa_user_state.value
+        }
+        else {
+          return oa_employment_status.value
+        }
+      },
     },
   ]
 

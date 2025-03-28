@@ -31,19 +31,33 @@
       dict-type="sys_dept_type"
     />
 
-    <van-field
-      v-model.trim="form.deptCategory"
-      v-show-field="['deptCategory', includeFields]"
-      name="deptCategory"
-      label="类型编码"
-    />
-
     <DictSelect
       v-model="form.businessType"
       v-show-field="['businessType', includeFields]"
       label="业务类型"
       name="businessType"
       dict-type="oa_project_business_type"
+    />
+
+    <van-field
+      v-model="form.redFile"
+      v-show-field="['redFile', includeFields]"
+      name="redFile"
+      label="红头文件"
+    >
+      <template #input>
+        <YesNoSwitch
+          v-model="form.redFile"
+          readonly
+        />
+      </template>
+    </van-field>
+
+    <van-field
+      v-model.trim="form.deptCategory"
+      v-show-field="['deptCategory', includeFields]"
+      name="deptCategory"
+      label="类型编码"
     />
 
     <van-field
@@ -56,20 +70,6 @@
         <UserSelect
           v-model="form.leader"
           :multiple="false"
-          readonly
-        />
-      </template>
-    </van-field>
-
-    <van-field
-      v-model="form.redFile"
-      v-show-field="['redFile', includeFields]"
-      name="redFile"
-      label="红头文件"
-    >
-      <template #input>
-        <YesNoSwitch
-          v-model="form.redFile"
           readonly
         />
       </template>

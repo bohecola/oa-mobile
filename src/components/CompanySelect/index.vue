@@ -14,6 +14,7 @@
       placeholder="请选择"
       readonly
       autosize
+      is-link
       v-bind="attrs"
       @click="onFieldClick"
     >
@@ -48,12 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
+import { isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup } from '@/hooks'
 import { getCompany } from '@/api/oa/personnel/userContract'
 
 const props = defineProps<{
-  modelValue?: string | number
+  modelValue?: string
   multiple?: boolean
   readonly?: boolean
   clearable?: boolean
@@ -66,7 +67,7 @@ const slots = useSlots()
 const parentForm = useParentForm()
 const { visible, openPopup, closePopup } = usePopup()
 
-const id = ref<string | number>(props.modelValue) // 选中的值
+const id = ref<string>(props.modelValue) // 选中的值
 const options = ref<{ text: string, label: string, value: string }[]>([])
 
 // 计算是否只读

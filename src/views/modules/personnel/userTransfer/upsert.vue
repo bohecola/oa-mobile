@@ -42,6 +42,7 @@
       v-show-field="['oldDeptId', includeFields]"
       name="oldDeptId"
       label="原部门/项目部"
+      readonly
     />
 
     <PostSelect

@@ -18,7 +18,7 @@
     v-show-field="['t_deptId', includeFields]"
     name="t_deptId"
     label="所在部门/项目部"
-    :rules="computedRules.t_deptId"
+    readonly
   />
 
   <PostSelect
@@ -28,7 +28,7 @@
     label="岗位"
     multiple
     :dept-id="form.t_deptId"
-    :rules="computedRules.t_postIds"
+    readonly
   />
 
   <van-field v-show-field="['t_isFormal', includeFields]" label="是否已转正" name="t_isFormal" :rules="computedRules.t_isFormal">
@@ -72,12 +72,12 @@ trackFields(props.includeFields)
 const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('ossIdList', true)
 
-function onUserSelectValueChange(val: UserVO) {
-  form.value.needDepts = val?.deptId as string
-  form.value.maxPostLevel = val?.maxPostLevel
+function onUserSelectValueChange(val: string | number, selectList: UserVO[]) {
+  form.value.needDepts = selectList[0].deptId as string
+  form.value.maxPostLevel = selectList[0].maxPostLevel
 
-  form.value.t_deptId = val?.deptId
-  form.value.t_postIds = val?.postIdStr
+  form.value.t_deptId = selectList[0].deptId
+  form.value.t_postIds = selectList[0].postIdStr
   console.log(form.value.t_postIds, 'val')
   // TODO 是否已转正、选人之后未查到数据
 }

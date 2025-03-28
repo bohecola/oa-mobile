@@ -5,6 +5,7 @@
     name="needDepts"
     label="需求部门"
     :rules="computedRules.needDepts"
+    clearable
   />
 
   <van-field

@@ -8,6 +8,7 @@
   />
 
   <van-field
+    v-model="form.x_userId"
     v-show-field="['x_userId', includeFields]"
     name="x_userId"
     label="外包劳动合同到期员工"
@@ -18,7 +19,7 @@
     <template #input>
       <UserSelect
         ref="UserSelectRef"
-        value-type="object"
+        v-model="form.x_userId"
         multiple
         @confirm="onUserSelectValueChange"
       />
@@ -101,8 +102,9 @@ const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
-function onUserSelectValueChange(val: UserVO[]) {
-  const maxPostLevelArr = val.map(e => e.maxPostLevel)
+function onUserSelectValueChange(val: UserVO, selectedList: UserVO[]) {
+  form.value.x_userId = selectedList.map(e => e.userId).join(',')
+  const maxPostLevelArr = selectedList.map(e => e.maxPostLevel)
   const maxPostLevel = Math.max(...maxPostLevelArr)
   form.value.maxPostLevel = maxPostLevel
 }
