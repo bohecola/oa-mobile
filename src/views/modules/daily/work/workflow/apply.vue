@@ -39,7 +39,6 @@
           </template>
         </van-field>
 
-        <!-- TODO 公司选择 -->
         <CompanySelect
           v-if="form.dailyWorkType"
           v-model="form.companyId"
@@ -74,7 +73,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
 const { Form, form, rules, reset, submit, workflowView, workflowSubmit } = useForm()
 // 流程
-const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow()
+const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow<DailyWorkForm>()
 
 // 引用
 const DailyTypeSelectRef = ref<InstanceType<typeof DailyTypeSelect>>()

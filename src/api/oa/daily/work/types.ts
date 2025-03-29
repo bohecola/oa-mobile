@@ -267,7 +267,7 @@ export interface DailyWorkQuery extends PageQuery {
   /**
    * 日常事务申请类型ID
    */
-  dailyWorkType?: number
+  dailyWorkType?: string
 
   /**
    * 资料类型(原件、复印件、电子版)

@@ -34,7 +34,7 @@ export function useWorkflow<T>() {
   const taskDefinitionKey = ref(nodeId as string)
 
   // 流程表单
-  const submitFormData = ref<StartProcessBo<T & { initiator: Initiator }>>({
+  const submitFormData = ref<StartProcessBo<T>>({
     businessKey: undefined,
     tableName: undefined,
     variables: {},

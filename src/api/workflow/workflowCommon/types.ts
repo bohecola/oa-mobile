@@ -12,10 +12,10 @@ export interface RouterJumpVo {
 }
 
 export interface StartProcessBo<T = any> {
-  businessKey?: string | number
+  businessKey?: string
   tableName: string
   variables: {
-    entity?: T
+    entity?: T & { initiator: Initiator }
     [k: string]: any
   }
   // 流程实例名称拼接
