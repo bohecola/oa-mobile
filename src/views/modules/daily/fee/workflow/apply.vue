@@ -3,6 +3,7 @@
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
     :group="false"
+    :reset-form="reset"
     @temp-save="handleTempSave"
     @submit="handleSubmit"
     @approval="handleApproval"
@@ -60,7 +61,7 @@ import { startWorkFlow } from '@/api/workflow/task'
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
-const { Form, form, rules, reset, submit, workflowSubmit, workflowView } = useForm()
+const { Form, form, rules, reset, resetFields, submit, workflowSubmit, workflowView } = useForm()
 // 流程
 const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow<DailyFeeForm>()
 
@@ -92,6 +93,7 @@ provide('form', form)
 provide('Form', Form)
 provide('computedRules', computedRules)
 provide('trackFields', trackFields)
+provide('resetFields', resetFields)
 provide('updateRuleRequired', updateRuleRequired)
 
 // 获取基础校验字段

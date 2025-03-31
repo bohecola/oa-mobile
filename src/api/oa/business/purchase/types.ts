@@ -22,7 +22,7 @@ export interface PurchaseVO extends BaseEntity {
   /**
    * 项目id
    */
-  projectId: string | number
+  projectId: string
 
   /**
    * 采购类型
@@ -57,7 +57,7 @@ export interface PurchaseVO extends BaseEntity {
   /**
    * 关联销售合同
    */
-  contractId: string | number
+  contractId: string
 
   /**
    * 合同编号
@@ -134,7 +134,7 @@ export interface PurchaseForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 编号
@@ -189,7 +189,7 @@ export interface PurchaseForm extends BaseEntity {
   /**
    * 关联销售合同
    */
-  contractId?: string | number
+  contractId?: string
 
   /**
    * 合同编号
@@ -286,7 +286,7 @@ export interface PurchaseQuery extends PageQuery {
   /**
    * 项目id
    */
-  projectId?: string | number
+  projectId?: string
 
   /**
    * 采购类型
@@ -321,7 +321,7 @@ export interface PurchaseQuery extends PageQuery {
   /**
    * 关联销售合同
    */
-  contractId?: string | number
+  contractId?: string
 
   /**
    * 合同执行情况
@@ -368,17 +368,17 @@ export interface PurchaseItemVO {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 采购id
    */
-  purchaseId?: string | number
+  purchaseId?: string
 
   /**
    * 项目预算项id（oa_project_subject_item）
    */
-  psiId?: string | number
+  psiId?: string
 
   /**
    * 预算责任部门id

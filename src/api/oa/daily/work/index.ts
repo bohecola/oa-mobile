@@ -20,7 +20,7 @@ export function listDailyWork(query?: DailyWorkQuery): AxiosPromise<DailyWorkVO[
  * 查询日常事务记录详细
  * @param id
  */
-export function getDailyWork(id: string | number): AxiosPromise<DailyWorkVO> {
+export function getDailyWork(id: string): AxiosPromise<DailyWorkVO> {
   return request({
     url: `/oa/daily/dailyWorkType/${id}`,
     method: 'get',
@@ -55,7 +55,7 @@ export function updateDailyWork(data: DailyWorkForm) {
  * 删除日常事务记录
  * @param id
  */
-export function delDailyWork(id: string | number | Array<string | number>) {
+export function delDailyWork(id: string | Array<string>) {
   return request({
     url: `/oa/daily/dailyWorkType/${id}`,
     method: 'delete',

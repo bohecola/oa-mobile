@@ -2,6 +2,7 @@
   <WorkflowPage
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
+    :reset-form="Upsert?.reset"
     @approval="handleApproval"
     @temp-save="handleTempSave"
     @submit="handleSubmit"

@@ -20,7 +20,7 @@ export function listDailyFee(query?: DailyFeeQuery): AxiosPromise<DailyFeeVO[]> 
  * 查询日常费用管理详细
  * @param id
  */
-export function getDailyFee(id: string | number): AxiosPromise<DailyFeeVO> {
+export function getDailyFee(id: string): AxiosPromise<DailyFeeVO> {
   return request({
     url: `/oa/daily/dailyFee/${id}`,
     method: 'get',
@@ -55,7 +55,7 @@ export function updateDailyFee(data: DailyFeeForm): AxiosPromise {
  * 删除日常费用管理
  * @param id
  */
-export function delDailyFee(id: string | number | Array<string | number>) {
+export function delDailyFee(id: string | Array<string>) {
   return request({
     url: `/oa/daily/dailyFee/${id}`,
     method: 'delete',

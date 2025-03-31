@@ -8,7 +8,7 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions<T = string | number> = Options<T>
+export type SubmitOptions<T = string> = Options<T>
 export type ViewOptions = Options
 
 export function useForm() {
@@ -86,7 +86,6 @@ export function useForm() {
   const data = reactive<Omit<PageData<PurchaseForm, any>, 'queryParams'>>({
     form: { ...cloneDeep(initFormData) },
     rules: {
-      // no: [{ required: true, message: '编号不能为空', trigger: 'onBlur' }],
       subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
       deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
       psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],

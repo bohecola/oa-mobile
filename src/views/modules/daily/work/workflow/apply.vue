@@ -3,6 +3,7 @@
     :loading="loading"
     :entity-variables="submitFormData.variables?.entity"
     :group="false"
+    :reset-form="reset"
     @temp-save="handleTempSave"
     @submit="handleSubmit"
     @approval="handleApproval"
@@ -71,7 +72,7 @@ const { user } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
-const { Form, form, rules, reset, submit, workflowView, workflowSubmit } = useForm()
+const { Form, form, rules, reset, resetFields, submit, workflowView, workflowSubmit } = useForm()
 // 流程
 const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow<DailyWorkForm>()
 
@@ -103,6 +104,7 @@ provide('Form', Form)
 provide('form', form)
 provide('computedRules', computedRules)
 provide('trackFields', trackFields)
+provide('resetFields', resetFields)
 provide('updateRuleRequired', updateRuleRequired)
 
 function getBaseFields() {

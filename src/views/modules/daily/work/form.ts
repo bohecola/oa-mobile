@@ -9,7 +9,7 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions<T = string | number> = Options<T>
+export type SubmitOptions<T = string> = Options<T>
 export type ViewOptions = Options
 export interface SuccessData { id: DailyWorkForm['id'] }
 
@@ -104,7 +104,7 @@ export function useForm() {
   }
 
   // 回显
-  async function view(id: string | number) {
+  async function view(id: string) {
     isLoading.value = true
     reset()
     const { data } = await getDailyWork(id)

@@ -4,7 +4,7 @@ export interface DailyWorkVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 自定义审批人

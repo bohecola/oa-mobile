@@ -134,7 +134,7 @@ export interface ContractForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 编号

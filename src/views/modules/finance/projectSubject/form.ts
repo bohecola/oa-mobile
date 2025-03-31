@@ -9,7 +9,7 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions<T = string | number> = {
+export type SubmitOptions<T = string> = {
   updateDataStatus?: (data: ProjectSubjectForm) => void
 } & Options<T>
 

@@ -160,7 +160,6 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance } from 'vant'
 import { isNil, isNumber } from 'lodash-es'
 import Big from 'big.js'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
@@ -184,10 +183,10 @@ const { user } = useStore()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const Form = inject<Ref<FormInstance>>('Form')
 const form = inject<Ref<DailyFeeForm>>('form')
 const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
-const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
+const initiatorDeptId = inject<Ref<string | number>>('initiatorDeptId')
+const resetFields = inject<(names: KeysOfArray<DailyFeeForm>) => void>('resetFields')
 
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyFeeForm>>('trackFields')
@@ -242,24 +241,21 @@ function handleDelete(_: DailyFeeItemVO, index: number) {
     .catch(() => {})
 }
 
-// TODO 重置表单数据
 // 预算类型修改
 function onSubjectTypeChange() {
-  Form.value.resetValidation(['deptId', 'psId', 'contractId', 'contractNo'])
+  resetFields(['deptId', 'psId', 'contractId', 'contractNo'])
   resetSubjectItemId()
 }
 
-// TODO 重置表单数据
 // 部门修改
 function onDeptSelectChange() {
-  Form.value.resetValidation(['psId', 'contractId', 'contractNo'])
+  resetFields(['psId', 'contractId', 'contractNo'])
   resetSubjectItemId()
 }
 
-// TODO 重置表单数据
 // 预算修改
 function onProjectSubjectChange() {
-  Form.value.resetValidation(['contractId', 'contractNo'])
+  resetFields(['contractId', 'contractNo'])
   resetSubjectItemId()
 }
 

@@ -36,6 +36,7 @@
       label="付款方式"
       :readonly="readonly"
       clearable
+      @change="onPaymentWayChange"
     />
 
     <template v-if="form.receiptInfo.paymentWay === '0'">
@@ -72,4 +73,11 @@ defineProps<{
 
 // 表单
 const form = inject<Ref<DailyFeeForm & { receiptInfo: ReceiptInfo }>>('form')
+
+// 付款方式选择
+function onPaymentWayChange() {
+  form.value.receiptInfo.accountName = undefined
+  form.value.receiptInfo.corporateAccount = undefined
+  form.value.receiptInfo.openingBank = undefined
+}
 </script>

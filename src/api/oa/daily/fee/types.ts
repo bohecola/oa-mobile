@@ -4,7 +4,7 @@ export interface DailyFeeVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 项目
