@@ -112,21 +112,23 @@ trackFields(props.includeFields)
 const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('ossIdList', true)
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 // 申请类型切换
 function onTypeChange(val: string) {
   if (isNil(val)) {
-    Form?.value?.resetValidation(['q_defectEliminationAmount', 'q_trafficAmount', 'q_personnelReuseSubsidyAmount'])
+    resetFields(['q_defectEliminationAmount', 'q_trafficAmount', 'q_personnelReuseSubsidyAmount'])
     return
   }
 
   if (!val.includes('0')) {
-    Form?.value?.resetValidation(['q_defectEliminationAmount'])
+    resetFields(['q_defectEliminationAmount'])
   }
   if (!val.includes('1')) {
-    Form?.value?.resetValidation(['q_trafficAmount'])
+    resetFields(['q_trafficAmount'])
   }
   if (!val.includes('2')) {
-    Form?.value?.resetValidation(['q_personnelReuseSubsidyAmount'])
+    resetFields(['q_personnelReuseSubsidyAmount'])
   }
 }
 

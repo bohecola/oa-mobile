@@ -176,8 +176,10 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 // 申请类型切换
 function onTypeChange() {
-  Form?.value?.resetValidation(['gg_changeDetails'])
+  resetFields(['gg_changeDetails'])
 }
 </script>

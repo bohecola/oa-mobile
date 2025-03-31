@@ -65,10 +65,9 @@
     name="k_isUniform"
     label="是否配备公司工作服"
     :rules="computedRules.k_isUniform"
-    @change="onIsUniformChange"
   >
     <template #input>
-      <YesNoSwitch v-model="form.k_isUniform" />
+      <YesNoSwitch v-model="form.k_isUniform" @change="onIsUniformChange" />
     </template>
   </van-field>
 
@@ -122,10 +121,9 @@
       name="k_isUseOriginalSalaryStandard"
       label="是否延用原工资标准"
       :rules="computedRules.k_isUseOriginalSalaryStandard"
-      @change="onIsUseOriginalChange"
     >
       <template #input>
-        <YesNoSwitch v-model="form.k_isUseOriginalSalaryStandard" />
+        <YesNoSwitch v-model="form.k_isUseOriginalSalaryStandard" @change="onIsUseOriginalChange" />
       </template>
     </van-field>
 
@@ -380,15 +378,17 @@ const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('ossIdList', true)
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 // 是否延用原工资标准
 function onIsUseOriginalChange() {
   // 原工资标准和新工资标准
-  Form.value.resetValidation(['k_originalSalaryStandard', 'k_newSalaryStandard'])
+  resetFields(['k_originalSalaryStandard', 'k_newSalaryStandard'])
 }
 
 function onCategoryChange() {
   // 清空
-  Form.value.resetValidation([
+  resetFields([
     'k_isUseOriginalSalaryStandard',
     'k_originalSalaryStandard',
     'k_newSalaryStandard',
@@ -409,18 +409,18 @@ function onCategoryChange() {
 // 是否配备工服
 function onIsUniformChange() {
   // 清空工服类型和数量尺寸
-  Form.value.resetValidation(['k_workwearType', 'k_quantityAndSize'])
+  resetFields(['k_workwearType', 'k_quantityAndSize'])
 }
 
 // 保险类型
 function onPurchaseInsuranceTypeChange() {
   // 清空保险开始时间-结束时间、说明
-  Form.value.resetValidation(['k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions'])
+  resetFields(['k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions'])
 }
 
 // 签订合同类型
 function onSigneContractTypeChange() {
   // 清空合同开始时间-结束时间、说明
-  Form.value.resetValidation(['k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions'])
+  resetFields(['k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions'])
 }
 </script>

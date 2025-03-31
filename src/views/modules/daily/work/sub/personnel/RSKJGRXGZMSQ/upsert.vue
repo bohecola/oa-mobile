@@ -78,6 +78,8 @@ const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
@@ -85,6 +87,6 @@ trackFields(props.includeFields)
 function onIsUseSealChange() {
   // 清空用印类型
   form.value.sealUseType = undefined
-  Form?.value?.resetValidation(['sealUseType'])
+  resetFields(['sealUseType'])
 }
 </script>

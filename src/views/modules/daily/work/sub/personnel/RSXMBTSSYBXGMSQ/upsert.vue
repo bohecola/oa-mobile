@@ -91,10 +91,9 @@
     label="是否涉及登高作业"
     name="qq_isClimbingHomework"
     :rules="computedRules.qq_isClimbingHomework"
-    @change="onIsClimbingHomeworkChange"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isClimbingHomework" />
+      <YesNoSwitch v-model="form.qq_isClimbingHomework" @change="onIsClimbingHomeworkChange" />
     </template>
   </van-field>
 
@@ -291,6 +290,7 @@ const props = withDefaults(
 const form = inject<Ref<DailyWorkForm>>('form')
 // form.value.qq_isContractPurchaseInsurance = 'Y'
 const Form = inject<Ref<FormInstance>>('Form')
+
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
@@ -300,9 +300,11 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 function onIsClimbingHomeworkChange() {
   // 清空距离范围
-  Form.value.resetValidation(['qq_distanceRange'])
+  resetFields(['qq_distanceRange'])
 }
 
 async function onDeptChange(value: string | number) {
