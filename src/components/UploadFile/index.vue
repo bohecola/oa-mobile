@@ -298,7 +298,11 @@ const fileActionEnums: FileActionEnum[] = [
 // 自定义表单项的值
 useCustomFieldValue(() => {
   const ids = getOssIds(fileList.value)
-  const value = props.valueType === 'string' ? ids.join(',') : ids
+  const value = props.valueType === 'string'
+    ? !isEmpty(ids)
+        ? ids.join(',')
+        : undefined
+    : ids
   return value
 })
 
