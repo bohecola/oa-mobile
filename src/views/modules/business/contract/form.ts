@@ -117,6 +117,16 @@ export function useForm() {
     setContractMode('two')
   }
 
+  // 表单字段重置
+  function resetFields(names: KeysOfArray<ContractForm>) {
+    const obj = cloneDeep(initFormData)
+
+    Form.value?.resetValidation(names)
+    for (const key of names as string[]) {
+      form.value[key] = obj[key]
+    }
+  }
+
   // 回显
   async function view(id: string | number) {
     isLoading.value = true
@@ -191,6 +201,7 @@ export function useForm() {
     isLoading,
     updateLoading,
     reset,
+    resetFields,
     view,
     submit,
     workflowSubmit,

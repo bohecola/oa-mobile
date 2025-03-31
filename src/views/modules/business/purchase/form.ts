@@ -125,12 +125,22 @@ export function useForm() {
   const excludeOssIdList = ref([])
 
   // 表单重置
-  const reset = () => {
-    form.value = { ...cloneDeep(initFormData) }
+  function reset() {
+    form.value = cloneDeep(initFormData)
     Form.value?.resetValidation()
 
     excludeCheckFiles.value = []
     excludeOssIdList.value = []
+  }
+
+  // 表单字段重置
+  function resetFields(names: KeysOfArray<PurchaseForm>) {
+    const obj = cloneDeep(initFormData)
+
+    Form.value?.resetValidation(names)
+    for (const key of names as string[]) {
+      form.value[key] = obj[key]
+    }
   }
 
   // 回显
@@ -269,6 +279,7 @@ export function useForm() {
     excludeCheckFiles,
     excludeOssIdList,
     reset,
+    resetFields,
     view,
     // submit,
     // workflowSubmit,

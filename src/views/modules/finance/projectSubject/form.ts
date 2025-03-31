@@ -70,6 +70,16 @@ export function useForm() {
     cb?.()
   }
 
+  // 表单字段重置
+  function resetFields(names: KeysOfArray<ProjectSubjectForm>) {
+    const obj = cloneDeep(initFormData)
+
+    Form.value?.resetValidation(names)
+    for (const key of names as string[]) {
+      form.value[key] = obj[key]
+    }
+  }
+
   // 回显
   async function view(id: string, cb?: (value: ProjectSubjectForm) => void | Promise<void>) {
     isLoading.value = true
@@ -204,6 +214,7 @@ export function useForm() {
     isLoading,
     updateLoading,
     reset,
+    resetFields,
     submit,
     view,
     viewByDept,

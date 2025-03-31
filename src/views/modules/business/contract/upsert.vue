@@ -398,7 +398,7 @@ const {
   ),
 )
 
-const { Form, form, rules, isLoading, updateLoading, contractMode, reset, view, submit, workflowSubmit, workflowView } = useForm()
+const { Form, form, rules, isLoading, updateLoading, contractMode, reset, resetFields, view, submit, workflowSubmit, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<ContractForm>()
@@ -441,40 +441,33 @@ const exclude = computed(() => {
   })
 })
 
-// TODO 重置表单值
 // 合同类型选择
-function onContractTypeSelectChange(value?: string) {
-  Form.value.resetValidation(['category', 'reviewWay', 'purchaseIds', 'customizeApprover'])
+function onContractTypeSelectChange(_?: string) {
+  resetFields(['category', 'reviewWay', 'purchaseIds', 'customizeApprover'])
 }
 
-// TODO 重置表单值
 // 合同类别选择
 function onContractCategorySelectChange() {
-  Form.value.resetValidation(['reviewWay', 'purchaseIds', 'customizeApprover'])
+  resetFields(['reviewWay', 'purchaseIds', 'customizeApprover'])
 }
 
-// TODO 重置表单值
 // 合同评审方式选择
 function onReviewWayChange() {
-  Form.value.resetValidation(['customizeApprover'])
+  resetFields(['customizeApprover'])
 }
 
-// TODO 重置表单值
 // 是否用印选择
-function onIsUseSealChange(value?: string) {
-  Form.value.resetValidation(['fileUseType', 'sealUseType'])
+function onIsUseSealChange(_?: string) {
+  resetFields(['fileUseType', 'sealUseType'])
 }
 
 // 合同模式选择变化
 function onRadioGroupChange(val: string) {
   if (val === 'three') {
-    Form.value?.resetValidation(['partyD'])
-    form.value.partyD = undefined
+    resetFields(['partyD'])
   }
   else if (val === 'two') {
-    Form.value?.resetValidation(['partyC', 'partyD'])
-    form.value.partyC = undefined
-    form.value.partyD = undefined
+    resetFields(['partyC', 'partyD'])
   }
 }
 

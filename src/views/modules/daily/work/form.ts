@@ -87,10 +87,20 @@ export function useForm() {
   const updateLoading = ref(false)
 
   // 表单重置
-  const reset = () => {
+  function reset() {
     Form.value?.resetValidation()
     form.value = cloneDeep(initFormData)
     rules.value = cloneDeep(initRules)
+  }
+
+  // 表单字段重置
+  function resetFields(names: KeysOfArray<DailyWorkForm>) {
+    const Obj = cloneDeep(initFormData)
+
+    Form.value?.resetValidation(names)
+    for (const key of names as string[]) {
+      form.value[key] = Obj[key]
+    }
   }
 
   // 回显
@@ -163,6 +173,7 @@ export function useForm() {
     isLoading,
     updateLoading,
     reset,
+    resetFields,
     submit,
     view,
     workflowSubmit,
