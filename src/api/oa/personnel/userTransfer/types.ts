@@ -2,7 +2,7 @@ export interface UserTransferVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 用户id
@@ -89,7 +89,7 @@ export interface UserTransferForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 用户id

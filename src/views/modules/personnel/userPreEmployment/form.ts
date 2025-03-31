@@ -55,7 +55,7 @@ export function useForm() {
     rules: {
       deptId: [{ required: true, message: '部门不能为空', trigger: 'onBlur' }],
       recruitNo: [{ required: true, message: '招聘申请不能为空', trigger: 'onBlur' }],
-      postName: [{ required: true, message: '岗位不能为空', trigger: 'onBlur' }],
+      postId: [{ required: true, message: '岗位不能为空', trigger: 'onBlur' }],
       name: [{ required: true, message: '姓名不能为空', trigger: 'onBlur' }],
       sex: [{ required: true, message: '用户性别不能为空', trigger: 'onChange' }],
       age: [{ required: true, message: '年龄不能为空', trigger: 'onChange' }],
@@ -124,8 +124,8 @@ export function useForm() {
   }
 
   // 提交
-  async function submit(options?: SubmitOptions<SuccessData>) {
-    const { operation = 'submit', success, fail } = options ?? {}
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { operation = 'submit', success, fail } = options
     form.value.operation = operation
 
     if (!childTableCheck(form.value.userPreEmploymentEvaluateBoList)) {
@@ -140,8 +140,8 @@ export function useForm() {
           await updateUserPreEmployment(form.value)
         }
         else {
-          const { data } = await addUserPreEmployment(form.value)
-          form.value.id = data.id
+          const { data: id } = await addUserPreEmployment(form.value)
+          form.value.id = id
         }
         success?.({ id: form.value.id })
       })

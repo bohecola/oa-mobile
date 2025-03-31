@@ -110,7 +110,7 @@ const props = defineProps<{
   clearable?: boolean
 }>()
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'change', 'update:postName'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -139,7 +139,7 @@ const data = ref<_SysDeptPostVO[]>([])
 // 选项数据
 async function getOptions() {
   if (props.deptId) {
-    const { rows } = await listSysDeptPost({ deptId: props.deptId, pageNum: 1, pageSize: 1000 })
+    const { rows } = await listSysDeptPost({ deptId: props.deptId })
     data.value = rows.map(e => ({ ...e, text: e.postName, label: e.postName, value: String(e.postId) }))
   }
   else {
@@ -181,6 +181,13 @@ function onPickerConfirm({ selectedValues }) {
 
   emit('update:modelValue', value)
   emit('change', value)
+
+  const postName = data.value
+    .filter(item => (isArray(value) ? value.includes(item.postId as string) : item.postId === value))
+    .map(e => e.postName)
+    .join('、')
+
+  emit('update:postName', postName)
 
   closePopup()
 }

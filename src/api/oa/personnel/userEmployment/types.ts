@@ -2,7 +2,7 @@ export interface UserEmploymentVO {
   /**
    * ID
    */
-  id: string | number
+  id: string
 
   /**
    * 预入职员工id（user_pre_employment）
@@ -95,7 +95,7 @@ export interface UserEmploymentForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   name?: string
 

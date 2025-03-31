@@ -108,8 +108,8 @@ export function useForm() {
   }
 
   // 提交
-  async function submit(options?: SubmitOptions<SuccessData>) {
-    const { success, fail } = options ?? {}
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
 
     if (hasDuplicatePosts(form.value.userRecruitPostBoList)) {
       return false

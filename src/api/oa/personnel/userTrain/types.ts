@@ -194,7 +194,7 @@ export interface UserTrainForm extends BaseEntity {
   /**
    * ID
    */
-  id: number | string
+  id: string
   /**
    * 取得证书;Y 是 N 否
    */

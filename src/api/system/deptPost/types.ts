@@ -114,7 +114,7 @@ export interface SysDeptPostForm extends BaseEntity {
   demand?: string
 }
 
-export interface SysDeptPostQuery extends PageQuery {
+export interface SysDeptPostQuery extends Partial<PageQuery> {
   /**
    * 部门id
    */

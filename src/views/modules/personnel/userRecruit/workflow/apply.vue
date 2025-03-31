@@ -45,13 +45,13 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserRecruitForm>()
 
 // 引用
-const Upsert = ref<InstanceType<typeof upsert> | null>()
-const Detail = ref<InstanceType<typeof detail> | null>()
-const CommonDetail = ref<InstanceType<typeof detail> | null>()
+const Upsert = ref<InstanceType<typeof upsert>>()
+const Detail = ref<InstanceType<typeof detail>>()
+const CommonDetail = ref<InstanceType<typeof detail>>()
 // 归档
-const ArchiveDetailDetail1 = ref<InstanceType<typeof detail> | null>()
-const ArchiveDetailUpsert1 = ref<InstanceType<typeof upsert> | null>()
-const ArchiveDetailDetail2 = ref<InstanceType<typeof detail> | null>()
+const ArchiveDetailDetail1 = ref<InstanceType<typeof detail>>()
+const ArchiveDetailUpsert1 = ref<InstanceType<typeof upsert>>()
+const ArchiveDetailDetail2 = ref<InstanceType<typeof detail>>()
 
 // 所有字段
 const allFields: PartialBooleanRecord<UserRecruitForm> = {

@@ -22,7 +22,7 @@
       v-show-field="['userId', includeFields]"
       name="userId"
       label="员工"
-      :rules="computedRules.applicationType"
+      :rules="computedRules.userId"
       is-link
       @click="UserSelectRef?.open"
     >
@@ -40,7 +40,7 @@
       v-show-field="['commander', includeFields]"
       name="commander"
       label="负责人"
-      :rules="computedRules.applicationType"
+      :rules="computedRules.commander"
       is-link
       @click="CommanderSelectRef?.open"
     >
@@ -94,7 +94,7 @@
         name="attendNumber"
         label="参加人数"
         type="digit"
-        :rules="computedRules.applicationType"
+        :rules="computedRules.attendNumber"
       />
 
       <DictSelect
@@ -159,7 +159,7 @@
         rows="1"
         autosize
         name="additionalAmountDescription"
-        :rules="computedRules.applicationType"
+        :rules="computedRules.additionalAmountDescription"
       />
 
       <van-field
@@ -198,14 +198,14 @@
         v-show-field="['attendNumber', includeFields]"
         name="attendNumber"
         label="参加人数"
-        :rules="computedRules.applicationType"
+        :rules="computedRules.attendNumber"
       />
 
       <van-field
         v-show-field="['isProduceCost', includeFields]"
         name="isProduceCost"
         label="是否产生费用"
-        :rules="computedRules.applicationType"
+        :rules="computedRules.isProduceCost"
       >
         <template #input>
           <YesNoSwitch v-model="form.isProduceCost" />
@@ -249,7 +249,7 @@
       rows="1"
       autosize
       name="remark"
-      :rules="computedRules.applicationType"
+      :rules="computedRules.remark"
     />
 
     <div class="px-4 text-sm mt-3 text-gray-500">
@@ -259,7 +259,6 @@
       v-for="(item, index) in form.ossMessageAllBoList"
       :key="index"
       :name="item.type"
-      :rules="computedRules.applicationType"
     >
       <template #title>
         <DictSelect

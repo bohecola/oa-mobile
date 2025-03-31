@@ -16,20 +16,19 @@
       :rules="computedRules.deptId"
       @change="deptChange"
     />
-
+    <!--
     <van-field
       v-model="form.recruitNo"
       v-show-field="['recruitNo', includeFields]"
       name="recruitNo"
       label="招聘申请"
-    />
+    /> -->
 
     <PostSelect
       v-model="form.postId"
       v-show-field="['postId', includeFields]"
       name="postId"
       label="岗位名称"
-      multiple
       :dept-id="form.deptId"
       :rules="computedRules.postId"
       @change="onPostSelectChange"
@@ -40,13 +39,14 @@
       v-show-field="['name', includeFields]"
       name="name"
       label="姓名"
+      placeholder="请输入"
       :rules="computedRules.name"
     />
 
     <DictSelect
       v-model="form.sex"
       v-show-field="['sex', includeFields]"
-      label="性别"
+      label="用户性别"
       name="sex"
       dict-type="sys_user_sex"
       :rules="computedRules.sex"
@@ -110,6 +110,7 @@
       :rules="computedRules.isOwnerInterview"
     />
 
+    <!-- 录用状态为录用3，岗位编码不是见习运维人员JXYWRY -->
     <div v-if="form.status === '3' && form.postCode !== 'JXYWRY'">
       <van-field
         v-model="form.isIntern"
@@ -167,6 +168,7 @@
       v-model="form.reference"
       v-show-field="['reference', includeFields]"
       label="推荐来源"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -179,6 +181,7 @@
       v-show-field="['certificates', includeFields]"
       label="持证情况"
       name="certificates"
+      multiple
       dict-type="oa_document_type"
       :rules="computedRules.certificates"
     />
@@ -188,6 +191,7 @@
       v-model="form.otherCertificates"
       v-show-field="['otherCertificates', includeFields]"
       label="其他证书"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -215,10 +219,10 @@
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`">
+          <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`" class="reset-label">
             <van-field
               v-model="item.evaluateItemName"
-              :name="`itemList.${index}.evaluateItemName`"
+              :name="`userPreEmploymentEvaluateBoList.${index}.evaluateItemName`"
               label="描述"
             >
               <template #input>
@@ -228,7 +232,7 @@
 
             <van-field
               v-model="item.result"
-              :name="`itemList.${index}.result`"
+              :name="`userPreEmploymentEvaluateBoList.${index}.result`"
               label="评价结果"
               type="textarea"
               rows="1"
@@ -262,7 +266,6 @@ import type { UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment
 import { checkPhoneUnique } from '@/api/system/user'
 import { checkPrePhoneUnique } from '@/api/oa/personnel/userPreEmployment/index'
 import { listPostLevelEvaluate } from '@/api/oa/personnel/postLevelEvaluate'
-import { listSysDeptPost } from '@/api/system/deptPost'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getDept } from '@/api/system/dept'
 import { getPost } from '@/api/system/post'
@@ -298,19 +301,15 @@ const computedRules = computed(() => {
   return newRules
 })
 
-const postList = ref([])
-
 // 部门changge事件 带出招聘编号，根据招聘编号获取招聘申请列表，选择招聘编号，获取该招聘岗位下拉数据
 async function deptChange(deptId: string) {
-  form.value.recruitPostId = ''
-  form.value.postId = ''
-  form.value.recruitNo = ''
-  form.value.postName = ''
+  form.value.recruitPostId = undefined
+  form.value.postId = undefined
+  form.value.recruitNo = undefined
+  form.value.postName = undefined
   form.value.userPreEmploymentEvaluateBoList = []
   if (deptId) {
-    // 获取搜索添加上下拉框的数据，部门change事件
-    const res = await listSysDeptPost({ deptId, pageNum: undefined, pageSize: undefined })
-    postList.value = res.rows
+    // 获取部门类型
     getDeptType(deptId)
   }
 }
@@ -323,7 +322,7 @@ async function getDeptType(deptId: string | number) {
 
 // 获面试评价项列表
 async function getPostLevelList(postLevel, postName: string) {
-  const res = await listPostLevelEvaluate({ level: postLevel, pageNum: undefined, pageSize: undefined })
+  const res = await listPostLevelEvaluate({ level: postLevel })
   const list = []
   // 过滤出当前岗位的评价项
   res.rows.forEach((item: any) => {
@@ -340,9 +339,10 @@ async function getPostLevelList(postLevel, postName: string) {
 
 // 获取岗位级别
 async function getPostLevel(postId: string | number) {
-  const res = await getPost(postId)
-  form.value.level = Number(res.data.level)
-  form.value.postCode = res.data.postCode
+  const { data } = await getPost(postId)
+  form.value.postName = data.postName
+  form.value.level = Number(data.level)
+  form.value.postCode = data.postCode
 }
 
 // 新部门的change事件

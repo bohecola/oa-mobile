@@ -34,7 +34,7 @@ export interface UserDepartForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 员工id

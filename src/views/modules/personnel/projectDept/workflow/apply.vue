@@ -38,9 +38,9 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<DeptForm>()
 
 // 引用
-const Detail = ref<InstanceType<typeof detail> | null>()
-const Upsert = ref<InstanceType<typeof upsert> | null>()
-const DetailOther = ref<InstanceType<typeof detail> | null>()
+const Detail = ref<InstanceType<typeof detail>>()
+const Upsert = ref<InstanceType<typeof upsert>>()
+const DetailOther = ref<InstanceType<typeof detail>>()
 
 // 字段
 const includeFields = ref(

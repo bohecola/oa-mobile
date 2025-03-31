@@ -2,7 +2,7 @@ export interface UserRegularizationForm {
   /**
    * 流程id
    */
-  id?: string | number
+  id?: string
   /**
    * 用户id
    */

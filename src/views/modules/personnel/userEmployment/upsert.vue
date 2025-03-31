@@ -12,7 +12,6 @@
       <van-field
         name="checked"
         label="面试评价"
-        :rules="computedRules.checked"
       >
         <template #input>
           <van-switch v-model="form.checked" size="18px" @change="checkedChange" />
@@ -26,7 +25,7 @@
         name="preEmploymentId"
         label="员工"
         :rules="computedRules.preEmploymentId"
-        clearable
+        @confirm="getPreUser"
       />
 
       <van-field
@@ -35,6 +34,7 @@
         v-show-field="['name', includeFields]"
         name="name"
         label="员工"
+        placeholder="请输入"
         :rules="computedRules.name"
       />
     </div>
@@ -58,7 +58,6 @@
         v-show-field="['postId', includeFields]"
         name="postId"
         label="岗位"
-        multiple
         :dept-id="form.deptId"
         readonly
       />
@@ -111,7 +110,6 @@
         v-show-field="['postId', includeFields]"
         name="postId"
         label="岗位"
-        multiple
         :dept-id="form.deptId"
         :rules="computedRules.postId"
         @change="postChange"
@@ -179,7 +177,7 @@
       label="工资"
       name="wages"
       :rules="computedRules.wages"
-      @change="wagesChange"
+      @update:model-value="wagesChange"
     />
 
     <van-field-number
@@ -188,7 +186,7 @@
       name="baseWages"
       label="基本工资"
       :rules="computedRules.baseWages"
-      @change="manualWagesChange"
+      @update:model-value="manualWagesChange"
     />
 
     <van-field-number
@@ -197,7 +195,7 @@
       name="postWages"
       label="岗位工资"
       :rules="computedRules.postWages"
-      @change="manualWagesChange"
+      @update:model-value="manualWagesChange"
     />
 
     <van-field-number
@@ -206,7 +204,7 @@
       name="performanceWages"
       label="绩效工资"
       :rules="computedRules.performanceWages"
-      @change="manualWagesChange"
+      @update:model-value="manualWagesChange"
     />
 
     <div v-if="form.level >= 38">
@@ -290,9 +288,9 @@
         label="实习期时长说明"
       />
 
-      <van-field
+      <van-field-number
         v-if="form.isIntern === 'N' && form.isProbation === 'Y'"
-        v-model="form.probationCycle"
+        v-model.number="form.probationCycle"
         v-show-field="['probationCycle', includeFields]"
         name="probationCycle"
         label="试用期时长(月)"
@@ -300,6 +298,7 @@
 
       <van-field
         v-if="form.isProbation === 'Y'"
+        v-model="form.probationWagesRate"
         v-show-field="['probationWagesRate', includeFields]"
         name="probationWagesRate"
         label="试用期薪资发放标准(%)"
@@ -377,6 +376,7 @@
 
       <van-field
         v-if="form.isProbation === 'Y'"
+        v-model="form.probationWagesRate"
         v-show-field="['probationWagesRate', includeFields]"
         name="probationWagesRate"
         label="试用期薪资发放标准(%)"
@@ -548,9 +548,11 @@ async function userAccountChange(value: string) {
 
 // TODO 选择预入职的员工
 // 获取选择的预入职的员工row和岗位级别
-function getPreUser(row: UserPreEmploymentVO) {
+function getPreUser(value: string, selectedList: UserPreEmploymentVO[]) {
+  const row = selectedList[0]
   // TODO 表单的值赋值一部分
-  // form.value = { ...row, checked: true, preEmploymentId: row.id, id: undefined }
+  form.value = { ...row, checked: true, preEmploymentId: row.id, id: undefined }
+  form.value.interviewDate = row.interviewDate.split(' ')[0]
   form.value.isOutsource = 'N'
   // 获取岗位级别
   getPostLevel(row.postId)

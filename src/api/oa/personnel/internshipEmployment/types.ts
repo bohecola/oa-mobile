@@ -17,7 +17,7 @@ export interface InternshipEmploymentForm {
   /**
    * ID(见习员工转正办理表)
    */
-  id: number | string
+  id: string
 
   /**
    * 用户id
@@ -162,7 +162,7 @@ export interface InternshipEmploymentVO {
   /**
    * ID(见习员工转正办理表)
    */
-  id?: number
+  id?: string
   /**
    * 新部门ID
    */

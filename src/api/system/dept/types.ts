@@ -16,7 +16,7 @@ export interface DeptQuery extends PageQuery {
  * 部门类型
  */
 export interface DeptVO extends BaseEntity {
-  id: number | string
+  id: string
   parentName: string
   parentId: number | string
   children: DeptVO[]
@@ -46,11 +46,11 @@ export interface DeptVO extends BaseEntity {
  * 部门表单类型
  */
 export interface DeptForm {
-  id?: string | number
+  id?: string
   parentName?: string
   parentId?: number | string
   children?: DeptForm[]
-  deptId?: number | string
+  deptId?: string
   deptName?: string
   companyId?: string | number
   deptCategory?: string

@@ -196,37 +196,39 @@
       </template>
     </van-field>
 
-    <div v-show-field="['userPreEmploymentEvaluateBoList', includeFields]">
-      <div class="px-6 py-2 text-sm text-[--van-cell-group-title-color]">
-        面试评价项
-      </div>
-      <TableCard
-        v-for="(item, index) in form.userPreEmploymentEvaluateBoList"
-        :key="index"
-        :title="`面试评价${index + 1}`"
-        class="mx-4 mb-2"
-        :default-collapse="true"
-      >
-        <van-field
-          v-model="item.evaluateItemName"
-          :name="`itemList.${index}.evaluateItemName`"
-          label="岗位职责"
-        >
-          <template #input>
-            <TextareaView :value="item.evaluateItemName" />
-          </template>
-        </van-field>
-        <van-field
-          v-model="item.result"
-          :name="`itemList.${index}.result`"
-          label="任职要求"
-        >
-          <template #input>
-            <TextareaView :value="item.result" />
-          </template>
-        </van-field>
-      </TableCard>
-    </div>
+    <van-field v-show-field="['userPreEmploymentEvaluateBoList', includeFields]">
+      <template #label>
+        <div class="flex justify-between w-full">
+          <span>面试评价项</span>
+        </div>
+      </template>
+
+      <template #input>
+        <div class="w-full flex flex-col gap-2">
+          <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`" class="reset-label">
+            <van-field
+              v-model="item.evaluateItemName"
+              :name="`userPreEmploymentEvaluateBoList.${index}.evaluateItemName`"
+              label="描述"
+            >
+              <template #input>
+                <TextareaView :value="item.evaluateItemName" />
+              </template>
+            </van-field>
+
+            <van-field
+              v-model="item.result"
+              :name="`userPreEmploymentEvaluateBoList.${index}.result`"
+              label="评价结果"
+            >
+              <template #input>
+                <TextareaView :value="item.result" />
+              </template>
+            </van-field>
+          </TableCard>
+        </div>
+      </template>
+    </van-field>
 
     <van-field
       v-show-field="['ossIdList', includeFields]"

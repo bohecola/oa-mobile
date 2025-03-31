@@ -115,6 +115,7 @@
               v-model.number="item.userNum"
               :name="`itemList.${index}.userNum`"
               label="招聘人数"
+              placeholder="请输入"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
@@ -122,6 +123,7 @@
               v-model.trim="item.ageRequire"
               :name="`itemList.${index}.ageRequire`"
               label="年龄要求"
+              placeholder="请输入"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
@@ -129,6 +131,7 @@
               v-model.trim="item.educationalRequire"
               :name="`itemList.${index}.educationalRequire`"
               label="学历要求"
+              placeholder="请输入"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
@@ -136,6 +139,7 @@
               v-model.trim="item.speciality"
               :name="`itemList.${index}.speciality`"
               label="专业"
+              placeholder="请输入"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
@@ -143,47 +147,47 @@
               v-model.trim="item.suggestSalary"
               :name="`itemList.${index}.suggestSalary`"
               label="建议薪资(元/月)"
-              :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+              placeholder="请输入"
             />
 
             <van-field
               v-model="item.workExperience"
               :name="`itemList.${index}.workExperience`"
               label="工作经验"
+              placeholder="请输入"
               type="textarea"
               rows="1"
               autosize
-              :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
             <van-field
               v-model="item.demand"
               :name="`itemList.${index}.demand`"
               label="任职条件"
+              placeholder="请输入"
               type="textarea"
               rows="1"
               autosize
-              :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
             <van-field
               v-model="item.responsibility"
               :name="`itemList.${index}.responsibility`"
               label="任职资格"
+              placeholder="请输入"
               type="textarea"
               rows="1"
               autosize
-              :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
             <van-field
               v-model="item.otherRequire"
               :name="`itemList.${index}.otherRequire`"
               label="其他要求"
+              placeholder="请输入"
               type="textarea"
               rows="1"
               autosize
-              :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
             <template #footer>
               <div class="text-right">
@@ -271,25 +275,33 @@ function getDeptNode(node: DeptVO) {
 
 // 子表新增
 function handleAdd() {
-  form.value.userRecruitPostBoList.push({
-    id: undefined,
-    postId: undefined,
-    postName: undefined,
-    userNum: 1,
-    ageRequire: undefined,
-    speciality: undefined,
-    responsibility: undefined,
-    demand: undefined,
-    educationalRequire: undefined,
-    suggestSalary: undefined,
-    workExperience: undefined,
-    otherRequire: undefined,
-  })
+  const { confirm } = proxy.$modal
+
+  confirm('点击确定进行添加数据')
+    .then(() => {
+      form.value.userRecruitPostBoList.push({
+        id: undefined,
+        postId: undefined,
+        postName: undefined,
+        userNum: 1,
+        ageRequire: undefined,
+        speciality: undefined,
+        responsibility: undefined,
+        demand: undefined,
+        educationalRequire: undefined,
+        suggestSalary: undefined,
+        workExperience: undefined,
+        otherRequire: undefined,
+      })
+    })
+    .catch(() => {})
 }
 
-// 金额/税率删除
+// 子表删除
 function handleRemove(_: any, index: number) {
-  proxy.$modal.confirm('是否删除这条数据？')
+  const { confirm } = proxy.$modal
+
+  confirm('是否删除这条数据？')
     .then(() => {
       form.value.userRecruitPostBoList.splice(index, 1)
     })

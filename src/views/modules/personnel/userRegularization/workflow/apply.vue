@@ -38,9 +38,9 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserRegularizationForm>()
 
 // 引用
-const Upsert = ref<InstanceType<typeof upsert> | null>()
-const Detail = ref<InstanceType<typeof detail> | null>()
-const DetailOther = ref<InstanceType<typeof detail> | null>()
+const Upsert = ref<InstanceType<typeof upsert>>()
+const Detail = ref<InstanceType<typeof detail>>()
+const DetailOther = ref<InstanceType<typeof detail>>()
 
 // 字段
 const includeFields = ref(
@@ -64,14 +64,14 @@ const includeFields = ref(
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
   // const { entity, next } = options
-
+  const processInstanceName = `${procdefName.value}-${entity.userName}`
   submitFormData.value = {
     tableName: 'oa_user_info',
     businessKey: entity.id,
     variables: {
       entity,
     },
-    processInstanceName: `${proxy.$route.query.procdefName}-${entity.userName}`,
+    processInstanceName,
   }
 
   // 启动流程

@@ -59,23 +59,23 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserDepartForm>()
 
 // 引用
-const Upsert = ref<InstanceType<typeof upsert> | null>()
+const Upsert = ref<InstanceType<typeof upsert>>()
 // 归档节点
-const Upsert2 = ref<InstanceType<typeof upsert> | null>()
-const Detail2 = ref<InstanceType<typeof detail> | null>()
+const Upsert2 = ref<InstanceType<typeof upsert>>()
+const Detail2 = ref<InstanceType<typeof detail>>()
 // 详情
-const Detail = ref<InstanceType<typeof detail> | null>()
-const DetailOther = ref<InstanceType<typeof detail> | null>()
+const Detail = ref<InstanceType<typeof detail>>()
+const DetailOther = ref<InstanceType<typeof detail>>()
 // 工作交接
-const Upsert3 = ref<InstanceType<typeof upsert> | null>()
-const Detail3 = ref<InstanceType<typeof detail> | null>()
-const Upsert4 = ref<InstanceType<typeof upsert> | null>()
-const Detail4 = ref<InstanceType<typeof detail> | null>()
+const Upsert3 = ref<InstanceType<typeof upsert>>()
+const Detail3 = ref<InstanceType<typeof detail>>()
+const Upsert4 = ref<InstanceType<typeof upsert>>()
+const Detail4 = ref<InstanceType<typeof detail>>()
 
 // 人力扣款
-const HRDeductionUpsert = ref<InstanceType<typeof upsert> | null>()
-const HRDeductionDetail1 = ref<InstanceType<typeof detail> | null>()
-const HRDeductionDetail2 = ref<InstanceType<typeof detail> | null>()
+const HRDeductionUpsert = ref<InstanceType<typeof upsert>>()
+const HRDeductionDetail1 = ref<InstanceType<typeof detail>>()
+const HRDeductionDetail2 = ref<InstanceType<typeof detail>>()
 
 // 所有字段
 const allFields: PartialBooleanRecord<UserDepartForm> = {
@@ -162,8 +162,6 @@ const commonFields = ref(
     documentContent: false,
   }),
 )
-
-provide('taskDefinitionKey', taskDefinitionKey)
 
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {

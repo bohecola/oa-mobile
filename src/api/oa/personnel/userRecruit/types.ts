@@ -56,7 +56,7 @@ export interface UserRecruitForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 编号

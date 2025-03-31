@@ -47,16 +47,16 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserPendingEmploymentForm>()
 
 // 引用
-const Upsert = ref<InstanceType<typeof upsert> | null>()
-const Detail = ref<InstanceType<typeof detail> | null>()
+const Upsert = ref<InstanceType<typeof upsert>>()
+const Detail = ref<InstanceType<typeof detail>>()
 
 // 实际到岗节点
-const Upsert1 = ref<InstanceType<typeof upsert> | null>()
-const Detail1 = ref<InstanceType<typeof detail> | null>()
-const Detail2 = ref<InstanceType<typeof detail> | null>()
+const Upsert1 = ref<InstanceType<typeof upsert>>()
+const Detail1 = ref<InstanceType<typeof detail>>()
+const Detail2 = ref<InstanceType<typeof detail>>()
 
 // 其他节点
-const DetailOther = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail>>()
 
 // 所有字段
 const allFields: PartialBooleanRecord<UserPendingEmploymentForm> = {
@@ -148,6 +148,7 @@ const realDateFiles2 = ref(
 
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
+  const processInstanceName = `${procdefName.value}-${entity.name}`
   // 业务提交
   await Upsert.value?.submit({
     success: async ({ id }) => {
@@ -160,7 +161,7 @@ async function handleStartWorkflow(entity: Entity, next?: (result: any) => void)
             id,
           },
         },
-        processInstanceName: `${proxy.$route.query.procdefName}-${entity.name}`,
+        processInstanceName,
       }
       // 启动流程
       await startWorkFlow(submitFormData.value).then(next)

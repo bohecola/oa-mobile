@@ -71,6 +71,7 @@ export function useForm() {
   const data = reactive<Omit<PageData<UserEmploymentForm, object>, 'queryParams'>>({
     form: { ...initFormData },
     rules: {
+      checked: [{ required: true, message: '面试不能为空', trigger: 'onBlur' }],
       preEmploymentId: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
       name: [{ required: true, message: '员工不能为空', trigger: 'onBlur' }],
       deptId: [{ required: true, message: '部门名称不能为空', trigger: 'onBlur' }],
@@ -142,7 +143,7 @@ export function useForm() {
 
   // 提交
   async function submit(options?: SubmitOptions<SuccessData>) {
-    const { operation = 'submit', success, fail } = options ?? {}
+    const { operation = 'submit', success, fail } = options
     form.value.operation = operation
 
     await Form.value?.validate()
@@ -213,6 +214,7 @@ export function useForm() {
     rules,
     isLoading,
     updateLoading,
+    initFormData,
     reset,
     view,
     submit,

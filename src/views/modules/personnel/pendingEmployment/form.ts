@@ -6,7 +6,7 @@ export interface Options<T = any> {
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
-export type SubmitOptions<T = string | number> = Options<T>
+export type SubmitOptions<T = string > = Options<T>
 export type ViewOptions = Options
 export interface SuccessData {
   id: UserPendingEmploymentForm['id']
@@ -111,9 +111,8 @@ export function useForm() {
   }
 
   // 提交
-  async function submit(options?: SubmitOptions<SuccessData>) {
-    const { success, fail } = options ?? {}
-
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { success, fail } = options
     await Form.value?.validate()
       .then(async () => {
         updateLoading.value = true
@@ -125,10 +124,7 @@ export function useForm() {
           const { data: id } = await addUserEmploymentHandle(form.value).finally(() => (updateLoading.value = false))
           form.value.id = id
         }
-        success?.({
-          id: form.value.id,
-
-        })
+        success?.({ id: form.value.id })
       })
       .catch(fail)
       .finally(() => (updateLoading.value = false))

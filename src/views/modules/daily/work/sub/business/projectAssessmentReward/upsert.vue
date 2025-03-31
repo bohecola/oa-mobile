@@ -120,6 +120,8 @@ trackFields(props.includeFields)
 
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
 // 表单
 const form = inject<Ref<DailyWorkForm>>('form')
 
@@ -138,6 +140,6 @@ function onContractSelectedListChange(selectedList: ContractVO[]) {
 
   // TODO 清空表单数据
   // 清空审核人
-  Form.value?.resetValidation(['customizeApprover'])
+  resetFields(['customizeApprover'])
 }
 </script>

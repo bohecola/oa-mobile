@@ -2,7 +2,7 @@
  * UserPreEmploymentAndEmploymentBo
  */
 export interface UserPendingEmploymentForm {
-  id?: string | number
+  id?: string
   /**
    * 入职申请表ID
    */

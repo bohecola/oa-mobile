@@ -1,9 +1,7 @@
 import type { FormInstance } from 'vant'
-import { isNumber } from 'lodash-es'
 import { addUserTransfer, getUserTransfer, updateUserTransfer } from '@/api/oa/personnel/userTransfer'
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { useUserStore } from '@/store/user'
-import { getCompany } from '@/api/oa/personnel/userContract'
 
 export interface Options<T = any> {
   success?: (data?: T) => void

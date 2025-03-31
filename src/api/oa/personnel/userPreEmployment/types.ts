@@ -82,7 +82,7 @@ export interface UserPreEmploymentVO {
   /**
    * 试用期时长(月)
    */
-  probationCycle: string
+  probationCycle: number
 
   /**
    * 实习期时长说明
@@ -103,7 +103,7 @@ export interface UserPreEmploymentForm extends BaseEntity {
   /**
    * ID
    */
-  id?: string | number
+  id?: string
 
   /**
    * 招聘岗位id(user_recruit_post)

@@ -46,11 +46,11 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<UserEmploymentForm>()
 
 // 引用
-const Upsert = ref<InstanceType<typeof upsert> | null>()
-const Detail = ref<InstanceType<typeof detail> | null>()
+const Upsert = ref<InstanceType<typeof upsert>>()
+const Detail = ref<InstanceType<typeof detail>>()
 
 // 其他节点
-const DetailOther = ref<InstanceType<typeof detail> | null>()
+const DetailOther = ref<InstanceType<typeof detail>>()
 
 const allFields: PartialBooleanRecord<UserEmploymentForm> = {
   id: true,
@@ -98,6 +98,8 @@ const overviewFields = ref(
 // 开始流程
 async function handleStartWorkflow(options: StartWorkFlowOptions) {
   const { operation, entity, next } = options
+
+  const processInstanceName = `${procdefName.value}-${entity.name}`
   // 业务提交
   await Upsert.value?.submit({
     operation,
@@ -113,7 +115,7 @@ async function handleStartWorkflow(options: StartWorkFlowOptions) {
             employmentId,
           },
         },
-        processInstanceName: `${proxy.$route.query.procdefName}-${entity.name}`,
+        processInstanceName,
       }
 
       // 启动流程

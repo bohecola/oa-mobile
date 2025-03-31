@@ -52,7 +52,7 @@ export interface PostLevelEvaluateItemForm extends BaseEntity {
   remark?: string
 }
 
-export interface PostLevelEvaluateItemQuery extends PageQuery {
+export interface PostLevelEvaluateItemQuery extends Partial<PageQuery> {
   /**
    * 岗位ID
    */

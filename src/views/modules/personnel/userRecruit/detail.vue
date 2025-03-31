@@ -77,95 +77,91 @@
       </template>
     </van-field>
 
-    <div class="px-4 py-2 text-sm text-[--van-cell-group-title-color]">
-      招聘岗位
-    </div>
-    <TableCard
-      v-for="(item, index) in form.userRecruitPostBoList"
-      :key="index"
-      v-show-field="['userRecruitPostBoList', includeFields]"
-      :title="item.postName"
-      class="mx-4 mb-2"
-      :default-collapse="true"
-    >
-      <PostSelect
-        v-model="item.postId"
-        :name="`itemList.${index}.postId`"
-        label="岗位名称"
-        :dept-id="form.deptId"
-        readonly
-      />
+    <van-field v-show-field="['userRecruitPostBoList', includeFields]" label="招聘岗位">
+      <template #input>
+        <div class="w-full flex flex-col gap-2">
+          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="`# ${index + 1}`">
+            <PostSelect
+              v-model="item.postId"
+              :name="`itemList.${index}.postId`"
+              label="岗位名称"
+              :dept-id="form.deptId"
+              readonly
+            />
 
-      <van-field
-        v-model="item.userNum"
-        :name="`itemList.${index}.userNum`"
-        label="招聘人数"
-      />
+            <van-field
+              v-model="item.userNum"
+              :name="`itemList.${index}.userNum`"
+              label="招聘人数"
+            />
 
-      <van-field
-        v-model="item.ageRequire"
-        :name="`itemList.${index}.ageRequire`"
-        label="年龄要求"
-      />
+            <van-field
+              v-model="item.ageRequire"
+              :name="`itemList.${index}.ageRequire`"
+              label="年龄要求"
+            />
 
-      <van-field
-        v-model="item.educationalRequire"
-        :name="`itemList.${index}.educationalRequire`"
-        label="学历要求"
-      />
+            <van-field
+              v-model="item.educationalRequire"
+              :name="`itemList.${index}.educationalRequire`"
+              label="学历要求"
+            />
 
-      <van-field
-        v-model="item.speciality"
-        :name="`itemList.${index}.speciality`"
-        label="专业"
-      />
+            <van-field
+              v-model="item.speciality"
+              :name="`itemList.${index}.speciality`"
+              label="专业"
+            />
 
-      <van-field
-        v-model="item.suggestSalary"
-        :name="`itemList.${index}.suggestSalary`"
-        label="建议薪资(元/月)"
-      />
+            <van-field
+              v-model="item.suggestSalary"
+              :name="`itemList.${index}.suggestSalary`"
+              label="建议薪资(元/月)"
+            />
 
-      <van-field
-        v-model="item.workExperience"
-        :name="`itemList.${index}.workExperience`"
-        label="工作经验"
-      >
-        <template #input>
-          <TextareaView :value="item.workExperience" />
-        </template>
-      </van-field>
+            <van-field
+              v-model="item.workExperience"
+              :name="`itemList.${index}.workExperience`"
+              label="工作经验"
+            >
+              <template #input>
+                <TextareaView :value="item.workExperience" />
+              </template>
+            </van-field>
 
-      <van-field
-        v-model="item.demand"
-        :name="`itemList.${index}.demand`"
-        label="岗位职责"
-      >
-        <template #input>
-          <TextareaView :value="item.demand" />
-        </template>
-      </van-field>
+            <van-field
+              v-model="item.demand"
+              :name="`itemList.${index}.demand`"
+              label="岗位职责"
+            >
+              <template #input>
+                <TextareaView :value="item.demand" />
+              </template>
+            </van-field>
 
-      <van-field
-        v-model="item.responsibility"
-        :name="`itemList.${index}.responsibility`"
-        label="任职资格"
-      >
-        <template #input>
-          <TextareaView :value="item.responsibility" />
-        </template>
-      </van-field>
+            <van-field
+              v-model="item.responsibility"
+              :name="`itemList.${index}.responsibility`"
+              label="任职资格"
+            >
+              <template #input>
+                <TextareaView :value="item.responsibility" />
+              </template>
+            </van-field>
 
-      <van-field
-        v-model="item.otherRequire"
-        :name="`itemList.${index}.otherRequire`"
-        label="其他要求"
-      >
-        <template #input>
-          <TextareaView :value="item.otherRequire" />
-        </template>
-      </van-field>
-    </TableCard>
+            <van-field
+              v-model="item.otherRequire"
+              :name="`itemList.${index}.otherRequire`"
+              label="其他要求"
+            >
+              <template #input>
+                <TextareaView :value="item.otherRequire" />
+              </template>
+            </van-field>
+          </TableCard>
+        </div>
+      </template>
+    </van-field>
 
     <van-field
       v-show-field="['ossIdList', includeFields]"
