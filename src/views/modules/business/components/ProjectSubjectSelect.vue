@@ -42,6 +42,7 @@
       destroy-on-close
       safe-area-inset-top
       safe-area-inset-bottom
+      @closed="onPopupClosed"
     >
       <NavBar
         :title="`${attrs.label}`"
@@ -129,7 +130,7 @@
 </template>
 
 <script setup lang='ts'>
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
+import { cloneDeep, isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup, useProjectSubjectSelect, useSerializer } from '@/hooks'
 import type { ProjectSubjectQuery, ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 import { listProjectSubject } from '@/api/oa/finance/projectSubject'
@@ -167,7 +168,7 @@ const { visible, openPopup, closePopup } = usePopup()
 const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useProjectSubjectSelect()
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors, resetSelectState } = useProjectSubjectSelect()
 
 const selectedIdList = computed(() => selectedList.value.map(e => e.id))
 const listOfIds = computed(() => list.value.map(e => e.id))
@@ -179,7 +180,7 @@ const contractNoStr = computed(() => {
 })
 
 // 查询参数
-const queryParams: ProjectSubjectQuery = reactive({
+const initQueryParams: ProjectSubjectQuery = {
   pageNum: 1,
   pageSize: 10,
   startDate: undefined,
@@ -190,7 +191,9 @@ const queryParams: ProjectSubjectQuery = reactive({
   status: undefined,
   keyword: undefined,
   params: {},
-})
+}
+
+const queryParams = reactive(cloneDeep(initQueryParams))
 
 // 是否只读
 const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
@@ -232,6 +235,15 @@ function onFieldClick() {
   openPopup()
 }
 
+// 弹窗关闭
+function onPopupClosed() {
+  resetSelectState()
+  const obj = cloneDeep(initQueryParams)
+  for (const key in obj) {
+    queryParams[key] = obj[key]
+  }
+}
+
 // 输入清空
 function onSearchClear() {
   queryParams.keyword = searchText.value
@@ -242,7 +254,7 @@ function onSearch() {
   queryParams.keyword = searchText.value
   queryParams.pageNum = 1
 
-  getList(isNil(props.params.deptDeptId) ? undefined : { projectDeptId: undefined })
+  getList(!isNil(props.params.deptDeptId) ? undefined : { projectDeptId: undefined })
 }
 
 // 触底加载

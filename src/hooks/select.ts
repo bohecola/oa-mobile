@@ -24,6 +24,19 @@ export function useSelect<T>() {
   // 选择列表
   const selectedList = ref<T[]>([])
 
+  // 重置选择器状态
+  function resetSelectState() {
+    searchText.value = undefined
+
+    loading.value = false
+    error.value = false
+    finished.value = false
+    list.value = []
+    total.value = 0
+
+    viewLoading.value = false
+  }
+
   return {
     searchText,
     loading,
@@ -33,6 +46,7 @@ export function useSelect<T>() {
     total,
     viewLoading,
     selectedList,
+    resetSelectState,
   }
 }
 
