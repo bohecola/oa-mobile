@@ -94,9 +94,9 @@
             v-model="item.subjectItemId"
             v-model:dept-id="item.subjectItemDeptId"
             v-model:amount="item.budgetAmount"
-            v-model:applying-amount="item.applyingAmount"
-            v-model:finish-amount="item.finishAmount"
-            v-model:available-amount="item.availableAmount"
+            v-model:applying-amount.v-model:amount="item.applyingAmount"
+            v-model:finish-amount.v-model:amount="item.finishAmount"
+            v-model:available-amount.v-model:amount="item.availableAmount"
             label="预算科目"
             :name="`itemList.${index}.subjectItemId`"
             :rules="[{
@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { isNil, isNumber } from 'lodash-es'
+import { isNil } from 'lodash-es'
 import Big from 'big.js'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import { dailyFeeItem } from '../fee/form'
@@ -169,6 +169,7 @@ import PurchaseCategorySelect from '@/views/modules/business/components/Purchase
 import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
+import { isNumeric } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
@@ -265,7 +266,7 @@ watch(
   (val) => {
     const amount = val
       ?.reduce<Big.Big>((acc, curr) => {
-        if (isNumber(curr.amount)) {
+        if (isNumeric(curr.amount)) {
           return acc.add(curr.amount)
         }
 

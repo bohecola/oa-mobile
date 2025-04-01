@@ -1,3 +1,4 @@
+import { isNumber } from 'lodash-es'
 import storage from './storage'
 
 // 获取文件扩展名
@@ -22,6 +23,15 @@ export function isNegative(value?: number | string): boolean {
 
   // 确保转换后的值是有效数字
   return !Number.isNaN(number) && number < 0
+}
+
+// 是否为数值
+export function isNumeric(value?: any) {
+  if (value === '' || value === null || value === undefined) {
+    return false
+  }
+
+  return isNumber(value) || (!Number.isNaN(Number(value)) && Number.isFinite(Number(value)))
 }
 
 export * from './tree'
