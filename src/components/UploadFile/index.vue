@@ -208,7 +208,11 @@ const afterRead: UploaderAfterRead = async (items: UploaderFileListItem | Upload
   }
 
   const ids = getOssIds(fileList.value)
-  const payload = props.valueType === 'string' ? ids.join(',') : ids
+  const payload = props.valueType === 'string'
+    ? !isEmpty(ids)
+        ? ids.join(',')
+        : undefined
+    : ids
   emit('update:modelValue', payload)
 }
 
@@ -232,7 +236,11 @@ async function onDelete(item: UploaderFileListItem, detail: { name: Numeric, ind
   }
 
   const ids = getOssIds(fileList.value)
-  const payload = props.valueType === 'string' ? ids.join(',') : ids
+  const payload = props.valueType
+    ? !isEmpty(ids)
+        ? ids.join(',')
+        : undefined
+    : ids
   emit('update:modelValue', payload)
 }
 
@@ -254,6 +262,17 @@ function handleDocView(item: UploaderFileListItem) {
 
   viewerRef.value?.open(obj)
 }
+
+// 自定义表单项的值
+useCustomFieldValue(() => {
+  const ids = getOssIds(fileList.value)
+  const value = props.valueType === 'string'
+    ? !isEmpty(ids)
+        ? ids.join(',')
+        : undefined
+    : ids
+  return value
+})
 
 // 文件类型行为枚举
 const fileActionEnums: FileActionEnum[] = [
@@ -294,17 +313,6 @@ const fileActionEnums: FileActionEnum[] = [
     icon: other,
   },
 ]
-
-// 自定义表单项的值
-useCustomFieldValue(() => {
-  const ids = getOssIds(fileList.value)
-  const value = props.valueType === 'string'
-    ? !isEmpty(ids)
-        ? ids.join(',')
-        : undefined
-    : ids
-  return value
-})
 
 // 文件列表回显
 watch(

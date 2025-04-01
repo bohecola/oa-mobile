@@ -67,7 +67,7 @@ export function useForm() {
     isExistRegulations: [{ required: true, message: '是否存在违章不能为空', trigger: 'onChange' }],
     recipient: [{ required: true, message: '接收人不能为空', trigger: 'onChange' }],
     reason: [{ required: true, message: '申请事由不能为空', trigger: 'onBlur' }],
-    ossIdList: [{ required: false, message: '附件列表不能为空', trigger: 'onChange' }],
+    ossIdList: [{ required: false, message: '附件列表不能为空', trigger: 'onBlur' }],
     ...extraInitRules,
   }
 
