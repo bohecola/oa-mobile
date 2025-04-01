@@ -1,6 +1,10 @@
 <template>
   <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
-    <van-swipe-cell v-for="row in list" :key="row.id">
+    <van-swipe-cell
+      v-for="row in list"
+      :key="row.id"
+      :right-width="getRightWidth(row)"
+    >
       <van-cell @click="handleOpen(row, 'view')">
         <!-- 标题 -->
         <template #title>
@@ -31,17 +35,19 @@
       </van-cell>
       <template #right>
         <van-button
-          v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="primary" text="修改"
-          class="h-full"
-          @click="handleOpen(row, 'update')"
-        />
-        <van-button
           v-if="row.businessStatus === 'waiting'"
           square type="primary" text="撤销"
           class="h-full"
           @click="handleCancelProcessApply(row)"
         />
+
+        <van-button
+          v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+          square type="primary" text="修改"
+          class="h-full"
+          @click="handleOpen(row, 'update')"
+        />
+
         <van-button
           v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
           square type="danger" text="删除"
@@ -155,6 +161,16 @@ async function handleCancelProcessApply(row: ProcessInstanceVO) {
       showSuccessToast('撤销成功')
     })
     .catch(() => {})
+}
+
+function getRightWidth(row: ProcessInstanceVO) {
+  const condition = [
+    row.businessStatus === 'waiting',
+    row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back',
+    row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back',
+  ]
+  const width = condition.filter(Boolean).length * 60
+  return width
 }
 
 defineExpose({
