@@ -1,15 +1,25 @@
 import { cloneDeep, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
-import { getPurchase } from '@/api/oa/business/purchase'
+import { addPurchase, getPurchase, updatePurchase, updatePurchaseByBussiness } from '@/api/oa/business/purchase'
 import { useStore } from '@/store'
+import { getGenerateCode } from '@/api/oa/common'
+import { BusinessCodeEnum } from '@/enums/BusinessCodeEnum'
 
 export interface Options<T = any> {
+  calledForm?: 'bussiness' | 'workflow'
+  operation?: BaseEntity['operation']
   success?: (data?: T) => void
   fail?: (err?: any) => void
 }
 export type SubmitOptions<T = string> = Options<T>
 export type ViewOptions = Options
+
+export interface SuccessData {
+  id: PurchaseForm['id']
+  no: PurchaseForm['no']
+  itemList: PurchaseForm['itemList']
+}
 
 export function useForm() {
   const { user } = useStore()
@@ -55,6 +65,7 @@ export function useForm() {
   const initFormData: PurchaseForm = {
     id: undefined,
     no: undefined,
+    processName: `采购申请-${user.info.nickName}`,
     subjectType: 'project',
     psId: undefined,
     deptId: user.info.deptId,
@@ -87,17 +98,18 @@ export function useForm() {
     form: { ...cloneDeep(initFormData) },
     rules: {
       subjectType: [{ required: true, message: '预算类型不能为空', trigger: 'onChange' }],
+      processName: [{ required: true, message: '自定义流程名称不能为空', trigger: 'onChange' }],
       deptId: [{ required: true, message: '需求部门不能为空', trigger: 'onChange' }],
       psId: [{ required: true, message: '预算不能为空', trigger: 'onChange' }],
       contractId: [{ required: false, message: '关联销售合同不能为空', trigger: 'onChange' }],
-      contractExecute: [{ required: false, message: '合同执行情况不能为空', trigger: 'onChange' }],
+      contractExecute: [{ required: true, message: '合同执行情况不能为空', trigger: 'onChange' }],
       type: [{ required: true, message: '采购类型不能为空', trigger: 'onChange' }],
       businessCategory: [{ required: true, message: '业务类别不能为空', trigger: 'onChange' }],
       objectCategory: [{ required: true, message: '物品类别不能为空', trigger: 'onChange' }],
       serviceCategory: [{ required: false, message: '服务类别不能为空', trigger: 'onChange' }],
       leaseType: [{ required: false, message: '租赁类型不能为空', trigger: 'onChange' }],
       isDeposit: [{ required: false, message: '是否有押金不能为空', trigger: 'onChange' }],
-      amount: [{ required: true, message: '金额不能为空', trigger: 'onBlur' }],
+      amount: [{ required: true, message: '含税总金额不能为空', trigger: 'onBlur' }],
       notTaxAmount: [{ required: true, message: '不含税总金额不能为空', trigger: 'onBlur' }],
       isOwnerSettlement: [{ required: false, message: '是否业主单独结算不能为空', trigger: 'onChange' }],
       description: [{ required: true, message: '采购说明不能为空', trigger: 'onBlur' }],
@@ -106,7 +118,7 @@ export function useForm() {
       checkFiles: [{ required: true, message: '验收附件不能为空', trigger: 'onChange' }],
       purchaseContractIds: [{ required: true, message: '采购合同不能为空', trigger: 'onBlur' }],
       purchaseFiles: [{ required: true, message: '采购附件不能为空', trigger: 'onChange' }],
-      ossIdList: [{ required: true, message: '附件列表不能为空', trigger: 'onChange' }],
+      ossIdList: [{ required: true, message: '附件列表不能为空', trigger: 'onBlur' }],
     },
   })
 
@@ -157,70 +169,61 @@ export function useForm() {
     })
   }
 
-  // interface SuccessData {
-  //   id: PurchaseForm['id']
-  //   no: PurchaseForm['no']
-  //   itemList: PurchaseForm['itemList']
-  // }
+  // 提交表单
+  async function submit(options: SubmitOptions<SuccessData> = {}) {
+    const { operation = 'submit', calledForm, success, fail } = options
+    form.value.operation = operation
 
-  // // 提交
-  // async function submit(options?: SubmitOptions<SuccessData>) {
-  //   const { success, fail } = options ?? {}
+    await Form.value?.validate()
+      .then(async () => {
+        updateLoading.value = true
 
-  //   const valid = await Form.value?.validate(async (valid: boolean) => {
-  //     try {
-  //       if (valid) {
-  //         updateLoading.value = true
+        if (form.value.id) {
+          if (calledForm === 'bussiness') {
+            await updatePurchaseByBussiness(form.value)
+          }
+          else {
+            const { data } = await updatePurchase(form.value)
+            form.value.itemList = (data.itemList || []).map((item: PurchaseItemVO) => ({
+              ...item,
+              num: Number(item.num),
+              amount: Number(item.amount),
+              totalAmount: Number(item.totalAmount),
+            }))
+          }
+        }
+        else {
+        // 生成编号
+          const { msg } = await getGenerateCode(BusinessCodeEnum.CGCODE, 'oa_purchase')
+          form.value.no = msg
+          // 新增
+          const { data } = await addPurchase(form.value)
+          form.value.id = data.id
+          form.value.itemList = (data.itemList || []).map((item: PurchaseItemVO) => ({
+            ...item,
+            num: Number(item.num),
+            amount: Number(item.amount),
+            totalAmount: Number(item.totalAmount),
+          }))
+        }
+        success?.({
+          id: form.value.id,
+          no: form.value.no,
+          itemList: form.value.itemList,
+        })
+      })
+      .catch(fail)
+      .finally(() => (updateLoading.value = false))
+  }
 
-  //         if (form.value.id) {
-  //           await updatePurchase(form.value).finally(() => (updateLoading.value = false))
-  //         }
-  //         else {
-  //           // 生成编号
-  //           const { msg } = (await getGenerateCode(BusinessCodeEnum.CGCODE, 'oa_purchase')) ?? {}
-  //           form.value.no = msg
-  //           // 新增
-  //           const { data } = (await addPurchase(form.value).finally(() => (updateLoading.value = false))) ?? {}
-  //           form.value.id = data.id
-  //           form.value.itemList = data.itemList
-  //         }
-
-  //         success?.({
-  //           id: form.value.id,
-  //           no: form.value.no,
-  //           itemList: form.value.itemList,
-  //         })
-  //       }
-  //     }
-  //     catch (err) {
-  //       console.error(err)
-  //       fail?.(err)
-  //     }
-  //   })
-
-  //   return valid
-  // }
-
-  // // 工作流中提交表单
-  // async function workflowSubmit(options?: SubmitOptions) {
-  //   const { success } = options ?? {}
-
-  //   let data: PurchaseForm = {}
-
-  //   const valid = await Form.value?.validate(async (valid: boolean) => {
-  //     data = {
-  //       ...form.value,
-  //     }
-  //     if (valid) {
-  //       success?.()
-  //     }
-  //   })
-
-  //   return {
-  //     valid,
-  //     data,
-  //   }
-  // }
+  // 工作流中提交表单
+  async function workflowSubmit(options: SubmitOptions<PurchaseForm> = {}) {
+    const { success, fail } = options
+    await Form.value?.validate()
+      .then(() => {
+        success?.({ ...form.value })
+      }).catch(fail)
+  }
 
   // 工作流中回显
   function workflowView(entity: any, options?: ViewOptions) {
@@ -280,8 +283,8 @@ export function useForm() {
     reset,
     resetFields,
     view,
-    // submit,
-    // workflowSubmit,
+    submit,
+    workflowSubmit,
     workflowView,
   }
 }

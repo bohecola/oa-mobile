@@ -142,6 +142,11 @@ export interface PurchaseForm extends BaseEntity {
   no?: string
 
   /**
+   * 自定义流程名称
+   */
+  processName?: string
+
+  /**
    * 预算类型
    */
   subjectType?: string

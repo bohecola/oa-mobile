@@ -18,7 +18,7 @@ function formatter(value: string) {
   const firstDotIndex = value.indexOf('.')
   if (firstDotIndex !== -1) {
     value = value.slice(0, firstDotIndex + 1)
-    + value.slice(firstDotIndex + 1).replace(/\./g, '')
+      + value.slice(firstDotIndex + 1).replace(/\./g, '')
   }
 
   // 4. 如果存在小数点，限制小数点后最多两位
@@ -42,8 +42,8 @@ function formatter(value: string) {
     :formatter="formatter"
     v-bind="attrs"
   >
-    <template v-for="(_, name) in slots" #[name]="scope">
-      <slot :name="name" v-bind="scope" />
+    <template v-for="(_, name) in slots" #[name]="scope" :key="name">
+      <slot v-bind="scope" :key="name" :name="name" />
     </template>
   </van-field>
 </template>

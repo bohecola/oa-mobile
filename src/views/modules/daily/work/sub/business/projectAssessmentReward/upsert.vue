@@ -70,16 +70,28 @@
     label="考核金额（元）"
     placeholder="请输入"
     :rules="computedRules.a_assessmentAmount"
-  />
+  >
+    <template #extra>
+      <div v-if="form.a_assessmentAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.a_assessmentAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <van-field-number
     v-model.number="form.a_rewardAmount"
     v-show-field="['a_rewardAmount', includeFields]"
     name="a_rewardAmount"
-    label="奖励金额（元）"
+    label="考核金额（元）"
     placeholder="请输入"
     :rules="computedRules.a_rewardAmount"
-  />
+  >
+    <template #extra>
+      <div v-if="form.a_rewardAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.a_rewardAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <BaseUpsert :include-fields="includeFields" />
 </template>

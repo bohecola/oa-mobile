@@ -22,18 +22,13 @@
       name="deptId"
     />
 
-    <van-field
+    <ProjectSubjectSelect
+      v-model="form.psId"
+      v-model:contract-no="form.contractNo"
       v-show-field="['psId', includeFields]"
       label="预算"
       name="psId"
-    >
-      <template #input>
-        <ProjectSubjectSelect
-          v-model="form.psId"
-          readonly
-        />
-      </template>
-    </van-field>
+    />
 
     <van-field
       v-if="isProject && !isNil(form.psId)"
@@ -208,30 +203,17 @@
             :title="item.name"
             :default-collapse="true"
           >
-            <van-field
+            <PurchaseCategorySelect
               v-model="item.psiId"
-              :name="`itemList.${index}.psiId`"
-              :rules="[
-                {
-                  required: true,
-                  message: '预算科目不能为空',
-                  trigger: 'onBlur',
-                },
-              ]"
+              v-model:amount="item.budgetAmount"
+              v-model:applying-amount="item.applyingAmount"
+              v-model:finish-amount="item.finishAmount"
+              v-model:available-amount="item.availableAmount"
               label="预算科目"
-            >
-              <template #input>
-                <PurchaseCategorySelect
-                  v-model="item.psiId"
-                  v-model:amount="item.budgetAmount"
-                  v-model:applying-amount="item.applyingAmount"
-                  v-model:finish-amount="item.finishAmount"
-                  v-model:available-amount="item.availableAmount"
-                  :params="PurchaseCategorySelectParams"
-                  readonly
-                />
-              </template>
-            </van-field>
+              :name="`itemList.${index}.subjectItemId`"
+              :params="PurchaseCategorySelectParams"
+            />
+
             <van-field
               :name="`itemList.${index}.budgetAmount`"
               label="预算金额"

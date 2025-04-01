@@ -12,11 +12,17 @@
   <van-field-number
     v-model.number="form.m_amount"
     v-show-field="['m_amount', includeFields]"
-    label="合计金额（元）"
     name="m_amount"
+    label="合计金额（元）"
+    placeholder="请输入"
     :rules="computedRules.m_amount"
-    clearable
-  />
+  >
+    <template #extra>
+      <div v-if="form.m_amount">
+        <span class=" text-red-400">{{ toCnMoney(form.m_amount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <BaseUpsert :include-fields="includeFields" />
 </template>
