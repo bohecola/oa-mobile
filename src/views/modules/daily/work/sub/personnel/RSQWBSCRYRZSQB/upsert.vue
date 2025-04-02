@@ -11,10 +11,11 @@
 
   <DeptSelect
     v-model="form.ff_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['ff_deptId', includeFields]"
     name="ff_deptId"
     label="项目部"
-    :rules="computedRules.ff_deptId"
+    readonly
   />
 
   <van-field-number
@@ -114,7 +115,13 @@
     name="ff_wages"
     :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
     clearable
-  />
+  >
+    <template #extra>
+      <div v-if="form.ff_wages">
+        <span class=" text-red-400">{{ toCnMoney(form.ff_wages) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <van-field
     v-model.trim="form.ff_otherBenefits"
@@ -146,10 +153,11 @@
   />
 
   <van-field
-    v-show-field="['ff_performanceWages', includeFields]"
-    name="ff_performanceWages"
+    v-model="form.ff_probationWagesRate"
+    v-show-field="['ff_probationWagesRate', includeFields]"
+    name="ff_probationWagesRate"
     label="试用期薪资发放标准"
-    :rules="computedRules.ff_performanceWages"
+    :rules="computedRules.ff_probationWagesRate"
   />
 
   <BaseUpsert :include-fields="includeFields" />
@@ -168,7 +176,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['ff_deptId', 'ff_userId', 'ff_age', 'ff_sex', 'ff_nation', 'ff_education', 'ff_certificates', 'ff_interviewDate', 'ff_employmentMethod', 'ff_employmentPost', 'ff_employmentNature', 'ff_hopeDate', 'ff_wages', 'ff_otherBenefits', 'ff_isProbation', 'ff_probationCycle', 'ff_performanceWages', 'reason', 'ossIdList'],
+    includeFields: () => ['ff_deptId', 'ff_userId', 'ff_age', 'ff_sex', 'ff_nation', 'ff_education', 'ff_certificates', 'ff_interviewDate', 'ff_employmentMethod', 'ff_employmentPost', 'ff_employmentNature', 'ff_hopeDate', 'ff_wages', 'ff_otherBenefits', 'ff_isProbation', 'ff_probationCycle', 'ff_probationWagesRate', 'reason', 'ossIdList'],
   },
 )
 
@@ -203,6 +211,6 @@ async function getPreUser(value: string, selectedList: UserPreEmploymentVO[]) {
   form.value.ff_education = ue.education
   form.value.ff_hopeDate = ue.hopeDate.split(' ')[0]
   form.value.ff_wages = ue.wages
-  form.value.ff_performanceWages = ue.performanceWages
+  form.value.ff_probationWagesRate = ue.probationWagesRate
 }
 </script>

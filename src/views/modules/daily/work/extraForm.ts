@@ -256,7 +256,7 @@ const extraInitFormData: DailyWorkForm = {
   ff_otherBenefits: undefined,
   ff_isProbation: undefined,
   ff_probationCycle: undefined,
-  ff_performanceWages: undefined,
+  ff_probationWagesRate: undefined,
 
   // 招聘需求变更申请
   gg_deptId: undefined,
@@ -580,7 +580,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   ff_otherBenefits: [{ required: true, message: `其他福利${baseMsg}`, trigger: 'onBlur' }],
   ff_isProbation: [{ required: true, message: `是否有试用期${baseMsg}`, trigger: 'onBlur' }],
   ff_probationCycle: [{ required: true, message: `试用期时长(月)${baseMsg}`, trigger: 'onBlur' }],
-  ff_performanceWages: [{ required: true, message: `试用期薪资发放标准${baseMsg}`, trigger: 'onBlur' }],
+  ff_probationWagesRate: [{ required: true, message: `试用期薪资发放标准${baseMsg}`, trigger: 'onBlur' }],
 
   // 招聘需求变更申请
   gg_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
@@ -667,6 +667,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   qq_notBelongDeptPurchaseInsuranceSpecialReason: [{ required: true, message: `不属于该项目部人员购买保险原因${baseMsg}`, trigger: 'onBlur' }],
   qq_isOldInsuranceTermination: [{ required: true, message: `原特殊商业保险是否终止${baseMsg}`, trigger: 'onBlur' }],
   qq_isOldInsuranceTerminationReason: [{ required: true, message: `原特殊商业保险终止原因说明${baseMsg}`, trigger: 'onBlur' }],
+  qq_isContractPurchaseInsurance: [{ required: true, message: `合同中是否要求购买此类保险${baseMsg}`, trigger: 'onBlur' }],
 
   // 咸林能源NAS系统账号申请
   rr_deptId: [{ required: true, message: `所在部门${baseMsg}`, trigger: 'onBlur' }],

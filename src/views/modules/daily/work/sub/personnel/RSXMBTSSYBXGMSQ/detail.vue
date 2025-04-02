@@ -72,6 +72,7 @@
   />
 
   <van-field
+    v-if="!isNil(form.qq_isHighVoltageOperation)"
     v-show-field="['qq_isHighVoltageOperation', includeFields]"
     label="是否涉及高压电作业"
     name="qq_isHighVoltageOperation"
@@ -85,6 +86,7 @@
   </van-field>
 
   <van-field
+    v-if="!isNil(form.qq_isClimbingHomework)"
     v-show-field="['qq_isClimbingHomework', includeFields]"
     label="是否涉及登高作业"
     name="qq_isClimbingHomework"
@@ -105,7 +107,7 @@
     name="qq_distanceRange"
   />
 
-  <van-field v-show-field="['qq_isContractPurchaseInsurance', includeFields]" label="合同中是否要求购买此类保险" name="qq_isContractPurchaseInsurance" input-align="left">
+  <van-field v-show-field="['qq_isContractPurchaseInsurance', includeFields]" label="合同中是否要求购买此类保险" name="qq_isContractPurchaseInsurance">
     <template #input>
       <YesNoSwitch v-model="form.qq_isContractPurchaseInsurance" readonly />
     </template>
@@ -247,7 +249,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

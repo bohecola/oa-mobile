@@ -30,11 +30,8 @@
     name="q_defectEliminationAmount"
   >
     <template #input>
-      {{ form.q_defectEliminationAmount }}
-      <span
-        v-if="!isNil(form.q_defectEliminationAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.q_defectEliminationAmount) }}</span>
+      <span class="mr-3">{{ form.q_defectEliminationAmount }}</span>
+      <span v-if="!isNil(form.q_defectEliminationAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_defectEliminationAmount) }}</span>
     </template>
   </van-field>
 
@@ -45,11 +42,8 @@
     name="q_trafficAmount"
   >
     <template #input>
-      {{ form.q_trafficAmount }}
-      <span
-        v-if="!isNil(form.q_trafficAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.q_trafficAmount) }}</span>
+      <span class="mr-3">{{ form.q_trafficAmount }}</span>
+      <span v-if="!isNil(form.q_trafficAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_trafficAmount) }}</span>
     </template>
   </van-field>
 
@@ -60,11 +54,8 @@
     name="q_personnelReuseSubsidyAmount"
   >
     <template #input>
-      {{ form.q_personnelReuseSubsidyAmount }}
-      <span
-        v-if="!isNil(form.q_personnelReuseSubsidyAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.q_personnelReuseSubsidyAmount) }}</span>
+      <span class="mr-3">{{ form.q_personnelReuseSubsidyAmount }}</span>
+      <span v-if="!isNil(form.q_personnelReuseSubsidyAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_personnelReuseSubsidyAmount) }}</span>
     </template>
   </van-field>
 
@@ -75,11 +66,8 @@
     name="q_totalAmount"
   >
     <template #input>
-      {{ form.q_totalAmount }}
-      <span
-        v-if="!isNil(form.q_totalAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.q_totalAmount) }}</span>
+      <span class="mr-3">{{ form.q_totalAmount }}</span>
+      <span v-if="!isNil(form.q_totalAmount)" class="ml-3 text-red-400">{{ toCnMoney(form.q_totalAmount) }}</span>
     </template>
   </van-field>
 

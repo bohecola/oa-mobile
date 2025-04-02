@@ -1,6 +1,7 @@
 <template>
   <DeptSelect
     v-model="form.gg_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['gg_deptId', includeFields]"
     name="gg_deptId"
     label="部门/项目部"
@@ -105,7 +106,6 @@
     v-show-field="['gg_changeAfterNumberPost', includeFields]"
     label="变更后需招聘人数及岗位"
     placeholder="请输入"
-    type="digit"
     name="gg_changeAfterNumberPost"
     :rules="computedRules.gg_changeAfterNumberPost"
   />

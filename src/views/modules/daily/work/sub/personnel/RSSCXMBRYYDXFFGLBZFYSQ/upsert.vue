@@ -9,6 +9,7 @@
 
   <DeptSelect
     v-model="form.q_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['q_deptId', includeFields]"
     name="q_deptId"
     label="项目部"
@@ -34,8 +35,13 @@
     label="技术消缺总金额（元）"
     name="q_defectEliminationAmount"
     :rules="computedRules.q_defectEliminationAmount"
-    clearable
-  />
+  >
+    <template #extra>
+      <div v-if="form.q_defectEliminationAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.q_defectEliminationAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <van-field-number
     v-if="form.q_type?.includes('1')"
@@ -44,8 +50,13 @@
     label="项目交通费（元）"
     name="q_trafficAmount"
     :rules="computedRules.q_trafficAmount"
-    clearable
-  />
+  >
+    <template #extra>
+      <div v-if="form.q_trafficAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.q_trafficAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <van-field-number
     v-if="form.q_type?.includes('2')"
@@ -54,8 +65,13 @@
     label="人员复用补贴总金额（元）"
     name="q_personnelReuseSubsidyAmount"
     :rules="computedRules.q_personnelReuseSubsidyAmount"
-    clearable
-  />
+  >
+    <template #extra>
+      <div v-if="form.q_personnelReuseSubsidyAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.q_personnelReuseSubsidyAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <van-field-number
     v-model.number="form.q_totalAmount"
@@ -64,7 +80,13 @@
     name="q_totalAmount"
     :rules="computedRules.q_totalAmount"
     :disabled="true"
-  />
+  >
+    <template #extra>
+      <div v-if="form.q_totalAmount">
+        <span class=" text-red-400">{{ toCnMoney(form.q_totalAmount) }}</span>
+      </div>
+    </template>
+  </van-field-number>
 
   <BaseUpsert :include-fields="includeFields" />
 </template>

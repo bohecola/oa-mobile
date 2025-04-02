@@ -22,13 +22,13 @@
     :rules="computedRules.b_vehicleModel"
   />
 
-  <van-field
-    v-model.trim="form.b_vehicleMileageToday"
+  <van-field-number
+    v-model.number="form.b_vehicleMileageToday"
     v-show-field="['b_vehicleMileageToday', includeFields]"
     label="今行车里程（公里）"
     placeholder="请输入"
     name="c_invoiceType"
-    :rules="computedRules.c_invoiceType"
+    :rules="computedRules.b_vehicleMileageToday"
   />
 
   <DateSelect
@@ -39,13 +39,13 @@
     :rules="computedRules.b_lastRepairDate"
   />
 
-  <van-field
-    v-model.trim="form.b_maintenanceIntervalMileage"
+  <van-field-number
+    v-model.number="form.b_maintenanceIntervalMileage"
     v-show-field="['b_maintenanceIntervalMileage', includeFields]"
     label="保养间隔里程数（公里）"
     placeholder="请输入"
     name="b_maintenanceIntervalMileage"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_maintenanceIntervalMileage"
   />
 
   <van-field
@@ -54,7 +54,7 @@
     label="申请类型"
     placeholder="请输入"
     name="b_type"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_type"
   />
 
   <van-field
@@ -66,7 +66,7 @@
     label="车辆维修/保养地点"
     placeholder="请输入"
     name="b_maintenanceAddress"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_maintenanceAddress"
   />
 
   <van-field
@@ -78,7 +78,7 @@
     label="问题描述"
     placeholder="请输入"
     name="b_problemDescription"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_problemDescription"
   />
 
   <van-field
@@ -90,7 +90,7 @@
     label="维修/保养项目及单价"
     placeholder="请输入"
     name="b_maintenanceItemsAndUnitPrice"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_maintenanceItemsAndUnitPrice"
   />
 
   <!-- <van-field v-model="form.b_invoiceType" v-show-field="['b_invoiceType', includeFields]" label="发票类型" name="b_invoiceType" :rules="computedRules.d_articleName" />
@@ -101,7 +101,7 @@
     v-show-field="['b_isPlugSmartDrivingBox', includeFields]"
     label="本次维保是否需拔插智驾盒子"
     name="b_isPlugSmartDrivingBox"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_isPlugSmartDrivingBox"
   >
     <template #input>
       <YesNoSwitch v-model="form.b_isPlugSmartDrivingBox" />
@@ -126,7 +126,7 @@
     label="用油内容"
     placeholder="请输入"
     name="b_oilContent"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_oilContent"
   />
 
   <van-field
@@ -135,10 +135,10 @@
     label="使用方式"
     placeholder="请输入"
     name="b_useMethod"
-    :rules="computedRules.d_articleName"
+    :rules="computedRules.b_useMethod"
   />
 
-  <van-field
+  <!-- <van-field
     v-model="form.b_useReason"
     v-show-field="['b_useReason', includeFields]"
     type="textarea"
@@ -147,15 +147,15 @@
     label="使用事由"
     placeholder="请输入"
     name="b_useReason"
-    :rules="computedRules.d_articleName"
-  />
+    :rules="computedRules.b_useReason"
+  /> -->
 
   <!-- 年审费用 -->
   <DateSelect
     v-model="form.b_annualReviewExpirationDate"
     v-show-field="['b_annualReviewExpirationDate', includeFields]"
     name="b_annualReviewExpirationDate"
-    label="使用时间"
+    label="年审到期日期"
     :rules="computedRules.b_annualReviewExpirationDate"
   />
 
@@ -171,7 +171,7 @@
     v-model.trim="form.b_annualReviewMethod"
     v-show-field="['b_annualReviewMethod', includeFields]"
     label="年审方式"
-    placeholder="请输入"
+    placeholder="请输入自行审验、第三方审验"
     name="b_annualReviewMethod"
     :rules="computedRules.b_annualReviewMethod"
   />
@@ -181,7 +181,7 @@
     v-model="form.b_lastStrongInsuranceExpirationDate"
     v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
     name="b_lastStrongInsuranceExpirationDate"
-    label="年审到期时间"
+    label="上期交强险到期日期"
     :rules="computedRules.b_lastStrongInsuranceExpirationDate"
   />
 
@@ -189,7 +189,7 @@
     v-model="form.b_lastCommercialInsuranceExpirationDate"
     v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
     name="b_lastCommercialInsuranceExpirationDate"
-    label="审验日期"
+    label="上期商业险到期日期"
     :rules="computedRules.b_lastCommercialInsuranceExpirationDate"
   />
 
@@ -215,19 +215,20 @@
     v-model.number="form.b_totalAmount"
     v-show-field="['b_totalAmount', includeFields]"
     label="总计金额"
-    placeholder="请输入"
+    placeholder="自动计算"
     name="b_totalAmount"
-    :rules="computedRules.b_totalAmount"
+    disabled
   />
 
   <FeeBaseUpsert :include-fields="includeFields2" />
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
+import Big from 'big.js'
 import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import { isNumeric } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
@@ -252,21 +253,20 @@ trackFields(props.includeFields)
 const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 
-// 计算总金额
-function computeTotalAmount() {
-  const strongAmount = form.value.b_strongInsuranceAmount
-  const commercialAmount = form.value.b_commercialInsuranceAmount
-
-  if (!isNil(strongAmount) && !isNil(commercialAmount)) {
-    form.value.b_totalAmount = Number((strongAmount + commercialAmount).toFixed(2))
-  }
-  else {
-    form.value.b_totalAmount = null
-  }
-}
-
 // 监听强险金额和商业险金额的变化
-watch([() => form.value.b_strongInsuranceAmount, () => form.value.b_commercialInsuranceAmount], () => {
-  computeTotalAmount()
+watch([() => form.value.b_strongInsuranceAmount, () => form.value.b_commercialInsuranceAmount], (val) => {
+  const totalAmount = val
+    ?.reduce<Big.Big>((acc, curr) => {
+      if (isNumeric(curr)) {
+        return acc.add(curr)
+      }
+
+      return acc.add(0)
+    }, Big(0))
+    .toNumber()
+
+  form.value.b_totalAmount = totalAmount
+}, {
+  immediate: true,
 })
 </script>

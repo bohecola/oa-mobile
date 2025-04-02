@@ -1,6 +1,7 @@
 <template>
   <DeptSelect
     v-model="form.s_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['s_deptId', includeFields]"
     name="s_deptId"
     label="项目部"
@@ -35,6 +36,24 @@
   />
 
   <van-field
+    v-model.trim="form.s_startDate"
+    v-show-field="['s_startDate', includeFields]"
+    label="开始时间"
+    placeholder="请输入"
+    name="s_startDate"
+    :rules="computedRules.s_startDate"
+  />
+
+  <van-field
+    v-model.trim="form.s_endDate"
+    v-show-field="['s_endDate', includeFields]"
+    label="结束时间"
+    placeholder="请输入"
+    name="s_endDate"
+    :rules="computedRules.s_endDate"
+  />
+
+  <van-field
     v-model.trim="form.s_subsidyStandardDetails"
     v-show-field="['s_subsidyStandardDetails', includeFields]"
     label="驻勤补助标准明细"
@@ -56,7 +75,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['s_deptId', 's_costCategory', 's_transportationStandards', 's_transportationFeeAmount', 's_subsidyStandardDetails', 'reason', 'ossIdList'],
+    includeFields: () => ['s_deptId', 's_costCategory', 's_transportationStandards', 's_transportationFeeAmount', 's_subsidyStandardDetails', 's_startDate', 's_endDate', 'reason', 'ossIdList'],
   },
 )
 

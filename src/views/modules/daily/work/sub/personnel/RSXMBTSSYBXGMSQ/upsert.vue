@@ -1,10 +1,12 @@
 <template>
   <DeptSelect
     v-model="form.qq_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['qq_deptId', includeFields]"
     name="qq_deptId"
     label="部门/项目部"
     :rules="computedRules.qq_deptId"
+    @change="onDeptChange"
   />
 
   <DictSelect
@@ -75,7 +77,7 @@
     clearable
   />
 
-  <van-field
+  <!-- <van-field
     v-show-field="['qq_isHighVoltageOperation', includeFields]"
     label="是否涉及高压电作业"
     name="qq_isHighVoltageOperation"
@@ -95,9 +97,9 @@
     <template #input>
       <YesNoSwitch v-model="form.qq_isClimbingHomework" @change="onIsClimbingHomeworkChange" />
     </template>
-  </van-field>
+  </van-field> -->
 
-  <van-field-number
+  <!-- <van-field-number
     v-if="form.qq_isClimbingHomework === 'Y'"
     v-model.number="form.qq_distanceRange"
     v-show-field="['qq_distanceRange', includeFields]"
@@ -106,18 +108,18 @@
     name="qq_distanceRange"
     :rules="computedRules.qq_distanceRange"
     clearable
-  />
+  /> -->
 
-  <!-- <van-field
+  <van-field
     v-show-field="['qq_isContractPurchaseInsurance', includeFields]"
     label="合同中是否要求购买此类保险"
     name="qq_isContractPurchaseInsurance"
     :rules="computedRules.qq_isContractPurchaseInsurance"
   >
     <template #input>
-      <YesNoSwitch v-model="form.qq_isClimbingHomework" readonly />
+      <YesNoSwitch v-model="form.qq_isContractPurchaseInsurance" />
     </template>
-  </van-field> -->
+  </van-field>
 
   <van-field
     v-show-field="['qq_isNewHiredPurchaseInsurance', includeFields]"
@@ -167,6 +169,7 @@
     v-if="form.qq_isEarlyStagePurchaseInsurance === 'Y'"
     v-show-field="['qq_isOldInsuranceTermination', includeFields]"
     label="原特殊商业保险是否终止"
+    placeholder="请输入"
     name="qq_isOldInsuranceTermination"
     :rules="computedRules.qq_isOldInsuranceTermination"
   >
@@ -183,6 +186,7 @@
     rows="1"
     autosize
     label="原特殊商业保险终止原因说明"
+    placeholder="请输入"
     name="qq_isOldInsuranceTerminationReason"
     :rules="computedRules.qq_isOldInsuranceTerminationReason"
   />
@@ -203,6 +207,7 @@
     v-model="form.qq_notBelongDeptPurchaseInsuranceSpecialReason"
     v-show-field="['qq_notBelongDeptPurchaseInsuranceSpecialReason', includeFields]"
     label="不属于该项目部人员购买保险原因"
+    placeholder="请输入"
     type="textarea"
     rows="1"
     autosize
@@ -223,6 +228,7 @@
     v-model="form.qq_purchaseInsuranceReason"
     v-show-field="['qq_purchaseInsuranceReason', includeFields]"
     label="购买保险原因"
+    placeholder="请输入"
     type="textarea"
     rows="1"
     autosize
@@ -237,6 +243,7 @@
     rows="1"
     autosize
     label="保险购买特殊说明"
+    placeholder="请输入"
     name="qq_purchaseInsuranceSpecialExplain"
     :rules="computedRules.qq_purchaseInsuranceSpecialExplain"
   />
@@ -280,7 +287,7 @@ const props = withDefaults(
       'qq_notBelongDeptPurchaseInsuranceSpecialReason',
       'qq_isOldInsuranceTermination',
       'qq_isOldInsuranceTerminationReason',
-      // 'qq_isContractPurchaseInsurance',
+      'qq_isContractPurchaseInsurance',
       'reason',
       'ossIdList',
     ],
@@ -288,7 +295,7 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
-// form.value.qq_isContractPurchaseInsurance = 'Y'
+
 const Form = inject<Ref<FormInstance>>('Form')
 
 // 指令
@@ -300,12 +307,16 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
-const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+// 附件必选
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+updateRuleRequired('ossIdList', true)
 
-function onIsClimbingHomeworkChange() {
-  // 清空距离范围
-  resetFields(['qq_distanceRange'])
-}
+// const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
+// function onIsClimbingHomeworkChange() {
+//   // 清空距离范围
+//   resetFields(['qq_distanceRange'])
+// }
 
 async function onDeptChange(value: string | number) {
   const res = await getDept(value)

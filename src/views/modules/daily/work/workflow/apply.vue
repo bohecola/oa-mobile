@@ -202,6 +202,9 @@ async function handleTempSave({ load, done, next, initiator, operation }: TempSa
 async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
   await workflowSubmit({
     success: async (data) => {
+      if (data.qq_isContractPurchaseInsurance === 'N') {
+        return proxy.$modal.msgError('该流程提交合同中必须要求购买此类保险！')
+      }
       load()
       const options = {
         entity: { ...data, initiator },

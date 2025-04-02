@@ -1,7 +1,26 @@
 <template>
   <FeeBaseUpsert :include-fields="includeFields1" />
 
-  <DictSelect
+  <van-field
+    v-model="selectText"
+    type="textarea"
+    :rows="1"
+    autosize
+    label="购买申请"
+    name="e_dailyWorkId"
+    is-link
+    :rules="computedRules.e_dailyWorkId"
+    @click="handleClick"
+  />
+  <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
+    <van-picker
+      :columns="dailyWorkData"
+      @cancel="showPicker = false"
+      @confirm="onConfirm"
+    />
+  </van-popup>
+
+  <!-- <DictSelect
     v-model="form.e_dailyWorkId"
     v-show-field="['e_dailyWorkId', includeFields]"
     label="购买申请"
@@ -9,7 +28,7 @@
     :options="dailyWorkData"
     :rules="computedRules.e_dailyWorkId"
     @change="onChange"
-  />
+  /> -->
 
   <div v-if="!isNil(form.e_dailyWorkId)">
     <DeptSelect
@@ -84,6 +103,7 @@
     />
 
     <van-field
+      v-if="!isNil(form.e_isHighVoltageOperation)"
       v-show-field="['e_isHighVoltageOperation', includeFields]"
       label="是否涉及高压电作业"
       name="e_isHighVoltageOperation"
@@ -97,6 +117,7 @@
     </van-field>
 
     <van-field
+      v-if="!isNil(form.e_isClimbingHomework)"
       v-show-field="['e_isClimbingHomework', includeFields]"
       label="是否涉及登高作业"
       name="e_isClimbingHomework"
@@ -264,7 +285,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty, isNil } from 'lodash-es'
+import { isEmpty, isNil, result } from 'lodash-es'
 import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
@@ -298,6 +319,7 @@ trackFields(props.includeFields)
 const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 
+const showPicker = ref(false)
 const dailyWorkData = ref([])
 
 async function getList() {
@@ -321,12 +343,20 @@ async function getList() {
       content,
       value: e.id,
       label: `${e.createByName}-${deptName}-${personnelCategory}-${purchaseInsuranceCategory}-${e.createTime}`,
+      text: `${e.createByName}-${deptName}-${personnelCategory}-${purchaseInsuranceCategory}-${e.createTime}`,
     }
   })
 }
 
-function onChange(value: string) {
-  const obj = dailyWorkData.value.find(e => e.id === value)
+function handleClick() {
+  getList()
+  showPicker.value = true
+}
+
+const selectText = ref()
+function onConfirm({ selectedValues, selectedOptions }) {
+  selectText.value = selectedOptions[0]?.text
+  const obj = dailyWorkData.value.find(e => e.id === selectedOptions[0]?.id)
   if (obj) {
     form.value.e_dailyWorkId = obj.id
     form.value.e_deptId = obj.content?.qq_deptId
@@ -354,9 +384,16 @@ function onChange(value: string) {
     form.value.e_isOldInsuranceTermination = obj.content?.qq_isOldInsuranceTermination
     form.value.e_isOldInsuranceTerminationReason = obj.content?.qq_isOldInsuranceTerminationReason
   }
+  showPicker.value = false
 }
-
-onMounted(async () => {
-  await getList()
-})
 </script>
+
+<style lang="scss" scoped>
+:deep(.van-picker-column__item) .van-ellipsis {
+  white-space: wrap !important;
+  word-break: break-word !important;
+  padding: 10px 10px !important;
+  line-height: 1.5 !important;
+  text-align: center !important;
+}
+</style>

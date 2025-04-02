@@ -1,6 +1,7 @@
 <template>
   <DeptSelect
     v-model="form.r_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['r_deptId', includeFields]"
     name="r_deptId"
     label="部门/项目部"

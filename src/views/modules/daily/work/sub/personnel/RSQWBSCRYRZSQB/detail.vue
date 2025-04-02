@@ -131,12 +131,12 @@
   />
 
   <van-field
-    v-show-field="['ff_performanceWages', includeFields]"
-    name="ff_performanceWages"
+    v-show-field="['ff_probationWagesRate', includeFields]"
+    name="ff_probationWagesRate"
     label="试用期薪资发放标准"
   >
     <template #input>
-      <span>{{ form.ff_performanceWages }}%</span>
+      <span>{{ form.ff_probationWagesRate }}%</span>
     </template>
   </van-field>
 
@@ -155,7 +155,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['ff_deptId', 'ff_userId', 'ff_age', 'ff_sex', 'ff_nation', 'ff_education', 'ff_certificates', 'ff_interviewDate', 'ff_employmentMethod', 'ff_employmentPost', 'ff_employmentNature', 'ff_hopeDate', 'ff_wages', 'ff_otherBenefits', 'ff_isProbation', 'ff_probationCycle', 'ff_performanceWages', 'reason', 'ossIdList'],
+    includeFields: () => ['ff_deptId', 'ff_userId', 'ff_age', 'ff_sex', 'ff_nation', 'ff_education', 'ff_certificates', 'ff_interviewDate', 'ff_employmentMethod', 'ff_employmentPost', 'ff_employmentNature', 'ff_hopeDate', 'ff_wages', 'ff_otherBenefits', 'ff_isProbation', 'ff_probationCycle', 'ff_probationWagesRate', 'reason', 'ossIdList'],
   },
 )
 

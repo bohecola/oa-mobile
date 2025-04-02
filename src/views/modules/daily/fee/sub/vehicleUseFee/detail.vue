@@ -115,7 +115,7 @@
     name="b_useMethod"
   />
 
-  <van-field
+  <!-- <van-field
     v-show-field="['b_useReason', includeFields]"
     label="使用事由"
     name="b_useReason"
@@ -123,14 +123,14 @@
     <template #input>
       <TextareaView :value="form.b_useReason" />
     </template>
-  </van-field>
+  </van-field> -->
 
   <!-- 年审费用 -->
   <DateSelect
     v-model="form.b_annualReviewExpirationDate"
     v-show-field="['b_annualReviewExpirationDate', includeFields]"
     name="b_annualReviewExpirationDate"
-    label="使用时间"
+    label="年审到期日期"
   />
 
   <DateSelect
@@ -152,14 +152,14 @@
     v-model="form.b_lastStrongInsuranceExpirationDate"
     v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
     name="b_lastStrongInsuranceExpirationDate"
-    label="年审到期时间"
+    label="上期交强险到期日期"
   />
 
   <DateSelect
     v-model="form.b_lastCommercialInsuranceExpirationDate"
     v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
     name="b_lastCommercialInsuranceExpirationDate"
-    label="审验日期"
+    label="上期商业险到期日期"
   />
 
   <van-field

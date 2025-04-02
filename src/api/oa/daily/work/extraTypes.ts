@@ -370,7 +370,7 @@ export interface RSQWBSCRYRZSQB {
   ff_otherBenefits?: string
   ff_isProbation?: string
   ff_probationCycle?: number
-  ff_performanceWages?: number
+  ff_probationWagesRate?: number
 }
 
 // 生产人员招聘工作奖励费用核算审批表

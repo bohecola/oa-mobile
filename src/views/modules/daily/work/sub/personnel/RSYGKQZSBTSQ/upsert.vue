@@ -1,130 +1,149 @@
 <template>
-  <DictSelect
-    v-model="form.yy_dailyWorkId"
-    v-show-field="['yy_dailyWorkId', includeFields]"
+  <van-field
+    v-model="selectText"
+    type="textarea"
+    :rows="1"
+    autosize
     label="证书注册申请"
     name="yy_dailyWorkId"
-    :options="dailyWorkData"
+    is-link
     :rules="computedRules.yy_dailyWorkId"
-    @change="onChange"
+    @click="handleClick"
   />
-
-  <DateSelect
-    v-show-field="['yy_entryCompanyDate', includeFields]"
-    :model-value="`${parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}')}`"
-    name="yy_entryCompanyDate"
-    label="入职时间"
-  />
-
-  <van-field-number
-    v-model.number="form.yy_subsidyStandards"
-    v-show-field="['yy_subsidyStandards', includeFields]"
-    label="补贴标准(元/月)"
-    name="yy_subsidyStandards"
-    :rules="computedRules.yy_subsidyStandards"
-  />
-
-  <div v-if="!isNil(form.yy_dailyWorkId)">
-    <DictSelect
-      v-model="form.yy_type"
-      v-show-field="['yy_type', includeFields]"
-      label="申请注册/使用证书类型"
-      name="yy_type"
-      dict-type="oa_document_type"
+  <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
+    <van-picker
+      :columns="dailyWorkData"
+      @cancel="showPicker = false"
+      @confirm="onConfirm"
     />
+  </van-popup>
 
-    <van-field
-      v-model="form.yy_name"
-      v-show-field="['yy_name', includeFields]"
-      label="申请注册/使用证书名称"
-      name="yy_name"
-    />
-
-    <DictSelect
-      v-model="form.yy_certificateLevel"
-      v-show-field="['yy_certificateLevel', includeFields]"
-      label="证书等级"
-      name="yy_certificateLevel"
-      dict-type="oa_certificate_level"
-    />
-
+  <van-form
+    label-width="auto"
+    label-align="top"
+    input-align="left"
+    readonly
+  >
     <DateSelect
-      v-show-field="['yy_registrationCompanyDate', includeFields]"
-      :model-value="`${parseTime(form.yy_registrationCompanyDate, '{y}-{m}-{d}')}`"
-      name="yy_registrationCompanyDate"
-      label="注册到公司日期"
+      v-show-field="['yy_entryCompanyDate', includeFields]"
+      :model-value="`${parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}')}`"
+      name="yy_entryCompanyDate"
+      label="入职时间"
     />
 
-    <DictSelect
-      v-model="form.yy_certificateStatus"
-      v-show-field="['yy_certificateStatus', includeFields]"
-      label="证书状态"
-      name="yy_certificateStatus"
-      dict-type="sys_normal_disable"
+    <van-field-number
+      v-model.number="form.yy_subsidyStandards"
+      v-show-field="['yy_subsidyStandards', includeFields]"
+      label="补贴标准(元/月)"
+      name="yy_subsidyStandards"
+      :rules="computedRules.yy_subsidyStandards"
     />
 
-    <van-field
-      v-model="form.yy_speciality"
-      v-show-field="['yy_speciality', includeFields]"
-      label="专业名称"
-      name="yy_speciality"
-    />
+    <div v-if="!isNil(form.yy_dailyWorkId)">
+      <DictSelect
+        v-model="form.yy_type"
+        v-show-field="['yy_type', includeFields]"
+        label="申请注册/使用证书类型"
+        name="yy_type"
+        dict-type="oa_document_type"
+      />
 
-    <van-field
-      v-model="form.yy_no"
-      v-show-field="['yy_no', includeFields]"
-      label="编号"
-      name="yy_no"
-    />
+      <van-field
+        v-model="form.yy_name"
+        v-show-field="['yy_name', includeFields]"
+        label="申请注册/使用证书名称"
+        name="yy_name"
+      />
 
-    <DateSelect
-      v-model="form.yy_issuanceDate"
-      v-show-field="['yy_issuanceDate', includeFields]"
-      name="yy_issuanceDate"
-      label="发证时间"
-    />
+      <DictSelect
+        v-model="form.yy_certificateLevel"
+        v-show-field="['yy_certificateLevel', includeFields]"
+        label="证书等级"
+        name="yy_certificateLevel"
+        dict-type="oa_certificate_level"
+      />
 
-    <DateSelect
-      v-model="form.yy_recheckDate"
-      v-show-field="['yy_recheckDate', includeFields]"
-      name="yy_recheckDate"
-      label="复审时间"
-    />
+      <DateSelect
+        v-show-field="['yy_registrationCompanyDate', includeFields]"
+        :model-value="`${parseTime(form.yy_registrationCompanyDate, '{y}-{m}-{d}')}`"
+        name="yy_registrationCompanyDate"
+        label="注册到公司日期"
+      />
 
-    <DateSelect
-      v-model="form.yy_startDate"
-      v-show-field="['yy_startDate', includeFields]"
-      name="yy_startDate"
-      label="开始日期"
-    />
+      <DictSelect
+        v-model="form.yy_certificateStatus"
+        v-show-field="['yy_certificateStatus', includeFields]"
+        label="证书状态"
+        name="yy_certificateStatus"
+        dict-type="sys_normal_disable"
+      />
 
-    <DateSelect
-      v-model="form.yy_endDate"
-      v-show-field="['yy_endDate', includeFields]"
-      name="yy_endDate"
-      label="结束日期"
-    />
+      <van-field
+        v-model="form.yy_speciality"
+        v-show-field="['yy_speciality', includeFields]"
+        label="专业名称"
+        name="yy_speciality"
+      />
 
-    <van-field
-      v-model="form.yy_unit"
-      v-show-field="['yy_unit', includeFields]"
-      label="发证单位"
-      name="yy_unit"
-    />
+      <van-field
+        v-model="form.yy_no"
+        v-show-field="['yy_no', includeFields]"
+        label="编号"
+        name="yy_no"
+      />
 
-    <van-field
-      v-show-field="['yy_isTraining', includeFields]"
-      label="是否参与培训"
-      name="yy_isTraining"
-    >
-      <template #input>
-        <YesNoSwitch
-          v-model="form.yy_isTraining"
-          readonly
-        />
-      </template>
-    </van-field>
-  </div>
+      <DateSelect
+        v-model="form.yy_issuanceDate"
+        v-show-field="['yy_issuanceDate', includeFields]"
+        name="yy_issuanceDate"
+        label="发证时间"
+      />
+
+      <DateSelect
+        v-if="!isNil(form.yy_recheckDate)"
+        v-model="form.yy_recheckDate"
+        v-show-field="['yy_recheckDate', includeFields]"
+        name="yy_recheckDate"
+        label="复审时间"
+      />
+
+      <DateSelect
+        v-if="!isNil(form.yy_startDate)"
+        v-model="form.yy_startDate"
+        v-show-field="['yy_startDate', includeFields]"
+        name="yy_startDate"
+        label="开始日期"
+      />
+
+      <DateSelect
+        v-if="!isNil(form.yy_endDate)"
+        v-model="form.yy_endDate"
+        v-show-field="['yy_endDate', includeFields]"
+        name="yy_endDate"
+        label="结束日期"
+      />
+
+      <van-field
+        v-model="form.yy_unit"
+        v-show-field="['yy_unit', includeFields]"
+        label="发证单位"
+        name="yy_unit"
+      />
+
+      <van-field
+        v-show-field="['yy_isTraining', includeFields]"
+        label="是否参与培训"
+        name="yy_isTraining"
+      >
+        <template #input>
+          <YesNoSwitch
+            v-model="form.yy_isTraining"
+            readonly
+          />
+        </template>
+      </van-field>
+    </div>
+  </van-form>
 
   <BaseUpsert :include-fields="includeFields" />
 </template>
@@ -157,6 +176,7 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
+const showPicker = ref(false)
 const dailyWorkData = ref([])
 
 const user = useUserStore()
@@ -176,12 +196,21 @@ async function getList() {
       content,
       value: e.id,
       label: `${content.y_name} - ${content.y_no}`,
+      text: `${content.y_name} - ${content.y_no}`,
     }
   })
 }
 
-function onChange(value: string) {
-  const obj = dailyWorkData.value.find(e => e.id === value)
+function handleClick() {
+  getList()
+  showPicker.value = true
+}
+
+const selectText = ref()
+
+function onConfirm({ selectedValues, selectedOptions }) {
+  selectText.value = selectedOptions[0]?.text
+  const obj = dailyWorkData.value.find(e => e.id === selectedOptions[0]?.id)
   if (obj) {
     form.value.yy_dailyWorkId = obj.id
     form.value.yy_type = obj.content?.y_type
@@ -201,6 +230,7 @@ function onChange(value: string) {
     form.value.ossIdList = obj.ossIdList
     // detailForm.value.id = obj.id;
   }
+  showPicker.value = false
 }
 
 async function getUser() {
@@ -213,3 +243,13 @@ onMounted(async () => {
   await getUser()
 })
 </script>
+
+<style lang="scss" scoped>
+:deep(.van-picker-column__item) .van-ellipsis {
+  white-space: wrap !important;
+  word-break: break-word !important;
+  padding: 10px 10px !important;
+  line-height: 1.5 !important;
+  text-align: center !important;
+}
+</style>

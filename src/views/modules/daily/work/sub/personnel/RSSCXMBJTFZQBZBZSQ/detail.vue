@@ -22,13 +22,23 @@
   <van-field
     v-model="form.s_transportationFeeAmount"
     v-show-field="['s_transportationFeeAmount', includeFields]" l
-    abel="拟申请交通费金额（元/单趟）"
+    label="拟申请交通费金额（元/单趟）"
     name="s_transportationFeeAmount"
   />
 
-  <van-field v-model="form.s_startDate" v-show-field="['s_startDate', includeFields]" label="开始时间" name="s_startDate" input-align="left" />
+  <van-field
+    v-model="form.s_startDate"
+    v-show-field="['s_startDate', includeFields]"
+    label="开始时间"
+    name="s_startDate"
+  />
 
-  <van-field v-model="form.s_endDate" v-show-field="['s_endDate', includeFields]" label="结束时间" name="s_endDate" input-align="left" />
+  <van-field
+    v-model="form.s_endDate"
+    v-show-field="['s_endDate', includeFields]"
+    label="结束时间"
+    name="s_endDate"
+  />
 
   <van-field
     v-model="form.s_subsidyStandardDetails"

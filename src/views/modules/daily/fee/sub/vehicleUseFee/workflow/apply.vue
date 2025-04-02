@@ -100,7 +100,13 @@ const BYWXFYFields: KeysOfArray<DailyFeeForm> = [
 const LXJYFYFields = ['b_useTime', 'b_oilContent', 'b_useReason', 'b_useMethod']
 
 // 年审费用字段
-const NSFYFields = ['b_vehicleNo', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_paymentMethod']
+const NSFYFields = [
+  'b_vehicleNo',
+  'b_annualReviewExpirationDate',
+  'b_verificationDate',
+  'b_annualReviewMethod',
+  'b_paymentMethod',
+]
 
 // 公司车辆保险费用
 const GSCLBXFFields = [

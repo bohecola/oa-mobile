@@ -1,6 +1,7 @@
 <template>
   <DeptSelect
     v-model="form.ee_deptId"
+    v-model:value="form.needDepts"
     v-show-field="['ee_deptId', includeFields]"
     name="ee_deptId"
     label="项目部"
@@ -25,8 +26,8 @@
     :rules="computedRules.ee_category"
   />
 
-  <van-field
-    v-model.trim="form.ee_subsidyAmountStandard"
+  <van-field-number
+    v-model.number="form.ee_subsidyAmountStandard"
     v-show-field="['ee_subsidyAmountStandard', includeFields]"
     label="申请补助金额标准"
     placeholder="请输入申请补助金额标准:元/人/天或元/人/月"
@@ -34,8 +35,8 @@
     :rules="computedRules.ee_subsidyAmountStandard"
   />
 
-  <van-field
-    v-model.trim="form.ee_recipientsNumber"
+  <van-field-number
+    v-model.number="form.ee_recipientsNumber"
     v-show-field="['ee_recipientsNumber', includeFields]"
     label="发放人数"
     type="digit"
@@ -44,8 +45,8 @@
     :rules="computedRules.ee_recipientsNumber"
   />
 
-  <van-field
-    v-model.trim="form.ee_subsidyTotalAmountMonth"
+  <van-field-number
+    v-model.number="form.ee_subsidyTotalAmountMonth"
     v-show-field="['ee_subsidyTotalAmountMonth', includeFields]"
     label="申请补助总金额(元/月)"
     placeholder="请输入"
@@ -53,8 +54,8 @@
     :rules="computedRules.ee_subsidyTotalAmountMonth"
   />
 
-  <van-field
-    v-model.trim="form.ee_subsidyTotalAmountDay"
+  <van-field-number
+    v-model.number="form.ee_subsidyTotalAmountDay"
     v-show-field="['ee_subsidyTotalAmountDay', includeFields]"
     label="申请补助总金额(元/天)"
     placeholder="请输入"
