@@ -1,6 +1,13 @@
 import type { NodeConfigVO } from '@/api/workflow/nodeConfig/types'
 import type { DefinitionConfigVO } from '@/api/workflow/definitionConfig/types'
 
+export interface TaskNum {
+  startNum: number
+  waitNum: number
+  doneNum: number
+  copyNum: number
+}
+
 export interface TaskQuery extends PageQuery {
   name?: string
   procinstName?: string

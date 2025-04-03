@@ -1,6 +1,14 @@
 import type { AxiosPromise } from 'axios'
-import type { TaskQuery, TaskVO } from '@/api/workflow/task/types'
+import type { TaskNum, TaskQuery, TaskVO } from '@/api/workflow/task/types'
 import request from '@/service/request'
+
+// 流程待办数量
+export function getTaskNum(): AxiosPromise<TaskNum> {
+  return request({
+    url: '/workflow/task/getTaskNum',
+    method: 'get',
+  })
+}
 
 /**
  * 查询待办列表
