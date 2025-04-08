@@ -23,7 +23,7 @@ export function useForm() {
     id: undefined,
     postId: undefined,
     postName: undefined,
-    userNum: 0,
+    userNum: 1,
     ageRequire: undefined,
     speciality: undefined,
     responsibility: undefined,

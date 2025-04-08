@@ -64,7 +64,7 @@ const allFields: PartialBooleanRecord<UserRecruitForm> = {
   hopeArriveDate: true,
   applyReason: true,
   address: true,
-  // projectDeptNumber: true,
+  projectDeptNumber: true,
   remark: true,
   userRecruitPostBoList: true,
   ossIdList: true,
@@ -98,7 +98,7 @@ const archiveDetailFields1 = ref(
   filterTruthyKeys<UserRecruitForm>({
     deptId: true,
     hopeArriveDate: true,
-    // projectDeptNumber: true,
+    projectDeptNumber: true,
   }),
 )
 // 归档的节点详情

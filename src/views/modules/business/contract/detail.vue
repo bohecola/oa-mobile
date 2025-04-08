@@ -12,7 +12,7 @@
       v-model="form.name"
       v-show-field="['name', includeFields]"
       name="name"
-      label="名称"
+      label="合同名称"
     />
     <van-field
       v-model="form.no"

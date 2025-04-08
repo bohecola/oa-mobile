@@ -77,7 +77,10 @@ export function useForm() {
       deptId: [{ required: true, message: '部门名称不能为空', trigger: 'onBlur' }],
       postId: [{ required: true, message: '岗位名称不能为空', trigger: 'onBlur' }],
       sex: [{ required: true, message: '性别不能为空', trigger: 'onBlur' }],
-      phonenumber: [{ required: true, message: '手机号不能为空', trigger: 'onBlur' }],
+      phonenumber: [
+        { required: true, message: '手机号不能为空', trigger: 'onBlur' },
+        { pattern: /^1[3-9|]\d{9}$/, message: '请输入正确的手机号码', trigger: 'onBlur' },
+      ],
       age: [{ required: true, message: '年龄不能为空', trigger: 'onBlur' }],
       isProbation: [{ required: true, message: '是否有试用期不能为空', trigger: 'onBlur' }],
       probationCycle: [{ required: true, message: '试用期时长不能为空', trigger: 'onBlur' }],

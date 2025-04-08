@@ -59,7 +59,7 @@ const form = inject<Ref<DailyForm>>('form')
 const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 指令
-const vShowField = createFieldVisibilityDirective<DailyForm>(form)
+const vShowField = createFieldVisibilityDirective<DailyForm>()
 
 function handleIconClick() {
   showDialog({

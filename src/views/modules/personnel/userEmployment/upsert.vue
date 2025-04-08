@@ -127,10 +127,11 @@
       <van-field-number
         v-model.number="form.phonenumber"
         v-show-field="['phonenumber', includeFields]"
-        name="phonenumber"
         type="tel"
-        maxlegth="11"
+        maxlength="11"
         label="手机号"
+        placeholder="请输入"
+        name="phonenumber"
         :rules="computedRules.phonenumber"
         @change="phonenumberChange"
       />
@@ -295,32 +296,6 @@
         name="probationCycle"
         label="试用期时长(月)"
       />
-
-      <van-field
-        v-if="form.isProbation === 'Y'"
-        v-model="form.probationWagesRate"
-        v-show-field="['probationWagesRate', includeFields]"
-        name="probationWagesRate"
-        label="试用期薪资发放标准(%)"
-      />
-
-      <van-field
-        v-show-field="['isRecommend', includeFields]"
-        name="isRecommend"
-        label="是否推荐"
-      >
-        <template #input>
-          <YesNoSwitch v-model="form.isRecommend" readonly />
-        </template>
-      </van-field>
-
-      <van-field
-        v-if="form.isRecommend === 'Y'"
-        v-model="form.reference"
-        v-show-field="['reference', includeFields]"
-        name="reference"
-        label="推荐来源"
-      />
     </van-form>
 
     <!-- 面试评价false -->
@@ -362,6 +337,7 @@
         v-show-field="['internshipExplain', includeFields]"
         name="internshipExplain"
         label="实习期时长说明"
+        placeholder="请输入"
         :rules="computedRules.internshipExplain"
       />
 
@@ -371,18 +347,57 @@
         v-show-field="['probationCycle', includeFields]"
         name="probationCycle"
         label="试用期时长(月)"
+        placeholder="请输入"
         :rules="computedRules.probationCycle"
       />
+    </van-form>
+
+    <van-field-number
+      v-if="form.isProbation === 'Y'"
+      v-model="form.probationWagesRate"
+      v-show-field="['probationWagesRate', includeFields]"
+      name="probationWagesRate"
+      label="试用期薪资发放标准"
+      placeholder="请输入"
+      :rules="computedRules.probationWagesRate"
+    >
+      <template #extra>
+        <span class="absolute top-[38px] left-16">%</span>
+      </template>
+    </van-field-number>
+
+    <!-- 面试评价true -->
+    <van-form
+      v-if="form.checked"
+      label-align="top"
+      input-align="left"
+      readonly
+    >
+      <van-field
+        v-show-field="['isRecommend', includeFields]"
+        name="isRecommend"
+        label="是否推荐"
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isRecommend" readonly />
+        </template>
+      </van-field>
 
       <van-field
-        v-if="form.isProbation === 'Y'"
-        v-model="form.probationWagesRate"
-        v-show-field="['probationWagesRate', includeFields]"
-        name="probationWagesRate"
-        label="试用期薪资发放标准(%)"
-        :rules="computedRules.probationWagesRate"
+        v-if="form.isRecommend === 'Y'"
+        v-model="form.reference"
+        v-show-field="['reference', includeFields]"
+        name="reference"
+        label="推荐来源"
       />
+    </van-form>
 
+    <van-form
+      v-else
+      label-align="top"
+      input-align="left"
+      required="auto"
+    >
       <van-field
         v-show-field="['isRecommend', includeFields]"
         name="isRecommend"
@@ -400,6 +415,7 @@
         v-show-field="['reference', includeFields]"
         name="reference"
         label="推荐来源"
+        placeholder="请输入"
         :rules="computedRules.reference"
       />
     </van-form>
@@ -437,6 +453,7 @@
       v-model="form.otherCertificates"
       v-show-field="['otherCertificates', includeFields]"
       label="其他证书"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -449,6 +466,7 @@
       v-model="form.employmentEvaluate"
       v-show-field="['employmentEvaluate', includeFields]"
       label="面试评价"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -460,6 +478,7 @@
       v-model="form.description"
       v-show-field="['description', includeFields]"
       label="其他"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -475,6 +494,7 @@
       rows="1"
       autosize
       label="备注"
+      placeholder="请输入"
       :rules="computedRules.remark"
     />
 

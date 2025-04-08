@@ -51,12 +51,14 @@
       :rules="computedRules.hopeArriveDate"
     />
 
-    <!-- <van-field
+    <van-field-number
       v-model.trim="form.projectDeptNumber"
       v-show-field="['projectDeptNumber', includeFields]"
       name="projectDeptNumber"
+      type="digit"
       label="项目部定员人数"
-    /> -->
+      readonly
+    />
 
     <van-field
       v-if="!isNil(form.no)"
@@ -116,6 +118,8 @@
               :name="`itemList.${index}.userNum`"
               label="招聘人数"
               placeholder="请输入"
+              :min="1"
+              type="digit"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
 
@@ -163,7 +167,7 @@
             <van-field
               v-model="item.demand"
               :name="`itemList.${index}.demand`"
-              label="任职条件"
+              label="岗位职责"
               placeholder="请输入"
               type="textarea"
               rows="1"
@@ -338,17 +342,17 @@ function resetPS() {
   })
 }
 
-// watch(
-//   () => form.value.userRecruitPostBoList,
-//   () => {
-//     const userNumList = form.value.userRecruitPostBoList.map(e => e.userNum)
-//     form.value.projectDeptNumber = userNumList.reduce((acc, value) => acc + value, 0)
-//   },
-//   {
-//     immediate: true,
-//     deep: true,
-//   },
-// )
+watch(
+  () => form.value.userRecruitPostBoList,
+  () => {
+    const userNumList = form.value.userRecruitPostBoList.map(e => e.userNum)
+    form.value.projectDeptNumber = userNumList.reduce((acc, value) => acc + value, 0)
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+)
 
 defineExpose({
   isLoading,

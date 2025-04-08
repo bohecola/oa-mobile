@@ -12,7 +12,7 @@
       v-model.trim="form.name"
       v-show-field="['name', includeFields]"
       name="name"
-      label="名称"
+      label="合同名称"
       placeholder="请输入"
       :rules="computedRules.name"
     />
@@ -270,7 +270,7 @@
       v-show-field="['startDate', includeFields]"
       name="startDate"
       label="开始日期"
-      clearable
+      :rules="computedRules.startDate"
     />
 
     <DateSelect
@@ -278,7 +278,7 @@
       v-show-field="['endDate', includeFields]"
       name="endDate"
       label="结束日期"
-      clearable
+      :rules="computedRules.endDate"
     />
 
     <DateSelect
