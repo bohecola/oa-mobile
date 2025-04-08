@@ -89,7 +89,7 @@ export function useForm() {
       isIntern: [{ required: true, message: '是否实习生不能为空', trigger: 'onChange' }],
       isOutsource: [{ required: true, message: '是否为外包人员不能为空', trigger: 'onChange' }],
       internshipExplain: [{ required: true, message: '实习期时长说明不能为空', trigger: 'onChange' }],
-      employmentEvaluate: [{ required: true, message: '面试评价不能为空', trigger: 'onChange' }],
+      // employmentEvaluate: [{ required: true, message: '面试评价不能为空', trigger: 'onChange' }],
       nation: [{ required: true, message: '民族不能为空', trigger: 'onBlur' }],
       education: [{ required: true, message: '学历不能为空', trigger: 'onBlur' }],
       userAccount: [{ required: true, message: '系统账号不能为空', trigger: 'onBlur' }],

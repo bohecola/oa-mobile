@@ -104,7 +104,6 @@
       :options="isProject ? oa_project_business_type : oa_purchase_business_type"
       :rules="computedRules.businessCategory"
       :disabled="isProject"
-      :readonly="isProject"
     />
 
     <DictSelect
@@ -155,7 +154,8 @@
       </template>
     </van-field>
 
-    <van-field
+    <van-field-number
+      v-model.number="form.amount"
       v-show-field="['amount', includeFields]"
       label="含税总金额"
       name="amount"
@@ -167,10 +167,11 @@
           <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
-    </van-field>
+    </van-field-number>
 
-    <van-field
+    <van-field-number
       v-if="isProject && !isNil(form.psId) && !isYwl"
+      v-model.number="form.notTaxAmount"
       v-show-field="['notTaxAmount', includeFields]"
       label="不含税总金额"
       name="notTaxAmount"
@@ -182,9 +183,10 @@
           <span class="text-red-400">{{ toCnMoney(form.notTaxAmount) }}</span>
         </div>
       </template>
-    </van-field>
+    </van-field-number>
 
-    <van-field
+    <van-field-number
+      v-model.number="form.realAmount"
       v-show-field="['realAmount', includeFields]"
       label="含税实际总金额"
       name="realAmount"
@@ -195,10 +197,11 @@
           <span class="text-red-400">{{ toCnMoney(form.realAmount) }}</span>
         </div>
       </template>
-    </van-field>
+    </van-field-number>
 
-    <van-field
+    <van-field-number
       v-if="!isYwl && isProject"
+      v-model.number="form.notTaxRealAmount"
       v-show-field="['notTaxRealAmount', includeFields]"
       label="不含税实际总金额"
       name="notTaxRealAmount"
@@ -209,7 +212,7 @@
           <span class="text-red-400">{{ toCnMoney(form.notTaxRealAmount) }}</span>
         </div>
       </template>
-    </van-field>
+    </van-field-number>
 
     <van-field
       v-show-field="['isOwnerSettlement', includeFields]"
@@ -227,6 +230,7 @@
       v-model="form.description"
       v-show-field="['description', includeFields]"
       label="采购说明"
+      placeholder="请输入"
       name="description"
       type="textarea"
       rows="1"
@@ -238,6 +242,7 @@
       v-model="form.remark"
       v-show-field="['remark', includeFields]"
       label="备注"
+      placeholder="请输入"
       name="remark"
       type="textarea"
       rows="1"
@@ -341,10 +346,11 @@
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '单位不能为空', trigger: 'onBlur' }]"
             />
-            <van-field
+            <van-field-number
               v-model.number="item.num"
               :name="`itemList.${index}.num`"
               label="数量"
+              type="digit"
               placeholder="请输入"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '数量不能为空', trigger: 'onBlur' }]"
@@ -365,6 +371,8 @@
                 }
               "
             />
+
+            <!-- TODO 数字类型回显失败 -->
             <DictSelect
               v-if="!isYwl && isProject"
               v-model="item.taxRate"
@@ -374,19 +382,19 @@
               :rules="[{ required: true, message: '税率不能为空', trigger: 'onChange' }]"
               :disabled="disabledColumn || item.invoiceType === '0'"
             />
+
             <van-field-number
+              v-model.number="item.taxAmount"
               :name="`itemList.${index}.taxAmount`"
               label="含税单价(元)"
               placeholder="请输入"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '含税单价(元)不能为空', trigger: 'onBlur' }]"
-            >
-              <template #input>
-                {{ formatCurrency(item.taxAmount) }}
-              </template>
-            </van-field-number>
-            <van-field
+            />
+
+            <van-field-number
               v-if="!isYwl && isProject"
+              v-model.number="item.amount"
               :name="`itemList.${index}.amount`"
               label="不含税单价(元)"
               placeholder="自动计算"
@@ -395,29 +403,30 @@
               <template #input>
                 {{ formatCurrency(item.amount) }}
               </template>
-            </van-field>
-            <van-field
+            </van-field-number>
+
+            <van-field-number
               v-if="includeFields.includes('realAmount')"
+              v-model.number="item.taxRealAmount"
               :name="`itemList.${index}.taxRealAmount`"
               label="含税实际单价(元)"
-              :rules="[{ required: true, message: '含税实际单价不能为空', trigger: 'onBlur' }]"
-            >
-              <template #input>
-                {{ formatCurrency(item.taxRealAmount) }}
-              </template>
-            </van-field>
-            <van-field
+              :rules="[{ required: taxRealAmountRequired, message: '含税实际单价不能为空', trigger: 'onBlur' }]"
+            />
+
+            <van-field-number
               v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
+              v-model.number="item.realAmount"
               :name="`itemList.${index}.realAmount`"
               label="不含税实际单价(元)"
               placeholder="自动计算"
-              :rules="[{ required: true, message: '不含税实际单价不能为空', trigger: 'onBlur' }]"
+              disabled
             >
               <template #input>
                 {{ formatCurrency(item.realAmount) }}
               </template>
-            </van-field>
-            <van-field
+            </van-field-number>
+
+            <van-field-number
               :name="`itemList.${index}.taxTotalAmount`"
               label="含税合计(元)"
               placeholder="自动求和"
@@ -426,8 +435,8 @@
               <template #input>
                 {{ formatCurrency(item.taxTotalAmount) }}
               </template>
-            </van-field>
-            <van-field
+            </van-field-number>
+            <van-field-number
               v-if="!isYwl && isProject"
               :name="`itemList.${index}.totalAmount`"
               label="不含税合计(元)"
@@ -437,8 +446,8 @@
               <template #input>
                 {{ formatCurrency(item.totalAmount) }}
               </template>
-            </van-field>
-            <van-field
+            </van-field-number>
+            <van-field-number
               v-if="includeFields.includes('realAmount')"
               :name="`itemList.${index}.taxRealTotalAmount`"
               label="含税实际合计(元)"
@@ -448,8 +457,8 @@
               <template #input>
                 {{ formatCurrency(item.taxRealTotalAmount) }}
               </template>
-            </van-field>
-            <van-field
+            </van-field-number>
+            <van-field-number
               v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
               :name="`itemList.${index}.realTotalAmount`"
               label="不含税实际合计(元)"
@@ -459,7 +468,7 @@
               <template #input>
                 {{ formatCurrency(item.realTotalAmount) }}
               </template>
-            </van-field>
+            </van-field-number>
             <van-field
               v-model="item.inquiryWay"
               :name="`itemList.${index}.inquiryWay`"
@@ -508,10 +517,11 @@
       v-show-field="['checkFiles', includeFields]"
       label="验收附件"
       name="checkFiles"
+      :rules="computedRules.checkFiles"
     >
       <template #input>
         <div class="flex flex-col">
-          <UploadFile v-model="form.checkFiles" :exclude="excludeCheckFiles" />
+          <UploadFile v-model="form.checkFiles" />
           <div class="text-red-400">
             验收附件上传说明：1.通过采购部采购的需要上传收货确认单及全部物资照片 2.自行采购需要上传网络订单截图(线上)/店内销售清单(线下)及全部物资照片
             [注：照片必需带时间、地点(水印相机拍照)]
@@ -520,15 +530,18 @@
       </template>
     </van-field>
 
+    <!-- 附件列表 -->
     <van-field
       v-show-field="['ossIdList', includeFields]"
       name="ossIdList"
-      label="附件列表"
       placeholder="请选择"
       :rules="computedRules.ossIdList"
     >
+      <template #label>
+        <span>附件列表</span><span class=" text-gray-400">（请上传申购内容附件）</span>
+      </template>
       <template #input>
-        <UploadFile v-model="form.ossIdList" value-type="array" show-required desc="请上传申购内容附件" :exclude="excludeOssIdList" />
+        <UploadFile v-model="form.ossIdList" value-type="array" />
       </template>
     </van-field>
   </van-form>
@@ -545,6 +558,7 @@ import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getBusinessTypeByPsId } from '@/api/oa/business/project'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { useUserStore } from '@/store/user'
+import { isNumeric } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
@@ -763,11 +777,11 @@ function isAllKeyNil(list: PurchaseItemVO[], key: keyof PurchaseItemVO) {
 
 // 总金额计算
 function sumTotalMoney(list: PurchaseItemVO[], key: keyof PurchaseItemVO) {
-  const value = list.reduce<Big.Big>((acc, curr) => {
+  const value = list.reduce<Big.Big>((prev, curr) => {
     if (isNumber(curr[key])) {
-      return acc.add(curr[key])
+      return prev.add(Big(curr[key]))
     }
-    return acc.add(Big(0))
+    return prev.add(0)
   }, Big(0))
 
   return value.toNumber()
@@ -780,7 +794,7 @@ watch(
     // 单项合计
     val.forEach((item) => {
       // 数量、含税单价为空
-      if (isNil(item.num) || isNil(item.taxAmount)) {
+      if (!isNumeric(item.num) || !isNumeric(item.taxAmount)) {
         item.amount = undefined
         item.taxTotalAmount = undefined
         item.totalAmount = undefined
@@ -790,7 +804,7 @@ watch(
       item.taxTotalAmount = Big(item.taxAmount).times(item.num).toNumber()
 
       // 税率为空
-      if (isNil(item.taxRate)) {
+      if (!isNumeric(item.taxRate)) {
         item.amount = undefined
         return
       }
@@ -800,19 +814,20 @@ watch(
         .toNumber()
 
       // 不含税单价为空
-      if (isNil(item.amount)) {
+      if (!isNumeric(item.amount)) {
         return
       }
       // 不含税合计
       item.totalAmount = Big(item.amount).times(item.num).toNumber()
 
       // 含税实际单价为空
-      if (isNil(item.taxRealAmount)) {
+      if (!isNumeric(item.taxRealAmount)) {
         item.realAmount = undefined
         item.taxRealTotalAmount = undefined
         item.realTotalAmount = undefined
         return
       }
+
       // 不含税实际单价
       item.realAmount = Big(item.taxRealAmount)
         .div(Big(1).add(Big(item.taxRate).div(100)))

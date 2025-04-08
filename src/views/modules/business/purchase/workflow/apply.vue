@@ -234,34 +234,31 @@ async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
 // 审批
 async function handleApproval({ open }: ApprovalPayload) {
   const { taskId } = proxy.$route.query
-  let res: any
+
+  const success = (data: PurchaseForm) => {
+    Object.assign(submitFormData.value.variables.entity, data)
+    open(taskId as string)
+  }
 
   switch (taskDefinitionKey.value) {
     // 申请节点
     case 'Activity_11sjm5p':
-      res = await Upsert.value?.workflowSubmit()
+      await Upsert.value?.workflowSubmit({ success })
       break
     // 执行节点
     case 'Activity_0x4xddm':
     case 'Activity_0qbyt2w':
-      res = await ExecuteUpsert.value?.workflowSubmit()
+      await ExecuteUpsert.value?.workflowSubmit({ success })
       break
     // 验收节点
     case 'Activity_0ccirhe':
-      res = await CheckUpsert.value?.workflowSubmit()
+      await CheckUpsert.value?.workflowSubmit({ success })
+      break
+      // 打开审批弹窗
+    default:
+      open(taskId as string)
       break
   }
-
-  if (res) {
-    const { valid, data } = res
-    if (valid) {
-      Object.assign(submitFormData.value.variables.entity, data)
-      open(taskId as string)
-    }
-    return true
-  }
-  // 打开审批弹窗
-  open(taskId as string)
 }
 
 // 挂载

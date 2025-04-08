@@ -341,7 +341,7 @@
         :rules="computedRules.internshipExplain"
       />
 
-      <van-field
+      <van-field-number
         v-if="form.isIntern === 'N' && form.isProbation === 'Y'"
         v-model="form.probationCycle"
         v-show-field="['probationCycle', includeFields]"
@@ -362,7 +362,7 @@
       :rules="computedRules.probationWagesRate"
     >
       <template #extra>
-        <span class="absolute top-[38px] left-16">%</span>
+        <span v-if="form.probationWagesRate" class="absolute top-[38px] left-12">%</span>
       </template>
     </van-field-number>
 
@@ -471,7 +471,6 @@
       rows="1"
       autosize
       name="employmentEvaluate"
-      :rules="computedRules.employmentEvaluate"
     />
 
     <van-field
@@ -502,10 +501,12 @@
     <van-field
       v-show-field="['ossIdList', includeFields]"
       name="ossIdList"
-      label="附件列表"
       placeholder="请选择"
-      :rules="computedRules.ossIdList"
+      :rules="[{ required: form.level >= 38 ? true : false, message: '附件列表不能为空', trigger: 'onBlur' }]"
     >
+      <template #label>
+        <span>附件列表</span><span v-if="form.level >= 38" class=" text-gray-400">（上传面试评价表）</span>
+      </template>
       <template #input>
         <UploadFile v-model="form.ossIdList" value-type="array" />
       </template>
@@ -591,6 +592,8 @@ function checkedChange() {
   form.value.isRecommend = 'N'
   form.value.reference = undefined
   form.value.employmentEvaluate = undefined
+  form.value.interviewDate = undefined
+  form.value.certificates = undefined
 }
 
 // 部门change事件

@@ -115,7 +115,7 @@ export function useForm() {
       description: [{ required: true, message: '采购说明不能为空', trigger: 'onBlur' }],
       remark: [{ required: false, message: '备注不能为空', trigger: 'onBlur' }],
       realAmount: [{ required: true, message: '实际采购金额不能为空', trigger: 'onBlur' }],
-      checkFiles: [{ required: true, message: '验收附件不能为空', trigger: 'onChange' }],
+      checkFiles: [{ required: true, message: '验收附件不能为空', trigger: 'onBlur' }],
       purchaseContractIds: [{ required: true, message: '采购合同不能为空', trigger: 'onBlur' }],
       purchaseFiles: [{ required: true, message: '采购附件不能为空', trigger: 'onChange' }],
       ossIdList: [{ required: true, message: '附件列表不能为空', trigger: 'onBlur' }],
@@ -221,6 +221,8 @@ export function useForm() {
     const { success, fail } = options
     await Form.value?.validate()
       .then(() => {
+        console.log(form.value, 'form.value')
+
         success?.({ ...form.value })
       }).catch(fail)
   }
