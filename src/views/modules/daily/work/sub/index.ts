@@ -50,6 +50,8 @@ import XZLBYPGH from './administrative/laborProtectionReplace/workflow/apply.vue
 import XZCCXMWZLZ from './administrative/projectAssetTransfer/workflow/apply.vue'
 // 品牌推广协助申请
 import XZPPTGXZ from './administrative/brandPromotionSupport/workflow/apply.vue'
+// 咸林能源NAS系统账号申请
+import XZXLNYNASXTZHSQ from './administrative/XZXLNYNASXTZHSQ/workflow/apply.vue'
 
 // 人事类
 // 劳动合同续签审批
@@ -182,4 +184,5 @@ export default {
   RSSCRYZPGZJLFYHSSPB,
   RSZPXQBGSQ,
   RSXMBTSSYBXGMSQ,
+  XZXLNYNASXTZHSQ,
 }

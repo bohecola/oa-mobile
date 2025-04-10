@@ -43,7 +43,8 @@ export interface ExtraForm
   XZYYFK,
   XZCCXMWZLZ,
   SWXSHTBH,
-  RSXMBTSSYBXGMSQ {}
+  RSXMBTSSYBXGMSQ,
+  XZXLNYNASXTZHSQ {}
 
 // 商务
 // 项目考核奖励确认单
@@ -483,4 +484,11 @@ export interface RSXMBTSSYBXGMSQ {
   qq_isOldInsuranceTermination?: string
   qq_isOldInsuranceTerminationReason?: string
   qq_isContractPurchaseInsurance?: string // 合同中是否要求购买此类保险
+}
+
+// 咸林能源NAS系统账号申请
+export interface XZXLNYNASXTZHSQ {
+  rr_deptId?: string | number
+  rr_userId?: string | number
+  rr_permission?: string
 }

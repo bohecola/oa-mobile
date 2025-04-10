@@ -667,6 +667,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
   qq_notBelongDeptPurchaseInsuranceSpecialReason: [{ required: true, message: `不属于该项目部人员购买保险原因${baseMsg}`, trigger: 'onBlur' }],
   qq_isOldInsuranceTermination: [{ required: true, message: `原特殊商业保险是否终止${baseMsg}`, trigger: 'onBlur' }],
   qq_isOldInsuranceTerminationReason: [{ required: true, message: `原特殊商业保险终止原因说明${baseMsg}`, trigger: 'onBlur' }],
+
+  // 咸林能源NAS系统账号申请
+  rr_deptId: [{ required: true, message: `所在部门${baseMsg}`, trigger: 'onBlur' }],
+  rr_userId: [{ required: true, message: `姓名${baseMsg}`, trigger: 'onBlur' }],
+  rr_permission: [{ required: true, message: `权限${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }
