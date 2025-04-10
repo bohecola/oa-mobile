@@ -167,7 +167,7 @@
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import UserEmploymentSelect from '@/views/modules/personnel/components/UserEmploymentSelect.vue'
+import UserEmploymentSelect from '@/views/modules/personnel/components/PreUserSelect.vue'
 import type { UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
 import { listUserEmployment } from '@/api/oa/personnel/userEmployment'
 

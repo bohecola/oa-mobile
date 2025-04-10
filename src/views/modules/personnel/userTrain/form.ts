@@ -22,17 +22,13 @@ export function useForm() {
   // 引用
   const Form = ref<FormInstance>()
 
-  const initOssMessage: OssMessageAllBo = {
-    type: '4',
-    files: undefined,
-  }
-
   // 0人员清单附件,培训内容,培训费用发票模板,对公付款信息(培训费)
   const initOssMessageList: OssMessageAllBo[] = [
     { type: '0', files: undefined },
     { type: '1', files: undefined },
     { type: '2', files: undefined },
     { type: '3', files: undefined },
+    { type: '4', files: undefined },
   ]
 
   // 初始数据
@@ -44,10 +40,10 @@ export function useForm() {
     type: '1',
     trainType: undefined,
     result: undefined,
-    attendNumber: undefined,
+    attendNumber: 0,
     additionalAmountDescription: undefined,
-    averageAdditionalAmount: undefined,
-    averageAmount: undefined,
+    averageAdditionalAmount: 0,
+    averageAmount: 0,
     totalAmount: 0,
     trainInvoicingType: undefined,
     certificateType: undefined,

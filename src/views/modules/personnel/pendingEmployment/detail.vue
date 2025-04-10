@@ -13,6 +13,7 @@
       v-show-field="['employmentId', includeFields]"
       name="employmentId"
       label="员工"
+      readonly
     />
 
     <DeptSelect

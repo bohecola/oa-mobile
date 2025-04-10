@@ -236,11 +236,12 @@ async function onDelete(item: UploaderFileListItem, detail: { name: Numeric, ind
   }
 
   const ids = getOssIds(fileList.value)
-  const payload = props.valueType
+  const payload = props.valueType === 'array'
     ? !isEmpty(ids)
-        ? ids.join(',')
+        ? ids
         : undefined
-    : ids
+    : ids.join(',')
+
   emit('update:modelValue', payload)
 }
 

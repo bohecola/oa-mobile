@@ -18,7 +18,7 @@
         </template>
       </van-field>
 
-      <UserEmploymentSelect
+      <PreUserSelect
         v-if="form.checked"
         v-model="form.preEmploymentId"
         v-show-field="['preEmploymentId', includeFields]"
@@ -66,6 +66,7 @@
         v-model="form.sex"
         v-show-field="['sex', includeFields]"
         label="性别"
+        placeholder="请选择"
         name="sex"
         dict-type="sys_user_sex"
       />
@@ -516,7 +517,7 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import UserEmploymentSelect from '../components/UserEmploymentSelect.vue'
+import PreUserSelect from '../components/PreUserSelect.vue'
 import { useForm } from './form'
 import { checkPhoneUnique, checkUserNameUnique } from '@/api/system/user'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'

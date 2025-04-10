@@ -15,6 +15,11 @@ export interface UserEmploymentVO {
   preEmploymentName?: string
 
   /**
+   * 名字
+   */
+  name?: string
+
+  /**
    * 民族
    */
   nation: string
@@ -336,6 +341,11 @@ export interface UserEmploymentQuery extends Partial<PageQuery> {
    * 描述
    */
   description?: string
+
+  /**
+   * 状态
+   */
+  status?: string
 
   /**
    * 日期范围参数

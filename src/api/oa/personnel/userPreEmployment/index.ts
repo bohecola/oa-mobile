@@ -65,7 +65,7 @@ export function delUserPreEmployment(id: string | number | Array<string | number
 
 /**
  * 校验手机号唯一（未走完流程的预入职员工手机号）
- * @param id
+ * @param query
  */
 export function checkPrePhoneUnique(query?: CheckUserNameAndPhoneUnique) {
   return request({

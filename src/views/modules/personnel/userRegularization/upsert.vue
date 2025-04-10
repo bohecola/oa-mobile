@@ -24,6 +24,7 @@
         v-show-field="['deptId', includeFields]"
         name="deptId"
         label="部门名称"
+        readonly
       />
 
       <van-field
@@ -71,6 +72,7 @@
       v-model="form.description"
       v-show-field="['description', includeFields]"
       label="原因说明"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -139,7 +141,7 @@ async function confirmUserId(userId: UserInfoVo) {
   // 年月日
   form.value.entryCompanyDate = data.userInfoVo?.entryCompanyDate.split(' ')[0]
   form.value.probationPeriod = data.userInfoVo?.probationPeriod
-  form.value.userName = data.user?.nickName
+  form.value.userName = data.userVo.user?.nickName
   form.value.deptId = data.userVo.user?.deptId
   form.value.postId = data.userVo.postIds?.join(',')
   form.value.postName = data.userVo.posts?.map(item => item.postName).join('、')

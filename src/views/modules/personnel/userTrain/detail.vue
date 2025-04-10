@@ -44,6 +44,7 @@
       </template>
     </van-field>
 
+    <!-- 培训类型 -->
     <div v-if="form.applicationType === '0'">
       <DictSelect
         v-model="form.type"
@@ -59,6 +60,13 @@
         label="外部培训类型"
         name="trainType"
         dict-type="oa_train_type"
+      />
+
+      <DictSelect
+        v-model="form.result"
+        dict-type="task_pass"
+        label="培训结果"
+        name="result"
       />
 
       <DateSelect
@@ -140,6 +148,16 @@
       >
         <template #input>
           <TextareaView :value="form.additionalAmountDescription" />
+        </template>
+      </van-field>
+
+      <van-field
+        v-show-field="['content', includeFields]"
+        name="content"
+        label="培训内容"
+      >
+        <template #input>
+          <TextareaView :value="form.content" />
         </template>
       </van-field>
 

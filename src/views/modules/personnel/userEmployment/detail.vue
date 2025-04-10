@@ -14,11 +14,11 @@
         label="面试评价"
       >
         <template #input>
-          <van-switch v-model="form.checked" size="18px" />
+          <van-switch v-model="form.checked" size="18px" disabled />
         </template>
       </van-field>
 
-      <UserEmploymentSelect
+      <PreUserSelect
         v-if="form.checked"
         v-model="form.preEmploymentId"
         v-show-field="['preEmploymentId', includeFields]"
@@ -346,6 +346,7 @@
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
+import PreUserSelect from '../components/PreUserSelect.vue'
 import { useForm } from './form'
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'

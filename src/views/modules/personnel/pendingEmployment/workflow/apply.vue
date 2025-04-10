@@ -17,7 +17,7 @@
       <!-- 实际到岗节点 -->
       <div v-else-if="taskDefinitionKey === 'Activity_0f4zwar'">
         <detail ref="Detail1" :include-fields="realDateFiles1" :show-loading="false" />
-        <detail ref="Upsert1" :include-fields="['realDate']" :show-loading="false" />
+        <upsert ref="Upsert1" :include-fields="['realDate']" :show-loading="false" />
         <detail ref="Detail2" :include-fields="realDateFiles2" :show-loading="false" />
       </div>
 
@@ -141,7 +141,6 @@ const realDateFiles2 = ref(
     otherCertificates: true,
     employmentEvaluate: true,
     description: true,
-    remark: true,
     ossIdList: true,
   }),
 )
@@ -206,13 +205,14 @@ async function handleApproval({ open }: ApprovalPayload) {
     case 'Activity_1b1nccv':
       await Upsert.value?.workflowSubmit({ success })
       break
-    // 归档节点
+    // 实际到岗节点
     case 'Activity_0f4zwar':
       await Upsert1.value?.workflowSubmit({ success })
       break
     // 打开审批弹窗
     default:
       open(taskId as string)
+      break
   }
 }
 

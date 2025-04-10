@@ -77,7 +77,7 @@ export function useForm() {
       education: [{ required: true, message: '学历不能为空', trigger: 'onBlur' }],
       userAccount: [{ required: true, message: '系统账号不能为空', trigger: 'onBlur' }],
       hopeDate: [{ required: true, message: '预计到岗日期不能为空', trigger: 'onBlur' }],
-      realDate: [{ required: true, message: '实际到岗日期不能为空', trigger: 'onChange' }],
+      realDate: [{ required: true, message: '实际到岗日期不能为空', trigger: 'onBlur' }],
       probationWagesRate: [{ required: true, message: '试用期薪资发放标准不能为空', trigger: 'onBlur' }],
       certificates: [{ required: true, message: '持证情况不能为空', trigger: 'onBlur' }],
       otherCertificates: [{ required: true, message: '其他证件不能为空', trigger: 'onBlur' }],

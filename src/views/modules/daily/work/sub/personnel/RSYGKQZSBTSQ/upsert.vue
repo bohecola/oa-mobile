@@ -5,6 +5,7 @@
     :rows="1"
     autosize
     label="证书注册申请"
+    placeholder="请选择"
     name="yy_dailyWorkId"
     is-link
     :rules="computedRules.yy_dailyWorkId"
@@ -235,6 +236,7 @@ function onConfirm({ selectedValues, selectedOptions }) {
 
 async function getUser() {
   const { data } = await getUserInfo(user.info.userId)
+  console.log(data.entryCompanyDate, ' data.entryCompanyDate')
   form.value.yy_entryCompanyDate = data.entryCompanyDate
 }
 

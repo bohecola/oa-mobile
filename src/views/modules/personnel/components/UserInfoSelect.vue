@@ -20,6 +20,7 @@
       <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
         <div class="flex flex-wrap gap-2">
+          <van-loading v-if="viewLoading" type="spinner" color="#1989fa" size="18px" />
           <van-tag
             v-for="e in selectedList"
             :key="e.id"
@@ -130,7 +131,7 @@
 
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { useParentForm, usePopup, useSerializer, useUserRegularizationSelect } from '@/hooks'
+import { useParentForm, usePopup, useSerializer, useUserInfoSelect } from '@/hooks'
 import type { UserInfoListQuery, UserInfoVo } from '@/api/system/user/types'
 import { getUserInfoList } from '@/api/system/user'
 
@@ -143,9 +144,12 @@ const props = withDefaults(
     exclude?: (string | number)[]
     limit?: number
     params?: Partial<UserInfoListQuery>
+    filterPost?: boolean
   }>(),
   {
     exclude: () => [],
+    filterPost: false,
+
   },
 )
 
@@ -167,7 +171,7 @@ const { visible, openPopup, closePopup } = usePopup()
 const { deserialize } = useSerializer({ multiple: props.multiple })
 
 // 状态
-const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserRegularizationSelect()
+const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserInfoSelect()
 
 const selectedIdList = computed(() => selectedList.value.map(e => e.userId))
 const listOfIds = computed(() => list.value.map(e => e.userId))
@@ -193,7 +197,14 @@ async function getList() {
   }
 
   const res = await getUserInfoList(queryParams)
-  list.value = res.rows
+
+  if (props.filterPost) {
+    list.value = res.rows.filter(e => e.postName === '见习运维人员')
+  }
+  else {
+    list.value = res.rows
+  }
+
   total.value = res.total
   loading.value = false
 }
@@ -234,11 +245,20 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows } = await getUserInfoList(queryParams)
+    const { rows, total } = await getUserInfoList(queryParams)
+    let data = []
+    // 见习流程只需要岗位为‘见习运维人员’的数据，需要过滤
+    if (props.filterPost) {
+      data = rows.filter(e => e.postName === '见习运维人员')
+      list.value.push(...data)
+    }
+    else {
+      // 其他流程不需要过滤
+      data = rows
+      list.value.push(...rows)
+    }
 
-    list.value.push(...rows)
-
-    if (rows.length < queryParams.pageSize) {
+    if (list.value.length >= total) {
       finished.value = true
     }
     else {
@@ -351,7 +371,8 @@ async function getViewList(value: string) {
 watch(
   () => props.modelValue,
   async (value) => {
-    selectedList.value = await getViewList(value as string)
+    const list = await getViewList(value as string)
+    selectedList.value = list.filter(e => e.userId === value)
   },
   {
     immediate: true,

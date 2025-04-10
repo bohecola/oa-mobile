@@ -1,4 +1,5 @@
 import type { AxiosPromise } from 'axios'
+import type { UserPreEmploymentQuery, UserPreEmploymentVO } from '../userPreEmployment/types'
 import request from '@/service/request'
 import type { UserEmploymentForm, UserEmploymentQuery, UserEmploymentVO } from '@/api/oa/personnel/userEmployment/types'
 
@@ -71,5 +72,19 @@ export function addAndUpdateUserPreEmploymentAndEmployment(data: UserEmploymentF
     url: '/oa/personnel/userEmployment/addAndUpdateUserPreEmploymentAndEmployment',
     method: 'post',
     data,
+  })
+}
+
+/**
+ * 入职申请流程的面试评价列表
+ * @param query
+ * @returns {*}
+ */
+
+export function userPreEmploymentList(query?: UserPreEmploymentQuery): AxiosPromise<UserPreEmploymentVO[]> {
+  return request({
+    url: '/oa/personnel/userPreEmployment/getUserPreEmploymentToUseEmploymentList',
+    method: 'get',
+    params: query,
   })
 }

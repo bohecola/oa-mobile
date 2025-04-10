@@ -44,6 +44,7 @@ export function useForm() {
       formalDate: [{ required: true, message: '转正时间不能为空', trigger: 'onChange' }],
       formalType: [{ required: true, message: '用人单位意见不能为空', trigger: 'onChange' }],
       description: [{ required: true, message: '原因说明不能为空', trigger: 'onChange' }],
+      ossIdList: [{ required: true, message: '附件列表不能为空', trigger: 'onBlur' }],
     },
   })
   // 响应式解构

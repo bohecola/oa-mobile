@@ -100,15 +100,18 @@
       :rules="computedRules.interviewWay"
     />
 
-    <DictSelect
+    <van-field
       v-if="form.status === '3'"
       v-model="form.isOwnerInterview"
       v-show-field="['isOwnerInterview', includeFields]"
-      label="是否需要业主面试"
       name="isOwnerInterview"
-      dict-type="sys_yes_no"
+      label="是否需要业主面试"
       :rules="computedRules.isOwnerInterview"
-    />
+    >
+      <template #input>
+        <YesNoSwitch v-model="form.isOwnerInterview" />
+      </template>
+    </van-field>
 
     <!-- 录用状态为录用3，岗位编码不是见习运维人员JXYWRY -->
     <div v-if="form.status === '3' && form.postCode !== 'JXYWRY'">
@@ -124,21 +127,24 @@
         </template>
       </van-field>
 
-      <DictSelect
+      <van-field
         v-model="form.isProbation"
         v-show-field="['isProbation', includeFields]"
-        :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
         name="isProbation"
-        dict-type="sys_yes_no"
+        :label="form.isIntern !== 'Y' ? '是否有试用期' : '是否有实习期'"
         :rules="computedRules.isProbation"
-        @change="changeIsProbation"
-      />
+      >
+        <template #input>
+          <YesNoSwitch v-model="form.isProbation" @change="changeIsProbation" />
+        </template>
+      </van-field>
 
       <van-field
         v-if="form.isIntern === 'Y' && form.isProbation === 'Y'"
         v-model.trim="form.internshipExplain" v-show-field="['internshipExplain', includeFields]"
         name="internshipExplain"
         label="实习期时长说明"
+        placeholder="请输入"
         :rules="computedRules.internshipExplain"
       />
 
@@ -217,7 +223,7 @@
         </div>
       </template>
 
-      <template #input>
+      <template v-if="!isEmpty(form.userPreEmploymentEvaluateBoList)" #input>
         <div class="w-full flex flex-col gap-2">
           <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`" class="reset-label">
             <van-field
@@ -242,6 +248,11 @@
           </TableCard>
         </div>
       </template>
+      <template v-else #input>
+        <div class="w-full flex justify-center">
+          <van-empty description="暂无数据" class="emptySize" />
+        </div>
+      </template>
     </van-field>
 
     <!-- 附件列表 -->
@@ -260,7 +271,7 @@
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import { useForm } from './form'
 import type { UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 import { checkPhoneUnique } from '@/api/system/user'
@@ -427,3 +438,17 @@ defineExpose({
   workflowView,
 })
 </script>
+
+<style scoped lang="scss">
+.emptySize{
+  padding: 0;
+}
+:deep(.emptySize .van-empty__image){
+  width: 50px;
+  height: 60px;
+}
+:deep(.emptySize .van-empty__description){
+  margin-top: -10px;
+  padding: 0;
+}
+</style>

@@ -20,6 +20,7 @@
       <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
         <div class="flex flex-wrap gap-2">
+          <van-loading v-if="viewLoading" type="spinner" color="#1989fa" size="18px" />
           <van-tag
             v-for="e in selectedList"
             :key="e.id"
@@ -131,8 +132,9 @@
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup, useSerializer, useUserEmploymentSelect } from '@/hooks'
-import { listUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 import type { UserPreEmploymentQuery, UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
+import { userPreEmploymentList } from '@/api/oa/personnel/userEmployment'
+import { listUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 
 const props = withDefaults(
   defineProps<{
@@ -204,8 +206,8 @@ async function getList() {
     Object.assign(queryParams, params)
   }
 
-  const res = await listUserPreEmployment(queryParams)
-  list.value = res.rows
+  const res = await userPreEmploymentList(queryParams)
+  list.value = res.data
   total.value = res.total
   loading.value = false
 }
@@ -246,11 +248,11 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows } = await listUserPreEmployment(queryParams)
+    const { data } = await userPreEmploymentList(queryParams)
 
-    list.value.push(...rows)
+    list.value.push(...data)
 
-    if (rows.length < queryParams.pageSize) {
+    if (list.value.length <= queryParams.pageSize) {
       finished.value = true
     }
     else {
@@ -282,6 +284,7 @@ function onCellClick(item: UserPreEmploymentVO) {
   if (!multiple) {
     selectedList.value = [item]
   }
+
   // 多选
   else {
     if (isChecked) {
@@ -363,7 +366,9 @@ async function getViewList(value: string) {
 watch(
   () => props.modelValue,
   async (value) => {
-    selectedList.value = await getViewList(value as string)
+    const list = await getViewList(value as string)
+    console.log('回显', list)
+    selectedList.value = list.filter(e => e.id === value)
   },
   {
     immediate: true,

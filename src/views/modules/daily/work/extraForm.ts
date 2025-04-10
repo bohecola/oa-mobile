@@ -510,7 +510,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // y_isTraining: [{ required: true, message: `是否参与培训${baseMsg}`, trigger: 'onBlur' }],
 
   // 员工考取证书补贴申请
-  yy_dailyWorkId: [{ required: true, message: `补贴申请${baseMsg}`, trigger: 'onBlur' }],
+  yy_dailyWorkId: [{ required: true, message: `证书注册申请${baseMsg}`, trigger: 'onBlur' }],
   // yy_type: [{ required: true, message: `证书类型${baseMsg}`, trigger: 'onBlur' }],
   // yy_name: [{ required: true, message: `证书名称${baseMsg}`, trigger: 'onBlur' }],
   // yy_certificateStatus: [{ required: true, message: `证书状态${baseMsg}`, trigger: 'onBlur' }],

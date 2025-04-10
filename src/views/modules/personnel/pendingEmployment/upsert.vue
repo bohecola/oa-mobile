@@ -20,15 +20,19 @@
 
     <van-form
       v-if="form.employmentId"
+      ref="Form"
+      label-width="auto"
       input-align="left"
       label-align="top"
-      required="auto"
+      required
+      scroll-to-error
     >
       <van-field
         v-model="form.userAccount"
         v-show-field="['userAccount', includeFields]"
         name="userAccount"
         label="系统账号"
+        placeholder="请输入"
         :rules="computedRules.userAccount"
         @change="userAccountChange"
       />
@@ -332,7 +336,6 @@ watch(
 async function employmentIdConfirm(value: string) {
   const { data } = await queryByIdUserPreEmploymentAndEmployment(value)
   form.value = data
-  console.log(data, '222')
 }
 
 defineExpose({

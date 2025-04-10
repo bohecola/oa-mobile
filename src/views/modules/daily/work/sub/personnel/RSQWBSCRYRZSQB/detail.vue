@@ -148,7 +148,7 @@ import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import UserEmploymentSelect from '@/views/modules/personnel/components/UserEmploymentSelect.vue'
+import UserEmploymentSelect from '@/views/modules/personnel/components/PreUserSelect.vue'
 
 const props = withDefaults(
   defineProps<{

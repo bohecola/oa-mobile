@@ -15,6 +15,9 @@
       label="员工"
       :rules="computedRules.userInfoId"
       clearable
+      :params="{ status: '-1' }"
+      :filter-post="true"
+      @get-row="confirmUserInfo"
     />
 
     <DeptSelect
@@ -288,7 +291,7 @@ const computedRules = computed(() => {
   return newRules
 })
 
-async function getUserInfoRow(row: any) {
+async function confirmUserInfo(row: any) {
   form.value.userId = row.userId
   form.value.education = row.education
   form.value.nation = row.nation

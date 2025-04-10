@@ -241,7 +241,7 @@ export interface UserPreEmploymentEvaluateBo {
   evaluateItemName: string
   result: string
 }
-export interface UserPreEmploymentQuery extends PageQuery {
+export interface UserPreEmploymentQuery extends Partial<PageQuery> {
   /**
    * 招聘岗位id(user_recruit_post)
    */

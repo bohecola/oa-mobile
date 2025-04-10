@@ -2,7 +2,7 @@ import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ProjectVO } from '@/api/oa/business/project/types'
 import type { PurchaseVO } from '@/api/oa/business/purchase/types'
 import type { SupplierCustomerVO } from '@/api/oa/business/supplierCustomer/types'
-import type { DailyWorkVo } from '@/api/oa/daily/fee/types'
+// import type { DailyWorkVo } from '@/api/oa/daily/fee/types'
 import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 import type { UserEmploymentVO } from '@/api/oa/personnel/userEmployment/types'
 import type { UserPreEmploymentVO } from '@/api/oa/personnel/userPreEmployment/types'
@@ -524,7 +524,7 @@ export function useUserEmploymentSelect() {
 }
 
 // 转正流程选择员工
-export function useUserRegularizationSelect() {
+export function useUserInfoSelect() {
   const selectState = useSelect<UserInfoVo>()
 
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -580,7 +580,7 @@ export function useUserRegularizationSelect() {
       key: 'status',
       type: 'dict',
       options: (item) => {
-        if (item.status !== '-1') {
+        if (item.status !== '5') {
           return oa_user_state.value
         }
         else {
@@ -596,52 +596,52 @@ export function useUserRegularizationSelect() {
   }
 }
 
-// 日常费用--项目部购买特殊商业保险申请--购买申请选择
-export function usePurchaseSelect() {
-  const selectState = useSelect<DailyWorkVo>()
+// 日常费用--项目部购买特殊商业保险申请--购买申请选择 （暂时没用这个列表组件）
+// export function usePurchaseSelect() {
+//   const selectState = useSelect<DailyWorkVo>()
 
-  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+//   const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-  const {
-    oa_daily_work_personnel_category,
-    oa_daily_work_purchase_insurance_category,
-  } = toRefs(proxy.useDict(
-    'oa_daily_work_personnel_category',
-    'oa_daily_work_purchase_insurance_category',
-  ))
+//   const {
+//     oa_daily_work_personnel_category,
+//     oa_daily_work_purchase_insurance_category,
+//   } = toRefs(proxy.useDict(
+//     'oa_daily_work_personnel_category',
+//     'oa_daily_work_purchase_insurance_category',
+//   ))
 
-  const labelDescriptors: LabelDescriptor<DailyWorkVo>[] = [
-    {
-      text: '用户',
-      key: 'createByName',
-      type: 'plain',
-    },
-    {
-      text: '部门',
-      key: 'deptName',
-      type: 'plain',
-    },
-    {
-      text: '民族',
-      key: 'personnelCategory',
-      type: 'dict',
-      options: oa_daily_work_personnel_category,
-    },
-    {
-      text: '学历',
-      key: 'education',
-      type: 'dict',
-      options: oa_daily_work_purchase_insurance_category,
-    },
-    {
-      text: '时间',
-      key: 'createTime',
-      type: 'plain',
-    },
-  ]
+//   const labelDescriptors: LabelDescriptor<DailyWorkVo>[] = [
+//     {
+//       text: '用户',
+//       key: 'createByName',
+//       type: 'plain',
+//     },
+//     {
+//       text: '部门',
+//       key: 'deptName',
+//       type: 'plain',
+//     },
+//     {
+//       text: '民族',
+//       key: 'personnelCategory',
+//       type: 'dict',
+//       options: oa_daily_work_personnel_category,
+//     },
+//     {
+//       text: '学历',
+//       key: 'education',
+//       type: 'dict',
+//       options: oa_daily_work_purchase_insurance_category,
+//     },
+//     {
+//       text: '时间',
+//       key: 'createTime',
+//       type: 'plain',
+//     },
+//   ]
 
-  return {
-    ...selectState,
-    labelDescriptors,
-  }
-}
+//   return {
+//     ...selectState,
+//     labelDescriptors,
+//   }
+// }

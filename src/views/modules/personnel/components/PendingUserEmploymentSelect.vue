@@ -20,6 +20,7 @@
       <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
         <div class="flex flex-wrap gap-2">
+          <van-loading v-if="viewLoading" type="spinner" color="#1989fa" size="18px" />
           <van-tag
             v-for="e in selectedList"
             :key="e.id"
@@ -80,7 +81,7 @@
           :title="item.preEmploymentName"
           :class="[
             { '!text-white !bg-[--van-primary-color]': selectedIdList.includes(item.id) },
-            { 'opacity-50': exclude.includes(item.id) && !String(modelValue).includes(item.id as string) },
+            { 'opacity-50': exclude.includes(item.id) && !modelValue?.includes(item.id) },
           ]"
           @click="onCellClick(item)"
         >
@@ -136,7 +137,7 @@ import type { UserEmploymentQuery, UserEmploymentVO } from '@/api/oa/personnel/u
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
+    modelValue?: string
     multiple?: boolean
     readonly?: boolean
     clearable?: boolean
@@ -235,11 +236,11 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows } = await listUserEmployment(queryParams)
+    const { rows, total } = await listUserEmployment(queryParams)
 
     list.value.push(...rows)
 
-    if (rows.length < queryParams.pageSize) {
+    if (list.value.length >= total) {
       finished.value = true
     }
     else {
@@ -286,9 +287,34 @@ function onCellClick(item: UserEmploymentVO) {
 async function onCancel() {
   const { modelValue } = props
 
-  selectedList.value = await getViewList(modelValue as string)
+  selectedList.value = await getViewList(modelValue)
 
   closePopup()
+}
+
+async function getViewList(value: string) {
+  if (isNil(value)) {
+    return []
+  }
+
+  const d = deserialize(value)
+  const viewIds = (isArray(d) ? d : [d])
+
+  // 是否存在本地完整数据
+  const isLocalData = viewIds.every(e => listOfIds.value.includes(e as string))
+
+  // 存在本地完整数据取本地数据
+  if (isLocalData) {
+    return list.value.filter(e => viewIds.includes(e.id))
+  }
+
+  // 没有本地完整数据请求接口
+  viewLoading.value = true
+
+  const { rows } = await listUserEmployment()
+    .finally(() => (viewLoading.value = false))
+
+  return rows
 }
 
 // 移除
@@ -323,36 +349,14 @@ function onConfirm() {
   closePopup()
 }
 
-// 反查回显列表
-async function getViewList(value: string) {
-  if (isNil(value)) {
-    return []
-  }
-
-  const d = deserialize(value)
-  const viewIds = (isArray(d) ? d : [d])
-
-  // 是否存在本地完整数据
-  const isLocalData = viewIds.every(e => listOfIds.value.includes(e as string))
-
-  // 存在本地完整数据取本地数据
-  if (isLocalData) {
-    return list.value.filter(e => viewIds.includes(e.id))
-  }
-
-  // 没有本地完整数据请求接口
-  viewLoading.value = true
-  const { rows } = await listUserEmployment()
-    .finally(() => (viewLoading.value = false))
-
-  return rows
-}
-
 // 回显
 watch(
   () => props.modelValue,
   async (value) => {
-    selectedList.value = await getViewList(value as string)
+    if (value) {
+      const list = await getViewList(value)
+      selectedList.value = list.filter(e => e.id === value)
+    }
   },
   {
     immediate: true,

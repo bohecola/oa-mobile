@@ -15,6 +15,7 @@
       name="applicationType"
       dict-type="oa_train_application_type"
       :rules="computedRules.applicationType"
+      @change="applicationTypeChange"
     />
 
     <van-field
@@ -31,6 +32,7 @@
           ref="UserSelectRef"
           v-model="form.userId"
           :multiple="true"
+          @confirm="userConfirm"
         />
       </template>
     </van-field>
@@ -53,6 +55,7 @@
       </template>
     </van-field>
 
+    <!-- 培训类型 -->
     <div v-if="form.applicationType === '0'">
       <DictSelect
         v-model="form.type"
@@ -69,7 +72,13 @@
         label="外部培训类型"
         name="trainType"
         dict-type="oa_train_type"
-        :rules="computedRules.trainType"
+      />
+
+      <DictSelect
+        v-model="form.result"
+        dict-type="task_pass"
+        label="培训结果"
+        name="result"
       />
 
       <DateSelect
@@ -77,7 +86,6 @@
         v-show-field="['startDate', includeFields]"
         name="startDate"
         label="培训开始日期"
-        :rules="computedRules.startDate"
       />
 
       <DateSelect
@@ -85,7 +93,6 @@
         v-show-field="['endDate', includeFields]"
         name="endDate"
         label="培训结束日期"
-        :rules="computedRules.endDate"
       />
 
       <van-field-number
@@ -93,8 +100,9 @@
         v-show-field="['attendNumber', includeFields]"
         name="attendNumber"
         label="参加人数"
+        placeholder="自动计算"
         type="digit"
-        :rules="computedRules.attendNumber"
+        readonly
       />
 
       <DictSelect
@@ -110,7 +118,6 @@
         v-show-field="['isCertificate', includeFields]"
         name="isCertificate"
         label="是否取得证书"
-        :rules="computedRules.isCertificate"
       >
         <template #input>
           <YesNoSwitch v-model="form.isCertificate" />
@@ -123,7 +130,6 @@
         label="取得证书类型"
         name="certificateType"
         dict-type="oa_train_certificate"
-        :rules="computedRules.certificateType"
       />
 
       <van-field-number
@@ -131,23 +137,25 @@
         v-show-field="['averageAmount', includeFields]"
         name="averageAmount"
         label="人均费用"
-        :rules="computedRules.averageAmount"
+        @update:model-value="updateTotalAmount"
       />
 
-      <van-field
-        v-model="form.averageAdditionalAmount"
+      <van-field-number
+        v-model.number="form.averageAdditionalAmount"
         v-show-field="['averageAdditionalAmount', includeFields]"
         name="averageAdditionalAmount"
         label="人均附加费用"
-        :rules="computedRules.averageAdditionalAmount"
+        placeholder="请输入"
+        @update:model-value="updateTotalAmount"
       />
 
-      <van-field
-        v-model="form.totalAmount"
+      <van-field-number
+        v-model.number="form.totalAmount"
         v-show-field="['totalAmount', includeFields]"
         name="totalAmount"
         label="费用总计"
-        :rules="computedRules.totalAmount"
+        placeholder="自动计算"
+        readonly
       />
 
       <van-field
@@ -155,25 +163,39 @@
         v-model="form.additionalAmountDescription"
         v-show-field="['additionalAmountDescription', includeFields]"
         label="附加费用说明"
+        placeholder="请输入"
         type="textarea"
         rows="1"
         autosize
         name="additionalAmountDescription"
-        :rules="computedRules.additionalAmountDescription"
+        :rules="[{ required: form.averageAdditionalAmount !== 0 ? true : false, message: '请输入附加费用说明' }]"
+      />
+
+      <van-field
+        v-model="form.content"
+        v-show-field="['content', includeFields]"
+        label="培训内容"
+        placeholder="请输入"
+        type="textarea"
+        rows="1"
+        autosize
+        name="content"
+        :rules="computedRules.content"
       />
 
       <van-field
         v-model="form.trainAddress"
         v-show-field="['trainAddress', includeFields]"
         label="培训地址"
+        placeholder="请输入"
         type="textarea"
         rows="1"
         autosize
         name="trainAddress"
-        :rules="computedRules.trainAddress"
       />
     </div>
 
+    <!-- 报名类型 -->
     <div v-if="form.applicationType === '1'">
       <DictSelect
         v-model="form.trainType"
@@ -198,7 +220,6 @@
         v-show-field="['attendNumber', includeFields]"
         name="attendNumber"
         label="参加人数"
-        :rules="computedRules.attendNumber"
       />
 
       <van-field
@@ -213,6 +234,7 @@
       </van-field>
     </div>
 
+    <!-- 考试类型 -->
     <div v-if="form.applicationType === '2'">
       <DictSelect
         v-model="form.trainType"
@@ -237,7 +259,6 @@
         v-show-field="['attendNumber', includeFields]"
         name="attendNumber"
         label="参加人数"
-        :rules="computedRules.attendNumber"
       />
     </div>
 
@@ -245,6 +266,7 @@
       v-model.number="form.remark"
       v-show-field="['remark', includeFields]"
       label="备注"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -279,6 +301,7 @@ import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserTrainForm } from '@/api/oa/personnel/userTrain/types'
 import UserSelect from '@/components/UserSelect/index.vue'
+import type { SysUserMobileVO } from '@/api/system/user/types'
 
 const props = withDefaults(
   defineProps<{
@@ -338,6 +361,10 @@ function applicationTypeChange(value: string) {
   else {
     form.value.ossMessageAllBoList = [initOssMessageList[0], initOssMessageList[initOssMessageList.length - 1]]
   }
+}
+
+function userConfirm(value: string, selectedList: SysUserMobileVO) {
+  form.value.attendNumber = selectedList.length
 }
 
 defineExpose({
