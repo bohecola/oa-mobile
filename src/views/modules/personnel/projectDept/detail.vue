@@ -9,9 +9,9 @@
     readonly
   >
     <DeptSelect
-      v-model="form.deptId"
-      v-show-field="['deptId', includeFields]"
-      name="deptId"
+      v-model="form.parentId"
+      v-show-field="['parentId', includeFields]"
+      name="parentId"
       label="上级部门名称"
       with-default-root-node
     />

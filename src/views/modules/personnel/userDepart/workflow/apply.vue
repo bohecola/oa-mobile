@@ -69,9 +69,8 @@ const DetailOther = ref<InstanceType<typeof detail>>()
 // 工作交接
 const Upsert3 = ref<InstanceType<typeof upsert>>()
 const Detail3 = ref<InstanceType<typeof detail>>()
-const Upsert4 = ref<InstanceType<typeof upsert>>()
 const Detail4 = ref<InstanceType<typeof detail>>()
-
+const Upsert4 = ref<InstanceType<typeof upsert>>()
 // 人力扣款
 const HRDeductionUpsert = ref<InstanceType<typeof upsert>>()
 const HRDeductionDetail1 = ref<InstanceType<typeof detail>>()
@@ -227,11 +226,11 @@ async function handleApproval({ open }: ApprovalPayload) {
       break
       // 归档
     case 'Activity_0zx1e0l':
-      await Upsert3.value?.workflowSubmit({ success })
+      await Upsert2.value?.workflowSubmit({ success })
       break
       // 人力扣款
     case 'Activity_0jjf8i3':
-      await Upsert3.value?.workflowSubmit({ success })
+      await HRDeductionUpsert.value?.workflowSubmit({ success })
       break
     // 打开审批弹窗
     default:

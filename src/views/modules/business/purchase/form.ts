@@ -184,11 +184,12 @@ export function useForm() {
           }
           else {
             const { data } = await updatePurchase(form.value)
-            form.value.itemList = (data.itemList || []).map((item: PurchaseItemVO) => ({
+            form.value.itemList = (data.itemList ?? []).map((item: PurchaseItemVO) => ({
               ...item,
               num: Number(item.num),
               amount: Number(item.amount),
               totalAmount: Number(item.totalAmount),
+              taxRate: String(item.taxRate),
             }))
           }
         }
@@ -204,6 +205,7 @@ export function useForm() {
             num: Number(item.num),
             amount: Number(item.amount),
             totalAmount: Number(item.totalAmount),
+            taxRate: String(item.taxRate),
           }))
         }
         success?.({
@@ -221,8 +223,6 @@ export function useForm() {
     const { success, fail } = options
     await Form.value?.validate()
       .then(() => {
-        console.log(form.value, 'form.value')
-
         success?.({ ...form.value })
       }).catch(fail)
   }

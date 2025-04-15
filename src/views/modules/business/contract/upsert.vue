@@ -223,18 +223,18 @@
 
     <van-field v-show-field="['taxRate', includeFields]">
       <template #label>
-        <div class="flex justify-between w-full">
-          <span>金额/增值税率</span>
-          <van-button type="primary" icon="plus" size="small" @click="handleAdd" />
-        </div>
+        <span class=" text-red-400 mr-1">*</span>
+        <span>金额/增值税率</span>
       </template>
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="`# ${index + 1}`">
+          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="item.amount ? item.amount.toString() : undefined">
             <template #footer>
               <div class="text-right">
+                <van-button v-if="form.taxRate.length - 1 === index" type="primary" icon="plus" size="small" @click="form.taxRate.push({ amount: undefined, taxRate: undefined })" />
                 <van-button
+                  class="ml-2"
                   type="danger"
                   icon="delete"
                   size="small"
@@ -469,17 +469,6 @@ function onRadioGroupChange(val: string) {
   else if (val === 'two') {
     resetFields(['partyC', 'partyD'])
   }
-}
-
-// 金额/税率新增
-function handleAdd() {
-  const { confirm } = proxy.$modal
-
-  confirm('点击确定进行添加数据')
-    .then(() => {
-      form.value.taxRate.push({ amount: undefined, taxRate: undefined })
-    })
-    .catch(() => {})
 }
 
 // 金额/税率删除

@@ -124,7 +124,7 @@
     rows="1"
     autosize
     label="用油内容"
-    placeholder="请输入"
+    placeholder="请输入车辆使用（预计行驶里程）、其他使用（除草机、发电机等）"
     name="b_oilContent"
     :rules="computedRules.b_oilContent"
   />
@@ -133,7 +133,7 @@
     v-model.trim="form.b_useMethod"
     v-show-field="['b_useMethod', includeFields]"
     label="使用方式"
-    placeholder="请输入"
+    placeholder="请输入油卡充值（油卡卡号）、借款报销"
     name="b_useMethod"
     :rules="computedRules.b_useMethod"
   />

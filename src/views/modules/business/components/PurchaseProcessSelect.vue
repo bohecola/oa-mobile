@@ -26,7 +26,7 @@
             size="large"
             type="primary"
           >
-            {{ e.id }}
+            {{ e.createByName }}-{{ e.createTime }}
           </van-tag>
         </div>
       </template>

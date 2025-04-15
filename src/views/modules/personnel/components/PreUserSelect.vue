@@ -367,7 +367,6 @@ watch(
   () => props.modelValue,
   async (value) => {
     const list = await getViewList(value as string)
-    console.log('回显', list)
     selectedList.value = list.filter(e => e.id === value)
   },
   {

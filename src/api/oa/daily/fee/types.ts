@@ -251,7 +251,7 @@ export interface DailyFeeQuery extends PageQuery {
   /**
    * 费用类型
    */
-  feeType?: number
+  feeType?: string
 
   /**
    * 预算科目
@@ -277,6 +277,11 @@ export interface DailyFeeQuery extends PageQuery {
    * 证件类型(安全类培训费用、项目日常费用)
    */
   certificateType?: string
+
+  /**
+   * contentJson 车辆相关费用，保养维修
+   */
+  contentJson?: string
 
   /**
    * 日期范围参数

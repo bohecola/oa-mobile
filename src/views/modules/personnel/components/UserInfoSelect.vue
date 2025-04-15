@@ -245,7 +245,7 @@ async function onLoad() {
       Object.assign(queryParams, params)
     }
 
-    const { rows, total } = await getUserInfoList(queryParams)
+    const { rows } = await getUserInfoList(queryParams)
     let data = []
     // 见习流程只需要岗位为‘见习运维人员’的数据，需要过滤
     if (props.filterPost) {
@@ -258,7 +258,7 @@ async function onLoad() {
       list.value.push(...rows)
     }
 
-    if (list.value.length >= total) {
+    if (list.value.length >= data.length) {
       finished.value = true
     }
     else {
@@ -289,6 +289,7 @@ function onCellClick(item: UserInfoVo) {
   // 单选
   if (!multiple) {
     selectedList.value = [item]
+    console.log(selectedList.value, 'selectedList.value')
   }
   // 多选
   else {
@@ -361,7 +362,7 @@ async function getViewList(value: string) {
 
   // 没有本地完整数据请求接口
   viewLoading.value = true
-  const { rows } = await getUserInfoList(queryParams)
+  const { rows } = await getUserInfoList({ pageNum: 1, pageSize: 10 })
     .finally(() => (viewLoading.value = false))
 
   return rows
@@ -371,8 +372,10 @@ async function getViewList(value: string) {
 watch(
   () => props.modelValue,
   async (value) => {
-    const list = await getViewList(value as string)
-    selectedList.value = list.filter(e => e.userId === value)
+    console.log(value, 'value')
+
+    const data = await getViewList(value as string)
+    selectedList.value = data.filter(e => e.userId === value)
   },
   {
     immediate: true,

@@ -14,11 +14,9 @@
       name="userId"
       label="员工"
       :rules="computedRules.userId"
-      is-link
-      @click="UserSelectRef?.open"
     >
       <template #input>
-        <UserSelect ref="UserSelectRef" v-model="form.userId" />
+        <UserSelect v-model="form.userId" readonly />
       </template>
     </van-field>
 
@@ -27,7 +25,7 @@
       v-show-field="['deptId', includeFields]"
       name="deptId"
       label="部门"
-      :rules="computedRules.deptId"
+      readonly
     />
 
     <PostSelect
@@ -37,11 +35,10 @@
       label="岗位"
       multiple
       :dept-id="form.deptId"
-      :rules="computedRules.postId"
+      readonly
     />
 
     <DictSelect
-      v-if="userTypeVisible"
       v-model="form.userType"
       v-show-field="['userType', includeFields]"
       label="人员类别"
@@ -96,15 +93,14 @@
       label="交接人"
       :rules="computedRules.handoverPerson"
       is-link
-      @click="HandoverPersonSelectRef?.open"
+      @click="UserSelectRef?.open"
     >
       <template #input>
-        <UserSelect ref="HandoverPersonSelectRef" v-model="form.handoverPerson" />
+        <UserSelect ref="UserSelectRef" v-model="form.handoverPerson" @confirm="handoverPersonChange" />
       </template>
     </van-field>
 
     <DateSelect
-      v-if="form.departDate"
       v-model="form.departDate"
       v-show-field="['departDate', includeFields]"
       name="departDate"
@@ -116,6 +112,7 @@
       v-model="form.reason"
       v-show-field="['reason', includeFields]"
       label="离职原因"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -124,10 +121,10 @@
     />
 
     <van-field
-      v-if="form.handoverContent"
       v-model="form.handoverContent"
       v-show-field="['handoverContent', includeFields]"
       label="交接内容"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -136,10 +133,10 @@
     />
 
     <van-field
-      v-if="form.documentContent"
       v-model="form.documentContent"
       v-show-field="['documentContent', includeFields]"
       label="归档内容"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -197,7 +194,6 @@ const vShowField = createFieldVisibilityDirective<UserDepartForm>()
 const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey')
 
 const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
-const HandoverPersonSelectRef = ref<InstanceType<typeof UserSelect> | null>()
 
 const shouldUserTypeEdit = ref(false)
 const userTypeVisible = computed(() => {

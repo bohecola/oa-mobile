@@ -11,7 +11,7 @@
     <div>
       <van-field
         name="checked"
-        label="面试评价"
+        label="面试评价表"
       >
         <template #input>
           <van-switch v-model="form.checked" size="18px" @change="checkedChange" />

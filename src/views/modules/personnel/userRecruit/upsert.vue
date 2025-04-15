@@ -96,17 +96,16 @@
 
     <van-field v-show-field="['userRecruitPostBoList', includeFields]">
       <template #label>
-        <div class="flex justify-between w-full">
-          <span>招聘岗位</span>
-          <van-button type="primary" icon="plus" size="small" @click="handleAdd" />
-        </div>
+        <span class=" text-red-400 mr-1">*</span>
+        <span>招聘岗位</span>
       </template>
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="`# ${index + 1}`">
+          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="item.postName">
             <PostSelect
               v-model="item.postId"
+              v-model:post-name="item.postName"
               :name="`itemList.${index}.postId`"
               label="岗位名称"
               :dept-id="form.deptId"
@@ -195,7 +194,34 @@
             />
             <template #footer>
               <div class="text-right">
-                <van-button type="danger" icon="delete" size="small" :disabled="form.userRecruitPostBoList.length === 1" @click="handleRemove(item, index)" />
+                <van-button
+                  v-if="form.userRecruitPostBoList.length - 1 === index"
+                  type="primary"
+                  icon="plus"
+                  size="small"
+                  @click=" form.userRecruitPostBoList.push({
+                    id: undefined,
+                    postId: undefined,
+                    postName: undefined,
+                    userNum: 1,
+                    ageRequire: undefined,
+                    speciality: undefined,
+                    responsibility: undefined,
+                    demand: undefined,
+                    educationalRequire: undefined,
+                    suggestSalary: undefined,
+                    workExperience: undefined,
+                    otherRequire: undefined,
+                  })"
+                />
+                <van-button
+                  class="ml-2"
+                  type="danger"
+                  icon="delete"
+                  size="small"
+                  :disabled="form.userRecruitPostBoList.length === 1"
+                  @click="handleRemove(item, index)"
+                />
               </div>
             </template>
           </TableCard>
@@ -275,30 +301,6 @@ function getDeptNode(node: DeptVO) {
     // 给项目部地址附默认值
     form.value.address = node.address
   }
-}
-
-// 子表新增
-function handleAdd() {
-  const { confirm } = proxy.$modal
-
-  confirm('点击确定进行添加数据')
-    .then(() => {
-      form.value.userRecruitPostBoList.push({
-        id: undefined,
-        postId: undefined,
-        postName: undefined,
-        userNum: 1,
-        ageRequire: undefined,
-        speciality: undefined,
-        responsibility: undefined,
-        demand: undefined,
-        educationalRequire: undefined,
-        suggestSalary: undefined,
-        workExperience: undefined,
-        otherRequire: undefined,
-      })
-    })
-    .catch(() => {})
 }
 
 // 子表删除

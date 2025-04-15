@@ -8,7 +8,7 @@
     input-align="left"
     readonly
   >
-    <UserRegularizationSelect
+    <UserInfoSelect
       v-model="form.userId"
       v-show-field="['userId', includeFields]"
       name="userId"
@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import UserRegularizationSelect from '../components/UserInfoSelect.vue'
+import UserInfoSelect from '../components/UserInfoSelect.vue'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'

@@ -24,6 +24,7 @@
       v-show-field="['deptName', includeFields]"
       name="deptName"
       label="部门名称"
+      placeholder="请输入"
       :rules="computedRules.deptName"
     />
 
@@ -62,6 +63,7 @@
       v-show-field="['deptCategory', includeFields]"
       name="deptCategory"
       label="类型编码"
+      placeholder="请输入"
       :rules="computedRules.deptCategory"
     />
 
@@ -98,6 +100,7 @@
       v-show-field="['insuranceLimit', includeFields]"
       name="insuranceLimit"
       label="保险额度"
+      placeholder="请输入"
       :rules="computedRules.insuranceLimit"
     />
 
@@ -105,6 +108,7 @@
       v-model="form.responsibility"
       v-show-field="['responsibility', includeFields]"
       label="部门职能"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -116,6 +120,7 @@
       v-model="form.purview"
       v-show-field="['purview', includeFields]"
       label="部门权限"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize
@@ -127,6 +132,7 @@
       v-model="form.address"
       v-show-field="['address', includeFields]"
       label="地址"
+      placeholder="请输入"
       type="textarea"
       rows="1"
       autosize

@@ -9,11 +9,11 @@
     scroll-to-error
   >
     <UserInfoSelect
-      v-model="form.userInfoId"
-      v-show-field="['userInfoId', includeFields]"
-      name="userInfoId"
+      v-model="form.userId"
+      v-show-field="['userId', includeFields]"
+      name="userId"
       label="员工"
-      :rules="computedRules.userInfoId"
+      :rules="computedRules.userId"
       clearable
       :params="{ status: '-1' }"
       :filter-post="true"
@@ -292,7 +292,7 @@ const computedRules = computed(() => {
 })
 
 async function confirmUserInfo(row: any) {
-  form.value.userId = row.userId
+  form.value.userInfoId = row.id
   form.value.education = row.education
   form.value.nation = row.nation
   form.value.probationPeriod = row.probationPeriod

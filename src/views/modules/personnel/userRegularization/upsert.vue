@@ -14,7 +14,6 @@
       name="userId"
       label="员工"
       :rules="computedRules.userId"
-      clearable
       @confirm="confirmUserId"
     />
 

@@ -80,7 +80,7 @@
     <van-field v-show-field="['userRecruitPostBoList', includeFields]" label="招聘岗位">
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="`# ${index + 1}`">
+          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="item.postName">
             <PostSelect
               v-model="item.postId"
               :name="`itemList.${index}.postId`"

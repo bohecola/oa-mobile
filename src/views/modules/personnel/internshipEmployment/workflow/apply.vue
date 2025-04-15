@@ -50,6 +50,7 @@ const DetailOther = ref<InstanceType<typeof detail>>()
 const allFields: PartialBooleanRecord<InternshipEmploymentForm> = {
   id: true,
   userInfoId: true,
+  userId: true,
   newDeptId: true,
   newPostId: true,
   oldDeptId: true,

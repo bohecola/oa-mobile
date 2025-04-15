@@ -251,12 +251,8 @@
 
     <van-field v-show-field="['itemList', includeFields]">
       <template #label>
-        <div class="flex justify-between w-full">
-          <span>采购清单</span>
-          <van-button v-if="!disabledColumn" type="primary" icon="plus" size="small" @click="handleAdd">
-            新增
-          </van-button>
-        </div>
+        <span class=" text-red-400 mr-1">*</span>
+        <span>采购清单</span>
       </template>
 
       <template #input>
@@ -500,6 +496,14 @@
             <template v-if="!disabledColumn" #footer>
               <div class="text-right">
                 <van-button
+                  v-if="form.itemList.length - 1 === index"
+                  type="primary"
+                  icon="plus"
+                  size="small"
+                  @click="handleAdd"
+                />
+                <van-button
+                  class="ml-2"
                   type="danger"
                   icon="delete"
                   size="small"

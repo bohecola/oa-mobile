@@ -177,7 +177,7 @@
     <van-field v-show-field="['taxRate', includeFields]" label="金额/增值税率">
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="`# ${index + 1}`">
+          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="item.amount ? item.amount.toString() : undefined">
             <van-field
               :model-value="formatCurrency(item.amount)"
               :name="`taxRate.${index}.amount`"
