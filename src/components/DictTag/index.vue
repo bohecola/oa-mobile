@@ -1,47 +1,48 @@
 <template>
-  <div>
-    <template v-for="(item, index) in options">
-      <template v-if="values.includes(item.value)">
-        <span
-          v-if="
-            (item.elTagType === 'default' || item.elTagType === '' || item.elTagType == null) && (item.elTagClass === '' || item.elTagClass == null)
-          "
-          :key="item.value"
-          :index="index"
-          :class="item.elTagClass"
-          class="after:content-['、'] last:after:content-none"
-        >
-          {{ `${item.label}` }}
-        </span>
-        <van-tag
-          v-else
-          :key="`${item.value}`"
-          :type="
-            item.elTagType === 'primary'
-              || item.elTagType === 'success'
-              || item.elTagType === 'warning'
-              || item.elTagType === 'danger'
-              ? item.elTagType
-              : item.elTagType === 'info' ? 'default' : 'primary'
-          "
-          :class="item.elTagClass"
-        >
-          {{ `${item.label}` }}
-        </van-tag>
-      </template>
+  <template v-for="(item, index) in options">
+    <template v-if="values.includes(item.value)">
+      <span
+        v-if="
+          (item.elTagType === 'default' || item.elTagType === '' || item.elTagType == null) && (item.elTagClass === '' || item.elTagClass == null)
+        "
+        :key="item.value"
+        :index="index"
+        :class="cn('after:content-[\',\'] last:after:content-none', item.elTagClass, tagClass)"
+      >
+        {{ `${item.label}` }}
+      </span>
+
+      <van-tag
+        v-else
+        :key="`${item.value}`"
+        :type="
+          item.elTagType === 'primary'
+            || item.elTagType === 'success'
+            || item.elTagType === 'warning'
+            || item.elTagType === 'danger'
+            ? item.elTagType
+            : item.elTagType === 'info' ? 'default' : 'primary'
+        "
+        :class="item.elTagClass"
+      >
+        {{ `${item.label}` }}
+      </van-tag>
     </template>
-    <template v-if="unmatch && showValue">
-      {{ unmatchArray }}
-    </template>
-  </div>
+  </template>
+  <template v-if="unmatch && showValue">
+    {{ unmatchArray }}
+  </template>
 </template>
 
 <script setup lang="ts">
+import { cn } from '@/utils'
+
 interface Props {
   options: Array<DictDataOption>
   value?: number | string | Array<number | string>
   showValue?: boolean
   separator?: string
+  tagClass?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   showValue: true,

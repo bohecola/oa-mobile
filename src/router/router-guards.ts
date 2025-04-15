@@ -2,11 +2,11 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useStore } from '@/store'
 
-const whitePathList = ['/login', '/404', '/social-callback']
+export const whitePathList = ['/login', '/404', '/social-callback', '/external-exam', '/internal-exam']
 
 export function createRouterGuards(router: Router) {
   // 全局前置路由守卫
-  router.beforeEach(async (to, from) => {
+  router.beforeEach(async (to) => {
     NProgress.start()
     // 数据缓存
     const { user } = useStore()
@@ -34,7 +34,7 @@ export function createRouterGuards(router: Router) {
   })
 
   // 全局后置路由钩子
-  router.afterEach((to, from) => {
+  router.afterEach(() => {
     NProgress.done()
   })
 }

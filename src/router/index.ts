@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import { isArray } from 'lodash-es'
-import { createRouterGuards } from './router-guards'
+import { createRouterGuards, whitePathList } from './router-guards'
 import { clientRoutes } from './modules'
 import { useStore } from '@/store'
 import { useGlobSettings } from '@/hooks'
@@ -116,7 +116,7 @@ router.register = async function (path: string) {
     const list: any[] = []
 
     // TODO 待优化，刷新后重新请求配置数据
-    if (user.info === null && user.token) {
+    if (user.info === null && user.token && !whitePathList.includes(path)) {
       await user.get()
       await menu.get()
     }

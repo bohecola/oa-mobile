@@ -3,7 +3,7 @@ import modal from './modal'
 import download from './download'
 
 import { getConfigKey, updateConfigByKey } from '@/api/system/config'
-import { useDict } from '@/utils/dict'
+import { useDict, useDictNoAuth } from '@/utils/dict'
 import { addDateRange, handleTree, parseTime, selectDictLabel, selectDictLabels } from '@/utils/base'
 import { formatCurrencyUtil, toCnMoney } from '@/utils/finance'
 
@@ -16,6 +16,7 @@ export default function installPlugins(app: App) {
 
   // 全局方法挂载
   app.config.globalProperties.useDict = useDict
+  app.config.globalProperties.useDictNoAuth = useDictNoAuth
   app.config.globalProperties.getConfigKey = getConfigKey
   app.config.globalProperties.updateConfigByKey = updateConfigByKey
   app.config.globalProperties.parseTime = parseTime

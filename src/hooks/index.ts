@@ -1,4 +1,4 @@
-import { isEmpty, isNil, isNumber } from 'lodash-es'
+import { isEmpty, isFunction, isNil, isNumber } from 'lodash-es'
 
 export * from './settings'
 export * from './workflow'
@@ -34,20 +34,61 @@ export function usePopup() {
     visible.value = false
   }
 
+  function togglePopup() {
+    visible.value = !visible.value
+  }
+
   return {
     visible,
     openPopup,
     closePopup,
+    togglePopup,
   }
 }
 
-export function useSerializer(options: { multiple: boolean }) {
-  const { multiple } = options
+export function useSerializer(options: { multiple: boolean | (() => boolean), separator?: string }) {
+  const { multiple, separator = ',' } = options
 
-  function serialize(value: string | number | (string | number)[]) {
+  function getMultiple() {
+    if (isFunction(multiple)) {
+      return multiple()
+    }
+
+    return multiple
+  }
+
+  function serialize(value?: string | string[]) {
+    if (!isEmpty(value)) {
+      if (getMultiple()) {
+        return (value as string[]).join(separator)
+      }
+      else {
+        return value as string
+      }
+    }
+    else {
+      return undefined
+    }
+  }
+
+  function deserialize(value?: string) {
+    if (value) {
+      if (getMultiple()) {
+        return value.split(separator)
+      }
+      else {
+        return value
+      }
+    }
+    else {
+      return undefined
+    }
+  }
+
+  function serializeLegacy(value: string | number | (string | number)[]) {
     if (!isEmpty(value) || isNumber(value)) {
-      if (multiple) {
-        return (value as (string | number)[]).join(',')
+      if (getMultiple()) {
+        return (value as (string | number)[]).join(separator)
       }
       else {
         return value as string | number
@@ -58,11 +99,11 @@ export function useSerializer(options: { multiple: boolean }) {
     }
   }
 
-  function deserialize(value: string) {
+  function deserializeLegacy(value: string) {
     if (!isNil(value)) {
-      if (multiple) {
+      if (getMultiple()) {
         return (value as string)
-          .split(',')
+          .split(separator)
           // 兼容 id 为 100、101 这种 number 类型的情况
           .map(e => (e.length < 19 ? Number(e) : e))
       }
@@ -78,5 +119,7 @@ export function useSerializer(options: { multiple: boolean }) {
   return {
     serialize,
     deserialize,
+    serializeLegacy,
+    deserializeLegacy,
   }
 }

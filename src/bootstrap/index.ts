@@ -43,7 +43,4 @@ export async function bootstrap(app: App) {
 
   // 挂载应用实例
   app.mount('#app')
-
-  // DLUI
-  // app.use(DLUI)
 }

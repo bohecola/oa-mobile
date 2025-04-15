@@ -1,5 +1,11 @@
+import type { ClassValue } from 'clsx'
+import { clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import { isNumber } from 'lodash-es'
+
 import storage from './storage'
+
+export type ObjectValues<T> = T[keyof T]
 
 // 获取文件扩展名
 export function getFilenameExt(filename: string) {
@@ -35,5 +41,9 @@ export function isNumeric(value?: any) {
 }
 
 export * from './tree'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 export { storage }

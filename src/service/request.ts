@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { showConfirmDialog, showDialog, showFailToast } from 'vant'
+import { closeToast, showConfirmDialog, showDialog, showFailToast } from 'vant'
 import type { RequestOptions } from './types'
 import { checkStatus, useRequstCanceller } from './hepler'
 import { useGlobSettings } from '@/hooks'
@@ -117,6 +117,7 @@ axiosInstance.interceptors.response.use(
         })
           .then(() => {})
           .catch(() => {})
+          .finally(closeToast)
         return Promise.reject(error)
       }
     }

@@ -1,72 +1,64 @@
 <template>
   <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
-    <van-swipe-cell
+    <van-cell
       v-for="row in list"
       :key="row.id"
-      :right-width="getRightWidth(row)"
+      @click="handleOpen(row, 'view')"
     >
-      <van-cell @click="handleOpen(row, 'view')">
-        <!-- 标题 -->
-        <template #title>
-          <span class="mr-2">{{ (row as any).name }}</span>
-        </template>
-
-        <!-- 描述 -->
-        <template #label>
-          <div class="flex flex-col gap-1">
-            <span>流程ID：{{ row.businessKey }}</span>
-            <div class="flex gap-2 text-xs">
-              <span>流程状态：</span>
-              <dict-tag :options="wf_business_status" :value="row.businessStatus" />
-            </div>
-            <span>发起时间：{{ row.startTime }}</span>
-            <span>结束时间：{{ row.endTime ?? '--' }}</span>
-            <span>
-              状态：
-              <span v-if="row.isSuspended" class="text-red-400">
-                挂起
-              </span>
-              <span v-else class="text-green-500">
-                激活
-              </span>
-            </span>
-          </div>
-        </template>
-      </van-cell>
-      <template #right>
-        <van-button
-          v-if="row.businessStatus === 'waiting'"
-          square type="primary" text="撤销"
-          class="h-full"
-          @click="handleCancelProcessApply(row)"
-        />
-
-        <van-button
-          v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="primary" text="修改"
-          class="h-full"
-          @click="handleOpen(row, 'update')"
-        />
-
-        <van-button
-          v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
-          square type="danger" text="删除"
-          class="h-full"
-          @click="handleDelete(row)"
-        />
+      <!-- 标题 -->
+      <template #title>
+        <span class="mr-2">{{ (row as any).name }}</span>
       </template>
-    </van-swipe-cell>
+
+      <!-- 描述 -->
+      <template #label>
+        <div class="flex flex-col gap-1">
+          <span>流程ID：{{ row.businessKey }}</span>
+          <div class="flex gap-2 text-xs">
+            <span>流程状态：</span>
+            <dict-tag :options="wf_business_status" :value="row.businessStatus" />
+          </div>
+          <span>发起时间：{{ row.startTime }}</span>
+          <span>结束时间：{{ row.endTime ?? '--' }}</span>
+        </div>
+        <div class="mt-1 flex gap-2">
+          <van-button
+            v-if="row.businessStatus === 'waiting'"
+            type="primary"
+            text="撤销"
+            size="small"
+            @click.stop="handleCancelProcessApply(row)"
+          />
+
+          <van-button
+            v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+            type="primary"
+            text="修改"
+            size="small"
+            @click.stop="handleOpen(row, 'update')"
+          />
+
+          <van-button
+            v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+            type="danger"
+            text="删除"
+            size="small"
+            @click.stop="handleDelete(row)"
+          />
+        </div>
+      </template>
+    </van-cell>
+    <bottom-line v-if="!hasNextPage && !isFetching" />
   </van-list>
-  <bottom-line v-if="!hasNextPage && !isFetching" />
 </template>
 
 <script setup lang='ts'>
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import { showConfirmDialog, showLoadingToast, showSuccessToast } from 'vant'
+import { service } from '@/service'
 import type { ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 import workflowCommon from '@/api/workflow/workflowCommon'
-import { service } from '@/service'
 
 const props = defineProps<{
   keywords?: string
@@ -161,16 +153,6 @@ async function handleCancelProcessApply(row: ProcessInstanceVO) {
       showSuccessToast('撤销成功')
     })
     .catch(() => {})
-}
-
-function getRightWidth(row: ProcessInstanceVO) {
-  const condition = [
-    row.businessStatus === 'waiting',
-    row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back',
-    row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back',
-  ]
-  const width = condition.filter(Boolean).length * 60
-  return width
 }
 
 defineExpose({

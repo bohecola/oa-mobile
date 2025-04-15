@@ -45,34 +45,58 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/dashboard/approval/search.vue'),
   },
-  {
-    path: '/example',
-    component: Layout,
-    meta: {
-      title: '示例',
-      icon: 'i-carbon-logo-wechat',
-    },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/example/index.vue'),
-      },
-    ],
-  },
   // {
-  //   path: '/moments',
+  //   path: '/example',
   //   component: Layout,
   //   meta: {
-  //     title: '动态',
-  //     icon: 'i-carbon-aperture',
+  //     title: '示例',
+  //     icon: 'i-carbon-logo-wechat',
   //   },
   //   children: [
   //     {
   //       path: '',
-  //       component: () => import('@/views/moments/index.vue'),
+  //       component: () => import('@/views/example/index.vue'),
   //     },
   //   ],
   // },
+  {
+    path: '/exam',
+    component: Layout,
+    meta: {
+      title: '模拟考试',
+      icon: 'i-mdi-document',
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/mockExam/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/external-exam',
+    meta: {
+      title: '外部考试',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/index.vue'),
+  },
+  {
+    path: '/internal-exam',
+    meta: {
+      title: '内部考试',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/index.vue'),
+  },
+  {
+    path: '/mock-exam',
+    meta: {
+      title: '模拟考试',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/index.vue'),
+  },
   {
     path: '/my',
     component: Layout,

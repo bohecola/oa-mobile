@@ -10,6 +10,14 @@ export function getDicts(dictType: string): AxiosPromise<DictDataVO[]> {
   })
 }
 
+// 根据字典类型查询字典数据信息（不鉴权）
+export function getDictsNoAuth(dictType: string): AxiosPromise<DictDataVO[]> {
+  return request({
+    url: `/system/ignore/dict/data/type/${dictType}`,
+    method: 'get',
+  })
+}
+
 // 查询字典数据列表
 export function listData(query: DictDataQuery): AxiosPromise<DictDataVO[]> {
   return request({

@@ -168,7 +168,7 @@ const parentForm = useParentForm()
 const { visible, openPopup, closePopup } = usePopup()
 
 // 反序列化
-const { deserialize } = useSerializer({ multiple: props.multiple })
+const { deserializeLegacy } = useSerializer({ multiple: props.multiple })
 
 // 状态
 const { searchText, loading, error, finished, list, total, viewLoading, selectedList, labelDescriptors } = useUserInfoSelect()
@@ -348,7 +348,7 @@ async function getViewList(value: string) {
     return []
   }
 
-  const d = deserialize(value)
+  const d = deserializeLegacy(value)
   const viewIds = (isArray(d) ? d : [d])
 
   // 是否存在本地完整数据
@@ -380,15 +380,15 @@ watch(
 )
 </script>
 
-    <style lang="scss" scoped>
-    $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
-    $bottomHeight: theme('spacing.14');
+<style lang="scss" scoped>
+$topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+$bottomHeight: theme('spacing.14');
 
-    .search-list {
-      height: calc(100vh - $topHeight - $bottomHeight);
-    }
+.search-list {
+  height: calc(100vh - $topHeight - $bottomHeight);
+}
 
-    :deep(.van-field__body) {
-      align-items: start;
-    }
-    </style>
+:deep(.van-field__body) {
+  align-items: start;
+}
+</style>

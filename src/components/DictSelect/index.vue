@@ -33,15 +33,17 @@
         <van-radio-group
           v-if="!multiple && component === 'radio' "
           v-model="ids"
-          class="gap-1"
-          icon-size="16"
-          direction="horizontal"
+          :class="cn('gap-1', props.groupClass)"
+          :icon-size="iconSize"
+          :direction="direction"
+          :disabled="(attrs.disabled as boolean)"
           @change="onChange"
         >
           <van-radio
             v-for="(item) in options"
             :key="item.value"
             :name="item.value"
+            @click="onRadioClick"
           >
             {{ item.label }}
           </van-radio>
@@ -51,8 +53,11 @@
         <van-checkbox-group
           v-if="multiple && component === 'checkbox'"
           v-model="ids"
-          class="gap-1"
-          icon-size="16"
+          :class="cn('gap-1', props.groupClass)"
+          :icon-size="iconSize"
+          :direction="direction"
+          :disabled="(attrs.disabled as boolean)"
+          @click="onCheckboxClick"
           @change="onChange"
         >
           <van-checkbox
@@ -103,7 +108,7 @@
                     <van-checkbox
                       :ref="(el) => checkboxRefs[index] = (el as CheckboxInstance)"
                       :name="item.value"
-                      @click.stop
+                      @click.stop="onCheckboxClick"
                     />
                   </template>
                 </van-cell>
@@ -128,10 +133,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CheckboxInstance } from 'vant'
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import PickerToolbar from 'vant/es/picker/PickerToolbar'
-import { useParentForm, usePopup } from '@/hooks'
+import type { CheckboxInstance } from 'vant'
+import { isArray, isEmpty, isNil } from 'lodash-es'
+import { useParentForm, usePopup, useSerializer } from '@/hooks'
+import { cn } from '@/utils'
 
 const props = withDefaults(
   defineProps<{
@@ -142,17 +148,24 @@ const props = withDefaults(
     dictType?: string
     options?: DictDataOption[]
     component?: 'combine' | 'radio' | 'checkbox'
+    direction?: 'horizontal' | 'vertical'
+    iconSize?: string | number
+    separator?: string
     isFilterUseSeal?: boolean
+    groupClass?: string
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
   }>(),
   {
     readonly: undefined,
     component: 'combine',
+    direction: 'horizontal',
+    iconSize: '16',
+    separator: ',',
     isFilterUseSeal: true,
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'change', 'radio-click', 'checkbox-click'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -161,7 +174,10 @@ const parentForm = useParentForm()
 
 const { visible, openPopup, closePopup } = usePopup()
 
+const { deserialize, serialize } = useSerializer({ multiple: () => props.multiple, separator: props.separator })
+
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 const checkboxRefs = ref<CheckboxInstance[]>([])
 
 // 字典
@@ -242,6 +258,16 @@ function onChange(val: string | string[]) {
   closePopup()
 }
 
+// Radio 点击
+function onRadioClick(event: MouseEvent) {
+  emit('radio-click', event)
+}
+
+// checkbox 点击
+function onCheckboxClick(event: MouseEvent) {
+  emit('checkbox-click', event)
+}
+
 // 取消
 function onCancel() {
   if (props.multiple) {
@@ -274,34 +300,6 @@ function onCheckboxPickerConfirm(values: string[]) {
 // 选项点击
 function onFieldClick() {
   openPopup()
-}
-
-function serialize(value?: string | string[]) {
-  if (!isEmpty(value) || isNumber(value)) {
-    if (props.multiple) {
-      return (value as string[]).join(',')
-    }
-    else {
-      return value as string
-    }
-  }
-  else {
-    return undefined
-  }
-}
-
-function deserialize(value?: string) {
-  if (value) {
-    if (props.multiple) {
-      return value.split(',')
-    }
-    else {
-      return value
-    }
-  }
-  else {
-    return undefined
-  }
 }
 
 // 回显

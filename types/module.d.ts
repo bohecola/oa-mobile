@@ -1,4 +1,4 @@
-import type { useDict } from '@/utils/dict'
+import type { useDict, useDictNoAuth } from '@/utils/dict'
 import type { addDateRange, handleTree, parseTime, selectDictLabel, selectDictLabels } from '@/utils/base'
 import type { formatCurrencyUtil, toCnMoney } from '@/utils/finance'
 import type { getConfigKey, updateConfigByKey } from '@/api/system/config'
@@ -14,6 +14,7 @@ declare module 'vue' {
     $download: typeof download
 
     useDict: typeof useDict
+    useDictNoAuth: typeof useDictNoAuth
     addDateRange: typeof addDateRange
     handleTree: typeof handleTree
     getConfigKey: typeof getConfigKey
