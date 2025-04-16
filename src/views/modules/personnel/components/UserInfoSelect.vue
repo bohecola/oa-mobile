@@ -289,7 +289,6 @@ function onCellClick(item: UserInfoVo) {
   // 单选
   if (!multiple) {
     selectedList.value = [item]
-    console.log(selectedList.value, 'selectedList.value')
   }
   // 多选
   else {
@@ -372,8 +371,6 @@ async function getViewList(value: string) {
 watch(
   () => props.modelValue,
   async (value) => {
-    console.log(value, 'value')
-
     const data = await getViewList(value as string)
     selectedList.value = data.filter(e => e.userId === value)
   },
@@ -384,7 +381,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-$topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+$topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
 $bottomHeight: theme('spacing.14');
 
 .search-list {

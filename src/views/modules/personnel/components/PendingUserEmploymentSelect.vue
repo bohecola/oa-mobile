@@ -365,7 +365,7 @@ watch(
 </script>
 
   <style lang="scss" scoped>
-  $topHeight: calc(var(--van-nav-bar-height) + var(--van-search-input-height) + 20px + env(safe-area-inset-top));
+  $topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
   $bottomHeight: theme('spacing.14');
 
   .search-list {

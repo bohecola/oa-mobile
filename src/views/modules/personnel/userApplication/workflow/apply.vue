@@ -214,14 +214,6 @@ onMounted(async () => {
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
 
-    proxy?.$router.replace({
-      query: {
-        ...proxy?.$route.query,
-        taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: (taskDefinitionKey.value === 'Activity_1gtf30k' || taskDefinitionKey.value === 'Activity_1jpbu3r') ? 'true' : 'false',
-      },
-    })
-
     nextTick(() => {
       try {
         switch (type as string) {

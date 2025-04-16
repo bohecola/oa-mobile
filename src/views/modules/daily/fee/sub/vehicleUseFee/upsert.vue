@@ -52,7 +52,7 @@
     v-model.trim="form.b_type"
     v-show-field="['b_type', includeFields]"
     label="申请类型"
-    placeholder="请输入"
+    placeholder="请输入常规保养、车辆维修"
     name="b_type"
     :rules="computedRules.b_type"
   />

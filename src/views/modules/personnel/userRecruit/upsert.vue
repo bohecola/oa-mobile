@@ -61,7 +61,6 @@
     />
 
     <van-field
-      v-if="!isNil(form.no)"
       v-model.trim="form.no"
       v-show-field="['no', includeFields]"
       name="no"

@@ -7,8 +7,45 @@
     v-model="form.b_vehicleNo"
     v-show-field="['b_vehicleNo', includeFields]"
     label="车牌号"
+    :right-icon="form.no === 'BYWXFY' && showViewBtn ? 'eye-o' : ''"
     name="b_vehicleNo"
-  />
+    @click-right-icon="showPicker = true"
+  >
+    <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+    <template #right-icon>
+      <span class=" text-blue-600">查看</span>
+    </template>
+  </van-field>
+
+  <van-popup v-model:show="showPicker" destroy-on-close position="bottom" closeable>
+    <van-list
+      v-model:loading="loading"
+      class="pt-10"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+      <van-cell v-for="item in tableData" :key="item" :title="item.createByName">
+        <template #label>
+          <div>申请人：{{ item.createByName }}</div>
+          <div>申请部门：{{ item.deptName }}</div>
+          <div>申请时间：{{ item.createTime }}</div>
+          <div>申请金额：{{ item.amount }}</div>
+          <div>申请事由：{{ item.reason }}</div>
+        </template>
+        <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+        <template #right-icon>
+          <div class=" text-blue-600" @click="handleDetail(item)">
+            查看车辆详情
+          </div>
+        </template>
+
+        <van-popup v-model:show="showDetail" destroy-on-close position="bottom" closeable>
+          <detail :show-view-btn="false" />
+        </van-popup>
+      </van-cell>
+    </van-list>
+  </van-popup>
 
   <!-- 保养维修 -->
   <van-field
@@ -189,22 +226,84 @@
 <script setup lang="ts">
 import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import type { DailyFeeForm, DailyFeeQuery } from '@/api/oa/daily/fee/types'
+import { listDailyFee } from '@/api/oa/daily/fee'
+import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
+import { getVariablesByProcessInstanceId } from '@/api/workflow/task'
 
 const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
+    showViewBtn?: boolean
   }>(),
   {
+    showViewBtn: true,
     includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'b_contractNo', 'b_vehicleNo', 'b_vehicleModel', 'b_vehicleMileageToday', 'b_lastRepairDate', 'b_maintenanceIntervalMileage', 'b_type', 'b_maintenanceAddress', 'b_problemDescription', 'b_maintenanceItemsAndUnitPrice', 'b_invoiceType', 'b_paymentMethod', 'b_isPlugSmartDrivingBox', 'b_useTime', 'b_useReason', 'b_oilContent', 'b_useMethod', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_lastStrongInsuranceExpirationDate', 'b_lastCommercialInsuranceExpirationDate', 'b_strongInsuranceAmount', 'b_commercialInsuranceAmount', 'b_totalAmount', 'reason', 'receiptInfo', 'ossIdList'],
   },
 )
 
 const form = inject<Ref<DailyFeeForm>>('form')
+const showPicker = ref(false)
+const showDetail = ref(false)
+const loading = ref(false)
+const finished = ref(false)
+const total = ref(0)
+const tableData = ref([])
+const queryParams: DailyFeeQuery = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  feeType: form.value.feeType,
+  contentJson: form.value.b_vehicleNo,
+})
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 
 const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
+
+async function getList() {
+  loading.value = true
+  const res = await listDailyFee(queryParams)
+  tableData.value = res.rows
+  total.value = res.total
+  loading.value = false
+}
+
+async function onLoad() {
+  tableData.value = []
+  try {
+    const { rows } = await listDailyFee(queryParams)
+
+    tableData.value.push(...rows)
+
+    if (rows.length < queryParams.pageSize) {
+      finished.value = true
+    }
+    else {
+      queryParams.pageNum++
+    }
+  }
+  catch (error) {
+    console.error('Error loading data:', error)
+    finished.value = true
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function handleDetail(row: any) {
+  showDetail.value = true
+  const { data } = await getActHiProcinstByBusinessKey(row.id)
+
+  const {
+    data: { entity },
+  } = await getVariablesByProcessInstanceId(data.id)
+  form.value = entity
+}
+
+onMounted(() => {
+  getList()
+})
 </script>
