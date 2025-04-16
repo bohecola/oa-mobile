@@ -11,8 +11,7 @@
         <div class="flex flex-col gap-1">
           <span>流程ID：{{ row.businessKey }}</span>
           <div class="flex gap-2 text-xs">
-            <span>流程状态：</span>
-            <dict-tag :options="wf_business_status" :value="row.businessStatus" />
+            <span>流程状态：<dict-tag :options="wf_business_status" :value="row.businessStatus" /></span>
           </div>
           <span>发起时间：{{ row.startTime }}</span>
           <span>结束时间：{{ row.endTime ?? '--' }}</span>

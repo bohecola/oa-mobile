@@ -164,7 +164,9 @@ async function onDeleteExam(item: ExamVO) {
     .then(async () => {
       await delExam(item.id)
       msgSuccess('删除成功')
+      examList.value = []
       examFinished.value = false
+      onLoadExam()
     })
     .catch(() => {})
 }

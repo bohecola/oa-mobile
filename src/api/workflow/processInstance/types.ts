@@ -14,6 +14,7 @@ export interface ProcessInstanceQuery extends PageQuery {
 
 export interface ProcessInstanceVO extends BaseEntity {
   id: string
+  name: string
   processDefinitionId: string
   processDefinitionName: string
   processDefinitionKey: string

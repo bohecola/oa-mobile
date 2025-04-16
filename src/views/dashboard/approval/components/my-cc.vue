@@ -10,11 +10,14 @@
       <template #label>
         <span>流程ID：{{ row.businessKey }}</span>
         <div class="flex flex-col gap-1">
-          <span>办理人：<van-tag type="success">{{ row.assigneeName }}</van-tag></span>
+          <span>办理人：{{ row.assigneeName }}</span>
           <div class="flex gap-2 text-xs">
-            <span>流程状态：</span>
-            <dict-tag :options="wf_business_status" :value="row.businessStatus" />
+            <span>流程状态：<dict-tag :options="wf_business_status" :value="row.businessStatus" /></span>
           </div>
+          <span>
+            查看状态：<van-tag v-if="row.isRead === 'Y'" type="success">已读</van-tag>
+            <van-tag v-else type="warning">未读</van-tag>
+          </span>
         </div>
       </template>
     </van-cell>
@@ -28,6 +31,7 @@ import type { TaskQuery, TaskVO } from '@/api/workflow/task/types'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 import { service } from '@/service'
 import workflowCommon from '@/api/workflow/workflowCommon'
+import { updateCopyTaskRead } from '@/api/workflow/task'
 
 const props = defineProps<{
   keywords?: string
@@ -93,6 +97,7 @@ function handleView(row: any) {
     type: 'view',
   })
   workflowCommon.routerJump(routerJumpVo, proxy)
+  updateCopyTaskRead(row.id, { isRead: 'Y' })
 }
 
 defineExpose({

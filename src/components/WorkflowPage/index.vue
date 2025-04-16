@@ -46,7 +46,7 @@
         </van-tab>
 
         <!-- 审批记录 -->
-        <van-tab v-if="processVisible" title="审批记录" name="record">
+        <van-tab v-if="processVisible" title="审批记录" name="record" :disabled="loading">
           <ApprovalSteps ref="ApprovalStepsRef" />
         </van-tab>
       </div>

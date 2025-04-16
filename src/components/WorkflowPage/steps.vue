@@ -14,11 +14,11 @@
           <p>时长：{{ item.runDuration }}</p>
           <p>办理人：{{ item.nickName }}</p>
           <div class="flex gap-2">
-            <div>状态：</div>
-
-            <van-tag type="primary">
-              {{ item.statusName }}
-            </van-tag>
+            <div>
+              状态：<van-tag type="primary">
+                {{ item.statusName }}
+              </van-tag>
+            </div>
           </div>
           <div v-if="index > 0" class="flex gap2">
             <TextareaView :value="`审批意见：${item.comment ?? ''}`" />
@@ -36,7 +36,7 @@
 import { service } from '@/service'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { wf_business_status } = toRefs<any>(proxy?.useDict('wf_business_status'))
+const { wf_business_status } = toRefs(proxy.useDict('wf_business_status'))
 
 const loading = ref(false)
 const historyList = ref<any[]>([])

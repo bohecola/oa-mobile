@@ -12,8 +12,6 @@ export function getTaskNum(): AxiosPromise<TaskNum> {
 
 /**
  * 查询待办列表
- * @param query
- * @returns {*}
  */
 export function getPageByTaskWait(query: TaskQuery): AxiosPromise<TaskVO[]> {
   return request({
@@ -25,8 +23,6 @@ export function getPageByTaskWait(query: TaskQuery): AxiosPromise<TaskVO[]> {
 
 /**
  * 查询已办列表
- * @param query
- * @returns {*}
  */
 export function getPageByTaskFinish(query: TaskQuery): AxiosPromise<TaskVO[]> {
   return request({
@@ -38,8 +34,6 @@ export function getPageByTaskFinish(query: TaskQuery): AxiosPromise<TaskVO[]> {
 
 /**
  * 查询当前用户的抄送列表
- * @param query
- * @returns {*}
  */
 export function getPageByTaskCopy(query: TaskQuery): AxiosPromise<TaskVO[]> {
   return request({
@@ -50,9 +44,18 @@ export function getPageByTaskCopy(query: TaskQuery): AxiosPromise<TaskVO[]> {
 }
 
 /**
+ * 修改抄送任务状态已读
+ */
+export function updateCopyTaskRead(taskinstId: string, data: { isRead: string }): AxiosPromise {
+  return request({
+    url: `/workflow/task/updateCopyTaskRead/${taskinstId}`,
+    method: ' put',
+    data,
+  })
+}
+
+/**
  * 当前租户所有待办任务
- * @param query
- * @returns {*}
  */
 export function getPageByAllTaskWait(query: TaskQuery): AxiosPromise<TaskVO[]> {
   return request({
@@ -64,8 +67,6 @@ export function getPageByAllTaskWait(query: TaskQuery): AxiosPromise<TaskVO[]> {
 
 /**
  * 当前租户所有已办任务
- * @param query
- * @returns {*}
  */
 export function getPageByAllTaskFinish(query: TaskQuery): AxiosPromise<TaskVO[]> {
   return request({
@@ -77,8 +78,6 @@ export function getPageByAllTaskFinish(query: TaskQuery): AxiosPromise<TaskVO[]>
 
 /**
  * 启动流程
- * @param data
- * @returns {*}
  */
 export function startWorkFlow(data: object): any {
   return request({
@@ -90,8 +89,6 @@ export function startWorkFlow(data: object): any {
 
 /**
  * 办理流程
- * @param data
- * @returns {*}
  */
 export function completeTask(data: object) {
   return request({
@@ -103,8 +100,6 @@ export function completeTask(data: object) {
 
 /**
  * 认领任务
- * @param taskId
- * @returns {*}
  */
 export function claim(taskId: string): any {
   return request({
@@ -115,8 +110,6 @@ export function claim(taskId: string): any {
 
 /**
  * 归还任务
- * @param taskId
- * @returns {*}
  */
 export function returnTask(taskId: string): any {
   return request({
@@ -127,8 +120,6 @@ export function returnTask(taskId: string): any {
 
 /**
  * 任务驳回
- * @param data
- * @returns {*}
  */
 export function backProcess(data: any): any {
   return request({
@@ -140,8 +131,6 @@ export function backProcess(data: any): any {
 
 /**
  * 获取当前任务
- * @param taskId
- * @returns
  */
 export function getTaskById(taskId: string) {
   return request({
@@ -152,8 +141,6 @@ export function getTaskById(taskId: string) {
 
 /**
  * 加签
- * @param data
- * @returns
  */
 export function addMultiInstanceExecution(data: any) {
   return request({
@@ -165,8 +152,6 @@ export function addMultiInstanceExecution(data: any) {
 
 /**
  * 减签
- * @param data
- * @returns
  */
 export function deleteMultiInstanceExecution(data: any) {
   return request({
@@ -178,9 +163,6 @@ export function deleteMultiInstanceExecution(data: any) {
 
 /**
  * 修改任务办理人
- * @param taskIds
- * @param userId
- * @returns
  */
 export function updateAssignee(taskIds: Array<string>, userId: string) {
   return request({
@@ -191,7 +173,6 @@ export function updateAssignee(taskIds: Array<string>, userId: string) {
 
 /**
  * 转办任务
- * @returns
  */
 export function transferTask(data: any) {
   return request({
@@ -203,7 +184,6 @@ export function transferTask(data: any) {
 
 /**
  * 终止任务
- * @returns
  */
 export function terminationTask(data: any) {
   return request({
@@ -215,7 +195,6 @@ export function terminationTask(data: any) {
 
 /**
  * 查询流程变量
- * @returns
  */
 export function getInstanceVariable(taskId: string) {
   return request({
@@ -226,7 +205,6 @@ export function getInstanceVariable(taskId: string) {
 
 /**
  * 查询全局变量 - 任务id
- * @returns
  */
 export function getTaskVariables(taskId: string) {
   return request({
@@ -237,7 +215,6 @@ export function getTaskVariables(taskId: string) {
 
 /**
  * 查询全局变量 - 流程实例id
- * @returns
  */
 export function getVariablesByProcessInstanceId(processInstanceId: string) {
   return request({
@@ -248,7 +225,6 @@ export function getVariablesByProcessInstanceId(processInstanceId: string) {
 
 /**
  * 获取可驳回得任务节点
- * @returns
  */
 export function getTaskNodeList(processInstanceId: string) {
   return request({
@@ -259,7 +235,6 @@ export function getTaskNodeList(processInstanceId: string) {
 
 /**
  * 委托任务
- * @returns
  */
 export function delegateTask(data: any) {
   return request({
@@ -271,8 +246,6 @@ export function delegateTask(data: any) {
 
 /**
  * 查询工作流任务用户选择加签人员
- * @param taskId
- * @returns {*}
  */
 export function getTaskUserIdsByAddMultiInstance(taskId: string) {
   return request({
@@ -283,8 +256,6 @@ export function getTaskUserIdsByAddMultiInstance(taskId: string) {
 
 /**
  * 查询工作流选择减签人员
- * @param taskId
- * @returns {*}
  */
 export function getListByDeleteMultiInstance(taskId: string) {
   return request({
@@ -295,7 +266,6 @@ export function getListByDeleteMultiInstance(taskId: string) {
 
 /**
  * 查询流程定义
- * @returns {*}
  */
 export function getUseMap(): AxiosPromise {
   return request({

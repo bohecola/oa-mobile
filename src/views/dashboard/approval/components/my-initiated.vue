@@ -7,7 +7,7 @@
     >
       <!-- 标题 -->
       <template #title>
-        <span class="mr-2">{{ (row as any).name }}</span>
+        <span class="mr-2">{{ row.name }}</span>
       </template>
 
       <!-- 描述 -->
@@ -15,8 +15,7 @@
         <div class="flex flex-col gap-1">
           <span>流程ID：{{ row.businessKey }}</span>
           <div class="flex gap-2 text-xs">
-            <span>流程状态：</span>
-            <dict-tag :options="wf_business_status" :value="row.businessStatus" />
+            <span>流程状态：<dict-tag :options="wf_business_status" :value="row.businessStatus" /></span>
           </div>
           <span>发起时间：{{ row.startTime }}</span>
           <span>结束时间：{{ row.endTime ?? '--' }}</span>
@@ -65,11 +64,11 @@
     class="h-[60vh]"
     @closed="onFilePopupClosed"
   >
-    <div class="h-10 leading-10 text-lg text-center border-b">
-      添加附件
+    <div class="px-3 h-10 leading-10 text-lg text-center border-b truncate">
+      （添加附件）{{ currentRow?.name }}
     </div>
 
-    <div class="p-2 h-[calc(100%-theme('spacing.24'))] overflow-y-auto">
+    <div v-loading="fileViewLoading" class="p-2 h-[calc(100%-theme('spacing.24'))] overflow-y-auto">
       <UploadFile
         v-model="form.ossIdList"
         value-type="array"

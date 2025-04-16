@@ -37,6 +37,7 @@ export interface TaskVO extends BaseEntity {
   executionId: string
   taskDefinitionId?: any
   processDefinitionId: string
+  startTime?: string
   endTime?: string
   taskDefinitionKey: string
   dueDate?: string
@@ -45,6 +46,7 @@ export interface TaskVO extends BaseEntity {
   tenantId: string
   claimTime?: string
   businessStatus?: string
+  isRead?: string
   businessStatusName?: string
   processDefinitionName?: string
   processDefinitionKey?: string
