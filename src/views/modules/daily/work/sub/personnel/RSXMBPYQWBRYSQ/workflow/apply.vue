@@ -7,9 +7,8 @@
     </div>
 
     <div v-else-if="taskDefinitionKey === 'Activity_171tryh'">
-      <upsert :include-fields="['k_userType']" />
+      <upsert :include-fields="['k_userType', 'k_isBudget', 'k_isBudgetStandards', 'k_supplementaryExplanation']" />
       <detail :include-fields="detailFields" />
-      <!-- <detail :include-fields="['k_userType']" /> -->
       <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 
@@ -101,10 +100,6 @@ const detailFields = ref(
     k_signeContractStartDate: true,
     k_signeContractEndDate: true,
     k_signeContractSpecialInstructions: true,
-    k_userType: true,
-    k_isBudget: true,
-    k_isBudgetStandards: true,
-    k_supplementaryExplanation: true,
   }),
 )
 </script>

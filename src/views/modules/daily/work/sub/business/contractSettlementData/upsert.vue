@@ -17,13 +17,19 @@
   </van-field>
 
   <van-field
+    v-if="form.customizeApprover && userStore.info.userId === form.customizeApprover"
+    v-model="form.customizeTransactor"
     v-show-field="['customizeTransactor', includeFields]"
     label="办理人"
     name="customizeTransactor"
     :rules="computedRules.customizeTransactor"
+    :readonly="false"
+    class="reset-label__default"
+    is-link
+    @click="CustomizeTransactorRef?.open"
   >
     <template #input>
-      <UserSelect v-model="form.customizeTransactor" />
+      <UserSelect ref="CustomizeTransactorRef" v-model="form.customizeTransactor" />
     </template>
   </van-field>
 
@@ -85,7 +91,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['customizeApprover', 'fileType', 'isSeal', 'mm_contractSettlementNature', 'mm_contractSettlementcontent', 'reason', 'ossIdList'],
+    includeFields: () => ['customizeApprover', 'customizeTransactor', 'fileType', 'isSeal', 'mm_contractSettlementNature', 'mm_contractSettlementcontent', 'reason', 'ossIdList'],
   },
 )
 
@@ -109,4 +115,5 @@ const tractFieldsArr
 trackFields(tractFieldsArr)
 
 const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
+const CustomizeTransactorRef = ref<InstanceType<typeof UserSelect> | null>()
 </script>

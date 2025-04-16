@@ -15,6 +15,8 @@
     placeholder="请输入"
     name="gg_recruitmentNo"
     :rules="computedRules.gg_recruitmentNo"
+    :readonly="false"
+    class="reset-label__default"
   />
 
   <van-field
@@ -120,12 +122,14 @@
   />
 
   <van-field-number
-    v-model.number="form.gg_additionalBudgetExpenses"
+    v-model="form.gg_additionalBudgetExpenses"
     v-show-field="['gg_additionalBudgetExpenses', includeFields]"
     name="gg_additionalBudgetExpenses"
     label="预算费用追加金额(元)"
     placeholder="请输入"
     :rules="computedRules.gg_additionalBudgetExpenses"
+    :readonly="false"
+    class="reset-label__default"
   />
 
   <van-field
@@ -150,7 +154,6 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -165,7 +168,6 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
-const Form = inject<Ref<FormInstance>>('Form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()

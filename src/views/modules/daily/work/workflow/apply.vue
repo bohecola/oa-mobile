@@ -45,6 +45,7 @@
           v-model="form.companyId"
           name="companyId"
           label="公司"
+          :rules="computedRules.companyId"
         />
 
         <template v-if="!isNil(form.no)">

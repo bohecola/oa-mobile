@@ -152,7 +152,7 @@ withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_certificateLevel', 'yy_otherCompanyUseStatus', 'yy_entryCompanyDate', 'yy_subsidyStandards', 'yy_registrationCompanyDate', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'reason', 'ossIdList'],
+    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_certificateLevel', 'yy_otherCompanyUseStatus', 'yy_entryCompanyDate', 'yy_subsidyStandards', 'yy_registrationCompanyDate', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'yy_subsidyStandards', 'reason', 'ossIdList'],
   },
 )
 

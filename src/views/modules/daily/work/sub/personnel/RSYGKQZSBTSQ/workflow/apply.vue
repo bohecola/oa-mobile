@@ -11,6 +11,7 @@
       <upsert :include-fields="['yy_subsidyStandards']" />
       <detail :include-fields="applyFields" />
     </div>
+
     <!-- 其他审批通用节点 -->
     <div v-else>
       <detail />

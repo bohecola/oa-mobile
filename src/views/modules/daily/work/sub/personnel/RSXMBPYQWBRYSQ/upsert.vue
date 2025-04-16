@@ -8,17 +8,42 @@
     :rules="computedRules.k_deptId"
   />
 
-  <!-- TODO -->
+  <!-- TODO 用组件不行的原因没找到 -->
   <van-field
+    v-model="form.k_userType"
     v-show-field="['k_userType', includeFields]"
-    name="k_userType"
     label="人员类别"
+    is-link
+    placeholder="请选择"
+    name="k_userType"
     :rules="computedRules.k_userType"
+    :readonly="false"
+    class="reset-label__default"
+    @click="showPicker = true"
+  />
+  <van-popup
+    v-model:show="showPicker"
+    position="bottom"
   >
-    <template #input>
-      {{ form.k_userType }}
-    </template>
-  </van-field>
+    <van-picker
+      v-model="pickerValue"
+      :columns="[{ text: '外包', value: '外包' }, { text: '全外包', value: '全外包' }]"
+      @confirm="onConfirm"
+      @cancel="showPicker = false"
+    />
+  </van-popup>
+
+  <!-- <DictSelect
+    v-model="form.k_userType"
+    v-show-field="['k_userType', includeFields]"
+    label="人员类别"
+    placeholder="请选择"
+    name="k_userType"
+    :options="[{ label: '外包', value: '外包' }, { label: '全外包', value: '全外包' }]"
+    :rules="computedRules.k_userType"
+    :readonly="false"
+    class="reset-label__default"
+  /> -->
 
   <DictSelect
     v-model="form.k_nature"
@@ -345,6 +370,48 @@
     :rules="computedRules.k_changeReason"
   />
 
+  <van-field
+    v-show-field="['k_isBudget', includeFields]"
+    name="k_isBudget"
+    label="是否有预算"
+    :rules="computedRules.k_isBudget"
+    :readonly="false"
+    class="reset-label__default"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.k_isBudget" @change="onIsBudgetChange" />
+    </template>
+  </van-field>
+
+  <van-field
+    v-if="form.k_isBudget === 'Y'"
+    v-show-field="['k_isBudgetStandards', includeFields]"
+    name="k_isBudgetStandards"
+    label="是否符合预算标准"
+    :rules="computedRules.k_isBudgetStandards"
+    :readonly="false"
+    class="reset-label__default"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.k_isBudgetStandards" @change="onIsBudgetStandardsChange" />
+    </template>
+  </van-field>
+
+  <van-field
+    v-if="form.k_isBudgetStandards === 'N' && form.k_isBudget === 'Y'"
+    v-model="form.k_supplementaryExplanation"
+    v-show-field="['k_supplementaryExplanation', includeFields]"
+    label="补充说明"
+    placeholder="请输入"
+    type="textarea"
+    rows="1"
+    autosize
+    name="k_supplementaryExplanation"
+    :rules="computedRules.k_supplementaryExplanation"
+    :readonly="false"
+    class="reset-label__default"
+  />
+
   <BaseUpsert :include-fields="includeFields" />
 </template>
 
@@ -359,7 +426,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['k_deptId', 'k_userType', 'k_isKeyAccountsVP', 'k_nature', 'k_category', 'k_postId', 'k_number', 'k_isUniform', 'k_workwearType', 'k_quantityAndSize', 'k_isUseOriginalSalaryStandard', 'k_originalSalaryStandard', 'k_newSalaryStandard', 'k_effectiveDate', 'k_monthlyWorkingMode', 'k_salaryStandards', 'k_specialInstructions', 'k_otherDistribution', 'k_originalDistribution', 'k_changeAfterDistribution', 'k_changeReason', 'k_startDate', 'k_endDate', 'k_signeContractType', 'k_purchaseInsuranceType', 'k_employInformation', 'k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions', 'k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions', 'reason', 'ossIdList'],
+    includeFields: () => ['k_deptId', 'k_userType', 'k_isKeyAccountsVP', 'k_nature', 'k_category', 'k_postId', 'k_number', 'k_isUniform', 'k_workwearType', 'k_quantityAndSize', 'k_isUseOriginalSalaryStandard', 'k_originalSalaryStandard', 'k_newSalaryStandard', 'k_effectiveDate', 'k_monthlyWorkingMode', 'k_salaryStandards', 'k_specialInstructions', 'k_otherDistribution', 'k_originalDistribution', 'k_changeAfterDistribution', 'k_changeReason', 'k_startDate', 'k_endDate', 'k_signeContractType', 'k_purchaseInsuranceType', 'k_employInformation', 'k_insuranceStartDate', 'k_insuranceEndDate', 'k_insuranceSpecialInstructions', 'k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions', 'k_isBudget', 'k_isBudgetStandards', 'k_supplementaryExplanation', 'reason', 'ossIdList', 'reason', 'ossIdList'],
   },
 )
 
@@ -369,7 +436,8 @@ trackFields(props.includeFields)
 
 const form = inject<Ref<DailyWorkForm>>('form')
 const Form = inject<Ref<FormInstance>>('Form')
-
+const showPicker = ref(false)
+const pickerValue = ref()
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
 // 指令
@@ -404,6 +472,7 @@ function onCategoryChange() {
     'k_signeContractType',
     'k_purchaseInsuranceType',
     'k_employInformation',
+
   ])
 }
 
@@ -423,5 +492,25 @@ function onPurchaseInsuranceTypeChange() {
 function onSigneContractTypeChange() {
   // 清空合同开始时间-结束时间、说明
   resetFields(['k_signeContractStartDate', 'k_signeContractEndDate', 'k_signeContractSpecialInstructions'])
+}
+
+// 是否有预算
+function onIsBudgetChange() {
+  // 清空
+  resetFields(['k_isBudgetStandards', 'k_supplementaryExplanation'])
+  form.value.k_supplementaryExplanation = undefined
+}
+
+// 预算标准
+function onIsBudgetStandardsChange() {
+  // 清空
+  resetFields(['k_supplementaryExplanation'])
+  form.value.k_supplementaryExplanation = undefined
+}
+
+function onConfirm({ selectedValues, selectedOptions }) {
+  form.value.k_userType = selectedOptions[0]?.text
+  pickerValue.value = selectedValues
+  showPicker.value = false
 }
 </script>

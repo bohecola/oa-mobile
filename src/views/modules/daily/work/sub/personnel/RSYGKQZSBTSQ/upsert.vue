@@ -1,6 +1,7 @@
 <template>
   <van-field
-    v-model="selectText"
+    v-model="form.yy_dailyWorkId"
+    v-show-field="['yy_dailyWorkId', includeFields]"
     type="textarea"
     :rows="1"
     autosize
@@ -13,11 +14,22 @@
   />
   <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
     <van-picker
+      :model-value="selectText"
       :columns="dailyWorkData"
       @cancel="showPicker = false"
       @confirm="onConfirm"
     />
   </van-popup>
+
+  <van-field-number
+    v-model="form.yy_subsidyStandards"
+    v-show-field="['yy_subsidyStandards', includeFields]"
+    label="补贴标准(元/月)"
+    name="yy_subsidyStandards"
+    :rules="computedRules.yy_subsidyStandards"
+    :readonly="false"
+    class="reset-label__default"
+  />
 
   <van-form
     label-width="auto"
@@ -30,14 +42,6 @@
       :model-value="`${parseTime(form.yy_entryCompanyDate, '{y}-{m}-{d}')}`"
       name="yy_entryCompanyDate"
       label="入职时间"
-    />
-
-    <van-field-number
-      v-model.number="form.yy_subsidyStandards"
-      v-show-field="['yy_subsidyStandards', includeFields]"
-      label="补贴标准(元/月)"
-      name="yy_subsidyStandards"
-      :rules="computedRules.yy_subsidyStandards"
     />
 
     <div v-if="!isNil(form.yy_dailyWorkId)">
@@ -163,7 +167,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'reason', 'ossIdList'],
+    includeFields: () => ['yy_type', 'yy_name', 'yy_certificateStatus', 'yy_speciality', 'yy_no', 'yy_issuanceDate', 'yy_recheckDate', 'yy_startDate', 'yy_endDate', 'yy_unit', 'yy_isTraining', 'yy_subsidyStandards', 'reason', 'ossIdList'],
   },
 )
 

@@ -6,14 +6,30 @@
     label="项目部"
   />
 
-  <van-field
+  <DictSelect
+    v-model="form.k_userType"
     v-show-field="['k_userType', includeFields]"
-    name="k_userType"
     label="人员类别"
-    readonly
-  >
+    placeholder="请选择"
+    name="k_userType"
+    :options="[{ value: '外包', label: '外包' }, { value: '全外包', label: '全外包' }]"
+  />
+
+  <van-field v-show-field="['k_isBudget', includeFields]" name="k_isBudget" label="是否有预算" input-align="left">
     <template #input>
-      {{ form.k_userType }}
+      <YesNoSwitch v-model="form.k_isBudget" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-if="form.k_isBudget === 'Y'" v-show-field="['k_isBudgetStandards', includeFields]" name="k_isBudgetStandards" label="是否符合预算标准" input-align="left">
+    <template #input>
+      <YesNoSwitch v-model="form.k_isBudgetStandards" readonly />
+    </template>
+  </van-field>
+
+  <van-field v-if="form.k_isBudgetStandards === 'N' && form.k_isBudget === 'Y'" v-show-field="['k_supplementaryExplanation', includeFields]" label="补充说明" name="k_supplementaryExplanation" input-align="left">
+    <template #input>
+      <TextareaView :value="form.k_supplementaryExplanation" />
     </template>
   </van-field>
 
@@ -291,24 +307,6 @@
   >
     <template #input>
       <TextareaView :value="form.k_changeReason" />
-    </template>
-  </van-field>
-
-  <van-field v-show-field="['k_isBudget', includeFields]" name="k_isBudget" label="是否有预算" input-align="left">
-    <template #input>
-      <YesNoSwitch v-model="form.k_isBudget" readonly />
-    </template>
-  </van-field>
-
-  <van-field v-if="form.k_isBudget === 'Y'" v-show-field="['k_isBudgetStandards', includeFields]" name="k_isBudgetStandards" label="是否符合预算标准" input-align="left">
-    <template #input>
-      <YesNoSwitch v-model="form.k_isBudgetStandards" readonly />
-    </template>
-  </van-field>
-
-  <van-field v-if="form.k_isBudgetStandards === 'N' && form.k_isBudget === 'Y'" v-show-field="['k_supplementaryExplanation', includeFields]" label="补充说明" name="k_supplementaryExplanation" input-align="left">
-    <template #input>
-      <TextareaView :value="form.k_supplementaryExplanation" />
     </template>
   </van-field>
 

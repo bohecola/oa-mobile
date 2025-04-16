@@ -30,40 +30,45 @@ const isView = inject<boolean>('isView')
 const taskDefinitionKey = inject<string>('taskDefinitionKey')
 
 // 申请字段
-const applyFields = filterTruthyKeys<DailyWorkForm>({
-  gg_deptId: true,
-  gg_changeType: true,
-  gg_changeDetails: true,
-  gg_formType: true,
-  gg_contractNo: true,
-  gg_changeBeforeRecruitNumber: true,
-  gg_changeAfterRecruitNumber: true,
-  gg_changeBeforeSalaryRange: true,
-  gg_changeAfterSalaryRange: true,
-  gg_fixedNumber: true,
-  gg_changeAfterFixedNumber: true,
-  gg_changeAfterNumberPost: true,
-  gg_changeReason: true,
-  gg_effectiveDate: true,
-  gg_content: true,
-  ossIdList: true,
-})
+const applyFields = ref(
+  filterTruthyKeys<DailyWorkForm>({
+    gg_deptId: true,
+    gg_changeType: true,
+    gg_changeDetails: true,
+    gg_formType: true,
+    gg_contractNo: true,
+    gg_changeBeforeRecruitNumber: true,
+    gg_changeAfterRecruitNumber: true,
+    gg_changeBeforeSalaryRange: true,
+    gg_changeAfterSalaryRange: true,
+    gg_fixedNumber: true,
+    gg_changeAfterFixedNumber: true,
+    gg_changeAfterNumberPost: true,
+    gg_changeReason: true,
+    gg_effectiveDate: true,
+    gg_content: true,
+    ossIdList: true,
+  }),
+)
 
-const commissionerConfirmFields = filterTruthyKeys<DailyWorkForm>({
-  gg_deptId: true,
-  gg_changeType: true,
-  gg_changeDetails: true,
-  gg_formType: true,
-  gg_contractNo: true,
-  gg_changeBeforeRecruitNumber: true,
-  gg_changeAfterRecruitNumber: true,
-  gg_changeBeforeSalaryRange: true,
-  gg_changeAfterSalaryRange: true,
-  gg_fixedNumber: true,
-  gg_changeAfterFixedNumber: true,
-  gg_changeAfterNumberPost: true,
-  gg_changeReason: true,
-  gg_effectiveDate: true,
-  gg_content: true,
-})
+const commissionerConfirmFields = ref(
+  filterTruthyKeys<DailyWorkForm>({
+    gg_deptId: true,
+    gg_changeType: true,
+    gg_changeDetails: true,
+    gg_formType: true,
+    gg_contractNo: true,
+    gg_changeBeforeRecruitNumber: true,
+    gg_changeAfterRecruitNumber: true,
+    gg_changeBeforeSalaryRange: true,
+    gg_changeAfterSalaryRange: true,
+    gg_fixedNumber: true,
+    gg_changeAfterFixedNumber: true,
+    gg_changeAfterNumberPost: true,
+    gg_changeReason: true,
+    gg_effectiveDate: true,
+    gg_content: true,
+
+  }),
+)
 </script>

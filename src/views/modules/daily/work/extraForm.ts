@@ -524,6 +524,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // yy_isTraining: [{ required: true, message: `是否参与培训${baseMsg}`, trigger: 'onBlur' }],
   // yy_certificateLevel: [{ required: true, message: `证书等级${baseMsg}`, trigger: 'onBlur' }],
   // yy_otherCompanyUseStatus: [{ required: true, message: `证书目前是否正在其他公司使用${baseMsg}`, trigger: 'onBlur' }],
+  yy_subsidyStandards: [{ required: true, message: `补贴标准${baseMsg}`, trigger: 'onBlur' }],
 
   // 新增生产岗位申请
   z_deptId: [{ required: true, message: `申请部门${baseMsg}`, trigger: 'onBlur' }],

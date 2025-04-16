@@ -129,5 +129,10 @@ body {
     color: #a1a1aa !important;
   }
 }
+.reset-label__default {
+  .van-field__label{
+    color: var(--van-field-label-color) !important;
+  }
+}
 
 
