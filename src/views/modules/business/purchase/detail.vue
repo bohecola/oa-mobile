@@ -3,9 +3,10 @@
     ref="Form"
     v-loading="isLoading && showLoading"
     class="reset-label"
-    readonly
     label-width="auto"
     label-align="top"
+    input-align="left"
+    readonly
   >
     <DictSelect
       v-model="form.subjectType"
@@ -359,11 +360,17 @@
               v-model="item.inquiryWay"
               :name="`itemList.${index}.inquiryWay`"
               label="询价途径"
+              type="textarea"
+              rows="1"
+              autosize
             />
             <van-field
               v-model="item.supplier"
               :name="`itemList.${index}.supplier`"
               label="指定供应商"
+              type="textarea"
+              rows="1"
+              autosize
             />
             <van-field
               v-model="item.remark"

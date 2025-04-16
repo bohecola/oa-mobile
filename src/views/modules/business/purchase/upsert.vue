@@ -102,8 +102,9 @@
       label="业务类别"
       name="businessCategory"
       :options="isProject ? oa_project_business_type : oa_purchase_business_type"
-      :rules="computedRules.businessCategory"
+      :rules="isProject ? computedRules.serviceCategory : computedRules.businessCategory"
       :disabled="isProject"
+      :readonly="isProject"
     />
 
     <DictSelect
@@ -273,7 +274,8 @@
                 trigger: 'onChange',
               }]"
               :params="PurchaseCategorySelectParams"
-              clearable
+              :disabled="disabledColumn"
+              :readonly="disabledColumn"
             />
 
             <van-field
@@ -469,6 +471,9 @@
               v-model="item.inquiryWay"
               :name="`itemList.${index}.inquiryWay`"
               label="询价途径"
+              type="textarea"
+              rows="1"
+              autosize
               placeholder="请输入"
               :maxlength="1000"
               :disabled="disabledColumn"
@@ -477,6 +482,9 @@
               v-model="item.supplier"
               :name="`itemList.${index}.supplier`"
               label="指定供应商"
+              type="textarea"
+              rows="1"
+              autosize
               placeholder="请输入"
               :maxlength="50"
               :disabled="disabledColumn"
@@ -525,7 +533,7 @@
     >
       <template #input>
         <div class="flex flex-col">
-          <UploadFile v-model="form.checkFiles" />
+          <UploadFile v-model="form.checkFiles" :exclude="excludeCheckFiles" />
           <div class="text-red-400">
             验收附件上传说明：1.通过采购部采购的需要上传收货确认单及全部物资照片 2.自行采购需要上传网络订单截图(线上)/店内销售清单(线下)及全部物资照片
             [注：照片必需带时间、地点(水印相机拍照)]
@@ -545,7 +553,7 @@
         <span>附件列表</span><span class=" text-gray-400">（请上传申购内容附件）</span>
       </template>
       <template #input>
-        <UploadFile v-model="form.ossIdList" value-type="array" />
+        <UploadFile v-model="form.ossIdList" value-type="array" :exclude="excludeOssIdList" />
       </template>
     </van-field>
   </van-form>
