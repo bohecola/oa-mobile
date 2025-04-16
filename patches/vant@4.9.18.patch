@@ -1,0 +1,13 @@
+diff --git a/es/uploader/UploaderPreviewItem.mjs b/es/uploader/UploaderPreviewItem.mjs
+index 198f0e33b0add575d423f38ff730bdf256d09a94..a6afd85addf828625deb7cd3875d83789e73ddf6 100644
+--- a/es/uploader/UploaderPreviewItem.mjs
++++ b/es/uploader/UploaderPreviewItem.mjs
+@@ -70,7 +70,7 @@ var stdin_default = defineComponent({
+           "tabindex": 0,
+           "aria-label": t("delete"),
+           "onClick": onDelete
+-        }, [slot ? slot() : _createVNode(Icon, {
++        }, [slot ? slot(props.item) : _createVNode(Icon, {
+           "name": "cross",
+           "class": bem("preview-delete-icon")
+         }, null)]);

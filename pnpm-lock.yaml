@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  vant@4.9.18:
+    hash: 3674tmn4j2y7dy7exdwoac2tvm
+    path: patches/vant@4.9.18.patch
+
 dependencies:
   '@automattic/format-currency':
     specifier: ^2.0.0
@@ -73,7 +78,7 @@ dependencies:
     version: 2.0.12
   vant:
     specifier: ^4.9.17
-    version: 4.9.18(vue@3.5.13)
+    version: 4.9.18(patch_hash=3674tmn4j2y7dy7exdwoac2tvm)(vue@3.5.13)
   vue:
     specifier: ^3.5.13
     version: 3.5.13(typescript@5.8.2)
@@ -6516,7 +6521,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vant@4.9.18(vue@3.5.13):
+  /vant@4.9.18(patch_hash=3674tmn4j2y7dy7exdwoac2tvm)(vue@3.5.13):
     resolution: {integrity: sha512-1bmWv/G0xz45btPqSasgv4TUdTqCneyFfnrQJ3xgerGvfTC5aP/rpO4wJb5FItCZjaSw5+9FNBj2Tz6n9TLXYA==}
     peerDependencies:
       vue: ^3.0.0
@@ -6526,6 +6531,7 @@ packages:
       '@vue/shared': 3.5.13
       vue: 3.5.13(typescript@5.8.2)
     dev: false
+    patched: true
 
   /vite-plugin-compression@0.5.1(vite@5.4.14):
     resolution: {integrity: sha512-5QJKBDc+gNYVqL/skgFAP81Yuzo9R+EAf19d+EtsMF/i8kFUpNi3J/H01QD3Oo8zBQn+NzoCIFkpPLynoOzaJg==}

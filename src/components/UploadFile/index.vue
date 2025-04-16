@@ -1,12 +1,10 @@
 <template>
   <div>
     <van-uploader
-      ref="uploadFileRef"
       v-model="fileList"
       :multiple="isMultiple"
       :max-count="limit"
       :max-size="maxSizeByte"
-      :deletable="!readonly"
       :preview-size="cardSize"
       :accept="accept"
       :readonly="readonly"
@@ -30,14 +28,23 @@
         <van-icon name="plus" size="20" />
       </div>
 
+      <template #preview-delete="item: UploaderFileListItem">
+        <div
+          v-if="!readonly && !exclude.includes(item.ossId)"
+          class="van-uploader__preview-delete--shadow"
+        >
+          <i class="van-badge__wrapper van-icon van-icon-cross van-uploader__preview-delete-icon" />
+        </div>
+      </template>
+
       <!-- 预览区上方 -->
       <template #preview-cover="item: UploaderFileListItem">
         <div class="w-full h-full">
           <template v-for="(fileActionEnum, index) in fileActionEnums" :key="index">
-            <template v-if="fileActionEnum.extensions.includes(getFilenameExt(item.name ?? item.file!.name) as any)">
+            <template v-if="fileActionEnum.extensions.includes(getFilenameExt(item.name ?? item.file.name) as any)">
               <!-- 视频 -->
               <div
-                v-if="isVideoType(getFilenameExt(item.name ?? item.file!.name))"
+                v-if="isVideoType(getFilenameExt(item.name ?? item.file.name))"
                 class="relative w-full h-full bg-[--bg-color]"
                 @click="() => { fileActionEnum?.handler?.(item) }"
               >
@@ -51,7 +58,7 @@
 
               <!-- 其他 -->
               <div
-                v-else-if="!isImageType(getFilenameExt(item.name ?? item.file!.name))"
+                v-else-if="!isImageType(getFilenameExt(item.name ?? item.file.name))"
                 class="relative w-full h-full flex items-center justify-center bg-[--bg-color]"
                 @click="() => { fileActionEnum?.handler?.(item) }"
               >
@@ -73,7 +80,7 @@
 </template>
 
 <script setup lang='ts'>
-import type { UploaderAfterRead, UploaderInstance, UploaderFileListItem as _UploaderFileListItem } from 'vant'
+import type { UploaderAfterRead, UploaderFileListItem as _UploaderFileListItem } from 'vant'
 import type { Numeric } from 'vant/lib/utils'
 import { isArray, isEmpty } from 'lodash-es'
 import { useCustomFieldValue } from '@vant/use'
@@ -92,7 +99,7 @@ import other from '@/assets/images/other.png'
 type UploaderFileListItem = _UploaderFileListItem & {
   name?: string
   url?: string
-  ossId?: string | number
+  ossId?: string
 }
 
 const props = withDefaults(
@@ -112,15 +119,16 @@ const props = withDefaults(
     cardSize?: number
     // 值类型
     valueType?: 'string' | 'array'
+    // 排除的 ossId
+    exclude?: string[]
   }>(),
   {
     limit: 10,
     fileSize: 500,
-    fileType: () => fileTypeEnum,
-    readonly: false,
-    isMultiple: false,
     cardSize: 60,
     valueType: 'string',
+    fileType: () => fileTypeEnum,
+    exclude: () => [],
   },
 )
 
@@ -128,7 +136,6 @@ const emit = defineEmits(['update:modelValue'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const uploadFileRef = ref<UploaderInstance>()
 const viewerRef = ref<InstanceType<typeof viewer>>()
 
 // 文件列表
@@ -186,7 +193,7 @@ const afterRead: UploaderAfterRead = async (items: UploaderFileListItem | Upload
 
     const formData = new FormData()
 
-    formData.append('file', item.file!)
+    formData.append('file', item.file)
 
     try {
       // 上传请求
@@ -252,14 +259,14 @@ function getOssIds(list: UploaderFileListItem[]) {
 
 // 视频预览
 function handleVideoView(item: UploaderFileListItem) {
-  const obj = { file: item, ext: getFilenameExt(item.name ?? item.file!.name) }
+  const obj = { file: item, ext: getFilenameExt(item.name ?? item.file.name) }
 
   viewerRef.value?.open(obj)
 }
 
 // 文档预览
 function handleDocView(item: UploaderFileListItem) {
-  const obj = { file: item, ext: getFilenameExt(item.name ?? item.file!.name) }
+  const obj = { file: item, ext: getFilenameExt(item.name ?? item.file.name) }
 
   viewerRef.value?.open(obj)
 }

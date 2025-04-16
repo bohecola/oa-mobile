@@ -106,5 +106,10 @@
     "commitizen": {
       "path": "node_modules/cz-git"
     }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "vant@4.9.18": "patches/vant@4.9.18.patch"
+    }
   }
 }

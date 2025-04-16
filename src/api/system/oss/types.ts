@@ -1,6 +1,6 @@
 export interface OssVO extends BaseEntity {
   size: string
-  ossId: string | number
+  ossId: string
   fileName: string
   originalName: string
   fileSuffix: string
@@ -22,6 +22,7 @@ export interface OssQuery extends PageQuery {
   orderByColumn: string
   isAsc: string
 }
+
 export interface OssForm {
   file: undefined | string
 }

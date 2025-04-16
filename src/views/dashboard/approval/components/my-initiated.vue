@@ -24,7 +24,7 @@
         <div class="mt-1 flex gap-2">
           <van-button
             v-if="row.businessStatus === 'waiting'"
-            type="primary"
+            color="#8b898d"
             text="撤销"
             size="small"
             @click.stop="handleCancelProcessApply(row)"
@@ -45,19 +45,65 @@
             size="small"
             @click.stop="handleDelete(row)"
           />
+
+          <van-button
+            v-if="row.businessStatus === 'waiting'"
+            color="#7232dd"
+            text="添加附件"
+            size="small"
+            @click.stop="openFilePopup(row)"
+          />
         </div>
       </template>
     </van-cell>
     <bottom-line v-if="!hasNextPage && !isFetching" />
   </van-list>
+
+  <van-popup
+    v-model:show="visible"
+    position="bottom"
+    class="h-[60vh]"
+    @closed="onFilePopupClosed"
+  >
+    <div class="h-10 leading-10 text-lg text-center border-b">
+      添加附件
+    </div>
+
+    <div class="p-2 h-[calc(100%-theme('spacing.24'))] overflow-y-auto">
+      <UploadFile
+        v-model="form.ossIdList"
+        value-type="array"
+        :exclude="exclude"
+        :readonly="fileConfirmLoading"
+      />
+    </div>
+
+    <div class="p-2 h-14 flex items-center justify-end gap-2 border-t">
+      <van-button
+        type="primary"
+        text="确认"
+        :loading="fileConfirmLoading"
+        @click="handleFileConfirm"
+      />
+      <van-button
+        type="default"
+        text="取消"
+        @click="closePopup"
+      />
+    </div>
+  </van-popup>
 </template>
 
 <script setup lang='ts'>
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import { showConfirmDialog, showLoadingToast, showSuccessToast } from 'vant'
+import { isEqual } from 'lodash-es'
 import { service } from '@/service'
+import { usePopup, useWorkflowViewData } from '@/hooks'
 import type { ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
+import type { EditOaWfFileVO } from '@/api/oa/common/types'
+import { editOaWfFile } from '@/api/oa/common'
 import workflowCommon from '@/api/workflow/workflowCommon'
 
 const props = defineProps<{
@@ -74,6 +120,15 @@ const queryParams = ref<ProcessInstanceQuery>({
   name: undefined,
   categoryCode: undefined,
 })
+
+const { visible, openPopup, closePopup } = usePopup()
+
+const form = ref<Record<string, any>>({})
+const exclude = ref([])
+const currentRow = ref<ProcessInstanceVO>(undefined)
+
+const fileViewLoading = ref(false)
+const fileConfirmLoading = ref(false)
 
 watch(() => props.keywords, (val) => {
   queryParams.value.name = val
@@ -153,6 +208,54 @@ async function handleCancelProcessApply(row: ProcessInstanceVO) {
       showSuccessToast('撤销成功')
     })
     .catch(() => {})
+}
+
+// 打开附件弹窗
+async function openFilePopup(row: ProcessInstanceVO) {
+  openPopup()
+
+  fileViewLoading.value = true
+
+  currentRow.value = row
+  const { data } = await useWorkflowViewData({ processInstanceId: row.id }).finally(() => fileViewLoading.value = false)
+  const { entity } = data
+
+  form.value = entity
+  exclude.value = entity.ossIdList
+}
+
+// 确认添加附件
+async function handleFileConfirm() {
+  const { msgWarning, msgSuccess } = proxy.$modal
+
+  if (isEqual(form.value.ossIdList, exclude.value)) {
+    return msgWarning('请选择需要新增的附件')
+  }
+
+  fileConfirmLoading.value = true
+
+  const { businessKey, tableName, id: processInstanceId } = currentRow.value
+
+  const data: EditOaWfFileVO = {
+    businessKey,
+    tableName,
+    processInstanceId,
+    ossIdList: form.value.ossIdList,
+    entity: form.value,
+  }
+
+  const { msg } = await editOaWfFile(data).finally(() => {
+    fileConfirmLoading.value = false
+    closePopup()
+  })
+
+  msgSuccess(msg)
+}
+
+function onFilePopupClosed() {
+  form.value = {}
+  exclude.value = []
+  currentRow.value = undefined
 }
 
 defineExpose({

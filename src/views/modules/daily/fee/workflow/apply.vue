@@ -1,6 +1,6 @@
 <template>
   <WorkflowPage
-    :loading="loading"
+    :loading="loading || DailyTypeSelectRef?.isLoading"
     :entity-variables="submitFormData.variables?.entity"
     :group="false"
     :reset-form="reset"

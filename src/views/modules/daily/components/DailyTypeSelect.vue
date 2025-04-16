@@ -121,14 +121,16 @@ function updateVars(value: string) {
 useCustomFieldValue(() => id.value)
 
 watch(
-  () => props.modelValue,
-  async (val) => {
+  [() => props.modelValue, () => data.value],
+  async ([val, dataVal]) => {
     id.value = val
-    if (isEmpty(data.value)) {
+    if (isEmpty(dataVal)) {
       await getData()
     }
 
-    nextTick(() => updateVars(val))
+    if (!isEmpty(dataVal)) {
+      nextTick(() => updateVars(val))
+    }
   },
 )
 
@@ -138,5 +140,6 @@ onMounted(async () => {
 
 defineExpose({
   open: openPopup,
+  isLoading,
 })
 </script>

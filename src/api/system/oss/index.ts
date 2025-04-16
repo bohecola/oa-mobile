@@ -12,7 +12,7 @@ export function listOss(query: OssQuery): AxiosPromise<OssVO[]> {
 }
 
 // 查询OSS对象基于id串
-export function listByIds(ossId: string | number): AxiosPromise<OssVO[]> {
+export function listByIds(ossId: string): AxiosPromise<OssVO[]> {
   return request({
     url: `/resource/oss/listByIds/${ossId}`,
     method: 'get',
@@ -20,7 +20,7 @@ export function listByIds(ossId: string | number): AxiosPromise<OssVO[]> {
 }
 
 // 删除OSS对象存储
-export function delOss(ossId: string | number | Array<string | number>) {
+export function delOss(ossId: string) {
   return request({
     url: `/resource/oss/${ossId}`,
     method: 'delete',
@@ -28,7 +28,7 @@ export function delOss(ossId: string | number | Array<string | number>) {
 }
 
 // 查询电站附件
-export function listByPsIdAndIds(psId: string | number, ossId: string | number): AxiosPromise<OssVO[]> {
+export function listByPsIdAndIds(psId: string, ossId: string): AxiosPromise<OssVO[]> {
   const query = {
     psId,
     ossId,
@@ -41,7 +41,7 @@ export function listByPsIdAndIds(psId: string | number, ossId: string | number):
 }
 
 // 查询电站附件
-export function listByPsIdAndIdsNew(psId: string | number, contentId: string | number, patrolType: string | number, objectId: string | number, ossId: string | number): AxiosPromise<OssVO[]> {
+export function listByPsIdAndIdsNew(psId: string, contentId: string, patrolType: string, objectId: string, ossId: string): AxiosPromise<OssVO[]> {
   const query = {
     psId,
     contentId,

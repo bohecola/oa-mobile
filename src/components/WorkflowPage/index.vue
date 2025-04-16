@@ -17,12 +17,6 @@
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
           <div id="AFC" class="relative">
-            <van-notice-bar
-              v-if="$route.query.isEditNode === 'true' && $route.query.type === 'approval'"
-              :scrollable="false"
-              text="当前节点存在需要填写的字段，请暂时在PC端审批"
-            />
-
             <!-- 发起人信息 -->
             <InitiatorInfo
               ref="initiatorInfoRef"
@@ -57,12 +51,13 @@
         </van-tab>
       </div>
 
-      <div v-if="saveOrSubmitVisible" class="p-2 pb-safe-offset-2 grid grid-cols-[1fr,4fr] gap-2 bg-[--bg-card]">
+      <div v-if="saveOrSubmitVisible" class="p-2 pb-safe-offset-2 flex gap-2 bg-[--bg-card]">
         <van-button
           v-if="saveVisible"
           type="default"
+          class="flex-[1]"
           :loading="tempSaveLoading"
-          :disabled="actionBtnDisabled"
+          :disabled="loading"
           @click="handleTempSave"
         >
           暂存
@@ -71,8 +66,9 @@
         <van-button
           v-if="submitVisible"
           type="primary"
+          class="flex-[4]"
           :loading="submitLoading"
-          :disabled="actionBtnDisabled"
+          :disabled="loading"
           @click="handleSubmit"
         >
           提交
@@ -139,7 +135,7 @@ const deptId = ref(undefined)
 provide('initiatorDeptId', deptId)
 
 // 按钮禁用
-const actionBtnDisabled = computed(() => active.value === 'record')
+const actionBtnDisabled = computed(() => active.value === 'record' || props.loading)
 
 // 暂存可见
 const saveVisible = computed(() => {
@@ -161,8 +157,8 @@ const saveOrSubmitVisible = computed(() => saveVisible.value || submitVisible.va
 
 // 审批可见
 const approvalVisible = computed(() => {
-  const { type, wfStatus, isEditNode } = proxy.$route.query
-  return type === 'approval' && wfStatus && wfStatus === 'waiting' && isEditNode !== 'true'
+  const { type, wfStatus } = proxy.$route.query
+  return type === 'approval' && wfStatus && wfStatus === 'waiting'
 })
 
 // 流程可见

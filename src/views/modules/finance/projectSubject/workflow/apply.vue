@@ -168,14 +168,6 @@ onMounted(async () => {
     procdefName.value = processDefinitionName
     psId.value = entity.id
 
-    proxy?.$router.replace({
-      query: {
-        ...proxy?.$route.query,
-        taskDefinitionKey: taskDefinitionKey.value,
-        isEditNode: (['Activity_0kwfbrq'].includes(taskDefinitionKey.value as string) ? 'true' : 'false'),
-      },
-    })
-
     nextTick(async () => {
       try {
         switch (type as string) {
