@@ -127,7 +127,7 @@ async function onDailyTypeBeforeFinish() {
 
   // 获取当前登录用户的公司 id
   const { data } = await getDept(user.info.deptId)
-  form.value.companyId = String(data.parentId)
+  form.value.companyId = data.companyId.toString()
 }
 
 // 事务编码变更

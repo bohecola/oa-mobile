@@ -80,7 +80,14 @@
     <van-field v-show-field="['userRecruitPostBoList', includeFields]" label="招聘岗位">
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="item.postName">
+          <TableCard
+            v-for="(item, index) in form.userRecruitPostBoList"
+            :key="index"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
+            :title="item.postName"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
+          >
             <PostSelect
               v-model="item.postId"
               :name="`itemList.${index}.postId`"
@@ -183,6 +190,9 @@ import { isNil } from 'lodash-es'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 withDefaults(
   defineProps<{
@@ -199,6 +209,8 @@ withDefaults(
 )
 
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
+
+const TableCardRefs = ref<TableCardType[]>([])
 
 const vShowField = createFieldVisibilityDirective<UserRecruitForm>()
 

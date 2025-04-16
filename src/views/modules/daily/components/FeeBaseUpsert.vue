@@ -79,7 +79,13 @@
         >
           <template #footer>
             <div class="text-right">
-              <van-button v-if="form.itemList.length - 1 === index" type="primary" icon="plus" size="small" @click="form.itemList.push({ ...dailyFeeItem })" />
+              <van-button
+                v-if="form.itemList.length - 1 === index"
+                type="primary"
+                icon="plus"
+                size="small"
+                @click="handleAdd"
+              />
               <van-button
                 type="danger"
                 icon="delete"
@@ -163,7 +169,6 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import Big from 'big.js'
-import { formatCurrency } from '@automattic/format-currency'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import { dailyFeeItem } from '../fee/form'
 import BaseUpsert from './BaseUpsert.vue'
@@ -220,6 +225,11 @@ function resetSubjectItemId() {
     e.finishAmount = undefined
     e.availableAmount = undefined
   })
+}
+
+// 新增费用明细
+function handleAdd() {
+  form.value.itemList.push({ ...dailyFeeItem })
 }
 
 // 删除费用明细

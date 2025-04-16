@@ -101,7 +101,14 @@
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userRecruitPostBoList" :key="index" :title="item.postName">
+          <TableCard
+            v-for="(item, index) in form.userRecruitPostBoList"
+            :key="index"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
+            :title="item.postName"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
+          >
             <PostSelect
               v-model="item.postId"
               v-model:post-name="item.postName"
@@ -249,6 +256,9 @@ import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
 import type { DeptVO } from '@/api/system/dept/types'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -265,6 +275,8 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const TableCardRefs = ref<TableCardType[]>([])
 
 // 实例
 // const { proxy } = getCurrentInstance() as ComponentInternalInstance

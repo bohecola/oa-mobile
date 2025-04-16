@@ -1,35 +1,15 @@
 <template>
   <FeeBaseUpsert :include-fields="includeFields1" />
 
-  <van-field
-    v-model="selectText"
-    type="textarea"
-    :rows="1"
-    autosize
-    label="购买申请"
-    placeholder="请选择"
-    name="e_dailyWorkId"
-    is-link
-    :rules="computedRules.e_dailyWorkId"
-    @click="handleClick"
-  />
-  <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
-    <van-picker
-      :columns="dailyWorkData"
-      @cancel="showPicker = false"
-      @confirm="onConfirm"
-    />
-  </van-popup>
-
-  <!-- <DictSelect
+  <DictSelect
     v-model="form.e_dailyWorkId"
     v-show-field="['e_dailyWorkId', includeFields]"
     label="购买申请"
     name="e_dailyWorkId"
     :options="dailyWorkData"
     :rules="computedRules.e_dailyWorkId"
-    @change="onChange"
-  /> -->
+    @change="onDailyWorkChange"
+  />
 
   <div v-if="!isNil(form.e_dailyWorkId)">
     <DeptSelect
@@ -358,15 +338,9 @@ async function getList() {
   })
 }
 
-function handleClick() {
-  getList()
-  showPicker.value = true
-}
-
-const selectText = ref()
-function onConfirm({ selectedValues, selectedOptions }) {
-  selectText.value = selectedOptions[0]?.text
-  const obj = dailyWorkData.value.find(e => e.id === selectedOptions[0]?.id)
+// TODO 优化
+function onDailyWorkChange(id: string) {
+  const obj = dailyWorkData.value.find(e => e.id === id)
   if (obj) {
     form.value.e_dailyWorkId = obj.id
     form.value.e_deptId = obj.content?.qq_deptId
@@ -396,6 +370,10 @@ function onConfirm({ selectedValues, selectedOptions }) {
   }
   showPicker.value = false
 }
+
+onMounted(async () => {
+  await getList()
+})
 </script>
 
 <style lang="scss" scoped>

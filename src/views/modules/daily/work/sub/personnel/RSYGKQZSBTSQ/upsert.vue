@@ -1,25 +1,13 @@
 <template>
-  <van-field
+  <DictSelect
     v-model="form.yy_dailyWorkId"
     v-show-field="['yy_dailyWorkId', includeFields]"
-    type="textarea"
-    :rows="1"
-    autosize
     label="证书注册申请"
-    placeholder="请选择"
     name="yy_dailyWorkId"
-    is-link
+    :options="dailyWorkData"
     :rules="computedRules.yy_dailyWorkId"
-    @click="handleClick"
+    @change="onDailyWorkChange"
   />
-  <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
-    <van-picker
-      :model-value="selectText"
-      :columns="dailyWorkData"
-      @cancel="showPicker = false"
-      @confirm="onConfirm"
-    />
-  </van-popup>
 
   <van-field-number
     v-model="form.yy_subsidyStandards"
@@ -201,21 +189,12 @@ async function getList() {
       content,
       value: e.id,
       label: `${content.y_name} - ${content.y_no}`,
-      text: `${content.y_name} - ${content.y_no}`,
     }
   })
 }
 
-function handleClick() {
-  getList()
-  showPicker.value = true
-}
-
-const selectText = ref()
-
-function onConfirm({ selectedValues, selectedOptions }) {
-  selectText.value = selectedOptions[0]?.text
-  const obj = dailyWorkData.value.find(e => e.id === selectedOptions[0]?.id)
+function onDailyWorkChange(id: string) {
+  const obj = dailyWorkData.value.find(e => e.id === id)
   if (obj) {
     form.value.yy_dailyWorkId = obj.id
     form.value.yy_type = obj.content?.y_type
@@ -240,7 +219,6 @@ function onConfirm({ selectedValues, selectedOptions }) {
 
 async function getUser() {
   const { data } = await getUserInfo(user.info.userId)
-  console.log(data.entryCompanyDate, ' data.entryCompanyDate')
   form.value.yy_entryCompanyDate = data.entryCompanyDate
 }
 
