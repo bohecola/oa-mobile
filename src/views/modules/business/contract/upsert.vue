@@ -229,7 +229,7 @@
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="item.amount ? item.amount.toString() : undefined">
+          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="formatCurrency(item.amount)">
             <template #footer>
               <div class="text-right">
                 <van-button v-if="form.taxRate.length - 1 === index" type="primary" icon="plus" size="small" @click="form.taxRate.push({ amount: undefined, taxRate: undefined })" />

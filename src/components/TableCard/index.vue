@@ -26,7 +26,7 @@
 <script setup lang='ts'>
 const props = withDefaults(
   defineProps<{
-    title?: string
+    title?: string | number
     titleClass?: string
     shadow?: boolean
     round?: boolean
@@ -36,10 +36,7 @@ const props = withDefaults(
   }>(),
   {
     shadow: true,
-    round: false,
-    defaultCollapse: false,
     showCollapse: true,
-    isEmpty: false,
   },
 )
 
