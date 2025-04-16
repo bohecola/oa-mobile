@@ -67,7 +67,6 @@
     <template #label>
       <div class="flex justify-between w-full">
         <span>费用明细</span>
-        <van-button type="primary" icon="plus" size="small" @click="handleAdd" />
       </div>
     </template>
 
@@ -76,14 +75,16 @@
         <TableCard
           v-for="(item, index) in form.itemList"
           :key="item.id"
-          :title="`# ${index + 1}`"
+          :title="formatCurrency(item.amount)"
         >
           <template #footer>
             <div class="text-right">
+              <van-button v-if="form.itemList.length - 1 === index" type="primary" icon="plus" size="small" @click="form.itemList.push({ ...dailyFeeItem })" />
               <van-button
                 type="danger"
                 icon="delete"
                 size="small"
+                class="ml-2"
                 :disabled="form.itemList.length === 1"
                 @click="handleDelete(item, index)"
               />
@@ -162,6 +163,7 @@
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
 import Big from 'big.js'
+import { formatCurrency } from '@automattic/format-currency'
 import ProjectSubjectSelect from '../../business/components/ProjectSubjectSelect.vue'
 import { dailyFeeItem } from '../fee/form'
 import BaseUpsert from './BaseUpsert.vue'
@@ -218,17 +220,6 @@ function resetSubjectItemId() {
     e.finishAmount = undefined
     e.availableAmount = undefined
   })
-}
-
-// 新增费用明细
-function handleAdd() {
-  const { confirm } = proxy.$modal
-
-  confirm('点击确定进行添加数据')
-    .then(() => {
-      form.value.itemList.push({ ...dailyFeeItem })
-    })
-    .catch(() => {})
 }
 
 // 删除费用明细

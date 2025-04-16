@@ -47,7 +47,7 @@
         <TableCard
           v-for="(item, index) in form.itemList"
           :key="item.id"
-          :title="`# ${index + 1}`"
+          :title="formatCurrency(item.amount)"
         >
           <PurchaseCategorySelect
             v-model="item.subjectItemId"
