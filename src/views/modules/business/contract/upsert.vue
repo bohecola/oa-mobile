@@ -28,7 +28,11 @@
 
     <van-field label="合同模式">
       <template #input>
-        <van-radio-group v-model="contractMode" direction="horizontal" @change="onRadioGroupChange">
+        <van-radio-group
+          v-model="contractMode"
+          direction="horizontal"
+          @change="onRadioGroupChange"
+        >
           <van-radio
             v-for="item in [
               { value: 'two', label: '双方' },
@@ -229,10 +233,23 @@
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="formatCurrency(item.amount)">
+          <TableCard
+            v-for="(item, index) in form.taxRate"
+            :key="index"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
+            :title="formatCurrency(item.amount)"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
+          >
             <template #footer>
               <div class="text-right">
-                <van-button v-if="form.taxRate.length - 1 === index" type="primary" icon="plus" size="small" @click="form.taxRate.push({ amount: undefined, taxRate: undefined })" />
+                <van-button
+                  v-if="form.taxRate.length - 1 === index"
+                  type="primary"
+                  icon="plus"
+                  size="small"
+                  @click="form.taxRate.push({ amount: undefined, taxRate: undefined })"
+                />
                 <van-button
                   class="ml-2"
                   type="danger"
@@ -271,6 +288,7 @@
       name="startDate"
       label="开始日期"
       :rules="computedRules.startDate"
+      clearable
     />
 
     <DateSelect
@@ -279,6 +297,7 @@
       name="endDate"
       label="结束日期"
       :rules="computedRules.endDate"
+      clearable
     />
 
     <DateSelect
@@ -369,6 +388,9 @@ import PurchaseProcessSelect from '../components/PurchaseProcessSelect.vue'
 import { useForm } from './form'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -385,6 +407,8 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const TableCardRefs = ref<TableCardType[]>([])
 
 const {
   oa_contract_category_in,

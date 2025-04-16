@@ -128,7 +128,7 @@
       <template #input>
         <div class="flex flex-col">
           <span>{{ formatCurrency(form.amount) }}</span>
-          <span v-if="!isNil(form.amount)" class="text-red-400">{{ toCnMoney(form.amount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
     </van-field>
@@ -177,7 +177,14 @@
     <van-field v-show-field="['taxRate', includeFields]" label="金额/增值税率">
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.taxRate" :key="index" :title="item.amount?.toString()">
+          <TableCard
+            v-for="(item, index) in form.taxRate"
+            :key="index"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
+            :title="formatCurrency(item.amount)"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
+          >
             <van-field
               :model-value="formatCurrency(item.amount)"
               :name="`taxRate.${index}.amount`"
@@ -287,13 +294,15 @@
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect.vue'
 import { useForm } from './form'
 import type { ContractForm } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 withDefaults(
   defineProps<{
@@ -310,6 +319,9 @@ withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const TableCardRefs = ref<TableCardType[]>([])
+
 const {
   oa_contract_category_in,
   oa_contract_category_out,

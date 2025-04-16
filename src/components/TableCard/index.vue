@@ -28,10 +28,10 @@ const props = withDefaults(
   defineProps<{
     title?: string | number
     titleClass?: string
-    shadow?: boolean
     round?: boolean
-    defaultCollapse?: boolean
+    shadow?: boolean
     showCollapse?: boolean
+    defaultCollapse?: boolean
     isEmpty?: boolean
   }>(),
   {
@@ -39,6 +39,10 @@ const props = withDefaults(
     showCollapse: true,
   },
 )
+
+const emit = defineEmits<{
+  (e: 'click'): void
+}>()
 
 const slots = defineSlots<{
   header?: () => any
@@ -50,7 +54,26 @@ const isCollapse = ref(props.defaultCollapse)
 
 function handleCollapse() {
   if (props.showCollapse) {
-    isCollapse.value = !isCollapse.value
+    toggleCollapse()
+    emit('click')
   }
 }
+
+function collapse() {
+  isCollapse.value = true
+}
+
+function expand() {
+  isCollapse.value = false
+}
+
+function toggleCollapse() {
+  isCollapse.value = !isCollapse.value
+}
+
+defineExpose({
+  collapse,
+  expand,
+  toggleCollapse,
+})
 </script>

@@ -128,7 +128,7 @@ export function useForm() {
   }
 
   // 回显
-  async function view(id: string | number) {
+  async function view(id: string) {
     isLoading.value = true
     reset()
     const { data } = await getContract(id)
