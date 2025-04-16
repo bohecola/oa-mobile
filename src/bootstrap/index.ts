@@ -17,6 +17,8 @@ import '@morev/vue-transitions/styles'
 import '@he-tree/vue/style/default.css'
 import '@he-tree/vue/style/material-design.css'
 
+import '@/assets/iconfont/iconfont.css'
+
 export async function bootstrap(app: App) {
   // 配置状态管理
   setupStore(app)

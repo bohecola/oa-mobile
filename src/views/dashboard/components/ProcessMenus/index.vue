@@ -8,8 +8,8 @@
       </template>
       <div class="grid grid-cols-4 gap-x-6 gap-y-3">
         <div v-for="item in menus" :key="item.id" class="w-16 h-full flex flex-col items-center gap-2" @click="handleItemClick(item)">
-          <div class="w-12 h-12 bg-[--van-primary-color] text-white text-xl text-center leading-[48px] rounded">
-            {{ item.procdefName.slice(0, 1) }}
+          <div class="w-12 h-12 bg-blue-500/20 text-white rounded-xl flex items-center justify-center">
+            <i :class="`iconfont text-2xl text-blue-500 icon-${item.processKey}`" />
           </div>
           <div class="text-xs text-center">
             {{ item.procdefName }}

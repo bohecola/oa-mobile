@@ -1,0 +1,111 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4893624 */
+  src: url('iconfont.woff2?t=1744707107550') format('woff2'),
+       url('iconfont.woff?t=1744707107550') format('woff'),
+       url('iconfont.ttf?t=1744707107550') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-train_certificate_flow:before {
+  content: "\e617";
+}
+
+.icon-tubiaozhizuomoban:before {
+  content: "\e6c1";
+}
+
+.icon-lizhi:before {
+  content: "\e749";
+}
+
+.icon-contract_review_flow:before {
+  content: "\e610";
+}
+
+.icon-project_dept_flow:before {
+  content: "\e752";
+}
+
+.icon-project_subject_flow:before {
+  content: "\e64d";
+}
+
+.icon-depart_flow:before {
+  content: "\e60a";
+}
+
+.icon-mianshipingjia:before {
+  content: "\e6cc";
+}
+
+.icon-user_transfer_flow:before {
+  content: "\e600";
+}
+
+.icon-become_officia_flow:before {
+  content: "\e64f";
+}
+
+.icon-yuruzhidangan:before {
+  content: "\e763";
+}
+
+.icon-zhuanzhengshenqing:before {
+  content: "\e71b";
+}
+
+.icon-RCSWNEW:before {
+  content: "\e608";
+}
+
+.icon-JXRYZWZSYGRZSQ:before {
+  content: "\e6ab";
+}
+
+.icon-yuangongzhuanzheng:before {
+  content: "\e616";
+}
+
+.icon-richangfeiyong:before {
+  content: "\e89b";
+}
+
+.icon-purchase_flow:before {
+  content: "\e6b2";
+}
+
+.icon-renshitiaodong1:before {
+  content: "\e601";
+}
+
+.icon-recruit_flow:before {
+  content: "\e604";
+}
+
+.icon-employment_flow_02:before {
+  content: "\e790";
+}
+
+.icon-interview_evaluation_flow:before {
+  content: "\e61a";
+}
+
+.icon-RCFYNEW:before {
+  content: "\e636";
+}
+
+.icon-richangfeiyong1:before {
+  content: "\e7a3";
+}
+
+.icon-employment_flow_01:before {
+  content: "\e620";
+}
+
