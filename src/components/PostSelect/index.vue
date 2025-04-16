@@ -240,11 +240,7 @@ function deserialize(value: string | number) {
 watch(
   () => props.modelValue,
   (val) => {
-    console.log(val, 'val')
-
     ids.value = deserialize(val)
-
-    console.log(ids.value, 'ids.value')
 
     if (props.multiple) {
       checked.value = ids.value as string[]
