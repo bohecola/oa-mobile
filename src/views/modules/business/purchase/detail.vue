@@ -201,8 +201,10 @@
           <TableCard
             v-for="(item, index) in form.itemList"
             :key="item.id"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
             :title="item.name"
-            :default-collapse="true"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
             <PurchaseCategorySelect
               v-model="item.psiId"
@@ -426,6 +428,9 @@ import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 withDefaults(
   defineProps<{
@@ -445,6 +450,9 @@ const { user } = useStore()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const TableCardRefs = ref<TableCardType[]>([])
+
 // 采购 - 业务类型、项目 - 业务类型、发票类型、税率
 const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(
   proxy.useDict('oa_purchase_business_type', 'oa_project_business_type', 'oa_purchase_invoice_type', 'oa_contract_tax_rate'),
@@ -459,7 +467,7 @@ const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')
 // 是否是部门预算
-const isDept = computed(() => form.value.subjectType === 'dept')
+// const isDept = computed(() => form.value.subjectType === 'dept')
 // 业务类型为运维类
 const isYwl = computed(() => isProject.value && ['0', '3'].includes(form.value.businessCategory))
 

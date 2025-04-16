@@ -149,9 +149,7 @@
       name="isDeposit"
     >
       <template #input>
-        <YesNoSwitch
-          v-model="form.isDeposit"
-        />
+        <YesNoSwitch v-model="form.isDeposit" />
       </template>
     </van-field>
 
@@ -221,9 +219,7 @@
       name="isOwnerSettlement"
     >
       <template #input>
-        <YesNoSwitch
-          v-model="form.isOwnerSettlement"
-        />
+        <YesNoSwitch v-model="form.isOwnerSettlement" />
       </template>
     </van-field>
 
@@ -258,7 +254,14 @@
 
       <template #input>
         <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.itemList" :key="index" :title="item.name">
+          <TableCard
+            v-for="(item, index) in form.itemList"
+            :key="index"
+            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+            :default-collapse="index !== 0"
+            :title="item.name"
+            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
+          >
             <PurchaseCategorySelect
               v-model="item.psiId"
               v-model:dept-id="item.subjectItemDeptId"
@@ -370,7 +373,6 @@
               "
             />
 
-            <!-- TODO 数字类型回显失败 -->
             <DictSelect
               v-if="!isYwl && isProject"
               v-model="item.taxRate"
@@ -571,6 +573,9 @@ import { getBusinessTypeByPsId } from '@/api/oa/business/project'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { useUserStore } from '@/store/user'
 import { isNumeric } from '@/utils'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -593,6 +598,9 @@ const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const TableCardRefs = ref<TableCardType[]>([])
+
 // 采购-业务类别、项目-业务类别、服务类别、发票类型、税率
 const { oa_purchase_business_type, oa_project_business_type, oa_purchase_service_category, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(
   proxy.useDict(
@@ -742,7 +750,7 @@ async function onPsIdChange(val: string) {
 }
 
 // 采购类型选择
-function onTypeChange(val?: string) {
+function onTypeChange(_?: string) {
   resetFields(['serviceCategory', 'leaseType', 'isDeposit'])
 }
 

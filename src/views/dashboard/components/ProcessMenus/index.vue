@@ -1,22 +1,24 @@
 <template>
   <van-collapse v-model="activeNames" v-loading="loading">
-    <van-collapse-item v-for="(menus, title) in menusMap" :key="title" :name="title" :border="false">
-      <template #title>
-        <div class="font-bold text-base">
-          {{ title }}
-        </div>
-      </template>
-      <div class="grid grid-cols-4 gap-x-6 gap-y-3">
-        <div v-for="item in menus" :key="item.id" class="w-16 h-full flex flex-col items-center gap-2" @click="handleItemClick(item)">
-          <div class="w-12 h-12 bg-blue-500/20 text-white rounded-xl flex items-center justify-center">
-            <i :class="`iconfont text-2xl text-blue-500 icon-${item.processKey}`" />
+    <template v-for="(menus, title) in menusMap" :key="title">
+      <van-collapse-item v-if="title !== '财务'" :name="title" :border="false">
+        <template #title>
+          <div class="font-bold text-base">
+            {{ title }}
           </div>
-          <div class="text-xs text-center">
-            {{ item.procdefName }}
+        </template>
+        <div class="grid grid-cols-4 gap-x-6 gap-y-3">
+          <div v-for="item in menus" :key="item.id" class="w-16 h-full flex flex-col items-center gap-2" @click="handleItemClick(item)">
+            <div class="w-12 h-12 bg-blue-500/20 text-white rounded-xl flex items-center justify-center">
+              <i :class="`iconfont text-2xl text-blue-500 icon-${item.processKey}`" />
+            </div>
+            <div class="text-xs text-center">
+              {{ item.procdefName }}
+            </div>
           </div>
         </div>
-      </div>
-    </van-collapse-item>
+      </van-collapse-item>
+    </template>
   </van-collapse>
 </template>
 

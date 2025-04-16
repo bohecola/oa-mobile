@@ -47,7 +47,10 @@
         <TableCard
           v-for="(item, index) in form.itemList"
           :key="item.id"
+          :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
+          :default-collapse="index !== 0"
           :title="formatCurrency(item.amount)"
+          @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
         >
           <PurchaseCategorySelect
             v-model="item.subjectItemId"
@@ -105,7 +108,9 @@ import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
 import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
-// import ContractSelect from '@/views/modules/business/components/ContractSelect/index.vue'
+import TableCard from '@/components/TableCard/index.vue'
+
+type TableCardType = InstanceType<typeof TableCard>
 
 withDefaults(
   defineProps<{
@@ -119,6 +124,8 @@ withDefaults(
 const { user } = useStore()
 
 const form = inject<Ref<DailyFeeForm>>('form')
+
+const TableCardRefs = ref<TableCardType[]>([])
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
