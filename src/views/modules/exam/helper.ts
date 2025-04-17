@@ -108,11 +108,14 @@ export function useExam(options: ExamOptions) {
   // 当前题目答案
   const currentAnswer = ref<string>(undefined)
 
-  // 当前回答是否正确
-  const isCurrentCorrect = computed(() => isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer))
+  // 当前题目答案排序后
+  const currentAnswerSorted = computed(() => isNil(currentAnswer.value) ? undefined : sortBy(currentAnswer.value).join(''))
 
   // 题目列表
   const itemList = ref<ExamHistoryRecordVO[]>([])
+
+  // 当前回答是否正确
+  const isCurrentCorrect = computed(() => isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer))
 
   // 考试类型
   const isMockExam = computed(() => proxy.$route.path === '/mock-exam')
@@ -276,7 +279,7 @@ export function useExam(options: ExamOptions) {
     // 保存答题记录
     for (const item of itemList.value) {
       if (item.currentIndex === currentIndex.value) {
-        item.userAnswer = currentAnswer.value
+        item.userAnswer = currentAnswerSorted.value
         item.isCorrect = isCorrect ? 'Y' : 'N'
 
         await updateExamRecord(item as UpdateExamRecordData)
@@ -322,7 +325,7 @@ export function useExam(options: ExamOptions) {
     if (isLast.value) {
       closeLoading()
 
-      // 内部考试、内部考试
+      // 内部考试、面试考试
       if (isRealExam.value) {
         // 提示交卷
         confirm('答题已结束，请确认交卷')
@@ -392,6 +395,7 @@ export function useExam(options: ExamOptions) {
     currentQuestion,
     itemList,
     currentAnswer,
+    currentAnswerSorted,
     isCurrentCorrect,
     unAnsweredCount,
     correctCount,

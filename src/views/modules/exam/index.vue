@@ -75,7 +75,7 @@
             <span>答案</span>
             <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
             <span>您选择</span>
-            <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswer }}</span>
+            <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswerSorted }}</span>
           </div>
 
           <div class="p-2">
@@ -197,6 +197,7 @@ const {
   currentQuestion,
   currentOptions,
   currentAnswer,
+  currentAnswerSorted,
   isCurrentCorrect,
 
   // 答题记录
