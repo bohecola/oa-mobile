@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { isNil, isNumber } from 'lodash-es'
+import { isNil } from 'lodash-es'
 import { useParentForm, usePopup } from '@/hooks'
 import { getCompany } from '@/api/oa/personnel/userContract'
 

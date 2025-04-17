@@ -41,7 +41,6 @@
       position="bottom"
       round
       destroy-on-close
-      safe-area-inset-top
       safe-area-inset-bottom
     >
       <NavBar
@@ -382,7 +381,7 @@ watch(
 
 <style lang="scss" scoped>
 $topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
-$bottomHeight: theme('spacing.14');
+$bottomHeight: calc(theme('spacing.14') + env(safe-area-inset-bottom));
 
 .search-list {
   height: calc(100vh - $topHeight - $bottomHeight);

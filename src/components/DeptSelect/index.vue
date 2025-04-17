@@ -26,10 +26,9 @@
     <van-popup
       v-if="!isReadonly"
       v-model:show="visible"
-      class="h-full"
+      class="h-[80%]"
       position="bottom"
       teleport="body"
-      round
       destroy-on-close
       safe-area-inset-bottom
       @click-overlay="onCancel"
@@ -39,7 +38,7 @@
         @cancel="onCancel"
         @confirm="onConfirm(ids)"
       />
-      <div class="py-2 px-4 h-[calc(100vh-var(--van-picker-toolbar-height)-env(safe-area-inset-bottom))] overflow-y-auto">
+      <div class="py-2 px-4 h-[calc(100%-44px-env(safe-area-inset-bottom))] overflow-y-auto">
         <BaseTree
           ref="BaseTreeRef"
           v-model="treeData"

@@ -48,6 +48,7 @@
     v-model="form.contractNo" v-show-field="['contractNo', includeFields]"
     label="合同编号"
     name="contractNo"
+    readonly
   />
 
   <van-field
