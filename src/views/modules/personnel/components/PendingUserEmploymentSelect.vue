@@ -85,7 +85,7 @@
           @click="onCellClick(item)"
         >
           <template #label>
-            <div class="grid grid-cols-1 text-gray-400">
+            <div class="grid grid-cols-1 gap-1 text-gray-400">
               <CellLabelItem
                 v-for="d in labelDescriptors"
                 :key="d.key"

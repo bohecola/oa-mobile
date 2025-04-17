@@ -13,7 +13,7 @@
   >
     <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
-      <span class=" text-blue-600">查看</span>
+      <span v-if="showViewBtn" class=" text-blue-600">查看</span>
     </template>
   </van-field>
 
