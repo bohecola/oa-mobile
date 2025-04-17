@@ -1,4 +1,4 @@
-import { isNil } from 'lodash-es'
+import { isEqual, isNil, sortBy } from 'lodash-es'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import Big from 'big.js'
@@ -109,7 +109,7 @@ export function useExam(options: ExamOptions) {
   const currentAnswer = ref<string>(undefined)
 
   // 当前回答是否正确
-  const isCurrentCorrect = computed(() => currentAnswer.value === currentQuestion.value.correctAnswer)
+  const isCurrentCorrect = computed(() => isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer))
 
   // 题目列表
   const itemList = ref<ExamHistoryRecordVO[]>([])
@@ -174,6 +174,11 @@ export function useExam(options: ExamOptions) {
 
   // 是否最后一题
   const isLast = computed(() => currentIndex.value === itemList.value.length)
+
+  // 判断作答是否正确
+  function isAnswerEqual(answer: string, correctAnswer: string) {
+    return isEqual(sortBy(answer), sortBy(correctAnswer))
+  }
 
   // 根据是否正确获取数量
   function getCountByCorrect(correct: 'Y' | 'N') {
@@ -266,7 +271,7 @@ export function useExam(options: ExamOptions) {
   // 保存答题纪录
   async function updateItem() {
     // 答案是否正确
-    const isCorrect = currentAnswer.value === currentQuestion.value.correctAnswer
+    const isCorrect = isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer)
 
     // 保存答题记录
     for (const item of itemList.value) {
