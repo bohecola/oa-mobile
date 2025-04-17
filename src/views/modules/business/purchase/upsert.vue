@@ -518,7 +518,7 @@
                   icon="delete"
                   size="small"
                   :disabled="form.itemList.length === 1"
-                  @click="form.itemList.splice(index, 1)"
+                  @click="handleRemove(item, index)"
                 />
               </div>
             </template>
@@ -880,6 +880,17 @@ watch(
     immediate: true,
   },
 )
+
+// 采购清单删除
+function handleRemove(_: any, index: number) {
+  const { confirm } = proxy.$modal
+
+  confirm('是否删除这条数据？')
+    .then(() => {
+      form.value.itemList.splice(index, 1)
+    })
+    .catch(() => {})
+}
 
 watch([isYwl, isDept], ([isYwlVal, isDeptVal]) => {
   if (isYwlVal || isDeptVal) {

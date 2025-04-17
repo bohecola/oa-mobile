@@ -3,6 +3,7 @@
     v-model="form.reason"
     v-show-field="['reason', includeFields]"
     name="reason"
+    type="textarea"
     label="申请事由"
     value-class="flex-nowrap"
     rows="1"
