@@ -23,6 +23,7 @@
       position="bottom"
       class="h-[60vh]"
       destroy-on-close
+      safe-area-inset-bottom
       @closed="onClosePopup"
     >
       <div class="h-10 leading-10 border-b text-center font-bold">

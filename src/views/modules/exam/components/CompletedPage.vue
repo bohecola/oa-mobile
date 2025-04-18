@@ -66,7 +66,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const isPassed = computed(() => {
   const { paper, totalScore } = props
-  return totalScore >= paper.passScore
+  return Number(totalScore) >= Number(paper.passScore)
 })
 
 const color = computed(() => {
