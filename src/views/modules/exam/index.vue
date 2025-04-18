@@ -11,7 +11,7 @@
       />
     </WarpBackground>
 
-    <div v-if="examStatus === 'inProgress' || examStatus === 'view'" class="h-full">
+    <div v-if="examStatus === 'inProgress' || examStatus === 'view'" class="h-full select-none">
       <NavBar
         :title="`倒计时 ${remainingTime}`"
         :is-left-click-back="false"
