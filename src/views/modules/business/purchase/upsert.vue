@@ -394,16 +394,12 @@
 
             <van-field-number
               v-if="!isYwl && isProject"
-              v-model.number="item.amount"
+              :model-value="item.amount"
               :name="`itemList.${index}.amount`"
               label="不含税单价(元)"
               placeholder="自动计算"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.amount) }}
-              </template>
-            </van-field-number>
+            />
 
             <van-field-number
               v-if="includeFields.includes('realAmount')"
@@ -415,60 +411,48 @@
 
             <van-field-number
               v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
-              v-model.number="item.realAmount"
+              :model-value="item.realAmount"
               :name="`itemList.${index}.realAmount`"
               label="不含税实际单价(元)"
               placeholder="自动计算"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.realAmount) }}
-              </template>
-            </van-field-number>
+            />
 
-            <van-field-number
+            <van-field
+              :model-value="item.realAmount"
               :name="`itemList.${index}.taxTotalAmount`"
               label="含税合计(元)"
               placeholder="自动求和"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.taxTotalAmount) }}
-              </template>
-            </van-field-number>
+            />
+
             <van-field-number
               v-if="!isYwl && isProject"
+              :model-value="item.totalAmount"
               :name="`itemList.${index}.totalAmount`"
               label="不含税合计(元)"
               placeholder="自动求和"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.totalAmount) }}
-              </template>
-            </van-field-number>
+            />
+
             <van-field-number
               v-if="includeFields.includes('realAmount')"
+              :model-value="item.taxRealTotalAmount"
               :name="`itemList.${index}.taxRealTotalAmount`"
               label="含税实际合计(元)"
               placeholder="自动求和"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.taxRealTotalAmount) }}
-              </template>
-            </van-field-number>
+            />
+
             <van-field-number
               v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
+              :model-value="item.realTotalAmount"
               :name="`itemList.${index}.realTotalAmount`"
               label="不含税实际合计(元)"
               placeholder="自动求和"
               disabled
-            >
-              <template #input>
-                {{ formatCurrency(item.realTotalAmount) }}
-              </template>
-            </van-field-number>
+            />
+
             <van-field
               v-model="item.inquiryWay"
               :name="`itemList.${index}.inquiryWay`"
