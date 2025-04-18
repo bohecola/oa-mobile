@@ -224,6 +224,10 @@ function onFieldClick() {
     return
   }
 
+  if (attrs?.disabled) {
+    return
+  }
+
   openPopup()
 }
 

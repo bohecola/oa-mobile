@@ -241,6 +241,10 @@ function onFieldClick() {
     return
   }
 
+  if (props?.disabled) {
+    return
+  }
+
   openPopup()
 
   // 回显选中效果

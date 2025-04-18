@@ -124,6 +124,10 @@ function onClear() {
 
 // 选项点击
 function onFieldClick() {
+  if (attrs?.disabled) {
+    return
+  }
+
   openPopup()
 }
 

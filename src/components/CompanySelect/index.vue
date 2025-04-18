@@ -113,6 +113,10 @@ function onConfirm({ selectedValues }) {
 
 // 选择框点击
 function onFieldClick() {
+  if (attrs?.disabled) {
+    return
+  }
+
   openPopup()
 }
 
