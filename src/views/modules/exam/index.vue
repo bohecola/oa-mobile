@@ -5,6 +5,7 @@
       class="w-full h-full flex items-center justify-center warp-background"
     >
       <LaunchPage
+        ref="LaunchPageRef"
         :paper="paper"
         :paper-status="paperStatus"
         @submit="onSubmitExaminee"
@@ -164,8 +165,10 @@ import { usePopup } from '@/hooks'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
+const LaunchPageRef = ref<InstanceType<typeof LaunchPage>>()
+
 // 参数
-const { paperId, examId, type } = proxy.$route.query
+const { paperId, examId, type, iouId } = proxy.$route.query
 
 // 提示
 const { loading, closeLoading, confirm, msg } = proxy.$modal
@@ -334,6 +337,11 @@ onMounted(async () => {
   // 模拟考试
   if (isMockExam.value) {
     await doExam('mock')
+  }
+
+  // 微信公众号中转页面自动登录
+  if (['effective', 'expired'].includes(paperStatus.value) && !isNil(iouId)) {
+    LaunchPageRef.value?.doManualLogin()
   }
 })
 </script>

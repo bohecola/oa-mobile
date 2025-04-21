@@ -98,6 +98,14 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/modules/exam/index.vue'),
   },
   {
+    path: '/wechat-exam-entry',
+    meta: {
+      title: '微信公众号考试入口',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/wechat-entry.vue'),
+  },
+  {
     path: '/my',
     component: Layout,
     meta: {

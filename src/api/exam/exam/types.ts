@@ -218,6 +218,7 @@ export interface DoExamQrCodeParams {
   paperId: string
   userName: string
   phonenumber: string
+  iouId?: string
 }
 
 /**

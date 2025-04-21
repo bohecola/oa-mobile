@@ -84,14 +84,15 @@ const emit = defineEmits(['submit'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const { paperId } = proxy.$route.query
+const { paperId, iouId, userName, phonenumber } = proxy.$route.query
 
 const Form = ref<FormInstance>()
 
 const form = reactive<DoExamQrCodeParams>({
   paperId: paperId as string,
-  userName: undefined,
-  phonenumber: undefined,
+  iouId: iouId as string,
+  userName: userName as string,
+  phonenumber: phonenumber as string,
 })
 
 function onSubmit() {
@@ -103,4 +104,8 @@ function onSubmit() {
       console.error(err)
     })
 }
+
+defineExpose({
+  doManualLogin: onSubmit,
+})
 </script>

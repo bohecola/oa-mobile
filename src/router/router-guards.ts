@@ -2,7 +2,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useStore } from '@/store'
 
-export const whitePathList = ['/login', '/404', '/social-callback', '/external-exam', '/internal-exam']
+export const whitePathList = ['/login', '/404', '/social-callback', '/external-exam', '/internal-exam', '/wechat-exam-entry']
 
 export function createRouterGuards(router: Router) {
   // 全局前置路由守卫
