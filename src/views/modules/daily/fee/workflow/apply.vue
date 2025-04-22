@@ -35,6 +35,7 @@
               v-model:wf-remark="form.wfRemark"
               v-model:present-text="presentText"
               v-model:is-default-page="isDefaultPage"
+              :readonly="dailyTypeSelectReadOnly"
               type="1"
               @before-finish="onDailyTypeBeforeFinish"
             />

@@ -49,10 +49,10 @@ const props = withDefaults(
     placeholder?: string
     popupOnly?: boolean
     type?: string
+    readonly?: boolean
   }>(),
   {
     placeholder: '请选择事务类别',
-    popupOnly: false,
     // 0 事务、1 费用
     type: '0',
   },
@@ -89,7 +89,7 @@ const presentText = computed(() => {
 
 async function getData() {
   isLoading.value = true
-  const res = await queryByParentDaily(props.type).finally(() => (isLoading.value = false))
+  const res = await queryByParentDaily(props.type, props.readonly ? 'N' : 'Y').finally(() => (isLoading.value = false))
   data.value = res.data
 }
 

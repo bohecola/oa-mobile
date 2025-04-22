@@ -65,9 +65,9 @@ export function delDailyWorkType(id: string | number | Array<string | number>) {
 /**
  * 根据事务类型查询部门列表
  */
-export function queryByParentDaily(type: string): AxiosPromise<DailyWorkTypeVO[]> {
+export function queryByParentDaily(type: string, isAuth: string): AxiosPromise<DailyWorkTypeVO[]> {
   return request({
-    url: `/oa/daily/dailyWorkType/queryByParentDaily/${type}`,
+    url: `/oa/daily/dailyWorkType/queryByParentDaily/${type}/${isAuth}`,
     method: 'get',
   })
 }
