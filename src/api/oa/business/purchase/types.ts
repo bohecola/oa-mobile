@@ -364,6 +364,11 @@ export interface PurchaseQuery extends PageQuery {
   ids?: string[]
 
   /**
+   * 搜索关键词
+   */
+  keyword?: string
+
+  /**
    * 日期范围参数
    */
   params?: any

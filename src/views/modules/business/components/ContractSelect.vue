@@ -52,7 +52,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="请输入搜索关键词"
+          placeholder="流程ID/名称/合同编号/申请人"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -130,8 +130,8 @@
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useContractSelect, useParentForm, usePopup, useSerializer } from '@/hooks'
-import type { ContractQuery, ContractVO } from '@/api/oa/business/contract/types'
 import { listContract } from '@/api/oa/business/contract'
+import type { ContractQuery, ContractVO } from '@/api/oa/business/contract/types'
 
 const props = withDefaults(
   defineProps<{
@@ -186,6 +186,7 @@ const queryParams: ContractQuery = reactive({
   statusList: [2, 3, 4],
   businessKey: undefined,
   createUserName: undefined,
+  keyword: undefined,
   params: {},
 })
 
@@ -230,14 +231,22 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.name = searchText.value
+  queryParams.keyword = searchText.value
 }
 
 // 搜索
-function onSearch() {
-  queryParams.name = searchText.value
+async function onSearch() {
+  finished.value = false
+
+  queryParams.keyword = searchText.value
   queryParams.pageNum = 1
-  getList()
+  await getList()
+
+  if (list.value.length < queryParams.pageSize) {
+    return finished.value = true
+  }
+
+  queryParams.pageNum++
 }
 
 // 触底加载

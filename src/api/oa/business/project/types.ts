@@ -191,6 +191,8 @@ export interface ProjectQuery extends PageQuery {
 
   statusList?: (string | number)[]
 
+  keyword?: string
+
   /**
    * 日期范围参数
    */

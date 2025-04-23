@@ -52,7 +52,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="请输入搜索关键词"
+          placeholder="项目名称"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -187,6 +187,7 @@ const queryParams: ProjectQuery = reactive({
   businessType: undefined,
   status: undefined,
   statusList: [2, 3, 4, 5],
+  keyword: undefined,
   params: {},
 })
 
@@ -234,14 +235,22 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.name = searchText.value
+  queryParams.keyword = searchText.value
 }
 
 // 搜索
-function onSearch() {
-  queryParams.name = searchText.value
+async function onSearch() {
+  finished.value = false
+
+  queryParams.keyword = searchText.value
   queryParams.pageNum = 1
-  getList()
+  await getList()
+
+  if (list.value.length < queryParams.pageSize) {
+    return finished.value = true
+  }
+
+  queryParams.pageNum++
 }
 
 // 触底加载

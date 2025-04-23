@@ -53,7 +53,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="请输入搜索关键词"
+          placeholder="姓名"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -189,6 +189,7 @@ const queryParams: UserPreEmploymentQuery = reactive({
   isOwnerInterview: undefined,
   isProbation: undefined,
   probationCycle: undefined,
+  keyword: undefined,
   status: '3',
 })
 
@@ -232,14 +233,22 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.name = searchText.value
+  queryParams.keyword = searchText.value
 }
 
 // 搜索
-function onSearch() {
-  queryParams.name = searchText.value
+async function onSearch() {
+  finished.value = false
+
+  queryParams.keyword = searchText.value
   queryParams.pageNum = 1
-  getList()
+  await getList()
+
+  if (list.value.length < queryParams.pageSize) {
+    return finished.value = true
+  }
+
+  queryParams.pageNum++
 }
 
 // 触底加载

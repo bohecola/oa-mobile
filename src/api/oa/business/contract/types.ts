@@ -319,6 +319,8 @@ export interface ContractQuery extends PageQuery {
   statusList?: (string | number)[]
 
   createUserName?: string
+
+  keyword?: string
   /**
    * 预算id
    */

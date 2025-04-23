@@ -53,7 +53,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="请输入搜索关键词（搜索时查询全部预算）"
+          placeholder="名称/合同编号(搜索时查询全部预算)"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -253,11 +253,18 @@ function onSearchClear() {
 }
 
 // 搜索
-function onSearch() {
+async function onSearch() {
+  finished.value = false
+
   queryParams.keyword = searchText.value
   queryParams.pageNum = 1
+  await getList(!isNil(props.params.deptDeptId) ? undefined : { projectDeptId: undefined })
 
-  getList(!isNil(props.params.deptDeptId) ? undefined : { projectDeptId: undefined })
+  if (list.value.length < queryParams.pageSize) {
+    return finished.value = true
+  }
+
+  queryParams.pageNum++
 }
 
 // 触底加载

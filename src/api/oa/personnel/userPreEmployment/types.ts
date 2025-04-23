@@ -308,6 +308,11 @@ export interface UserPreEmploymentQuery extends Partial<PageQuery> {
   status?: string
 
   /**
+   * 搜索关键词
+   */
+  keyword?: string
+
+  /**
    * 日期范围参数
    */
   params?: any

@@ -52,7 +52,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="请输入搜索关键词"
+          placeholder="流程ID/申请人"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -189,6 +189,7 @@ const queryParams: PurchaseQuery = reactive({
   status: undefined,
   statusList: [2, 4],
   businessKey: undefined,
+  keyword: undefined,
   params: {},
 })
 
@@ -233,14 +234,22 @@ function onFieldClick() {
 
 // 输入清空
 function onSearchClear() {
-  queryParams.createUserName = searchText.value
+  queryParams.keyword = searchText.value
 }
 
 // 搜索
-function onSearch() {
-  queryParams.createUserName = searchText.value
+async function onSearch() {
+  finished.value = false
+
+  queryParams.keyword = searchText.value
   queryParams.pageNum = 1
-  getList()
+  await getList()
+
+  if (list.value.length < queryParams.pageSize) {
+    return finished.value = true
+  }
+
+  queryParams.pageNum++
 }
 
 // 触底加载
