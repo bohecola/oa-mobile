@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="tsx">
-import { isEmpty } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import { showDialog } from 'vant'
 import InvoiceInfomation from './InvoiceInfomation.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
@@ -37,9 +37,10 @@ import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
 type DailyForm = DailyWorkForm & DailyFeeForm
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyForm>
+    formValue?: DailyWorkForm | DailyFeeForm
   }>(),
   {
     includeFields: () => ['reason', 'ossIdList'],
@@ -47,7 +48,16 @@ withDefaults(
 )
 
 // 表单
-const form = inject<Ref<DailyForm>>('form')
+const injectForm = inject<Ref<DailyForm>>('form')
+
+const form = computed(() => {
+  if (!isNil(props.formValue)) {
+    return props.formValue
+  }
+
+  return injectForm.value
+})
+
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyForm>(form)
 

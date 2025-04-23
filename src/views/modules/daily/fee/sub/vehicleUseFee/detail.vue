@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseDetail :include-fields="includeFields1" />
+  <FeeBaseDetail :include-fields="includeFields1" :form-value="form" />
   <!-- <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo"  /> -->
 
   <!-- 公共 -->
@@ -7,45 +7,15 @@
     v-model="form.b_vehicleNo"
     v-show-field="['b_vehicleNo', includeFields]"
     label="车牌号"
-    :right-icon="form.no === 'BYWXFY' && showViewBtn ? 'eye-o' : ''"
     name="b_vehicleNo"
-    @click-right-icon="showPicker = true"
+    :right-icon="form.no === 'BYWXFY' && showViewBtn ? 'eye-o' : ''"
+    @click-right-icon="ListPopupRef?.openListPopup"
   >
     <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
-      <span v-if="showViewBtn" class=" text-blue-600">查看</span>
+      <span v-if="showViewBtn" class="text-blue-600">查看</span>
     </template>
   </van-field>
-
-  <van-popup v-model:show="showPicker" destroy-on-close position="bottom" closeable>
-    <van-list
-      v-model:loading="loading"
-      class="pt-10"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <van-cell v-for="item in tableData" :key="item" :title="item.createByName">
-        <template #label>
-          <div>申请人：{{ item.createByName }}</div>
-          <div>申请部门：{{ item.deptName }}</div>
-          <div>申请时间：{{ item.createTime }}</div>
-          <div>申请金额：{{ item.amount }}</div>
-          <div>申请事由：{{ item.reason }}</div>
-        </template>
-        <!-- 使用 right-icon 插槽来自定义右侧图标 -->
-        <template #right-icon>
-          <div class=" text-blue-600" @click="handleDetail(item)">
-            查看车辆详情
-          </div>
-        </template>
-
-        <van-popup v-model:show="showDetail" destroy-on-close position="bottom" closeable>
-          <detail :show-view-btn="false" />
-        </van-popup>
-      </van-cell>
-    </van-list>
-  </van-popup>
 
   <!-- 保养维修 -->
   <van-field
@@ -220,21 +190,23 @@
     name="b_totalAmount"
   />
 
-  <FeeBaseDetail :include-fields="includeFields2" />
+  <FeeBaseDetail :include-fields="includeFields2" :form-value="form" />
+
+  <ListPopup ref="ListPopupRef" :form-value="form" />
 </template>
 
 <script setup lang="ts">
+import { isEmpty } from 'lodash-es'
 import FeeBaseDetail from '../../../components/FeeBaseDetail.vue'
+import ListPopup from './listPopup.vue'
+import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import type { DailyFeeForm, DailyFeeQuery } from '@/api/oa/daily/fee/types'
-import { listDailyFee } from '@/api/oa/daily/fee'
-import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
-import { getVariablesByProcessInstanceId } from '@/api/workflow/task'
 
 const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
     showViewBtn?: boolean
+    vehicleDetail?: DailyFeeForm
   }>(),
   {
     showViewBtn: true,
@@ -242,18 +214,16 @@ const props = withDefaults(
   },
 )
 
-const form = inject<Ref<DailyFeeForm>>('form')
-const showPicker = ref(false)
-const showDetail = ref(false)
-const loading = ref(false)
-const finished = ref(false)
-const total = ref(0)
-const tableData = ref([])
-const queryParams: DailyFeeQuery = reactive({
-  pageNum: 1,
-  pageSize: 10,
-  feeType: form.value.feeType,
-  contentJson: form.value.b_vehicleNo,
+const ListPopupRef = ref<InstanceType<typeof ListPopup>>()
+
+const injectForm = inject<Ref<DailyFeeForm>>('form')
+
+const form = computed(() => {
+  if (!isEmpty(props.vehicleDetail)) {
+    return props.vehicleDetail as DailyFeeForm
+  }
+
+  return injectForm.value
 })
 
 // 指令
@@ -261,49 +231,4 @@ const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)
 
 const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
-
-async function getList() {
-  loading.value = true
-  const res = await listDailyFee(queryParams)
-  tableData.value = res.rows
-  total.value = res.total
-  loading.value = false
-}
-
-async function onLoad() {
-  tableData.value = []
-  try {
-    const { rows } = await listDailyFee(queryParams)
-
-    tableData.value.push(...rows)
-
-    if (rows.length < queryParams.pageSize) {
-      finished.value = true
-    }
-    else {
-      queryParams.pageNum++
-    }
-  }
-  catch (error) {
-    console.error('Error loading data:', error)
-    finished.value = true
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-async function handleDetail(row: any) {
-  showDetail.value = true
-  const { data } = await getActHiProcinstByBusinessKey(row.id)
-
-  const {
-    data: { entity },
-  } = await getVariablesByProcessInstanceId(data.id)
-  form.value = entity
-}
-
-onMounted(() => {
-  getList()
-})
 </script>

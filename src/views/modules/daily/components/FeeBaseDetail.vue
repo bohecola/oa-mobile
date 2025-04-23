@@ -97,7 +97,7 @@
     </template>
   </van-field>
 
-  <BaseDetail :include-fields="includeFields" />
+  <BaseDetail :include-fields="includeFields" :form-value="form" />
 </template>
 
 <script setup lang="ts">
@@ -112,9 +112,10 @@ import TableCard from '@/components/TableCard/index.vue'
 
 type TableCardType = InstanceType<typeof TableCard>
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
+    formValue?: DailyFeeForm
   }>(),
   {
     includeFields: () => ['subjectType', 'psId', 'deptId', 'contractNo', 'itemList', 'amount', 'reason', 'receiptInfo', 'ossIdList'],
@@ -123,7 +124,15 @@ withDefaults(
 
 const { user } = useStore()
 
-const form = inject<Ref<DailyFeeForm>>('form')
+const injectForm = inject<Ref<DailyFeeForm>>('form')
+
+const form = computed(() => {
+  if (!isNil(props.formValue)) {
+    return props.formValue
+  }
+
+  return injectForm.value
+})
 
 const TableCardRefs = ref<TableCardType[]>([])
 
