@@ -53,7 +53,7 @@
             <OpenIcon
               v-if="stat.children.length"
               :open="stat.open"
-              class="mtl-mr [&>svg]:w-6"
+              class="mtl-mr [&>svg]:w-6 dark:fill-white"
               @click.stop="stat.open = !stat.open"
             />
 
@@ -398,3 +398,13 @@ defineExpose({
   selectedLabel,
 })
 </script>
+
+<style lang="scss">
+.mtl-tree {
+  .tree-node {
+    &:hover:where([data-theme-mode=dark], [data-theme-mode=dark] *) {
+      background-color: rgba($color: #666, $alpha: 0.3);
+    }
+  }
+}
+</style>

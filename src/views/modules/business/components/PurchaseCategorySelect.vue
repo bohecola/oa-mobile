@@ -21,7 +21,9 @@
 
       <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
-        <div>{{ selectedLabels.join(',') }}</div>
+        <van-skeleton :loading="isLoading" :row="2" class="!px-0 w-full" round>
+          <div>{{ selectedLabels.join(',') }}</div>
+        </van-skeleton>
       </template>
     </van-field>
 
