@@ -12,103 +12,88 @@
       />
     </WarpBackground>
 
-    <div v-if="examStatus === 'inProgress' || examStatus === 'view'" class="h-full select-none">
-      <NavBar
-        :title="`倒计时 ${remainingTime}`"
-        :is-left-click-back="false"
-        :right-disabled="isLast"
-        title-class="text-red-600"
-        @click-left="onBackClick"
-      >
-        <template v-if="!isRealExam" #right>
-          <span class="text-[--van-primary-color]" @click="onNextQuestion">下一题</span>
-        </template>
-      </NavBar>
+    <ViewPage v-if="isView" :exam-id="examId" :question-type-options="oa_exam_question_type" />
 
-      <!-- 内容 -->
-      <main class="question py-6 px-3 border-b overflow-y-auto bg-[--bg-card]">
-        <div class="flex gap-2">
-          <!-- 题目类型 -->
-          <van-tag :color="getQuestionTypeColor(currentQuestion.type)" size="large">
-            <dict-tag :options="oa_exam_question_type" :value="currentQuestion.type" tag-class="text-base" />
-          </van-tag>
-        </div>
+    <template v-else>
+      <div v-if="examStatus === 'inProgress'" class="h-full select-none">
+        <NavBar
+          :title="`倒计时 ${remainingTime}`"
+          :is-left-click-back="false"
+          :right-disabled="isLast"
+          title-class="text-red-600"
+          @click-left="onBackClick"
+        >
+          <template v-if="!isRealExam" #right>
+            <span class="text-[--van-primary-color]" @click="onNextQuestion">下一题</span>
+          </template>
+        </NavBar>
 
-        <!-- 题干 -->
-        <div v-if="!isEmpty(currentQuestion)" class="my-3 text-lg">
-          <span>{{ `${currentIndex}. ${currentQuestion.content}` }}</span>
-          <span>【{{ currentQuestion.score }}分】</span>
-        </div>
-
-        <!-- 选项 -->
-        <DictSelect
-          v-model="currentAnswer"
-          class="!p-1"
-          label-class="text-base"
-          direction="vertical"
-          group-class="flex flex-col gap-3 w-full text-lg"
-          icon-size="20"
-          separator=""
-          :component="isMultiple ? 'checkbox' : 'radio'"
-          :multiple="isMultiple"
-          :options="currentOptions"
-          :border="false"
-          :disabled="isDisabled"
-          @radio-click="onRadioClick"
-        />
-
-        <div v-if="!isDisabled" class="flex justify-center">
-          <van-button
-            class="my-3 w-[40%]"
-            type="primary"
-            block
-            round
-            size="small"
-            @click="onConfirmAnswer"
-          >
-            确认
-          </van-button>
-        </div>
-
-        <!-- 解析 -->
-        <div v-if="isDisabled && isMockExam" class="mt-3 text-sm rounded">
-          <div class="p-3 flex gap-1 font-bold bg-[--bg-color]">
-            <span>答案</span>
-            <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
-            <span>您选择</span>
-            <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswerSorted }}</span>
+        <!-- 内容 -->
+        <main class="question py-6 px-3 border-b overflow-y-auto bg-[--bg-card]">
+          <div class="flex gap-2">
+            <!-- 题目类型 -->
+            <van-tag :color="getQuestionTypeColor(currentQuestion.type)" size="large">
+              <dict-tag :options="oa_exam_question_type" :value="currentQuestion.type" tag-class="text-base" />
+            </van-tag>
           </div>
 
-          <div class="p-2">
-            <div v-if="currentQuestion.analysis">
-              解析：{{ currentQuestion.analysis }}
+          <!-- 题干 -->
+          <div v-if="!isEmpty(currentQuestion)" class="my-3 text-lg">
+            <span>{{ `${currentIndex}. ${currentQuestion.content}` }}</span>
+            <span>【{{ currentQuestion.score }}分】</span>
+          </div>
+
+          <!-- 选项 -->
+          <DictSelect
+            v-model="currentAnswer"
+            class="!p-1"
+            label-class="text-base"
+            direction="vertical"
+            group-class="flex flex-col gap-3 w-full text-lg"
+            icon-size="20"
+            separator=""
+            :component="isMultiple ? 'checkbox' : 'radio'"
+            :multiple="isMultiple"
+            :options="currentOptions"
+            :border="false"
+            :disabled="isDisabled"
+            @radio-click="onRadioClick"
+          />
+
+          <div v-if="!isDisabled" class="flex justify-center">
+            <van-button
+              class="my-3 w-[40%]"
+              type="primary"
+              block
+              round
+              size="small"
+              @click="onConfirmAnswer"
+            >
+              确认
+            </van-button>
+          </div>
+
+          <!-- 解析 -->
+          <div v-if="isDisabled && isMockExam" class="mt-3 text-sm rounded">
+            <div class="p-3 flex gap-1 font-bold bg-[--bg-color]">
+              <span>答案</span>
+              <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
+              <span>您选择</span>
+              <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswerSorted }}</span>
             </div>
-            <div v-else>
-              暂无解析
+
+            <div class="p-2">
+              <div v-if="currentQuestion.analysis">
+                解析：{{ currentQuestion.analysis }}
+              </div>
+              <div v-else>
+                暂无解析
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <!-- 底部 -->
-      <ActionBar
-        v-if="!isNil(exam)"
-        :correct-count="correctCount"
-        :error-count="errorCount"
-        :current-index="currentIndex"
-        :total-count="paper.totalCount"
-        :paper="paper"
-        :exam-status="examStatus"
-        @list-icon-click="onListIconClick"
-        @submit="onSubmitPaper"
-      />
-
-      <van-popup
-        v-model:show="visible"
-        class="h-[70%]"
-        position="bottom"
-        destroy-on-close
-      >
+        <!-- 底部 -->
         <ActionBar
           v-if="!isNil(exam)"
           :correct-count="correctCount"
@@ -117,48 +102,69 @@
           :total-count="paper.totalCount"
           :paper="paper"
           :exam-status="examStatus"
-          :safe-area-inset-bottom="false"
           @list-icon-click="onListIconClick"
           @submit="onSubmitPaper"
         />
 
-        <div class="h-[calc(100%-var(--van-action-bar-height))] border-t overflow-y-auto">
-          <div class="p-2 grid grid-cols-6 gap-2 place-items-center">
-            <div
-              v-for="item in itemList"
-              :key="item.id"
-              class="h-10 w-10 rounded-full leading-10 border text-center text-sm"
-              :class="{
-                'bg-blue-500/20 text-blue-500': item.isCorrect === 'Y',
-                'bg-red-500/20 text-red-500': item.isCorrect === 'N',
-                'border-blue-500': item.currentIndex === currentIndex && (isNil(item.userAnswer) || item.isCorrect === 'Y'),
-                'border-red-500': item.currentIndex === currentIndex && item.isCorrect === 'N',
-                'border-none': item.currentIndex !== currentIndex && !isNil(item.isCorrect),
-              }"
-              @click="onItemClick(item)"
-            >
-              {{ item.currentIndex }}
+        <van-popup
+          v-model:show="visible"
+          class="h-[70%]"
+          position="bottom"
+          destroy-on-close
+        >
+          <ActionBar
+            v-if="!isNil(exam)"
+            :correct-count="correctCount"
+            :error-count="errorCount"
+            :current-index="currentIndex"
+            :total-count="paper.totalCount"
+            :paper="paper"
+            :exam-status="examStatus"
+            :safe-area-inset-bottom="false"
+            @list-icon-click="onListIconClick"
+            @submit="onSubmitPaper"
+          />
+
+          <div class="h-[calc(100%-var(--van-action-bar-height))] border-t overflow-y-auto">
+            <div class="p-2 grid grid-cols-6 gap-2 place-items-center">
+              <div
+                v-for="item in itemList"
+                :key="item.id"
+                class="h-10 w-10 rounded-full leading-10 border text-center text-sm"
+                :class="{
+                  'bg-blue-500/20 text-blue-500': item.isCorrect === 'Y',
+                  'bg-red-500/20 text-red-500': item.isCorrect === 'N',
+                  'border-blue-500': item.currentIndex === currentIndex && (isNil(item.userAnswer) || item.isCorrect === 'Y'),
+                  'border-red-500': item.currentIndex === currentIndex && item.isCorrect === 'N',
+                  'border-none': item.currentIndex !== currentIndex && !isNil(item.isCorrect),
+                }"
+                @click="onItemClick(item)"
+              >
+                {{ item.currentIndex }}
+              </div>
             </div>
           </div>
-        </div>
-      </van-popup>
-    </div>
+        </van-popup>
+      </div>
 
-    <CompletedPage
-      v-if="examStatus === 'completed'"
-      :total-score="totalScore"
-      :paper="paper"
-      :is-mock-exam="isMockExam"
-      :is-external-exam="isExternalExam"
-    />
+      <CompletedPage
+        v-if="examStatus === 'completed'"
+        :total-score="totalScore"
+        :paper="paper"
+        :is-mock-exam="isMockExam"
+        :is-external-exam="isExternalExam"
+      />
+    </template>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { isEmpty, isNil } from 'lodash-es'
+import type { LocationQueryValue } from 'vue-router'
 import ActionBar from './components/ActionBar.vue'
 import LaunchPage from './components/LaunchPage.vue'
 import CompletedPage from './components/CompletedPage.vue'
+import ViewPage from './components/ViewPage.vue'
 import { getQuestionTypeColor, useExam } from './helper'
 import type { DoExamQrCodeParams, ExamHistoryRecordVO } from '@/api/exam/exam/types'
 import { usePopup } from '@/hooks'
@@ -168,7 +174,10 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const LaunchPageRef = ref<InstanceType<typeof LaunchPage>>()
 
 // 参数
-const { paperId, examId, type, iouId } = proxy.$route.query
+const { paperId, examId, type, iouId } = proxy.$route.query as Record<string, LocationQueryValue>
+
+// 是否查看模式
+const isView = type === 'view'
 
 // 提示
 const { loading, closeLoading, confirm, msg } = proxy.$modal
@@ -236,9 +245,9 @@ const {
   // 退出考试
   exitExam,
 } = useExam({
-  paperId: paperId as string,
-  examId: examId as string,
-  isView: (type as string) === 'view',
+  paperId,
+  examId,
+  isView,
 })
 
 // 输入姓名、手机号确定
@@ -331,17 +340,19 @@ function onSubmitPaper() {
 
 // 页面挂载
 onMounted(async () => {
-  // 获取试卷
-  await fetchPaper()
+  if (!isView) {
+    // 获取试卷
+    await fetchPaper()
 
-  // 模拟考试
-  if (isMockExam.value) {
-    await doExam('mock')
-  }
+    // 模拟考试
+    if (isMockExam.value) {
+      await doExam('mock')
+    }
 
-  // 微信公众号中转页面自动登录
-  if (['effective', 'expired'].includes(paperStatus.value) && !isNil(iouId)) {
-    LaunchPageRef.value?.doManualLogin()
+    // 微信公众号中转页面自动登录
+    if (['effective', 'expired'].includes(paperStatus.value) && !isNil(iouId)) {
+      LaunchPageRef.value?.doManualLogin()
+    }
   }
 })
 </script>

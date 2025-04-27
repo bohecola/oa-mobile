@@ -254,3 +254,31 @@ export interface ExamHistoryRecordVO {
    */
   score?: number
 }
+
+export interface ExamRecordQuery {
+  id?: string
+  examId?: string
+  questionId?: string
+  userAnswer?: string
+  isCorrect?: string
+  score?: number
+  currentIndex?: number
+}
+
+export interface ExamRecordVO {
+  id: string
+  examId: string
+  questionId: string
+  userAnswer: string
+  isCorrect: string
+  score: number
+  currentIndex?: number
+  no: number
+  content: string
+  type: string
+  correctAnswer: string
+  options: string
+  analysis: string
+  category: string
+  difficulty: string
+}

@@ -178,11 +178,6 @@ export function useExam(options: ExamOptions) {
   // 是否最后一题
   const isLast = computed(() => currentIndex.value === itemList.value.length)
 
-  // 判断作答是否正确
-  function isAnswerEqual(answer: string, correctAnswer: string) {
-    return isEqual(sortBy(answer), sortBy(correctAnswer))
-  }
-
   // 根据是否正确获取数量
   function getCountByCorrect(correct: 'Y' | 'N') {
     return itemList.value.reduce((prev, item) => {
@@ -417,6 +412,10 @@ export function useExam(options: ExamOptions) {
 
     stopCountdown,
   }
+}
+// 判断作答是否正确
+export function isAnswerEqual(answer: string, correctAnswer: string) {
+  return isEqual(sortBy(answer), sortBy(correctAnswer))
 }
 
 // 获取题目类型颜色

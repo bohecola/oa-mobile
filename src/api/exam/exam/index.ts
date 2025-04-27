@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
 import type { QuestionVO } from '../question/types'
-import type { DoExamQrCodeParams, ExamForm, ExamQuery, ExamVO, UpdateExamRecordData } from '@/api/exam/exam/types'
+import type { DoExamQrCodeParams, ExamForm, ExamQuery, ExamRecordQuery, ExamRecordVO, ExamVO, UpdateExamRecordData } from '@/api/exam/exam/types'
 import request from '@/service/request'
 
 // 答题完成提交考试
@@ -102,5 +102,14 @@ export function delExam(id: string | Array<string>) {
   return request({
     url: `/exam/exam/${id}`,
     method: 'delete',
+  })
+}
+
+// 查看考试记录明细
+export function queryExamRecordList(params: ExamRecordQuery): AxiosPromise<ExamRecordVO[]> {
+  return request({
+    url: `/exam/exam/queryExamRecordList`,
+    method: 'get',
+    params,
   })
 }
