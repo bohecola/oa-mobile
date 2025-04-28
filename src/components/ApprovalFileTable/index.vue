@@ -5,7 +5,7 @@
         <van-field v-for="(item, index) in historyList" :key="index" :label="item.nickName" input-align="right">
           <template #input>
             <div class="flex justify-end flex-wrap">
-              <UploadFile v-for="file in item.attachmentList" :key="file.contentId" v-model="file.contentId"  readonly />
+              <UploadFile v-for="file in item.attachmentList" :key="file.contentId" v-model="file.contentId" readonly />
             </div>
           </template>
         </van-field>

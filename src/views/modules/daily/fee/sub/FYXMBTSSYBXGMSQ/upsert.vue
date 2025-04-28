@@ -275,7 +275,7 @@
 </template>
 
 <script setup lang="ts">
-import { isEmpty, isNil, result } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyFeeForm } from '@/api/oa/daily/fee/types'

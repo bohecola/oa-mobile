@@ -1,4 +1,3 @@
-import type { AxiosResponse } from 'axios'
 import type { FormInstance } from 'vant'
 import type { InternshipEmploymentForm } from '@/api/oa/personnel/internshipEmployment/types'
 import { addInternshipEmployment, updateInternshipEmployment } from '@/api/oa/personnel/internshipEmployment'

@@ -1,4 +1,3 @@
-import type { AxiosPromise } from 'axios'
 import type { UserInfoForm } from './types'
 import request from '@/service/request'
 
