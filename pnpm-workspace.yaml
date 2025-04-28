@@ -1,0 +1,9 @@
+patchedDependencies:
+  vant: patches/vant.patch
+onlyBuiltDependencies:
+  - '@morev/vue-transitions'
+  - '@parcel/watcher'
+  - esbuild
+  - simple-git-hooks
+  - unrs-resolver
+  - vue-demi
