@@ -162,7 +162,17 @@ async function handleStartWorkflow(options: StartWorkFlowOptions<DailyWorkForm>)
   const { operation, entity, next } = options
   const { initiator } = entity
 
-  const processInstanceName = `${presentText.value?.split(' / ')[1]}-${initiator?.nickName}`
+  const processInstanceName = (() => {
+    const baseText = presentText.value?.split(' / ')[1]
+    const nickName = initiator?.nickName
+
+    // 销售合同编号申请 => 流程名称添加合同编号
+    if (entity.no === 'SWXSHTBH') {
+      return `${baseText}-${entity.pp_contractNo}-${nickName}`
+    }
+
+    return `${baseText}-${nickName}`
+  })()
 
   // 业务提交
   await submit({

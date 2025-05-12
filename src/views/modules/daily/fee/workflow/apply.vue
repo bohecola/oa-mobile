@@ -81,10 +81,16 @@ const trackedFields = ref<KeysOfArray<DailyFeeForm>>(getBaseFields())
 // 动态规则
 const computedRules = computed(() => {
   const newRules: FormRules<DailyFeeForm> = {}
+
   for (const [key, value] of Object.entries(rules.value)) {
     if (trackedFields.value.includes(key as any)) {
       newRules[key] = value
     }
+  }
+
+  // 项目日常费用 => 付款方式 => 必填
+  if (form.value.rootNo === 'XMRCFY') {
+    (newRules.receiptInfo as any)?.paymentWay.forEach((e: any) => (e.required = true))
   }
 
   return newRules

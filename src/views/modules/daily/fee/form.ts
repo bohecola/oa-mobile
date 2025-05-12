@@ -87,7 +87,7 @@ export function useForm() {
       entityName: [{ required: false, message: '单位或个人名称不能为空', trigger: 'onBlur' }],
       invoiceType: [{ required: false, message: '发票类型不能为空', trigger: 'onChange' }],
       taxRate: [{ required: false, message: '税率不能为空', trigger: 'onChange' }],
-      paymentWay: [{ required: false, message: '付款方式不能为空', trigger: 'onBlur' }],
+      paymentWay: [{ required: false, message: '付款方式不能为空', trigger: 'onChange' }],
       accountName: [{ required: false, message: '账户名称不能为空', trigger: 'onBlur' }],
       corporateAccount: [{ required: false, message: '对公账号不能为空', trigger: 'onBlur' }],
       openingBank: [{ required: false, message: '开户行名称不能为空', trigger: 'onBlur' }],

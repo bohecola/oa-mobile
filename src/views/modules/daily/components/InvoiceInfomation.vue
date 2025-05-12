@@ -35,13 +35,14 @@
       name="receiptInfo.paymentWay"
       label="付款方式"
       :readonly="readonly"
+      :rules="(computedRules.receiptInfo as any)?.paymentWay"
       clearable
       @change="onPaymentWayChange"
     />
 
     <template v-if="form.receiptInfo.paymentWay === '0'">
       <van-field
-        v-model.trim="form.receiptInfo.accountName "
+        v-model.trim="form.receiptInfo.accountName"
         name="receiptInfo.accountName"
         label="账户名称"
         placeholder="请输入"
@@ -73,6 +74,8 @@ defineProps<{
 
 // 表单
 const form = inject<Ref<DailyFeeForm & { receiptInfo: ReceiptInfo }>>('form')
+// 校验规则
+const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')
 
 // 付款方式选择
 function onPaymentWayChange() {
