@@ -108,8 +108,24 @@ export function useExam(options: ExamOptions) {
   // 当前题目答案
   const currentAnswer = ref<string>(undefined)
 
+  // 是否是简答题
+  const isFieldQuestion = computed(() => currentQuestion.value.type === '4')
+
+  // 是否是选择题
+  const isSelectQuestion = computed(() => ['1', '2', '3'].includes(currentQuestion.value.type))
+
   // 当前题目答案排序后
-  const currentAnswerSorted = computed(() => isNil(currentAnswer.value) ? undefined : sortBy(currentAnswer.value).join(''))
+  const currentAnswerSorted = computed(() => {
+    if (isNil(currentAnswer.value)) {
+      return undefined
+    }
+
+    if (isFieldQuestion.value) {
+      return currentAnswer.value
+    }
+
+    return sortBy(currentAnswer.value).join('')
+  })
 
   // 题目列表
   const itemList = ref<ExamHistoryRecordVO[]>([])
@@ -268,14 +284,16 @@ export function useExam(options: ExamOptions) {
 
   // 保存答题纪录
   async function updateItem() {
-    // 答案是否正确
-    const isCorrect = isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer)
-
-    // 保存答题记录
     for (const item of itemList.value) {
       if (item.currentIndex === currentIndex.value) {
+        // 设置答案
         item.userAnswer = currentAnswerSorted.value
-        item.isCorrect = isCorrect ? 'Y' : 'N'
+
+        // 选择题 => 设置是否正确
+        if (isSelectQuestion.value) {
+          const isCorrect = isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer)
+          item.isCorrect = isCorrect ? 'Y' : 'N'
+        }
 
         await updateExamRecord(item as UpdateExamRecordData)
         break
@@ -337,7 +355,7 @@ export function useExam(options: ExamOptions) {
     }
 
     // 模拟考试
-    if (isMockExam.value && !isCurrentCorrect.value) {
+    if (isMockExam.value && isSelectQuestion.value && !isCurrentCorrect.value) {
       // 当前题目回答不正确不自动下一题
       closeLoading()
       return
@@ -388,15 +406,19 @@ export function useExam(options: ExamOptions) {
     endTime,
     currentIndex,
     currentQuestion,
-    itemList,
+    currentOptions,
     currentAnswer,
     currentAnswerSorted,
     isCurrentCorrect,
+    isSelectQuestion,
+    isFieldQuestion,
+
+    itemList,
     unAnsweredCount,
     correctCount,
     errorCount,
     totalScore,
-    currentOptions,
+
     isMultiple,
     isDisabled,
     isLast,
@@ -430,6 +452,9 @@ export function getQuestionTypeColor(type: string) {
     // 判断题 => 深橙色
     case '3':
       return '#E67E22'
+    // 简答题 => 浅绿色
+    case '4':
+      return '#1ABC9C'
   }
 }
 

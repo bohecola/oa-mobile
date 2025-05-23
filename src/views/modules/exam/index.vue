@@ -43,8 +43,23 @@
             <span>【{{ currentQuestion.score }}分】</span>
           </div>
 
-          <!-- 选项 -->
+          <!-- 简答题输入框 -->
+          <van-field
+            v-if="isFieldQuestion"
+            v-model.trim="currentAnswer"
+            rows="2"
+            type="textarea"
+            maxlength="200"
+            placeholder="请输入答案"
+            autosize
+            clearable
+            show-word-limit
+            :disabled="isDisabled"
+          />
+
+          <!-- 选择题选项 -->
           <DictSelect
+            v-if="isSelectQuestion"
             v-model="currentAnswer"
             class="!p-1"
             label-class="text-base"
@@ -75,7 +90,7 @@
 
           <!-- 解析 -->
           <div v-if="isDisabled && isMockExam" class="mt-3 text-sm rounded">
-            <div class="p-3 flex gap-1 font-bold bg-[--bg-color]">
+            <div v-if="isSelectQuestion" class="p-3 flex gap-1 font-bold bg-[--bg-color]">
               <span>答案</span>
               <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
               <span>您选择</span>
@@ -211,6 +226,8 @@ const {
   currentAnswer,
   currentAnswerSorted,
   isCurrentCorrect,
+  isSelectQuestion,
+  isFieldQuestion,
 
   // 答题记录
   itemList,
@@ -283,8 +300,8 @@ function onRadioClick() {
 
 // 确认点击
 async function onConfirmAnswer() {
-  if (isNil(currentAnswer.value))
-    return msg('请选择答案')
+  if (isEmpty(currentAnswer.value))
+    return msg(`请${isSelectQuestion.value ? '选择' : '输入'}答案`)
 
   // if (currentAnswer.value.length === 1) {
   //   return msg('请选择多个答案')

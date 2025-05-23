@@ -272,6 +272,7 @@ export interface ExamRecordVO {
   userAnswer: string
   isCorrect: string
   score: number
+  answerScore: number
   currentIndex?: number
   no: number
   content: string

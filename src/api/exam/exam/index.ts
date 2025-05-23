@@ -113,3 +113,12 @@ export function queryExamRecordList(params: ExamRecordQuery): AxiosPromise<ExamR
     params,
   })
 }
+
+// 阅卷 => 简答题
+export function updateAnswerScore(data: ExamRecordVO): AxiosPromise<ExamRecordVO[]> {
+  return request({
+    url: `/exam/exam/updateAnswerScore`,
+    method: 'put',
+    data,
+  })
+}

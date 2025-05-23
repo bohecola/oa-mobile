@@ -1,6 +1,6 @@
 <template>
   <WarpBackground class="w-full h-full flex items-center justify-center warp-background">
-    <h1 class="text-center text-2xl font-bold -translate-y-24">
+    <h1 class="text-center text-2xl font-bold -translate-y-0">
       招聘考试
     </h1>
 
@@ -11,7 +11,7 @@
       input-align="left"
       required="auto"
       scroll-to-error
-      class="py-4 -translate-y-14"
+      class="py-4 translate-y-3"
     >
       <van-cell-group inset>
         <van-field
@@ -37,10 +37,11 @@
         />
       </van-cell-group>
 
-      <div class="m-4 translate-y-6">
+      <div class="m-4 translate-y-2">
         <van-button
           type="primary"
           block
+          round
           :loading="loading"
           @click="onSubmit"
         >

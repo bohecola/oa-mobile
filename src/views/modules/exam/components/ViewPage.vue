@@ -23,7 +23,7 @@
               tag-class="text-base text-nowrap "
             />
           </van-tag>
-          <span :class="{ 'text-red-500': item.isCorrect !== 'Y' }">{{ item.content }}</span>
+          <span :class="{ 'text-red-500': item.isCorrect === 'N' }">{{ item.content }}</span>
           <span>【{{ item.score }}分】</span>
         </div>
 
@@ -36,10 +36,19 @@
           </div>
 
           <div class="mt-3 px-3 py-2 flex gap-1 text-sm font-bold rounded bg-[--bg-color]">
-            <span>答案</span>
-            <span class="text-blue-500">{{ item.correctAnswer }}</span>
-            <span>您选择</span>
-            <span class="font-bold" :class="[isAnswerEqual(item.userAnswer, item.correctAnswer) ? 'text-blue-500' : 'text-red-500']">{{ item.userAnswer }}</span>
+            <!-- 简答题答案 -->
+            <template v-if="item.type === '4'">
+              <span>答：</span>
+              <span class="font-normal">{{ item.userAnswer }}</span>
+            </template>
+
+            <!-- 选择题答案 -->
+            <template v-else>
+              <span>答案</span>
+              <span class="text-blue-500">{{ item.correctAnswer }}</span>
+              <span>您选择</span>
+              <span class="font-bold" :class="[isAnswerEqual(item.userAnswer, item.correctAnswer) ? 'text-blue-500' : 'text-red-500']">{{ item.userAnswer }}</span>
+            </template>
           </div>
 
           <div class="p-2">
@@ -76,7 +85,7 @@ const list = computed(() => {
   })
 })
 
-const errorList = computed(() => list.value.filter(e => e.isCorrect !== 'Y'))
+const errorList = computed(() => list.value.filter(e => e.isCorrect === 'N'))
 
 const currentTab = ref<'all' | 'error'>('all')
 const tabOptions = computed(() => {
