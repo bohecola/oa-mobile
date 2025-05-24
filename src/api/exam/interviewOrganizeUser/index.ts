@@ -5,7 +5,7 @@ import request from '@/service/request'
 /**
  * 微信公众号考试-获取试卷id
  */
-export function getPaperId(params: GetPaperIdParams): AxiosPromise<InterviewOrganizeUserVO> {
+export function getPaperId(params: GetPaperIdParams): AxiosPromise<InterviewOrganizeUserVO[]> {
   return request({
     url: '/exam/interviewOrganizeUser/ignore/getPaperId',
     method: 'get',

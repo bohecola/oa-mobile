@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    A: typeof import('./src/components/A/index.vue')['default']
     ApprovalFileTable: typeof import('./src/components/ApprovalFileTable/index.vue')['default']
     Beam: typeof import('./src/components/WarpBackground/Beam.vue')['default']
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
@@ -19,11 +20,13 @@ declare module 'vue' {
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
     InitiatorInfo: typeof import('./src/components/InitiatorInfo/index.vue')['default']
+    LineShadowText: typeof import('./src/components/LineShadowText/index.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
     PatternBackground: typeof import('./src/components/PatternBackground/PatternBackground.vue')['default']
     PostSelect: typeof import('./src/components/PostSelect/index.vue')['default']
+    RadiantText: typeof import('./src/components/RadiantText/index.vue')['default']
     StatusIcon: typeof import('./src/components/WorkflowPage/status-icon.vue')['default']
     Steps: typeof import('./src/components/WorkflowPage/steps.vue')['default']
     SubmitVerify: typeof import('./src/components/Process/submitVerify.vue')['default']

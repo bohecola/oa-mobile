@@ -1,7 +1,6 @@
 <template>
   <div class="h-full">
     <NavBar
-
       :is-left-click-back="false"
       @click-left="onBackClick"
     >
@@ -32,6 +31,9 @@
             <div v-for="(value, key) in item.options" :key="key">
               <span class="mr-2">{{ key }}.</span>
               <span>{{ value }}</span>
+              <span v-if="isJSON(item.correctAnswer)" class="ml-3 text-sm text-blue-400">
+                {{ JSON.parse(item.correctAnswer)[key] }} 分
+              </span>
             </div>
           </div>
 
@@ -44,10 +46,16 @@
 
             <!-- 选择题答案 -->
             <template v-else>
-              <span>答案</span>
-              <span class="text-blue-500">{{ item.correctAnswer }}</span>
-              <span>您选择</span>
-              <span class="font-bold" :class="[isAnswerEqual(item.userAnswer, item.correctAnswer) ? 'text-blue-500' : 'text-red-500']">{{ item.userAnswer }}</span>
+              <template v-if="isJSON(item.correctAnswer)">
+                <span>您选择</span>
+                <span class="font-bold text-blue-500">{{ item.userAnswer }}</span>
+              </template>
+              <template v-else>
+                <span>答案</span>
+                <span class="text-blue-500">{{ item.correctAnswer }}</span>
+                <span>您选择</span>
+                <span class="font-bold" :class="[isAnswerEqual(item.userAnswer, item.correctAnswer) ? 'text-blue-500' : 'text-red-500']">{{ item.userAnswer }}</span>
+              </template>
             </template>
           </div>
 
@@ -66,6 +74,7 @@
 import { getQuestionTypeColor, isAnswerEqual } from '../helper'
 import { queryExamRecordList } from '@/api/exam/exam'
 import type { ExamRecordVO } from '@/api/exam/exam/types'
+import { isJSON } from '@/utils'
 
 const props = defineProps<{
   examId: string

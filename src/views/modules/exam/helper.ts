@@ -1,4 +1,4 @@
-import { isEqual, isNil, sortBy } from 'lodash-es'
+import { isEqual, isNil, sortBy, toUpper } from 'lodash-es'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import Big from 'big.js'
@@ -7,6 +7,7 @@ import type { QuestionVO } from '@/api/exam/question/types'
 import type { DoExamQrCodeParams, ExamHistoryRecordVO, ExamVO, UpdateExamRecordData } from '@/api/exam/exam/types'
 import { getExamPaper } from '@/api/exam/paper'
 import { doExamMock, doExamQrCode, getExamQuestion, submitExam, updateExamRecord } from '@/api/exam/exam'
+import { isJSON } from '@/utils'
 
 dayjs.extend(duration)
 
@@ -105,7 +106,7 @@ export function useExam(options: ExamOptions) {
   // 当前题目对象
   const currentQuestion = ref<QuestionVO>({})
 
-  // 当前题目答案
+  // 当前题目的用户答案
   const currentAnswer = ref<string>(undefined)
 
   // 是否是简答题
@@ -113,6 +114,9 @@ export function useExam(options: ExamOptions) {
 
   // 是否是选择题
   const isSelectQuestion = computed(() => ['1', '2', '3'].includes(currentQuestion.value.type))
+
+  // 是否是答案为 JSON 字符串的题目
+  const isJsonQuestion = computed(() => isJSON(currentQuestion.value.correctAnswer))
 
   // 当前题目答案排序后
   const currentAnswerSorted = computed(() => {
@@ -291,8 +295,17 @@ export function useExam(options: ExamOptions) {
 
         // 选择题 => 设置是否正确
         if (isSelectQuestion.value) {
-          const isCorrect = isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer)
-          item.isCorrect = isCorrect ? 'Y' : 'N'
+          // JSON 答案选择题
+          if (isJsonQuestion.value) {
+            const optionScoreMap = JSON.parse(currentQuestion.value.correctAnswer)
+            item.score = optionScoreMap[currentAnswer.value]
+            item.isCorrect = 'Y'
+          }
+          else {
+            // 正常选择题
+            const isCorrect = isAnswerEqual(currentAnswer.value, currentQuestion.value.correctAnswer)
+            item.isCorrect = isCorrect ? 'Y' : 'N'
+          }
         }
 
         await updateExamRecord(item as UpdateExamRecordData)
@@ -412,6 +425,7 @@ export function useExam(options: ExamOptions) {
     isCurrentCorrect,
     isSelectQuestion,
     isFieldQuestion,
+    isJsonQuestion,
 
     itemList,
     unAnsweredCount,
@@ -437,7 +451,7 @@ export function useExam(options: ExamOptions) {
 }
 // 判断作答是否正确
 export function isAnswerEqual(answer: string, correctAnswer: string) {
-  return isEqual(sortBy(answer), sortBy(correctAnswer))
+  return isEqual(toUpper(sortBy(answer).toString()), sortBy(correctAnswer).toString())
 }
 
 // 获取题目类型颜色

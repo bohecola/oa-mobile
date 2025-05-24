@@ -1,16 +1,18 @@
 <template>
   <div>
-    <WarpBackground
+    <div
       v-if="examStatus === 'notStart' && isRealExam"
       class="w-full h-full flex items-center justify-center warp-background"
     >
       <LaunchPage
         ref="LaunchPageRef"
+        :class="{ hidden: isExternalExam && paperStatus === 'effective' }"
         :paper="paper"
         :paper-status="paperStatus"
+        class="-translate-y-16"
         @submit="onSubmitExaminee"
       />
-    </WarpBackground>
+    </div>
 
     <ViewPage v-if="isView" :exam-id="examId" :question-type-options="oa_exam_question_type" />
 
@@ -91,10 +93,16 @@
           <!-- 解析 -->
           <div v-if="isDisabled && isMockExam" class="mt-3 text-sm rounded">
             <div v-if="isSelectQuestion" class="p-3 flex gap-1 font-bold bg-[--bg-color]">
-              <span>答案</span>
-              <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
-              <span>您选择</span>
-              <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswerSorted }}</span>
+              <template v-if="isJsonQuestion">
+                <span>您选择</span>
+                <span class="font-bold text-blue-500">{{ currentAnswerSorted }}</span>
+              </template>
+              <template v-else>
+                <span>答案</span>
+                <span class="text-blue-500">{{ currentQuestion.correctAnswer }}</span>
+                <span>您选择</span>
+                <span class="font-bold" :class="[isCurrentCorrect ? 'text-blue-500' : 'text-red-500']">{{ currentAnswerSorted }}</span>
+              </template>
             </div>
 
             <div class="p-2">
@@ -165,6 +173,7 @@
       <CompletedPage
         v-if="examStatus === 'completed'"
         :total-score="totalScore"
+        :exam="exam"
         :paper="paper"
         :is-mock-exam="isMockExam"
         :is-external-exam="isExternalExam"
@@ -228,6 +237,7 @@ const {
   isCurrentCorrect,
   isSelectQuestion,
   isFieldQuestion,
+  isJsonQuestion,
 
   // 答题记录
   itemList,

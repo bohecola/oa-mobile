@@ -1,8 +1,14 @@
 <template>
   <div>
     <div v-if="['effective', 'expired'].includes(paperStatus)">
-      <h1 class="text-center text-2xl font-bold tracking-widest">
+      <h1 class="text-center text-3xl font-bold">
         {{ paper.paperName }}
+        <!-- <LineShadowText
+          class="px-1"
+          :shadow-color="app.currentColorMode === 'dark' ? 'white' : 'black'"
+        >
+          {{ paper.paperName }}
+        </LineShadowText> -->
       </h1>
 
       <van-form
@@ -11,8 +17,8 @@
         label-align="top"
         input-align="left"
         required="auto"
-        scroll-to-error
         class="py-4"
+        scroll-to-error
       >
         <van-cell-group inset>
           <div v-if="paperStatus === 'expired'" class="py-3 px-5 text-center text-xs opacity-50 flex flex-col gap-2">
@@ -46,6 +52,7 @@
         <div class="m-4">
           <van-button
             type="primary"
+            round
             block
             @click="onSubmit"
           >
@@ -74,6 +81,7 @@ import type { FormInstance } from 'vant'
 import type { PaperStatus } from '../helper'
 import type { PaperVO } from '@/api/exam/paper/types'
 import type { DoExamQrCodeParams } from '@/api/exam/exam/types'
+import { useStore } from '@/store'
 
 defineProps<{
   paperStatus: PaperStatus
@@ -81,6 +89,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['submit'])
+
+const { app } = useStore()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 

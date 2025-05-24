@@ -40,6 +40,21 @@ export function isNumeric(value?: any) {
   return isNumber(value) || (!Number.isNaN(Number(value)) && Number.isFinite(Number(value)))
 }
 
+//  是否是为 JSON 字符串
+export function isJSON(str: string) {
+  if (typeof str !== 'string')
+    return false
+  try {
+    const parsed = JSON.parse(str)
+    return typeof parsed === 'object' && parsed !== null
+  }
+  catch (err: any) {
+    console.warn(`${str} 不是有效JSON字符串`)
+
+    return false
+  }
+}
+
 export * from './tree'
 
 export function cn(...inputs: ClassValue[]) {
