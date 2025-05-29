@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4893624 */
-  src: url('iconfont.woff2?t=1744707107550') format('woff2'),
-       url('iconfont.woff?t=1744707107550') format('woff'),
-       url('iconfont.ttf?t=1744707107550') format('truetype');
+  src: url('iconfont.woff2?t=1748398505747') format('woff2'),
+       url('iconfont.woff?t=1748398505747') format('woff'),
+       url('iconfont.ttf?t=1748398505747') format('truetype');
 }
 
 .iconfont {
@@ -13,16 +13,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-contract_phase_flow:before {
+  content: "\e7d7";
+}
+
+.icon-contract_settlement_flow:before {
+  content: "\e65e";
+}
+
 .icon-train_certificate_flow:before {
   content: "\e617";
-}
-
-.icon-tubiaozhizuomoban:before {
-  content: "\e6c1";
-}
-
-.icon-lizhi:before {
-  content: "\e749";
 }
 
 .icon-contract_review_flow:before {
@@ -41,20 +41,12 @@
   content: "\e60a";
 }
 
-.icon-mianshipingjia:before {
-  content: "\e6cc";
-}
-
 .icon-user_transfer_flow:before {
   content: "\e600";
 }
 
 .icon-become_officia_flow:before {
   content: "\e64f";
-}
-
-.icon-yuruzhidangan:before {
-  content: "\e763";
 }
 
 .icon-zhuanzhengshenqing:before {
@@ -69,20 +61,8 @@
   content: "\e6ab";
 }
 
-.icon-yuangongzhuanzheng:before {
-  content: "\e616";
-}
-
-.icon-richangfeiyong:before {
-  content: "\e89b";
-}
-
 .icon-purchase_flow:before {
   content: "\e6b2";
-}
-
-.icon-renshitiaodong1:before {
-  content: "\e601";
 }
 
 .icon-recruit_flow:before {
@@ -99,10 +79,6 @@
 
 .icon-RCFYNEW:before {
   content: "\e636";
-}
-
-.icon-richangfeiyong1:before {
-  content: "\e7a3";
 }
 
 .icon-employment_flow_01:before {

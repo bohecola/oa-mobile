@@ -6,25 +6,25 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "36875224",
+      "name": "合同执行阶段",
+      "font_class": "contract_phase_flow",
+      "unicode": "e7d7",
+      "unicode_decimal": 59351
+    },
+    {
+      "icon_id": "37453489",
+      "name": "公司收入-合同结算",
+      "font_class": "contract_settlement_flow",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
+    },
+    {
       "icon_id": "380535",
       "name": "报名/培训/考试",
       "font_class": "train_certificate_flow",
       "unicode": "e617",
       "unicode_decimal": 58903
-    },
-    {
-      "icon_id": "2152907",
-      "name": "转正审批",
-      "font_class": "tubiaozhizuomoban",
-      "unicode": "e6c1",
-      "unicode_decimal": 59073
-    },
-    {
-      "icon_id": "3186677",
-      "name": "离职",
-      "font_class": "lizhi",
-      "unicode": "e749",
-      "unicode_decimal": 59209
     },
     {
       "icon_id": "4054561",
@@ -55,13 +55,6 @@
       "unicode_decimal": 58890
     },
     {
-      "icon_id": "6935158",
-      "name": "面试评价",
-      "font_class": "mianshipingjia",
-      "unicode": "e6cc",
-      "unicode_decimal": 59084
-    },
-    {
       "icon_id": "6971611",
       "name": "调动",
       "font_class": "user_transfer_flow",
@@ -74,13 +67,6 @@
       "font_class": "become_officia_flow",
       "unicode": "e64f",
       "unicode_decimal": 58959
-    },
-    {
-      "icon_id": "9798374",
-      "name": "40预入职档案",
-      "font_class": "yuruzhidangan",
-      "unicode": "e763",
-      "unicode_decimal": 59235
     },
     {
       "icon_id": "10132487",
@@ -104,32 +90,11 @@
       "unicode_decimal": 59051
     },
     {
-      "icon_id": "11435455",
-      "name": "员工转正",
-      "font_class": "yuangongzhuanzheng",
-      "unicode": "e616",
-      "unicode_decimal": 58902
-    },
-    {
-      "icon_id": "14726942",
-      "name": "日常费用",
-      "font_class": "richangfeiyong",
-      "unicode": "e89b",
-      "unicode_decimal": 59547
-    },
-    {
       "icon_id": "16516742",
       "name": "采购申请",
       "font_class": "purchase_flow",
       "unicode": "e6b2",
       "unicode_decimal": 59058
-    },
-    {
-      "icon_id": "19961760",
-      "name": "人事调动",
-      "font_class": "renshitiaodong1",
-      "unicode": "e601",
-      "unicode_decimal": 58881
     },
     {
       "icon_id": "26850143",
@@ -158,13 +123,6 @@
       "font_class": "RCFYNEW",
       "unicode": "e636",
       "unicode_decimal": 58934
-    },
-    {
-      "icon_id": "42530522",
-      "name": "日常费用",
-      "font_class": "richangfeiyong1",
-      "unicode": "e7a3",
-      "unicode_decimal": 59299
     },
     {
       "icon_id": "42602808",
