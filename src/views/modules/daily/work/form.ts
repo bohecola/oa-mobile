@@ -4,13 +4,6 @@ import { extraInitFormData, extraInitRules } from './extraForm'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { addDailyWork, getDailyWork, updateDailyWork } from '@/api/oa/daily/work/index'
 
-export interface Options<T = any> {
-  operation?: BaseEntity['operation']
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData { id: DailyWorkForm['id'] }
 
 export function useForm() {

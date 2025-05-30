@@ -5,15 +5,9 @@ import type { ProjectSubjectForm } from '@/api/oa/finance/projectSubject/types'
 import { addProjectSubject, getProjectSubject, getProjectSubjectByLoginUser, updateProjectSubject } from '@/api/oa/finance/projectSubject'
 import { getLastLevelNodes } from '@/utils'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
 export type SubmitOptions<T = string> = {
   updateDataStatus?: (data: ProjectSubjectForm) => void
-} & Options<T>
-
-export type ViewOptions = Options
+} & BaseOptions<T>
 
 // 表单
 export function useForm() {
@@ -186,7 +180,7 @@ export function useForm() {
     const { success, fail } = options
 
     await Form.value?.validate()
-      .then(async () => {
+      .then(() => {
         success?.(form.value)
       })
       .catch(fail)

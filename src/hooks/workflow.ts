@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios'
-import { isEmpty } from 'lodash-es'
 import type { LocationQuery } from 'vue-router'
+import { isEmpty, isNil } from 'lodash-es'
 import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 
@@ -70,5 +70,26 @@ export function useWorkflow<T>() {
     oldRouteQuery,
     procdefName,
     resetSubmitFormData,
+  }
+}
+
+export function useWorkflowHelper() {
+  // 流程节点 Key
+  const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey', ref(undefined))
+
+  // 是否是查看流程
+  const isView = inject<Ref<boolean>>('isView', ref(undefined))
+
+  // 是否是业务表单
+  const isBusinessForm = computed(() => isNil(taskDefinitionKey.value))
+
+  // 是否是流程表单
+  const isWorkflowForm = computed(() => !isNil(taskDefinitionKey.value))
+
+  return {
+    taskDefinitionKey,
+    isBusinessForm,
+    isWorkflowForm,
+    isView,
   }
 }

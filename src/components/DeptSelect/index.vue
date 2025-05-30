@@ -110,21 +110,16 @@ interface DataConfig {
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
-    placeholder?: string
     readonly?: boolean
     clearable?: boolean
     multiple?: boolean
-    checkStrictly?: boolean
     withDefaultRootNode?: boolean
     defaultExpandedKeys?: Array<string | number>
     dataConfig?: DataConfig
     params?: Partial<DeptQuery>
     disabled?: boolean
   }>(),
-  {
-    placeholder: '请选择',
-    checkStrictly: undefined,
-  },
+  {},
 )
 
 const emit = defineEmits(['update:modelValue', 'update:value', 'change', 'nodeClick'])

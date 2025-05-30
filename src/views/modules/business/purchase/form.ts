@@ -6,15 +6,6 @@ import { useStore } from '@/store'
 import { getGenerateCode } from '@/api/oa/common'
 import { BusinessCodeEnum } from '@/enums/BusinessCodeEnum'
 
-export interface Options<T = any> {
-  calledForm?: 'bussiness' | 'workflow'
-  operation?: BaseEntity['operation']
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string> = Options<T>
-export type ViewOptions = Options
-
 export interface SuccessData {
   id: PurchaseForm['id']
   no: PurchaseForm['no']
@@ -155,7 +146,7 @@ export function useForm() {
   }
 
   // 回显
-  async function view(id: string | number) {
+  async function view(id: string) {
     isLoading.value = true
     reset()
     const { data } = await getPurchase(id)
@@ -171,7 +162,7 @@ export function useForm() {
 
   // 提交表单
   async function submit(options: SubmitOptions<SuccessData> = {}) {
-    const { operation = 'submit', calledForm, success, fail } = options
+    const { operation = 'submit', calledFrom, success, fail } = options
     form.value.operation = operation
 
     await Form.value?.validate()
@@ -179,7 +170,7 @@ export function useForm() {
         updateLoading.value = true
 
         if (form.value.id) {
-          if (calledForm === 'bussiness') {
+          if (calledFrom === 'bussiness') {
             await updatePurchaseByBussiness(form.value)
           }
           else {
@@ -223,13 +214,13 @@ export function useForm() {
     const { success, fail } = options
     await Form.value?.validate()
       .then(() => {
-        success?.({ ...form.value })
+        success?.(form.value)
       }).catch(fail)
   }
 
   // 工作流中回显
-  function workflowView(entity: any, options?: ViewOptions) {
-    const { success, fail } = options ?? {}
+  function workflowView(entity: any, options: ViewOptions = {}) {
+    const { success, fail } = options
     try {
       reset()
       nextTick(() => {

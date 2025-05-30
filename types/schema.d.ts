@@ -45,6 +45,20 @@ declare global {
     elTagClass?: string
   }
 
+  // 基础选项
+  interface BaseOptions<T = any> {
+    calledFrom?: 'bussiness' | 'workflow'
+    operation?: BaseEntity['operation']
+    success?: (data?: T) => void
+    fail?: (err?: any) => void
+  }
+
+  // 表单提交选项
+  type SubmitOptions<T = string> = BaseOptions<T>
+
+  // 表单回显选项
+  type ViewOptions = BaseOptions
+
   // 选择器自定义 label 字段描述符
   interface LabelDescriptor<T = any> {
     text: string

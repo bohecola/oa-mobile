@@ -227,7 +227,7 @@
 
     <van-field v-show-field="['taxRate', includeFields]">
       <template #label>
-        <span class=" text-red-400 mr-1">*</span>
+        <span class="text-red-400 mr-1">*</span>
         <span>金额/增值税率</span>
       </template>
 

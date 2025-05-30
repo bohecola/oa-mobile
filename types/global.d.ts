@@ -25,7 +25,9 @@ declare global {
   type UpdateRuleRequiredFn = (field: string, required: boolean) => void
 
   type FormRules<T> = {
-    [k in keyof T]?: FieldRule[]
+    [K in keyof T]?: FieldRule[]
+  } & {
+    [key: string]: FieldRule[]
   }
 
   interface Router extends VueRouter {

@@ -316,7 +316,9 @@ export interface ContractQuery extends PageQuery {
 
   status?: string
 
-  statusList?: (string | number)[]
+  statusList?: string[]
+
+  phaseType?: string
 
   createUserName?: string
 

@@ -5,15 +5,6 @@ import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
 import { addDailyFee, getDailyFee, updateDailyFee } from '@/api/oa/daily/fee/index'
 import { useStore } from '@/store'
 
-export interface Options<T = any> {
-  operation?: BaseEntity['operation']
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-
-export type SubmitOptions<T = string> = Options<T>
-export type ViewOptions = Options
-
 interface SuccessData {
   id: DailyFeeForm['id']
   itemList: DailyFeeForm['itemList']

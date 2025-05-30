@@ -185,7 +185,7 @@ const queryParams: ContractQuery = reactive({
   category: undefined,
   projectId: undefined,
   status: undefined,
-  statusList: [2, 3, 4],
+  statusList: ['2', '3', '4'],
   businessKey: undefined,
   createUserName: undefined,
   keyword: undefined,
