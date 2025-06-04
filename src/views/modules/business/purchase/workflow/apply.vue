@@ -177,7 +177,7 @@ const checkDetailFields = ref(
 async function handleStartWorkflow(options: StartWorkFlowOptions<PurchaseForm>) {
   const { operation, entity, next } = options
 
-  const processInstanceName = `${entity.processName}`
+  const processInstanceName = `${entity.processName}(${entity.amount})`
 
   // 业务提交
   await Upsert.value?.submit({
