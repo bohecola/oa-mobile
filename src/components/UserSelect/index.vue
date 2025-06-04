@@ -129,8 +129,6 @@ const props = withDefaults(
     enableDataTransform?: boolean
   }>(),
   {
-    multiple: false,
-    popupOnly: false,
     valueType: 'value',
     enableDataTransform: true,
   },

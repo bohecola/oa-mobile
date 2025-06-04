@@ -1,13 +1,7 @@
 import type { FormInstance } from 'vant'
-import { addDept, getDept, updateDept } from '@/api/system/dept'
 import type { DeptForm } from '@/api/system/dept/types'
+import { addDept, getDept, updateDept } from '@/api/system/dept'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: DeptForm['id']
 }

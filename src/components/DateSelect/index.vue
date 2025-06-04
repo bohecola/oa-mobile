@@ -9,7 +9,7 @@
 
     <van-field
       v-else
-      :model-value="modelValue"
+      :model-value="isEmpty(modelValue) ? modelValue : dayjs(modelValue).format('YYYY-MM-DD')"
       :is-link="!isReadonly"
       placeholder="请选择"
       readonly
@@ -65,7 +65,7 @@
 <script setup lang='ts'>
 import dayjs from 'dayjs'
 import type { CalendarInstance, DatePickerColumnType, PickerOption } from 'vant'
-import { isArray, isNil } from 'lodash-es'
+import { isArray, isEmpty, isNil } from 'lodash-es'
 import { useParentForm, usePopup } from '@/hooks'
 
 const props = withDefaults(

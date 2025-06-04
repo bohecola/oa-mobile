@@ -1,16 +1,11 @@
 import type { FormInstance } from 'vant'
-import { addUserEmploymentHandle, updateUserEmploymentHandle } from '@/api/oa/personnel/pendingEmployment/index'
 import type { UserPendingEmploymentForm } from '@/api/oa/personnel/pendingEmployment/types'
+import { addUserEmploymentHandle, updateUserEmploymentHandle } from '@/api/oa/personnel/pendingEmployment/index'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string > = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: UserPendingEmploymentForm['id']
 }
+
 // 表单
 export function useForm() {
   // 引用

@@ -2,12 +2,6 @@ import type { FormInstance } from 'vant'
 import { addUserTrain, getUserTrain, updateUserTrain } from '@/api/oa/personnel/userTrain'
 import type { OssMessageAllBo, UserTrainForm } from '@/api/oa/personnel/userTrain/types'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: UserTrainForm['id']
   ossMessageAllBoList: UserTrainForm['ossMessageAllBoList']

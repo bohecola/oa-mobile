@@ -2,16 +2,11 @@ import type { FormInstance } from 'vant'
 import type { UserRecruitForm, UserRecruitPostBo } from '@/api/oa/personnel/userRecruit/types'
 import { addUserRecruit, getUserRecruit, updateUserRecruit } from '@/api/oa/personnel/userRecruit'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: UserRecruitForm['id']
   userRecruitPostBoList: UserRecruitForm['userRecruitPostBoList']
 }
+
 export function useForm() {
   // 实例
   const { proxy } = (getCurrentInstance() as ComponentInternalInstance) ?? {}

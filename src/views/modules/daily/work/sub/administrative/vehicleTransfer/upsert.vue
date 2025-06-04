@@ -64,5 +64,5 @@ trackFields(props.includeFields)
 const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 updateRuleRequired('needDepts', false)
 
-const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
+const UserSelectRef = ref<InstanceType<typeof UserSelect>>()
 </script>

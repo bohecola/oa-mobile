@@ -3,13 +3,6 @@ import { addUserTransfer, getUserTransfer, updateUserTransfer } from '@/api/oa/p
 import type { UserTransferForm } from '@/api/oa/personnel/userTransfer/types'
 import { useUserStore } from '@/store/user'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
-
 export interface SuccessData {
   id: UserTransferForm['id']
 }

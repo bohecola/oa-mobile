@@ -4,14 +4,6 @@ import { addAndUpdateUserPreEmploymentAndEmployment, addUserEmployment, listUser
 
 import type { UserEmploymentForm } from '@/api/oa/personnel/userEmployment/types'
 
-export interface Options<T = any> {
-  operation?: BaseEntity['operation']
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
-
 interface SuccessData {
   id?: UserEmploymentForm['id']
   employmentId?: UserEmploymentForm['employmentId']

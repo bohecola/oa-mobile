@@ -1,15 +1,7 @@
 import type { FormInstance } from 'vant'
+import type { UserEmploymentForm } from '@/api/oa/personnel/userApplication/types'
 import { getUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 import { listUserEmployment } from '@/api/oa/personnel/userApplication/index'
-
-import type { UserEmploymentForm } from '@/api/oa/personnel/userApplication/types'
-
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions = Options<string | number>
-export type ViewOptions = Options
 
 // 覆盖表单类型
 // type _UserPreEmploymentForm = Override<UserEmploymentForm, { certificates: string[] }>;

@@ -2,16 +2,10 @@ import type { FormInstance } from 'vant'
 import { addUserPreEmployment, getUserPreEmployment, updateUserPreEmployment } from '@/api/oa/personnel/userPreEmployment'
 import type { UserPreEmploymentEvaluateBo, UserPreEmploymentForm } from '@/api/oa/personnel/userPreEmployment/types'
 
-export interface Options<T = any> {
-  operation?: BaseEntity['operation']
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: UserPreEmploymentForm['id']
 }
+
 // 表单
 export function useForm() {
   // 实例

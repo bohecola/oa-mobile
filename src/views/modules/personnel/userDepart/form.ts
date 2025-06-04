@@ -1,15 +1,8 @@
 import type { FormInstance } from 'vant'
 import type { UserDepartForm } from '@/api/oa/personnel/userDepart/types'
 import { addUserDepart, getUserDepart, updateUserDepart } from '@/api/oa/personnel/userDepart'
-import { useUserStore } from '@/store/user'
-// import useUserStore from '@/store/user'
+import { useStore } from '@/store'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-export type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
 export interface SuccessData {
   id: UserDepartForm['id']
 }
@@ -23,7 +16,7 @@ export function useForm() {
   const Form = ref<FormInstance>()
 
   // 获取当前登录的用户信息
-  const user = useUserStore()
+  const { user } = useStore()
   // 初始数据
   const initFormData: UserDepartForm = {
     id: undefined,

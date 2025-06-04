@@ -1,13 +1,6 @@
 import type { FormInstance } from 'vant'
 import type { UserRegularizationForm } from '@/api/oa/personnel/userRegularization/types'
 
-export interface Options<T = any> {
-  success?: (data?: T) => void
-  fail?: (err?: any) => void
-}
-type SubmitOptions<T = string | number> = Options<T>
-export type ViewOptions = Options
-
 // 表单
 export function useForm() {
   // 实例

@@ -16,7 +16,7 @@
         :class="`overflow-y-auto ${saveOrSubmitVisible ? 'bottom-panel' : ''}`"
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
-          <div id="AFC" class="relative">
+          <div class="relative">
             <!-- 发起人信息 -->
             <InitiatorInfo
               ref="initiatorInfoRef"
