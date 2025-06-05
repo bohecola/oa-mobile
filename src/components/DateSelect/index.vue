@@ -2,14 +2,14 @@
   <div class="w-full">
     <van-field
       v-if="isReadonly"
-      :model-value="modelValue"
+      :model-value="dateFormat(modelValue)"
       readonly
       v-bind="attrs"
     />
 
     <van-field
       v-else
-      :model-value="isEmpty(modelValue) ? modelValue : dayjs(modelValue).format('YYYY-MM-DD')"
+      :model-value="dateFormat(modelValue)"
       :is-link="!isReadonly"
       placeholder="请选择"
       readonly
@@ -114,6 +114,11 @@ const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // Picker 回显值
 const currentDate = computed(() => props.modelValue?.split('-'))
+
+// 格式化显示
+function dateFormat(value: string) {
+  return isEmpty(value) ? value : dayjs(value).format('YYYY-MM-DD')
+}
 
 // 清空点击
 function onClear() {
