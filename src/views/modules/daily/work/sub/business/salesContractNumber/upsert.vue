@@ -55,6 +55,21 @@
   />
 
   <van-field
+    v-model="form.pp_projectLeader"
+    v-show-field="['pp_projectLeader', includeFields]"
+    name="pp_projectLeader"
+    label="项目负责人"
+    placeholder="请选择"
+    :rules="computedRules.pp_projectLeader"
+    is-link
+    @click="UserSelectRef?.open"
+  >
+    <template #input>
+      <UserSelect ref="UserSelectRef" v-model="form.pp_projectLeader" />
+    </template>
+  </van-field>
+
+  <van-field
     v-model.trim="form.pp_remark"
     v-show-field="['pp_remark', includeFields]"
     label="备注"
@@ -73,15 +88,28 @@
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import UserSelect from '@/components/UserSelect/index.vue'
 
 const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['pp_contractCategory', 'pp_contractNature', 'pp_contractNo', 'pp_customerName', 'pp_projectName', 'pp_projectOwnership', 'pp_remark', 'ossIdList'],
+    includeFields: () => [
+      'pp_contractCategory',
+      'pp_contractNature',
+      'pp_contractNo',
+      'pp_customerName',
+      'pp_projectName',
+      'pp_projectOwnership',
+      'pp_projectLeader',
+      'pp_remark',
+      'ossIdList',
+    ],
   },
 )
+
+const UserSelectRef = ref<InstanceType<typeof UserSelect>>()
 
 const form = inject<Ref<DailyWorkForm>>('form')
 

@@ -454,6 +454,7 @@ export interface SWXSHTBH {
   pp_customerName?: string
   pp_projectName?: string
   pp_projectOwnership?: string
+  pp_projectLeader?: string
   pp_remark?: string
 }
 

@@ -317,6 +317,7 @@ const extraInitFormData: DailyWorkForm = {
   pp_customerName: undefined,
   pp_projectName: undefined,
   pp_projectOwnership: undefined,
+  pp_projectLeader: undefined,
   pp_remark: undefined,
 
   // 项目部特殊商业保险购买申请
@@ -644,6 +645,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   pp_customerName: [{ required: true, message: `客户名称${baseMsg}`, trigger: 'onBlur' }],
   pp_projectName: [{ required: true, message: `项目名称${baseMsg}`, trigger: 'onBlur' }],
   pp_projectOwnership: [{ required: true, message: `项目归属${baseMsg}`, trigger: 'onBlur' }],
+  pp_projectLeader: [{ required: true, message: `项目负责人${baseMsg}`, trigger: 'onBlur' }],
 
   // 项目部特殊商业保险购买申请
   qq_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
