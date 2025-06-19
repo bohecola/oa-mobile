@@ -14,7 +14,7 @@ importers:
   .:
     dependencies:
       '@automattic/format-currency':
-        specifier: ^2.0.0
+        specifier: ^2.1.0
         version: 2.1.0
       '@he-tree/vue':
         specifier: ^2.9.4

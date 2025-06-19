@@ -19,7 +19,7 @@
     "lint:lint-staged": "lint-staged"
   },
   "dependencies": {
-    "@automattic/format-currency": "^2.0.0",
+    "@automattic/format-currency": "^2.1.0",
     "@he-tree/vue": "^2.9.4",
     "@morev/vue-transitions": "^3.0.2",
     "@tanstack/vue-query": "^5.55.4",
