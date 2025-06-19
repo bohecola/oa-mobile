@@ -179,8 +179,8 @@ export function useContractSelect() {
       type: 'plain',
     },
     {
-      text: '申请人',
-      key: 'createByName',
+      text: '业务专员',
+      key: 'personInChargeName',
       type: 'plain',
     },
     {

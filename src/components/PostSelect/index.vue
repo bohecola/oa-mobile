@@ -183,7 +183,7 @@ function onPickerConfirm({ selectedValues }) {
   emit('change', value)
 
   const postName = data.value
-    .filter(item => (isArray(value) ? value.includes(item.postId as string) : item.postId === value))
+    .filter(item => (isArray(value) ? value.includes(String(item.postId)) : String(item.postId) === value))
     .map(e => e.postName)
     .join('、')
 

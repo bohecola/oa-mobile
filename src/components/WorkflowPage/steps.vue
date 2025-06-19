@@ -25,7 +25,6 @@
           </div>
         </div>
       </van-step>
-      <!-- <dict-tag :options="wf_business_status" :value="item.status" /> -->
       <!-- TODO 附件 -->
     </van-steps>
     <bottom-line v-if="!loading" />
@@ -34,9 +33,6 @@
 
 <script setup lang='ts'>
 import { service } from '@/service'
-
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { wf_business_status } = toRefs(proxy.useDict('wf_business_status'))
 
 const loading = ref(false)
 const historyList = ref<any[]>([])

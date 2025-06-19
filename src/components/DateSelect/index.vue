@@ -73,7 +73,6 @@ const props = withDefaults(
     modelValue?: string
     component?: 'calendar' | 'date-picker'
     valueFormat?: string
-    rangeSeparator?: string
     readonly?: boolean
     clearable?: boolean
     minDate?: Date
@@ -81,6 +80,7 @@ const props = withDefaults(
     // calendar
     switchMode?: 'none' | 'month' | 'year-month'
     type?: 'single' | 'multiple' | 'range'
+    rangeSeparator?: string
     showConfirm?: boolean
     // date-picker
     columnsType?: DatePickerColumnType[]
@@ -117,7 +117,15 @@ const currentDate = computed(() => props.modelValue?.split('-'))
 
 // 格式化显示
 function dateFormat(value: string) {
-  return isEmpty(value) ? value : dayjs(value).format('YYYY-MM-DD')
+  if (isEmpty(value)) {
+    return value
+  }
+
+  if (props.component === 'date-picker') {
+    return value
+  }
+
+  return dayjs(value).format('YYYY-MM-DD')
 }
 
 // 清空点击

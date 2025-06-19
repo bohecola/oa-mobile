@@ -25,6 +25,7 @@ export function useWorkflow<T>() {
   // 实例
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
+  // 参数
   const { nodeId, type, procdefName: _procdefName } = proxy.$route.query
 
   // 加载
@@ -52,6 +53,16 @@ export function useWorkflow<T>() {
 
   provide('taskDefinitionKey', taskDefinitionKey)
   provide('isView', isView)
+  provide('workflowLoading', workflowLoading)
+  provide('workflowCloseLoading', workflowCloseLoading)
+
+  function workflowLoading() {
+    loading.value = true
+  }
+
+  function workflowCloseLoading() {
+    loading.value = false
+  }
 
   function resetSubmitFormData() {
     submitFormData.value = {
@@ -86,10 +97,16 @@ export function useWorkflowHelper() {
   // 是否是流程表单
   const isWorkflowForm = computed(() => !isNil(taskDefinitionKey.value))
 
+  // 更新流程加载状态
+  const workflowLoading = inject<() => void>('workflowLoading', () => {})
+  const workflowCloseLoading = inject<() => void>('workflowCloseLoading', () => {})
+
   return {
     taskDefinitionKey,
     isBusinessForm,
     isWorkflowForm,
     isView,
+    workflowLoading,
+    workflowCloseLoading,
   }
 }

@@ -54,7 +54,7 @@
         <van-search
           v-model.trim="searchText"
           show-action
-          placeholder="流程ID/名称/合同编号/申请人"
+          placeholder="流程ID/名称/合同编号/业务专员"
           @search="onSearch"
           @clear="onSearchClear"
         >
@@ -188,6 +188,7 @@ const queryParams: ContractQuery = reactive({
   statusList: ['2', '3', '4'],
   businessKey: undefined,
   createUserName: undefined,
+  personInChargeName: undefined,
   keyword: undefined,
   params: {},
 })
