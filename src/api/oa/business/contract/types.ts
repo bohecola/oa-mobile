@@ -128,6 +128,11 @@ export interface ContractVO {
    * 申请人
    */
   createByName: string
+
+  /**
+   * 业务专员
+   */
+  personInChargeName: string
 }
 
 export interface ContractForm extends BaseEntity {

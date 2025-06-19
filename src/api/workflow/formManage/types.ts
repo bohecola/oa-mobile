@@ -2,7 +2,7 @@ export interface FormManageVO {
   /**
    * 主键
    */
-  id: string | number
+  id: string
 
   /**
    * 表单名称
@@ -13,6 +13,7 @@ export interface FormManageVO {
    * 表单类型
    */
   formType: string
+
   /**
    * 表单类型名称
    */
@@ -38,7 +39,7 @@ export interface FormManageForm extends BaseEntity {
   /**
    * 主键
    */
-  id?: string | number
+  id?: string
 
   /**
    * 表单名称

@@ -49,7 +49,7 @@ export function getPageByTaskCopy(query: TaskQuery): AxiosPromise<TaskVO[]> {
 export function updateCopyTaskRead(taskinstId: string, data: { isRead: string }): AxiosPromise {
   return request({
     url: `/workflow/task/updateCopyTaskRead/${taskinstId}`,
-    method: ' put',
+    method: 'put',
     data,
   })
 }

@@ -47,3 +47,13 @@ export function getByTableNameNotDefId(tableName: string, definitionId: string |
     method: 'get',
   })
 }
+
+/**
+ * 根据流程定义KEY查看流程定义
+ */
+export function getWfDefinitionConfig(processKey: string): AxiosPromise<DefinitionConfigVO> {
+  return request({
+    url: `/workflow/definitionConfig/getWfDefinitionConfig/${processKey}`,
+    method: 'get',
+  })
+}

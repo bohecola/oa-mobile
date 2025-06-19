@@ -4,7 +4,7 @@ export interface DefinitionConfigVO {
   /**
    * 主键
    */
-  id: string | number
+  id: string
 
   /**
    * 表名
@@ -14,7 +14,7 @@ export interface DefinitionConfigVO {
   /**
    * 流程定义ID
    */
-  definitionId: string | number
+  definitionId: string
 
   /**
    * 流程KEY
@@ -24,12 +24,20 @@ export interface DefinitionConfigVO {
   /**
    * 流程版本
    */
-  version?: string | number
+  version?: number
 
   /**
    * 备注
    */
   remark: string
+
+  categoryCode?: string
+  categoryName?: string
+  procdefName?: string
+  formName?: string
+  router?: string
+  sortNum?: number
+  nodeId?: string
 
   /**
    * 表单管理
@@ -41,7 +49,7 @@ export interface DefinitionConfigForm extends BaseEntity {
   /**
    * 主键
    */
-  id?: string | number
+  id?: string
 
   /**
    * 表名
@@ -51,7 +59,7 @@ export interface DefinitionConfigForm extends BaseEntity {
   /**
    * 流程定义ID
    */
-  definitionId?: string | number
+  definitionId?: string
 
   /**
    * 流程KEY
@@ -61,7 +69,7 @@ export interface DefinitionConfigForm extends BaseEntity {
   /**
    * 流程版本
    */
-  version?: string | number
+  version?: number
 
   /**
    * 备注
@@ -83,7 +91,7 @@ export interface DefinitionConfigQuery extends PageQuery {
   /**
    * 流程定义ID
    */
-  definitionId?: string | number
+  definitionId?: string
 
   /**
    * 流程KEY
@@ -93,7 +101,7 @@ export interface DefinitionConfigQuery extends PageQuery {
   /**
    * 流程版本
    */
-  version?: string | number
+  version?: number
 
   /**
    * 表单管理
