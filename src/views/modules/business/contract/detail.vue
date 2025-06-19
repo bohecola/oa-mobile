@@ -176,14 +176,11 @@
 
     <van-field v-show-field="['taxRate', includeFields]" label="金额/增值税率">
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard
+        <CoolCardList accordion active-on-register>
+          <CoolCard
             v-for="(item, index) in form.taxRate"
             :key="index"
-            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-            :default-collapse="index !== 0"
             :title="formatCurrency(item.amount)"
-            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
             <van-field
               :model-value="formatCurrency(item.amount)"
@@ -197,8 +194,8 @@
               :name="`taxRate.${index}.taxRate`"
               :options="oa_contract_tax_rate"
             />
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 
@@ -298,11 +295,8 @@ import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect.vue'
 import { useForm } from './form'
-import type { ContractForm } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
+import type { ContractForm } from '@/api/oa/business/contract/types'
 
 withDefaults(
   defineProps<{
@@ -319,8 +313,6 @@ withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 const {
   oa_contract_category_in,

@@ -224,8 +224,13 @@
       </template>
 
       <template v-if="!isEmpty(form.userPreEmploymentEvaluateBoList)" #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`" class="reset-label">
+        <CoolCardList accordion active-on-register>
+          <CoolCard
+            v-for="(item, index) in form.userPreEmploymentEvaluateBoList"
+            :key="index"
+            :title="`# ${index + 1}`"
+            class="reset-label"
+          >
             <van-field
               v-model="item.evaluateItemName"
               :name="`userPreEmploymentEvaluateBoList.${index}.evaluateItemName`"
@@ -245,8 +250,8 @@
               autosize
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             />
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
       <template v-else #input>
         <div class="w-full flex justify-center">

@@ -197,14 +197,11 @@
       label="采购清单"
     >
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard
+        <CoolCardList accordion active-on-register>
+          <CoolCard
             v-for="(item, index) in form.itemList"
             :key="item.id"
-            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-            :default-collapse="index !== 0"
             :title="item.name"
-            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
             <PurchaseCategorySelect
               v-model="item.psiId"
@@ -377,13 +374,13 @@
             <van-field
               v-model="item.remark"
               :name="`itemList.${index}.remark`"
-              type="textarea"
               label="备注"
+              type="textarea"
               rows="1"
               autosize
             />
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 
@@ -428,9 +425,6 @@ import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
 
 withDefaults(
   defineProps<{
@@ -450,8 +444,6 @@ const { user } = useStore()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 // 采购 - 业务类型、项目 - 业务类型、发票类型、税率
 const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(

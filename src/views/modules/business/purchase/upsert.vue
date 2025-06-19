@@ -253,15 +253,32 @@
       </template>
 
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard
+        <CoolCardList accordion active-on-register>
+          <CoolCard
             v-for="(item, index) in form.itemList"
             :key="index"
-            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-            :default-collapse="index !== 0"
             :title="item.name"
-            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
+            <template v-if="!disabledColumn" #footer>
+              <div class="text-right">
+                <van-button
+                  v-if="form.itemList.length - 1 === index"
+                  type="primary"
+                  icon="plus"
+                  size="small"
+                  @click="handleAdd"
+                />
+                <van-button
+                  class="ml-2"
+                  type="danger"
+                  icon="delete"
+                  size="small"
+                  :disabled="form.itemList.length === 1"
+                  @click="handleRemove(item, index)"
+                />
+              </div>
+            </template>
+
             <PurchaseCategorySelect
               v-model="item.psiId"
               v-model:dept-id="item.subjectItemDeptId"
@@ -486,28 +503,8 @@
               :maxlength="255"
               :disabled="disabledColumn"
             />
-
-            <template v-if="!disabledColumn" #footer>
-              <div class="text-right">
-                <van-button
-                  v-if="form.itemList.length - 1 === index"
-                  type="primary"
-                  icon="plus"
-                  size="small"
-                  @click="handleAdd"
-                />
-                <van-button
-                  class="ml-2"
-                  type="danger"
-                  icon="delete"
-                  size="small"
-                  :disabled="form.itemList.length === 1"
-                  @click="handleRemove(item, index)"
-                />
-              </div>
-            </template>
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 
@@ -557,9 +554,6 @@ import { getBusinessTypeByPsId } from '@/api/oa/business/project'
 import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { useUserStore } from '@/store/user'
 import { isNumeric } from '@/utils'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -582,8 +576,6 @@ const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 // 采购-业务类别、项目-业务类别、服务类别、发票类型、税率
 const { oa_purchase_business_type, oa_project_business_type, oa_purchase_service_category, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(

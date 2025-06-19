@@ -204,8 +204,13 @@
       </template>
 
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard v-for="(item, index) in form.userPreEmploymentEvaluateBoList" :key="index" :title="`# ${index + 1}`" class="reset-label">
+        <CoolCardList accordion active-on-register>
+          <CoolCard
+            v-for="(item, index) in form.userPreEmploymentEvaluateBoList"
+            :key="index"
+            :title="`# ${index + 1}`"
+            class="reset-label"
+          >
             <van-field
               v-model="item.evaluateItemName"
               :name="`userPreEmploymentEvaluateBoList.${index}.evaluateItemName`"
@@ -225,8 +230,8 @@
                 <TextareaView :value="item.result" />
               </template>
             </van-field>
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 

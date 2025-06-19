@@ -72,14 +72,11 @@
     </template>
 
     <template #input>
-      <div class="w-full flex flex-col gap-2">
-        <TableCard
+      <CoolCardList accordion active-on-register>
+        <CoolCard
           v-for="(item, index) in form.itemList"
           :key="item.id"
-          :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-          :default-collapse="index !== 0"
           :title="formatCurrency(item.amount)"
-          @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
         >
           <template #footer>
             <div class="text-right">
@@ -162,8 +159,8 @@
             :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
             clearable
           />
-        </TableCard>
-      </div>
+        </CoolCard>
+      </CoolCardList>
     </template>
   </van-field>
 
@@ -181,9 +178,6 @@ import type { DailyFeeForm, DailyFeeItemVO } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
 import { isNumeric } from '@/utils'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -197,8 +191,6 @@ const props = withDefaults(
 const { user } = useStore()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 const form = inject<Ref<DailyFeeForm>>('form')
 const computedRules = inject<Ref<FormRules<DailyFeeForm>>>('computedRules')

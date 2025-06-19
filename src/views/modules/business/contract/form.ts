@@ -134,7 +134,7 @@ export function useForm() {
     const { data } = await getContract(id)
     setContractMode(data.partyD ? 'four' : data.partyC ? 'three' : 'two')
     nextTick(() => {
-      Object.assign(form.value, { ...data, amount: Number(data.amount), taxRate: JSON.parse(data.taxRate) })
+      Object.assign(form.value, { ...data, taxRate: JSON.parse(data.taxRate ?? '[]') })
       isLoading.value = false
     })
   }
@@ -181,8 +181,7 @@ export function useForm() {
       nextTick(() => {
         Object.assign(form.value, {
           ...entity,
-          amount: entity.amount === undefined ? undefined : Number(entity.amount),
-          taxRate: entity.taxRate === undefined ? undefined : JSON.parse(entity.taxRate),
+          taxRate: JSON.parse(entity.taxRate ?? '[]'),
         })
       })
       success?.(entity)

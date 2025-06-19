@@ -43,14 +43,11 @@
     label="费用明细"
   >
     <template #input>
-      <div class="w-full flex flex-col gap-2">
-        <TableCard
+      <CoolCardList accordion active-on-register>
+        <CoolCard
           v-for="(item, index) in form.itemList"
           :key="item.id"
-          :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-          :default-collapse="index !== 0"
           :title="formatCurrency(item.amount)"
-          @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
         >
           <PurchaseCategorySelect
             v-model="item.subjectItemId"
@@ -92,8 +89,8 @@
             :name="`itemList.${index}.amount`"
             label="申请金额（元）"
           />
-        </TableCard>
-      </div>
+        </CoolCard>
+      </CoolCardList>
     </template>
   </van-field>
 
@@ -108,9 +105,6 @@ import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
 import PurchaseCategorySelect from '@/views/modules/business/components/PurchaseCategorySelect.vue'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -133,8 +127,6 @@ const form = computed(() => {
 
   return injectForm.value
 })
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyFeeForm>(form)

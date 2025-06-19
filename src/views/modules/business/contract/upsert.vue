@@ -225,21 +225,13 @@
       />
     </template>
 
-    <van-field v-show-field="['taxRate', includeFields]">
-      <template #label>
-        <span class="text-red-400 mr-1">*</span>
-        <span>金额/增值税率</span>
-      </template>
-
+    <van-field v-show-field="['taxRate', includeFields]" label="金额/增值税率" required>
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard
+        <CoolCardList accordion active-on-register>
+          <CoolCard
             v-for="(item, index) in form.taxRate"
             :key="index"
-            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-            :default-collapse="index !== 0"
             :title="formatCurrency(item.amount)"
-            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
             <template #footer>
               <div class="text-right">
@@ -248,7 +240,7 @@
                   type="primary"
                   icon="plus"
                   size="small"
-                  @click="form.taxRate.push({ amount: undefined, taxRate: undefined })"
+                  @click="handleAdd"
                 />
                 <van-button
                   class="ml-2"
@@ -267,6 +259,7 @@
               :name="`taxRate.${index}.amount`"
               :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
               clearable
+              @change="onTaxRateAmountChange"
             />
 
             <DictSelect
@@ -277,8 +270,8 @@
               dict-type="oa_contract_tax_rate"
               clearable
             />
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 
@@ -380,17 +373,15 @@
 </template>
 
 <script setup lang='ts'>
+import { isNil } from 'lodash-es'
 import Big from 'big.js'
-import { isNil, isNumber } from 'lodash-es'
 import ProjectSelect from '../components/ProjectSelect.vue'
 import SCSelect from '../components/SCSelect.vue'
 import PurchaseProcessSelect from '../components/PurchaseProcessSelect.vue'
 import { useForm } from './form'
-import type { ContractForm } from '@/api/oa/business/contract/types'
+import { isNumeric } from '@/utils'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
+import type { ContractForm } from '@/api/oa/business/contract/types'
 
 const props = withDefaults(
   defineProps<{
@@ -407,8 +398,6 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 const {
   oa_contract_category_in,
@@ -495,6 +484,11 @@ function onRadioGroupChange(val: string) {
   }
 }
 
+// 新增
+function handleAdd() {
+  form.value.taxRate.push({ amount: undefined, taxRate: undefined })
+}
+
 // 金额/税率删除
 function handleRemove(_: any, index: number) {
   const { confirm } = proxy.$modal
@@ -502,28 +496,27 @@ function handleRemove(_: any, index: number) {
   confirm('是否删除这条数据？')
     .then(() => {
       form.value.taxRate.splice(index, 1)
+      sumAmount()
     })
     .catch(() => {})
 }
 
-// 合同金额计算
-watch(
-  () => form.value.taxRate,
-  (val) => {
-    const amount = val.reduce<Big.Big>((prev, curr) => {
-      if (isNumber(curr.amount)) {
-        return prev.add(Big(curr.amount))
-      }
-      return prev.add(0)
-    }, Big(0))
+// 金额/税率 => 金额变更
+function onTaxRateAmountChange() {
+  sumAmount()
+}
 
-    form.value.amount = amount.toNumber()
-  },
-  {
-    deep: true,
-    immediate: true,
-  },
-)
+// 金额求和
+function sumAmount() {
+  const amount = form.value.taxRate.reduce<Big>((prev, curr) => {
+    if (isNumeric(curr.amount)) {
+      return prev.add(Big(curr.amount))
+    }
+    return prev.add(0)
+  }, Big(0))
+
+  form.value.amount = amount.toNumber()
+}
 
 // 输出
 defineExpose({

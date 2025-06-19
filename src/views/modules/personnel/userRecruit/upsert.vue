@@ -100,14 +100,11 @@
       </template>
 
       <template #input>
-        <div class="w-full flex flex-col gap-2">
-          <TableCard
+        <CoolCardList accordion active-on-register>
+          <CoolCard
             v-for="(item, index) in form.userRecruitPostBoList"
             :key="index"
-            :ref="(el) => (TableCardRefs[index] = (el as TableCardType))"
-            :default-collapse="index !== 0"
             :title="item.postName"
-            @click="TableCardRefs.filter(e => e !== TableCardRefs[index]).forEach(e => e.collapse())"
           >
             <PostSelect
               v-model="item.postId"
@@ -230,8 +227,8 @@
                 />
               </div>
             </template>
-          </TableCard>
-        </div>
+          </CoolCard>
+        </CoolCardList>
       </template>
     </van-field>
 
@@ -256,9 +253,6 @@ import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { UserRecruitForm } from '@/api/oa/personnel/userRecruit/types'
 import type { DeptVO } from '@/api/system/dept/types'
-import TableCard from '@/components/TableCard/index.vue'
-
-type TableCardType = InstanceType<typeof TableCard>
 
 const props = withDefaults(
   defineProps<{
@@ -275,8 +269,6 @@ const props = withDefaults(
 )
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
-const TableCardRefs = ref<TableCardType[]>([])
 
 // 实例
 // const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -306,6 +298,12 @@ async function deptChange() {
 
 // 选择部门获取当前节点数据
 function getDeptNode(node: DeptVO) {
+  if (isNil(node)) {
+    form.value.deptType = undefined
+    form.value.address = undefined
+    return
+  }
+
   // 获取部门类型
   form.value.deptType = node.type
   if (form.value.deptType === '2') {
