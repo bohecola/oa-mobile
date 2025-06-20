@@ -805,16 +805,20 @@ watch(
         return
       }
       // 不含税单价
-      item.amount = Big(item.taxAmount)
-        .div(Big(1).add(Big(item.taxRate).div(100)))
-        .toNumber()
+      item.amount = Number(
+        Big(item.taxAmount)
+          .div(Big(1).add(Big(item.taxRate).div(100)))
+          .toFixed(2),
+      )
 
       // 不含税单价为空
       if (!isNumeric(item.amount)) {
         return
       }
       // 不含税合计
-      item.totalAmount = Big(item.amount).times(item.num).toNumber()
+      item.totalAmount = Number(
+        Big(item.amount).times(item.num).toFixed(2),
+      )
 
       // 含税实际单价为空
       if (!isNumeric(item.taxRealAmount)) {
@@ -823,16 +827,21 @@ watch(
         item.realTotalAmount = undefined
         return
       }
-
       // 不含税实际单价
-      item.realAmount = Big(item.taxRealAmount)
-        .div(Big(1).add(Big(item.taxRate).div(100)))
-        .toNumber()
+      item.realAmount = Number(
+        Big(item.taxRealAmount)
+          .div(Big(1).add(Big(item.taxRate).div(100)))
+          .toFixed(2),
+      )
 
       // 含税实际合计
-      item.taxRealTotalAmount = Big(item.taxRealAmount).times(item.num).toNumber()
+      item.taxRealTotalAmount = Number(
+        Big(item.taxRealAmount).times(item.num).toFixed(2),
+      )
       // 不含税实际合计
-      item.realTotalAmount = Big(item.realAmount).times(item.num).toNumber()
+      item.realTotalAmount = Number(
+        Big(item.realAmount).times(item.num).toFixed(2),
+      )
     })
 
     // 含税总金额合计
