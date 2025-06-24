@@ -74,6 +74,25 @@
       </template>
     </van-field>
 
+    <DictSelect
+      v-model="form.settlements"
+      v-show-field="['settlements', includeFields]"
+      label="结算资料"
+      name="settlements"
+      multiple
+      :options="file_dict"
+    />
+
+    <van-field
+      v-show-field="['remark', includeFields]"
+      :model-value="form.remark"
+      name="remark"
+      label="备注"
+      type="textarea"
+      rows="2"
+      autosize
+    />
+
     <van-field
       v-show-field="['isAssign', includeFields]"
       label="委托他人提交资料"
@@ -170,6 +189,19 @@
                   />
                 </template>
               </van-field>
+
+              <van-field label="实际回款金额">
+                <template #input>
+                  {{
+                    formatCurrency(
+                      Big(item.phaseReceivableAmount ?? 0)
+                        .add(item.rewardAssessmentAmount ?? 0)
+                        .add(item.changeAmount ?? 0)
+                        .toNumber(),
+                    )
+                  }}
+                </template>
+              </van-field>
             </template>
           </CoolCard>
         </CoolCardList>
@@ -202,6 +234,7 @@
 </template>
 
 <script setup lang="ts">
+import Big from 'big.js'
 import ContractSelect from '../components/ContractSelect.vue'
 import ContractPhaseSelect from '../components/ContractPhaseSelect.vue'
 import { useForm } from './form'

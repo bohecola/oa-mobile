@@ -85,6 +85,27 @@
       </template>
     </van-field>
 
+    <DictSelect
+      v-model="form.settlements"
+      v-show-field="['settlements', includeFields]"
+      label="结算资料"
+      name="settlements"
+      multiple
+      clearable
+      :options="file_dict"
+    />
+
+    <van-field
+      v-model.trim="form.remark"
+      v-show-field="['remark', includeFields]"
+      name="remark"
+      label="备注"
+      placeholder="请输入"
+      type="textarea"
+      rows="2"
+      autosize
+    />
+
     <van-field
       v-show-field="['isAssign', includeFields]"
       label="委托他人提交资料"
@@ -204,6 +225,19 @@
                 allow-negative
                 clearable
               />
+
+              <van-field label="实际回款金额">
+                <template #input>
+                  {{
+                    formatCurrency(
+                      Big(item.phaseReceivableAmount ?? 0)
+                        .add(item.rewardAssessmentAmount ?? 0)
+                        .add(item.changeAmount ?? 0)
+                        .toNumber(),
+                    )
+                  }}
+                </template>
+              </van-field>
             </template>
           </CoolCard>
         </CoolCardList>
@@ -236,6 +270,7 @@
 </template>
 
 <script setup lang="ts">
+import Big from 'big.js'
 import { cloneDeep } from 'lodash-es'
 import type { FieldRule } from 'vant'
 import ContractSelect from '../components/ContractSelect.vue'

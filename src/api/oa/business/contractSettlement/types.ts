@@ -88,6 +88,10 @@ export interface ContractSettlementForm extends BaseEntity {
   isAssign?: string
   // 指派人
   assignUser?: string
+  // 结算资料
+  settlements?: string
+  // 备注
+  remark?: string
 }
 
 /**

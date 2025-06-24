@@ -2,12 +2,10 @@
   <template v-for="(item, index) in options">
     <template v-if="values.includes(item.value)">
       <span
-        v-if="
-          (item.elTagType === 'default' || item.elTagType === '' || item.elTagType == null) && (item.elTagClass === '' || item.elTagClass == null)
-        "
+        v-if="(item.elTagType === 'default' || item.elTagType === '' || item.elTagType == null) && (item.elTagClass === '' || item.elTagClass == null)"
         :key="item.value"
         :index="index"
-        :class="cn('after:content-[\',\'] last:after:content-none', item.elTagClass, tagClass)"
+        :class="cn(item.elTagClass, tagClass, 'plain-span')"
       >
         {{ `${item.label}` }}
       </span>
@@ -90,3 +88,15 @@ function handleArray(array: Array<string | number>) {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+.plain-span {
+  &::after {
+    content: '、';
+  }
+
+  &:last-child::after {
+    content: none;
+  }
+}
+</style>

@@ -91,6 +91,8 @@ const allFields: PartialBooleanRecord<ContractSettlementForm> = {
   isSeal: true,
   isAssign: true,
   assignUser: true,
+  settlements: true,
+  remark: true,
 }
 
 // 总览字段

@@ -17,6 +17,7 @@
         type: 'in',
         phaseType: '1',
         queryType: 'my',
+        statusList: ['1', '2', '3', '4'],
       }"
     />
 

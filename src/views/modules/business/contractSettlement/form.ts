@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty } from 'lodash-es'
+import { cloneDeep, isEmpty, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ContractSettlementForm, ContractSettlementItem } from '@/api/oa/business/contractSettlement/types'
@@ -58,6 +58,8 @@ export function useForm() {
     isSeal: 'N',
     isAssign: 'N',
     assignUser: undefined,
+    settlements: undefined,
+    remark: undefined,
   }
 
   // 文件列表
@@ -217,32 +219,52 @@ export function useForm() {
   async function workflowSubmit(options: SubmitOptions<ContractSettlementForm> = {}) {
     const { success, fail } = options
 
+    // 需求部门经理审核
+    const isNeedManageNode = taskDefinitionKey.value === 'Activity_12wbile'
+    // 指派人提交结算资料
+    const isAssginNode = taskDefinitionKey.value === 'Activity_0bclr8t'
+
     // 是否未上传结算资料
     const notUploadFile = fileList.value.every(e => isEmpty(e.ossIdList))
     // 未指派其他人提交结算资料
     const isNotAssign = form.value.isAssign === 'N'
 
-    // 需求部门经理审核
-    const isNeedManageNode = taskDefinitionKey.value === 'Activity_12wbile'
-    // 需求部门经理审核，且未指派，且未上传结算资料
-    const isNeedManageFail = isNeedManageNode && isNotAssign && notUploadFile
+    // 结算资料校验为空
+    const isSettlementsEmpty = isNil(form.value.settlements)
 
-    // 指派人提交结算资料
-    const isAssginNode = taskDefinitionKey.value === 'Activity_0bclr8t'
-    // 指派人提交结算资料，且未上传结算资料
-    const isAssignFail = isAssginNode && notUploadFile
-
-    // 自定义校验失败
-    const isCustomFailed = isNeedManageFail || isAssignFail
+    // 未上传结算资料校验对应的结算资料
+    const isOnDemandFileFailed = fileList.value.some((e) => {
+      if (form.value.settlements.includes(e.dictValue)) {
+        return isEmpty(e.ossIdList)
+      }
+      return false
+    })
 
     await Form.value?.validate()
       .then(async () => {
         // 转换文件列表
         form.value.fileMap = transformFileListToMap(fileList.value)
 
-        // 自定义校验失败
-        if (isCustomFailed)
-          return proxy?.$modal.msgWarning('请上传结算资料')
+        // 需求部门经理审核，且未指派
+        if (isNeedManageNode && isNotAssign) {
+          // 结算资料校验为空，且未上传结算资料
+          if (isSettlementsEmpty && notUploadFile)
+            return proxy?.$modal.msgWarning('请上传结算资料')
+
+          // 结算资料校验不为空，且未上传相应结算资料结算资料
+          if (isOnDemandFileFailed)
+            return proxy?.$modal.msgWarning(`请上传${proxy?.selectDictLabels(file_dict.value, form.value.settlements, ',')}`)
+        }
+
+        // 指派人提交结算资料，且未上传结算资料
+        if (isAssginNode) {
+          // 结算资料校验为空，且未上传结算资料
+          if (isSettlementsEmpty && notUploadFile)
+            return proxy?.$modal.msgWarning('请上传结算资料')
+
+          if (isOnDemandFileFailed)
+            return proxy?.$modal.msgWarning(`请上传${proxy?.selectDictLabels(file_dict.value, form.value.settlements, ',')}`)
+        }
 
         success?.(form.value)
       })
