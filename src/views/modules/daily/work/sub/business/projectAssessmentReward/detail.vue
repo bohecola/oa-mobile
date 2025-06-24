@@ -61,11 +61,8 @@
     name="a_assessmentAmount"
   >
     <template #input>
-      <span>{{ form.a_assessmentAmount }}</span>
-      <span
-        v-if="!isNil(form.a_assessmentAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.a_assessmentAmount) }}</span>
+      <span>{{ formatCurrency(form.a_assessmentAmount) }}</span>
+      <span class="ml-3 text-red-400">{{ toCnMoney(form.a_assessmentAmount) }}</span>
     </template>
   </van-field>
 
@@ -75,11 +72,19 @@
     name="a_rewardAmount"
   >
     <template #input>
-      <span>{{ form.a_rewardAmount }}</span>
-      <span
-        v-if="!isNil(form.a_rewardAmount)"
-        class="ml-3 text-red-400"
-      >{{ toCnMoney(form.a_rewardAmount) }}</span>
+      <span>{{ formatCurrency(form.a_rewardAmount) }}</span>
+      <span class="ml-3 text-red-400">{{ toCnMoney(form.a_rewardAmount) }}</span>
+    </template>
+  </van-field>
+
+  <van-field
+    v-show-field="['isSeal', includeFields]"
+    label="是否盖章"
+    name="isSeal"
+    input-align="left"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.isSeal" readonly />
     </template>
   </van-field>
 
@@ -108,6 +113,7 @@ withDefaults(
       'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
+      'isSeal',
       'reason',
       'ossIdList',
     ],

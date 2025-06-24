@@ -82,7 +82,7 @@
     v-model.number="form.a_rewardAmount"
     v-show-field="['a_rewardAmount', includeFields]"
     name="a_rewardAmount"
-    label="考核金额（元）"
+    label="奖励金额（元）"
     placeholder="请输入"
     :rules="computedRules.a_rewardAmount"
   >
@@ -93,12 +93,22 @@
     </template>
   </van-field-number>
 
+  <van-field
+    v-show-field="['isSeal', includeFields]"
+    label="是否盖章"
+    name="isSeal"
+    input-align="left"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.isSeal" />
+    </template>
+  </van-field>
+
   <BaseUpsert :include-fields="includeFields" />
 </template>
 
 <script setup lang="ts">
 import { isNil } from 'lodash-es'
-import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
@@ -120,6 +130,7 @@ const props = withDefaults(
       'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
+      'isSeal',
       'reason',
       'ossIdList',
     ],
@@ -137,7 +148,6 @@ const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFi
 // 表单
 const form = inject<Ref<DailyWorkForm>>('form')
 
-const Form = inject<Ref<FormInstance>>('Form')
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
 
@@ -150,7 +160,6 @@ function onContractSelectedListChange(selectedList: ContractVO[]) {
   form.value.a_businessType = contract?.businessType
   form.value.needDepts = contract?.deptId as string
 
-  // TODO 清空表单数据
   // 清空审核人
   resetFields(['customizeApprover'])
 }

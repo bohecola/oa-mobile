@@ -171,6 +171,11 @@ async function handleStartWorkflow(options: StartWorkFlowOptions<DailyWorkForm>)
       return `${baseText}-${entity.pp_contractNo}-${nickName}`
     }
 
+    // 项目考核奖励确认单 => 流程名称添加合同编号
+    if (entity.no === 'SWXMKHJLQRD') {
+      return `${baseText}-${entity.a_contractNo}-${nickName}`
+    }
+
     return `${baseText}-${nickName}`
   })()
 
