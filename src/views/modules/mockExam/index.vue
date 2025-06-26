@@ -1,5 +1,7 @@
 <template>
   <div>
+    <NavBar :is-left-click-back="false" @click-left="$router.push('/apps')" />
+
     <van-pull-refresh v-model="paperRefreshing" @refresh="onRefreshPaper">
       <van-list
         v-model:loading="paperLoading"

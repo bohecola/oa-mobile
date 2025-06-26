@@ -55,10 +55,10 @@ const slots = useSlots()
 function handleLeftClick() {
   if (props.isLeftClickBack) {
     if (window.history.state.back) {
-      router.back()
+      return router.back()
     }
     else {
-      router.push('/')
+      return router.push('/')
     }
   }
   emit('click-left')

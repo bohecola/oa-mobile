@@ -4,6 +4,7 @@ export * from './settings'
 export * from './workflow'
 export * from './theme'
 export * from './select'
+export * from './list'
 
 export function useParentForm() {
   const d = getCurrentInstance()

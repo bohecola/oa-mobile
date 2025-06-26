@@ -183,6 +183,7 @@
 </template>
 
 <script setup lang='ts'>
+import dayjs from 'dayjs'
 import { isEmpty, isNil } from 'lodash-es'
 import type { LocationQueryValue } from 'vue-router'
 import ActionBar from './components/ActionBar.vue'
@@ -198,7 +199,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const LaunchPageRef = ref<InstanceType<typeof LaunchPage>>()
 
 // 参数
-const { paperId, examId, type, iouId } = proxy.$route.query as Record<string, LocationQueryValue>
+const { paperId, examId, type, iouId, qrCodeExpireTimestamp } = proxy.$route.query as Record<string, LocationQueryValue>
 
 // 是否查看模式
 const isView = type === 'view'
@@ -220,6 +221,7 @@ const {
   isExternalExam,
   isMockExam,
   isRealExam,
+  isInternalExam,
   // 倒计时
   remainingTime,
 
@@ -275,6 +277,7 @@ const {
   paperId,
   examId,
   isView,
+  qrCodeExpireTimestamp,
 })
 
 // 输入姓名、手机号确定
@@ -373,12 +376,23 @@ onMounted(async () => {
 
     // 模拟考试
     if (isMockExam.value) {
-      await doExam('mock')
+      return await doExam('mock')
+    }
+
+    // 内部考试
+    if (isInternalExam.value) {
+      // 当前时间戳
+      const now = dayjs().valueOf()
+
+      // 判断二维码是否过期
+      if (now > Number(qrCodeExpireTimestamp)) {
+        return proxy.$router.push('/qrcode-expired')
+      }
     }
 
     // 微信公众号中转页面自动登录
     if (['effective', 'expired'].includes(paperStatus.value) && !isNil(iouId)) {
-      LaunchPageRef.value?.doManualLogin()
+      return LaunchPageRef.value?.doManualLogin()
     }
   }
 })

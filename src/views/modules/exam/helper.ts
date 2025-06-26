@@ -18,6 +18,7 @@ export interface ExamOptions {
   paperId: string
   examId?: string
   isView?: boolean
+  qrCodeExpireTimestamp?: string
 }
 
 // 试卷
@@ -68,7 +69,7 @@ export function usePaper(id: string) {
 
 // 考试
 export function useExam(options: ExamOptions) {
-  const { paperId, examId, isView } = options
+  const { paperId, examId, isView, qrCodeExpireTimestamp } = options
 
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -211,6 +212,16 @@ export function useExam(options: ExamOptions) {
 
   // 开始考试
   async function doExam(type: 'real' | 'mock', value?: DoExamQrCodeParams) {
+    if (isInternalExam.value) {
+      // 当前时间戳
+      const now = dayjs().valueOf()
+
+      // 判断二维码是否过期
+      if (now > Number(qrCodeExpireTimestamp)) {
+        return proxy.$router.push('/qrcode-expired')
+      }
+    }
+
     loading('正在加载考试信息')
 
     // 获取考试信息

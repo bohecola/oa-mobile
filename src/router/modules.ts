@@ -45,33 +45,44 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/dashboard/approval/search.vue'),
   },
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   meta: {
-  //     title: '示例',
-  //     icon: 'i-carbon-logo-wechat',
-  //   },
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: () => import('@/views/example/index.vue'),
-  //     },
-  //   ],
-  // },
+  // 应用
   {
-    path: '/exam',
-    component: Layout,
+    path: '/apps',
     meta: {
-      title: '模拟考试',
-      icon: 'i-mdi-document',
+      title: '更多',
+      icon: 'i-ant-design-appstore-filled',
     },
+    component: Layout,
     children: [
       {
         path: '',
-        component: () => import('@/views/mockExam/index.vue'),
+        component: () => import('@/views/apps/index.vue'),
       },
     ],
+  },
+  {
+    path: '/exam',
+    meta: {
+      title: '模拟考试',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/mockExam/index.vue'),
+  },
+  {
+    path: '/qrcode-expired',
+    meta: {
+      title: '二维码过期',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/qrcode-expired-page.vue'),
+  },
+  {
+    path: '/daily-report',
+    meta: {
+      title: '每日一报',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/dailyReport/index.vue'),
   },
   {
     path: '/external-exam',
