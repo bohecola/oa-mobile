@@ -1,7 +1,6 @@
 <template>
   <van-nav-bar
-    :fixed="fixed"
-    :placeholder="placeholder"
+    :placeholder="true"
     z-index="10"
     safe-area-inset-top
     v-bind="attrs"
@@ -27,20 +26,16 @@ import { cn } from '@/utils'
 const props = withDefaults(
   defineProps<{
     title?: string
-    fixed?: boolean
-    placeholder?: boolean
-    isLeftClickBack?: boolean
-    safeAreaInsetTop?: boolean
     titleClass?: string
+    isLeftClickBack?: boolean
+
   }>(),
   {
     title: () => {
       const route = useRoute()
       return route.meta.title as string ?? ''
     },
-    placeholder: true,
     isLeftClickBack: true,
-    safeAreaInsetTop: true,
   },
 )
 

@@ -57,6 +57,10 @@ export function isJSON(str: string) {
 
 export * from './tree'
 
+export function transformYnToBoolean(value: string) {
+  return value === 'Y'
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

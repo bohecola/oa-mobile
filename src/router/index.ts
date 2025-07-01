@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createRouterMatcher, createWebHistory } from 'vue-router'
 import { isArray } from 'lodash-es'
 import { createRouterGuards, whitePathList } from './router-guards'
 import { clientRoutes } from './modules'
@@ -52,45 +52,44 @@ const files = {
   ...import.meta.glob('@/views/modules/**/workflow/*.vue'),
 }
 
-// 找路由
-router.find = function (path: string) {
-  return router.getRoutes().find(e => e.path === path)
-}
-
 // 添加视图，页面路由
-router.append = function (data) {
-  const list = isArray(data) ? data : [data]
+router.append = function (routeData) {
+  if (!routeData) {
+    return false
+  }
 
-  list.forEach((d) => {
-    if (!d.meta) {
-      d.meta = {}
+  // 确保 routeData 是数组
+  const routeList = isArray(routeData) ? routeData : [routeData]
+
+  routeList.forEach((route) => {
+    if (!route.meta) {
+      route.meta = {} // 初始化 meta 对象
     }
 
-    // 组件路径
-    if (!d.component) {
-      const url = d.viewPath
+    // 如果没有指定组件路径
+    if (!route.component) {
+      const viewPath = route.viewPath
 
-      if (url) {
-        if (url.indexOf('http') === 0) {
-          if (d.meta) {
-            d.meta.iframeUrl = url
-          }
-
-          d.component = () => import('@/views/frame.vue')
+      if (viewPath) {
+        if (viewPath.startsWith('http')) {
+          // 如果是外部链接，使用 iframe 组件
+          route.meta.iframeUrl = viewPath
+          route.component = () => import('@/views/frame.vue')
         }
         else {
-          d.component = files[`/src/views/modules/${url}.vue`]
+          // 从文件系统中动态导入组件
+          route.component = files[`/src/views/modules/${viewPath}.vue`]
         }
       }
       else {
-        d.redirect = '/404'
+        route.redirect = '/404'
       }
     }
 
     // 是否动态添加
-    d.meta.dynamic = true
+    route.meta.dynamic = true
 
-    router.addRoute(d as any)
+    router.addRoute(route as any)
   })
 }
 
@@ -105,41 +104,59 @@ router.clear = function () {
   })
 }
 
-// 注册
-router.register = async function (path: string) {
-  const isReg = Boolean(router.find(path))
+// 找路由
+router.find = async function (path: string) {
+  const { user, menu } = useStore()
 
-  if (!isReg) {
-    const { user, menu } = useStore()
-
-    // 待注册列表
-    const list: any[] = []
-
-    // TODO 待优化，刷新后重新请求配置数据
-    if (user.info === null && user.token && !whitePathList.includes(path)) {
-      await user.get()
-      await menu.get()
-    }
-
-    // 动态菜单数据
-    menu.routes.forEach((e) => {
-      list.push({ ...e })
-    })
-
-    // 本地模块数据
-    clientRoutes.forEach((e) => {
-      list.push({ ...e })
-    })
-
-    // 需要注册的路由
-    const r = list.find(e => e.path === path)
-
-    if (r) {
-      router.append(r)
-    }
+  // TODO 待优化，刷新后重新请求配置数据
+  if (user.info === null && user.token && !whitePathList.includes(path)) {
+    await user.get()
+    await menu.get()
   }
 
-  return { route: router.find(path), isReg }
+  // 获取已注册的路由
+  const registeredRoutes = router.getRoutes()
+
+  // 构建路由列表，包括已注册的路由、菜单配置和模块自定义路由
+  const routeList: any[] = [
+    ...registeredRoutes.map(route => ({
+      ...route,
+      isReg: true,
+    })),
+    ...menu.routes,
+    ...clientRoutes,
+  ]
+
+  let isRegistered = false
+  let matchedRoute: (typeof routeList)[number] | undefined
+
+  // 创建路由匹配器
+  const matcher = createRouterMatcher(routeList, {})
+
+  // 查找匹配的路由
+  matcher.getRoutes().find((route) => {
+    const routeRegex = new RegExp(route.re)
+
+    if (routeRegex.test(path)) {
+      // 否则查找路径匹配的路由
+      matchedRoute = routeList.find(
+        r => r.path === route.record.path,
+      )
+
+      if (matchedRoute) {
+        isRegistered = !!matchedRoute.isReg // 检查路由是否已注册
+      }
+
+      return true
+    }
+
+    return false
+  })
+
+  return {
+    route: matchedRoute,
+    isReg: isRegistered,
+  }
 }
 
 // 装载路由器

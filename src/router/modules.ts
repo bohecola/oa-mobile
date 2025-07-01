@@ -11,8 +11,8 @@ export const clientBaseRoutes: RouteRecordRaw[] = [
   },
 ]
 
-// 模块路由
-export const clientModuleRoutes: RouteRecordRaw[] = [
+// 底部菜单
+export const menuRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     meta: {
@@ -27,25 +27,6 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-  // 审批中心
-  {
-    path: '/approval',
-    meta: {
-      title: '审批中心',
-      innerPage: true,
-    },
-    component: () => import('@/views/dashboard/approval/index.vue'),
-  },
-  // 审批查询
-  {
-    path: '/approval-search',
-    meta: {
-      title: '搜索',
-      innerPage: true,
-    },
-    component: () => import('@/views/dashboard/approval/search.vue'),
-  },
-  // 应用
   {
     path: '/apps',
     meta: {
@@ -61,6 +42,47 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/my',
+    component: Layout,
+    meta: {
+      title: '我的',
+      icon: 'i-simple-icons-docsify',
+    },
+    children: [
+      {
+        path: '',
+        meta: {
+          hiddenTopbar: true,
+        },
+        component: () => import('@/views/my/index.vue'),
+      },
+    ],
+  },
+]
+
+// 审批中心
+export const approvalRoutes: RouteRecordRaw[] = [
+  {
+    path: '/approval',
+    meta: {
+      title: '审批中心',
+      innerPage: true,
+    },
+    component: () => import('@/views/dashboard/approval/index.vue'),
+  },
+  {
+    path: '/approval-search',
+    meta: {
+      title: '搜索',
+      innerPage: true,
+    },
+    component: () => import('@/views/dashboard/approval/search.vue'),
+  },
+]
+
+// 考试管理
+export const examRoutes: RouteRecordRaw[] = [
+  {
     path: '/exam',
     meta: {
       title: '模拟考试',
@@ -75,14 +97,6 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
       innerPage: true,
     },
     component: () => import('@/views/modules/exam/qrcode-expired-page.vue'),
-  },
-  {
-    path: '/daily-report',
-    meta: {
-      title: '每日一报',
-      innerPage: true,
-    },
-    component: () => import('@/views/modules/dailyReport/index.vue'),
   },
   {
     path: '/external-exam',
@@ -116,24 +130,46 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/modules/exam/wechat-entry.vue'),
   },
+]
+
+// 工程管理
+const projectRoutes: RouteRecordRaw[] = [
   {
-    path: '/my',
-    component: Layout,
+    path: '/daily-report',
     meta: {
-      title: '我的',
-      icon: 'i-simple-icons-docsify',
+      title: '每日一报',
+      innerPage: true,
     },
-    children: [
-      {
-        path: '',
-        meta: {
-          hiddenTopbar: true,
-        },
-        component: () => import('@/views/my/index.vue'),
-      },
-    ],
+    component: () => import('@/views/modules/dailyReport/index.vue'),
   },
-  // 个人信息
+  {
+    path: '/daily-report/new',
+    meta: {
+      title: '每日一报（新增）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/dailyReport/upsert.vue'),
+  },
+  {
+    path: '/daily-report/:id/edit',
+    meta: {
+      title: '每日一报（编辑）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/dailyReport/upsert.vue'),
+  },
+  {
+    path: '/daily-report/:id',
+    meta: {
+      title: '每日一报（查看）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/dailyReport/detail.vue'),
+  },
+]
+
+// 个人中心
+export const myInfoRoutes: RouteRecordRaw[] = [
   {
     path: '/profile',
     meta: {
@@ -150,7 +186,6 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/my/profile/EditNickname.vue'),
   },
-  // 账户与安全
   {
     path: '/account-settings',
     meta: {
@@ -183,7 +218,6 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/my/account/EditPassword.vue'),
   },
-  // 主题设置
   {
     path: '/theme-settings',
     meta: {
@@ -192,6 +226,15 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/my/theme/index.vue'),
   },
+]
+
+// 模块路由
+export const clientModuleRoutes: RouteRecordRaw[] = [
+  ...menuRoutes,
+  ...myInfoRoutes,
+  ...approvalRoutes,
+  ...examRoutes,
+  ...projectRoutes,
 ]
 
 export const clientRoutes = [...clientBaseRoutes, ...clientModuleRoutes]

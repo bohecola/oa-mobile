@@ -31,18 +31,8 @@ declare global {
   }
 
   interface Router extends VueRouter {
-    find: (path: string) => RouteRecordRaw | undefined
-    append: (
-      data: {
-        name?: string
-        path: string
-        component?: any
-        viewPath?: string
-        isPage?: boolean
-        [key: string]: any
-      }[]
-    ) => void
-    register: (path: string) => Promise<{ route: RouteRecordRaw | undefined, isReg: boolean }>
+    find: (path: string) => Promise<{ route: RouteRecordRaw, isReg: boolean }>
+    append: (data: any | any[]) => void
     [key: string]: any
   }
 
