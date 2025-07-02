@@ -138,6 +138,7 @@
 </template>
 
 <script setup lang='ts'>
+import dayjs from 'dayjs'
 import type { RouteParamValue } from 'vue-router'
 import { useForm } from './form'
 
@@ -187,6 +188,9 @@ onMounted(async () => {
 
     // 作为默认数据
     setCurrentForm(first)
+
+    // 设置开始时间
+    form.value.starttime = dayjs().format('YYYY-MM-DD HH:mm:ss')
   }
 })
 </script>

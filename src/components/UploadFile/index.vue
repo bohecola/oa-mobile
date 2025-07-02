@@ -80,12 +80,12 @@
 </template>
 
 <script setup lang='ts'>
-import type { UploaderAfterRead, UploaderFileListItem as _UploaderFileListItem } from 'vant'
+import type { UploaderAfterRead } from 'vant'
 import type { Numeric } from 'vant/lib/utils'
 import { isArray, isEmpty } from 'lodash-es'
 import { useCustomFieldValue } from '@vant/use'
-import type { FileActionEnum, FileType } from './helper'
-import { excelTypeEnum, fileTypeEnum, imageTypeEnum, isImageType, isVideoType, otherTypeEnum, pdfTypeEnum, pptTypeEnum, txtTypeEnum, videoTypeEnum, wordTypeEnum } from './helper'
+import type { FileActionEnum, FileType, UploaderFileListItem } from './helper'
+import { allTypeEnum, compressedTypeEnum, excelTypeEnum, imageTypeEnum, isImageType, isVideoType, otherTypeEnum, pdfTypeEnum, pptTypeEnum, txtTypeEnum, videoTypeEnum, wordTypeEnum } from './helper'
 import viewer from './viewer.vue'
 import { getFilenameExt } from '@/utils'
 import { service } from '@/service'
@@ -95,12 +95,7 @@ import word from '@/assets/images/word.png'
 import excel from '@/assets/images/excel.png'
 import ppt from '@/assets/images/ppt.png'
 import other from '@/assets/images/other.png'
-
-type UploaderFileListItem = _UploaderFileListItem & {
-  name?: string
-  url?: string
-  ossId?: string
-}
+import compressed from '@/assets/images/compressed.png'
 
 const props = withDefaults(
   defineProps<{
@@ -127,7 +122,7 @@ const props = withDefaults(
     fileSize: 500,
     cardSize: 60,
     valueType: 'string',
-    fileType: () => fileTypeEnum,
+    fileType: () => allTypeEnum,
     exclude: () => [],
   },
 )
@@ -317,8 +312,16 @@ const fileActionEnums: FileActionEnum[] = [
     handler: handleDocView,
   },
   {
+    extensions: [...compressedTypeEnum],
+    icon: compressed,
+    handler: handleDocView,
+  },
+  {
     extensions: [...otherTypeEnum],
     icon: other,
+    handler: (file) => {
+      proxy.$download.oss(file.ossId)
+    },
   },
 ]
 

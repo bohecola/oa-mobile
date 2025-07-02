@@ -193,7 +193,7 @@ export interface ProductTaskRecordVo {
   /**
    * 开始时间
    */
-  starttime?: Date
+  starttime?: string
 
   /**
    * 结束时间

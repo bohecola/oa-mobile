@@ -38,7 +38,7 @@
 
 <script setup lang='ts'>
 import CryptoJS from 'crypto-js'
-import { isDocType, isOtherType, isTxtType, isVideoType } from './helper'
+import { isCompressedType, isDocType, isOtherType, isTxtType, isVideoType } from './helper'
 import { encryptBase64 } from '@/utils/security'
 import { useGlobSettings } from '@/hooks'
 
@@ -87,12 +87,7 @@ function open(options: { file: any, ext: string }) {
   }
 
   // 文档预览
-  if (isDocType(ext) || isTxtType(ext) || isOtherType(ext)) {
-    // if (doc.ossId === ossId) {
-    //   doc.visible = true
-    //   return true
-    // }
-
+  if (isDocType(ext) || isTxtType(ext) || isCompressedType(ext) || isOtherType(ext)) {
     doc.visible = true
     doc.loading = true
     doc.name = name
