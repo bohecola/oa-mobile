@@ -234,7 +234,7 @@ export function useForm() {
 
     // 未上传结算资料校验对应的结算资料
     const isOnDemandFileFailed = fileList.value.some((e) => {
-      if (form.value.settlements.includes(e.dictValue)) {
+      if (form.value.settlements?.includes(e.dictValue)) {
         return isEmpty(e.ossIdList)
       }
       return false
