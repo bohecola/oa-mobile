@@ -20,17 +20,17 @@
           <span>发起时间：{{ row.startTime }}</span>
           <span>结束时间：{{ row.endTime ?? '--' }}</span>
         </div>
-        <div class="mt-1 flex gap-2">
-          <van-button
+        <div class="mt-1 flex gap-2 justify-end">
+          <!-- <van-button
             v-if="row.businessStatus === 'waiting'"
             color="#8b898d"
             text="撤销"
             size="small"
             @click.stop="handleCancelProcessApply(row)"
-          />
+          /> -->
 
           <van-button
-            v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+            v-if="row.businessStatus === 'draft' || row.businessStatus === 'back'"
             type="primary"
             text="修改"
             size="small"
@@ -38,7 +38,7 @@
           />
 
           <van-button
-            v-if="row.businessStatus === 'draft' || row.businessStatus === 'cancel' || row.businessStatus === 'back'"
+            v-if="row.businessStatus === 'draft'"
             type="danger"
             text="删除"
             size="small"
@@ -194,20 +194,20 @@ function handleDelete(row: ProcessInstanceVO) {
     .catch(() => {})
 }
 
-// 撤销
-async function handleCancelProcessApply(row: ProcessInstanceVO) {
-  showConfirmDialog({
-    title: '是否确认撤销当前单据？',
-  })
-    .then(async () => {
-      // 开启加载
-      showLoadingToast({ duration: 0, message: '处理中' })
-      await service.workflow.processInstance.cancelProcessApply(row.businessKey)
-      await refetch()
-      showSuccessToast('撤销成功')
-    })
-    .catch(() => {})
-}
+// // 撤销
+// async function handleCancelProcessApply(row: ProcessInstanceVO) {
+//   showConfirmDialog({
+//     title: '是否确认撤销当前单据？',
+//   })
+//     .then(async () => {
+//       // 开启加载
+//       showLoadingToast({ duration: 0, message: '处理中' })
+//       await service.workflow.processInstance.cancelProcessApply(row.businessKey)
+//       await refetch()
+//       showSuccessToast('撤销成功')
+//     })
+//     .catch(() => {})
+// }
 
 // 打开附件弹窗
 async function openFilePopup(row: ProcessInstanceVO) {
