@@ -4,14 +4,11 @@
 
     <TaskMenus />
 
-    <!-- <DateBoard /> -->
-
     <ProcessMenus />
   </div>
 </template>
 
 <script setup lang='ts'>
-import DateBoard from './components/DateBoard.vue'
 import Swipe from './components/Swipe.vue'
 import TaskMenus from './components/TaskMenus/index.vue'
 import ProcessMenus from './components/ProcessMenus/index.vue'

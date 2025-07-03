@@ -8,9 +8,14 @@
           </div>
         </template>
         <div class="grid grid-cols-4 gap-x-6 gap-y-3">
-          <div v-for="item in menus" :key="item.id" class="w-16 h-full flex flex-col items-center gap-2" @click="handleItemClick(item)">
-            <div class="w-12 h-12 bg-blue-500/20 text-white rounded-xl flex items-center justify-center">
-              <i :class="`iconfont text-2xl text-blue-500 icon-${item.processKey}`" />
+          <div
+            v-for="item in menus"
+            :key="item.id"
+            class="w-16"
+            @click="handleItemClick(item)"
+          >
+            <div class="mx-auto mb-2 w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+              <i :class="`iconfont text-2xl text-[--van-primary-color] icon-${item.processKey}`" />
             </div>
             <div class="text-xs text-center">
               {{ item.procdefName }}
@@ -27,8 +32,8 @@ import { getUseMap } from '@/api/workflow/task'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const activeNames = ref<string[]>([])
 const loading = ref(false)
+const activeNames = ref<string[]>([])
 const menusMap = ref<Record<string, any>>({})
 
 // 流程项点击

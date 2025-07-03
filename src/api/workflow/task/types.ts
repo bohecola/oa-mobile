@@ -30,6 +30,7 @@ export interface TaskVO extends BaseEntity {
   procinstName?: string
   description?: string
   priority: number
+  startUserId?: string | number
   owner?: string
   assignee?: string | number
   assigneeName?: string
