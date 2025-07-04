@@ -1,64 +1,79 @@
-
 .theme-green[data-theme-mode=light] {
   --van-primary-color: #16a34a;
+  --van-primary-color-rgb: 22, 163, 74;
 }
 
 .theme-green[data-theme-mode=dark] {
   --van-primary-color: #22c55e;
+  --van-primary-color-rgb: 34, 197, 94;
 }
 
 .theme-violet[data-theme-mode=light] {
   --van-primary-color: #d0378d;
+  --van-primary-color-rgb: 208, 55, 141;
 }
 
-.theme-violet[data-theme-mode=dark]  {
+.theme-violet[data-theme-mode=dark] {
   --van-primary-color: #d0378d;
+  --van-primary-color-rgb: 208, 55, 141;
 }
 
 .theme-rose[data-theme-mode=light] {
   --van-primary-color: #e11d48;
+  --van-primary-color-rgb: 225, 29, 72;
 }
 
-.theme-rose[data-theme-mode=dark]  {
+.theme-rose[data-theme-mode=dark] {
   --van-primary-color: #e11d48;
+  --van-primary-color-rgb: 225, 29, 72;
 }
 
 .theme-yellow[data-theme-mode=light] {
   --van-primary-color: #facc15;
+  --van-primary-color-rgb: 250, 204, 21;
 }
 
-.theme-yellow[data-theme-mode=dark]  {
+.theme-yellow[data-theme-mode=dark] {
   --van-primary-color: #facc15;
+  --van-primary-color-rgb: 250, 204, 21;
 }
 
 .theme-blue[data-theme-mode=light] {
   --van-primary-color: #2563eb;
+  --van-primary-color-rgb: 37, 99, 235;
 }
 
-.theme-blue[data-theme-mode=dark]  {
+.theme-blue[data-theme-mode=dark] {
   --van-primary-color: #3b82f6;
+  --van-primary-color-rgb: 59, 130, 246;
 }
 
 .theme-orange[data-theme-mode=light] {
   --van-primary-color: #f97316;
+  --van-primary-color-rgb: 249, 115, 22;
 }
 
-.theme-orange[data-theme-mode=dark]  {
+.theme-orange[data-theme-mode=dark] {
   --van-primary-color: #ea580c;
+  --van-primary-color-rgb: 234, 88, 12;
 }
 
 .theme-emerald[data-theme-mode=light] {
   --van-primary-color: #78dec7;
+  --van-primary-color-rgb: 120, 222, 199;
 }
 
-.theme-emerald[data-theme-mode=dark]  {
+.theme-emerald[data-theme-mode=dark] {
   --van-primary-color: #78dec7;
+  --van-primary-color-rgb: 120, 222, 199;
 }
 
 .theme-teal[data-theme-mode=light] {
   --van-primary-color: #00c1d4;
+  --van-primary-color-rgb: 0, 193, 212;
 }
 
-.theme-teal[data-theme-mode=dark]  {
+.theme-teal[data-theme-mode=dark] {
   --van-primary-color: #00c1d4;
+  --van-primary-color-rgb: 0, 193, 212;
 }

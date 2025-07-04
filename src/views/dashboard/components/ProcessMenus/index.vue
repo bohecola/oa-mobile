@@ -14,7 +14,7 @@
             class="w-16"
             @click="handleItemClick(item)"
           >
-            <div class="mx-auto mb-2 w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+            <div class="mx-auto mb-2 w-12 h-12 bg-[rgba(var(--van-primary-color-rgb),0.2)] rounded-xl flex items-center justify-center">
               <i :class="`iconfont text-2xl text-[--van-primary-color] icon-${item.processKey}`" />
             </div>
             <div class="text-xs text-center">
