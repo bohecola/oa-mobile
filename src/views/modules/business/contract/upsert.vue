@@ -50,6 +50,7 @@
 
     <SCSelect
       v-model="form.partyA"
+      v-model:names="form.partyNameA"
       v-show-field="['partyA', includeFields]"
       name="partyA"
       label="甲方"
@@ -61,6 +62,7 @@
 
     <SCSelect
       v-model="form.partyB"
+      v-model:names="form.partyNameB"
       v-show-field="['partyB', includeFields]"
       name="partyB"
       label="乙方"
@@ -74,6 +76,7 @@
       <SCSelect
         v-if="contractMode === 'three' || contractMode === 'four'"
         v-model="form.partyC"
+        v-model:names="form.partyNameC"
         v-show-field="['partyC', includeFields]"
         name="partyC"
         label="丙方"
@@ -86,6 +89,7 @@
       <SCSelect
         v-if="contractMode === 'four'"
         v-model="form.partyD"
+        v-model:names="form.partyNameD"
         v-show-field="['partyD', includeFields]"
         name="partyD"
         label="丁方"

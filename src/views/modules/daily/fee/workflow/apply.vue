@@ -145,7 +145,7 @@ async function handleStartWorkflow(options: StartWorkFlowOptions<DailyFeeForm>) 
   const { operation, entity, next } = options
   const { initiator } = entity
 
-  const processInstanceName = `${presentText.value}-${initiator?.nickName}(${entity.amount})`
+  const processInstanceName = `${presentText.value}-${initiator?.nickName}(${proxy?.formatCurrency(entity.amount)})`
 
   // 业务提交
   await submit({

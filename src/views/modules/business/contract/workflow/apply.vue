@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from '@/components/WorkflowPage/types'
@@ -42,6 +43,9 @@ type Entity = ContractForm & { initiator: Initiator }
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+// 合同类型
+const { oa_contract_type } = toRefs(proxy.useDict('oa_contract_type'))
 
 const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useWorkflow<ContractForm>()
 
@@ -125,9 +129,23 @@ const archiveUpsertFields = filterTruthyKeys<ContractForm>({
 
 // 开始流程
 async function handleStartWorkflow(entity: Entity, next?: (result: any) => void) {
-  const { no, initiator } = entity
+  const { no, initiator, type, amount, partyNameA, partyNameB } = entity
 
-  const processInstanceName = `${procdefName.value}-${no}-${initiator?.nickName}`
+  const typeName = proxy?.selectDictLabel(oa_contract_type.value, type)
+
+  const baseProcdefName = `${typeName}-${procdefName.value}-${no}(${proxy?.formatCurrency(amount)})-${initiator.nickName}`
+
+  const processInstanceName = (function () {
+    if (type === 'in' && !isNil(partyNameA)) {
+      return `${baseProcdefName}-${partyNameA}`
+    }
+
+    if (type === 'out' && !isNil(partyNameB)) {
+      return `${baseProcdefName}-${partyNameB}`
+    }
+
+    return `${baseProcdefName}`
+  })()
 
   // 业务提交
   await Upsert.value?.submit({

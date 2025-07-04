@@ -181,6 +181,11 @@ export interface ContractForm extends BaseEntity {
    */
   partyD?: string
 
+  partyNameA?: string
+  partyNameB?: string
+  partyNameC?: string
+  partyNameD?: string
+
   /**
    * 合同类型（销售、支出、协议）
    */

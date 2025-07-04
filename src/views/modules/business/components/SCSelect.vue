@@ -150,7 +150,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'confirm', 'clear', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:names', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -172,6 +172,12 @@ const { searchText, loading, error, finished, list, total, viewLoading, selected
 
 const selectedIdList = computed(() => selectedList.value.map(e => e.id))
 const listOfIds = computed(() => list.value.map(e => e.id))
+const selectedNames = computed(() => {
+  if (isEmpty(selectedList.value)) {
+    return undefined
+  }
+  return selectedList.value.map(e => e.name).join(',')
+})
 
 // 查询参数
 const queryParams: SupplierCustomerQuery = reactive({
@@ -210,6 +216,8 @@ function onClear() {
   emit('update:modelValue', undefined)
   emit('change', undefined)
   emit('clear')
+
+  emit('update:names', undefined)
 }
 
 // 选项点击
@@ -338,6 +346,8 @@ function onConfirm() {
   emit('update:modelValue', payload)
   emit('change', payload)
   emit('confirm', payload)
+
+  emit('update:names', selectedNames.value)
 
   closePopup()
 }
