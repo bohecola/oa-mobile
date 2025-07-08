@@ -54,8 +54,8 @@ const logoutActions = [
         <div class="mb-2 text-xl font-black">
           {{ user.info?.nickName }}
         </div>
-        <div class="text-xs">
-          {{ user.info?.roles.map((e: any) => e.roleName).join('、') }}
+        <div class="text-sm">
+          {{ user.info?.postNames?.replace(',', '、') }}
         </div>
       </div>
 

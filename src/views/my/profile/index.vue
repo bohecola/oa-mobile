@@ -2,6 +2,7 @@
   <div>
     <NavBar />
     <van-divider>基本信息</van-divider>
+
     <van-field
       label="头像"
       label-class="font-bold"
@@ -58,6 +59,16 @@
     />
 
     <van-field
+      v-model="state.postNames"
+      label="所属岗位"
+      readonly
+      label-class="font-bold"
+      input-align="right"
+      :center="true"
+      :border="false"
+    />
+
+    <van-field
       v-model="state.roleNames"
       label="所属角色"
       readonly
@@ -104,6 +115,7 @@ interface ProfileState {
   gender?: string[]
   genderText?: string
   deptName?: string
+  postNames?: string
   roleNames?: string
   [key: string]: any
 }
@@ -120,6 +132,7 @@ const state = reactive<ProfileState>({
   gender: ['0'], // -
   genderText: '', // -
   deptName: '', // -
+  postNames: '',
   roleNames: '', // -
 })
 
@@ -135,6 +148,7 @@ function setState(state: ProfileState) {
   // set field text value.
   state.genderText = genderOptions.find(e => e.value === user.info?.sex)?.text as string
   state.deptName = user.info?.deptName
+  state.postNames = user.info?.postNames?.replace(',', '、')
   state.roleNames = user.info?.roles.map((e: any) => e.roleName).join(',')
   // set the pick seleted value.
   state.gender = [user.info?.sex as string ?? '0']

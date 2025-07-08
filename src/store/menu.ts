@@ -11,28 +11,33 @@ export const useMenuStore = defineStore('menu', () => {
 
   // 获取菜单
   async function get() {
-    // 动态菜单
-    const { rows } = await service.workflow.formManage.listFormManage()
+    try {
+      // 动态菜单
+      const { rows } = await service.workflow.formManage.listFormManage()
 
-    const list = rows.map((e) => {
-      const viewPath = e.appComponent
-      const path = e.router
-      const name = e.router.split('/').pop()
-      const title = e.formName
+      const list = rows.map((e) => {
+        const viewPath = e.appComponent
+        const path = e.router
+        const name = e.router.split('/').pop()
+        const title = e.formName
 
-      return {
-        viewPath,
-        path,
-        meta: {
-          innerPage: true,
-          title,
-        },
-        name: `${name}-${e.id}`,
-      }
-    })
+        return {
+          viewPath,
+          path,
+          meta: {
+            innerPage: true,
+            title,
+          },
+          name: `${name}-${e.id}`,
+        }
+      })
 
-    // 设置视图路由
-    setRoutes(list)
+      // 设置视图路由
+      setRoutes(list)
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
 
   return {

@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 用户信息
-  const info = ref<UserVO | null>(null)
+  const info = ref<UserVO>(null)
 
   // 设置用户信息
   function set(value: UserVO) {
