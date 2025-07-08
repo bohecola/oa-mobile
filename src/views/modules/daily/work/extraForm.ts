@@ -338,6 +338,17 @@ const extraInitFormData: DailyWorkForm = {
   qq_insurancePeriod: undefined,
   qq_purchaseInsuranceSpecialExplain: undefined,
   qq_isContractPurchaseInsurance: undefined, // 默认值'Y'需要上传合同中要求购买此类保险的原文截图,不能修改如果是N的话不能发起
+
+  // 咸林能源NAS系统账号申请
+  rr_deptId: undefined,
+  rr_userId: undefined,
+  rr_permission: undefined,
+
+  // 采购合同申请
+  ss_applicationMaterials: undefined,
+
+  // 供应商资料申请
+  tt_applicationMaterials: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -676,6 +687,12 @@ const extraInitRules: Record<string, FieldRule[]> = {
   rr_deptId: [{ required: true, message: `所在部门${baseMsg}`, trigger: 'onBlur' }],
   rr_userId: [{ required: true, message: `姓名${baseMsg}`, trigger: 'onBlur' }],
   rr_permission: [{ required: true, message: `权限${baseMsg}`, trigger: 'onBlur' }],
+
+  // 采购合同申请
+  ss_applicationMaterials: [{ required: true, message: `申请资料${baseMsg}`, trigger: 'onBlur' }],
+
+  // 供应商资料申请
+  tt_applicationMaterials: [{ required: true, message: `申请资料${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

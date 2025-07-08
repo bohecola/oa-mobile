@@ -44,7 +44,9 @@ export interface ExtraForm
   XZCCXMWZLZ,
   SWXSHTBH,
   RSXMBTSSYBXGMSQ,
-  XZXLNYNASXTZHSQ {}
+  XZXLNYNASXTZHSQ,
+  CGCGHTSQ,
+  CGGYSZLSQ {}
 
 // 商务
 // 项目考核奖励确认单
@@ -61,7 +63,7 @@ export interface SWXMKHJLQRD {
 // 人事
 // 劳动合同续签审批
 export interface RSLDHTXQSP {
-  b_userId?: string | number
+  b_userId?: string
   b_deptId?: string | number
   b_postIds?: string
   b_sex?: string
@@ -281,17 +283,17 @@ export interface RSGSRYZGZSZCSQ {
 // 员工考取证书补贴申请
 export interface RSYGKQZSBTSQ {
   yy_dailyWorkId?: string
-  yy_type: string
-  yy_name: string
-  yy_certificateStatus: string
-  yy_speciality: string
-  yy_no: string
-  yy_issuanceDate: string
-  yy_recheckDate: string
-  yy_unit: string
-  yy_startDate: string
-  yy_endDate: string
-  yy_isTraining: string
+  yy_type?: string
+  yy_name?: string
+  yy_certificateStatus?: string
+  yy_speciality?: string
+  yy_no?: string
+  yy_issuanceDate?: string
+  yy_recheckDate?: string
+  yy_unit?: string
+  yy_startDate?: string
+  yy_endDate?: string
+  yy_isTraining?: string
   yy_certificateLevel?: string // 证书等级
   yy_otherCompanyUseStatus?: string // 证书目前是否正在其他公司使用
   yy_entryCompanyDate?: string // 入职时间
@@ -463,9 +465,9 @@ export interface RSXMBTSSYBXGMSQ {
   qq_deptId?: string
   qq_deptName?: string
   qq_personnelCategory?: string
-  qq_insuranceExpirationDate?: string
-  qq_insuranceExpirationStartDate?: string
-  qq_insuranceExpirationEndDate?: string
+  qq_insuranceExpirationDate?: string // 建议保险开始截至时间
+  qq_insuranceExpirationStartDate?: string // 建议保险开始时间
+  qq_insuranceExpirationEndDate?: string // 建议保险截至时间
   qq_latestPurchaseDate?: string
   qq_purchaseInsuranceReason?: string
   qq_purchaseInsuranceNumber?: number
@@ -492,4 +494,15 @@ export interface XZXLNYNASXTZHSQ {
   rr_deptId?: string | number
   rr_userId?: string | number
   rr_permission?: string
+}
+
+// 采购类
+// 采购合同申请
+export interface CGCGHTSQ {
+  ss_applicationMaterials?: string
+}
+
+// 供应商资料申请
+export interface CGGYSZLSQ {
+  tt_applicationMaterials?: string
 }

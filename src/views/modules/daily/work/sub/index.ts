@@ -125,6 +125,12 @@ import RSZPXQBGSQ from './personnel/RSZPXQBGSQ/workflow/apply.vue'
 // 项目部特殊商业保险购买申请
 import RSXMBTSSYBXGMSQ from './personnel/RSXMBTSSYBXGMSQ/workflow/apply.vue'
 
+// 采购类
+// 采购合同申请
+import CGCGHTSQ from './purchase/CGCGHTSQ/workflow/apply.vue'
+// 供应商资料申请
+import CGGYSZLSQ from './purchase/CGGYSZLSQ/workflow/apply.vue'
+
 export default {
   DefaultWork,
   CWQQZH,
@@ -185,4 +191,6 @@ export default {
   RSZPXQBGSQ,
   RSXMBTSSYBXGMSQ,
   XZXLNYNASXTZHSQ,
+  CGCGHTSQ,
+  CGGYSZLSQ,
 }
