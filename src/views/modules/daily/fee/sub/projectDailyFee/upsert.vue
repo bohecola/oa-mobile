@@ -28,9 +28,15 @@
     :rules="computedRules.c_endDate"
   />
 
-  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod" :rules="computedRules.f_applyNumber" />
-
-    <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType" :rules="computedRules.f_applyNumber" /> -->
+  <van-field
+    v-show-field="['isSGZFF', includeFields]"
+    name="isSGZFF"
+    label="随工资发放"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.isSGZFF" />
+    </template>
+  </van-field>
 
   <FeeBaseUpsert :include-fields="includeFields2" />
 </template>

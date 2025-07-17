@@ -25,9 +25,15 @@
     label="结束时间"
   />
 
-  <!-- <van-field v-model="form.c_paymentMethod" v-show-field="['c_paymentMethod', includeFields]" label="付款方式" name="c_paymentMethod"  />
-
-  <van-field v-model="form.c_invoiceType" v-show-field="['c_invoiceType', includeFields]" label="发票类型" name="c_invoiceType"  /> -->
+  <van-field
+    v-show-field="['isSGZFF', includeFields]"
+    name="isSGZFF"
+    label="随工资发放"
+  >
+    <template #input>
+      <YesNoSwitch v-model="form.isSGZFF" readonly />
+    </template>
+  </van-field>
 
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>

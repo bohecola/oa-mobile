@@ -52,6 +52,11 @@ export interface DailyFeeVO {
   certificateType: string
 
   /**
+   * 随工资发放
+   */
+  isSGZFF: string
+
+  /**
    * 开票信息
    */
   receiptInfo?: ReceiptInfo | string
@@ -205,6 +210,11 @@ export interface DailyFeeForm extends BaseEntity, ExtraForm {
    * 根事务编码
    */
   rootNo?: string
+
+  /**
+   * 随工资发放
+   */
+  isSGZFF?: string
 
   /**
    * 开票信息

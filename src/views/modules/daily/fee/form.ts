@@ -49,6 +49,7 @@ export function useForm() {
     no: undefined,
     rootNo: undefined,
     ossIdList: undefined,
+    isSGZFF: 'N',
     receiptInfo: {
       entityName: undefined,
       invoiceType: undefined,
