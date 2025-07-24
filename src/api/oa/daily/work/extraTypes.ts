@@ -46,7 +46,8 @@ export interface ExtraForm
   RSXMBTSSYBXGMSQ,
   XZXLNYNASXTZHSQ,
   CGCGHTSQ,
-  CGGYSZLSQ {}
+  CGGYSZLSQ,
+  KHXMRCKH {}
 
 // 商务
 // 项目考核奖励确认单
@@ -58,6 +59,7 @@ export interface SWXMKHJLQRD {
   a_partyA?: string
   a_assessmentAmount?: number
   a_rewardAmount?: number
+  a_assessmentReport?: string
 }
 
 // 人事
@@ -505,4 +507,15 @@ export interface CGCGHTSQ {
 // 供应商资料申请
 export interface CGGYSZLSQ {
   tt_applicationMaterials?: string
+}
+
+// 考核类
+// 项目日常考核
+export interface KHXMRCKH {
+  uu_deptId?: string | number
+  uu_contractId?: string
+  uu_contractNo?: string
+  uu_businessType?: string
+  uu_partyA?: string
+  uu_assessmentReport?: string
 }

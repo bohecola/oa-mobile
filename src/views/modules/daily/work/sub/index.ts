@@ -131,6 +131,10 @@ import CGCGHTSQ from './purchase/CGCGHTSQ/workflow/apply.vue'
 // 供应商资料申请
 import CGGYSZLSQ from './purchase/CGGYSZLSQ/workflow/apply.vue'
 
+// 考核类
+// 项目日常考核
+import KHXMRCKH from './assessment/KHXMRCKH/workflow/apply.vue'
+
 export default {
   DefaultWork,
   CWQQZH,
@@ -193,4 +197,5 @@ export default {
   XZXLNYNASXTZHSQ,
   CGCGHTSQ,
   CGGYSZLSQ,
+  KHXMRCKH,
 }

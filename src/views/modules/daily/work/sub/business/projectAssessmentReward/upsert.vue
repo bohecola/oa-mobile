@@ -104,6 +104,17 @@
     </template>
   </van-field>
 
+  <van-field
+    v-if="needBMJL.includes(user.info.userId as string)"
+    v-show-field="['a_assessmentReport', includeFields]"
+    name="a_assessmentReport"
+    label="考核通报"
+  >
+    <template #input>
+      <UploadFile v-model="form.a_assessmentReport" />
+    </template>
+  </van-field>
+
   <BaseUpsert :include-fields="includeFields" />
 </template>
 
@@ -113,6 +124,8 @@ import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
+import { useWorkflowHelper } from '@/hooks'
+import { useStore } from '@/store'
 import ContractSelect from '@/views/modules/business/components/ContractSelect.vue'
 import SCSelect from '@/views/modules/business/components/SCSelect.vue'
 
@@ -130,6 +143,7 @@ const props = withDefaults(
       'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
+      'a_assessmentReport',
       'isSeal',
       'reason',
       'ossIdList',
@@ -147,6 +161,10 @@ const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFi
 
 // 表单
 const form = inject<Ref<DailyWorkForm>>('form')
+
+const { user } = useStore()
+
+const { needBMJL } = useWorkflowHelper()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()

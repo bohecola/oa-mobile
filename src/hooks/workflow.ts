@@ -7,16 +7,28 @@ import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
 
+  const needBMJL = ref([])
+
+  provide('needBMJL', needBMJL)
+
   if (taskId) {
     res = await getTaskVariables(taskId as string)
 
     if (!isEmpty(res.data)) {
+      const { data } = res
+
+      needBMJL.value = data?.needBMJL ?? []
+
       return res
     }
   }
   if (processInstanceId) {
     res = await getVariablesByProcessInstanceId(processInstanceId as string)
   }
+
+  const { data } = res
+
+  needBMJL.value = data?.needBMJL ?? []
 
   return res
 }
@@ -91,6 +103,9 @@ export function useWorkflowHelper() {
   // 是否是查看流程
   const isView = inject<Ref<boolean>>('isView', ref(undefined))
 
+  // 需求部门经理数组
+  const needBMJL = inject<Ref<string[]>>('needBMJL', ref([]))
+
   // 是否是业务表单
   const isBusinessForm = computed(() => isNil(taskDefinitionKey.value))
 
@@ -106,6 +121,7 @@ export function useWorkflowHelper() {
     isBusinessForm,
     isWorkflowForm,
     isView,
+    needBMJL,
     workflowLoading,
     workflowCloseLoading,
   }

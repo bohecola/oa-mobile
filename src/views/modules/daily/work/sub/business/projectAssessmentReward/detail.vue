@@ -88,6 +88,16 @@
     </template>
   </van-field>
 
+  <van-field
+    v-show-field="['a_assessmentReport', includeFields]"
+    label="考核通报"
+    name="a_assessmentReport"
+  >
+    <template #input>
+      <UploadFile v-model="form.a_assessmentReport" readonly />
+    </template>
+  </van-field>
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -113,6 +123,7 @@ withDefaults(
       'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
+      'a_assessmentReport',
       'isSeal',
       'reason',
       'ossIdList',

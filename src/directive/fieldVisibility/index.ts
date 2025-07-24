@@ -17,7 +17,7 @@ export function createFieldVisibilityDirective<V>(form?: Ref<any>): Directive<an
           form,
           (val) => {
             if (!isNil(val?.id)) {
-              if (isNil(val[field])) {
+              if (isNil(val[field]) || val[field] === '') {
                 el.style.display = 'none'
               }
             }
