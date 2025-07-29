@@ -7,7 +7,19 @@
     @submit="handleSubmit"
     @approval="handleApproval"
   >
-    <detail v-if="isView" ref="Detail" :include-fields="overviewFields" :show-loading="false" />
+    <div v-if="isView">
+      <detail ref="Detail" :include-fields="overviewFields" :show-loading="false" />
+
+      <!-- 自行采购通过后展示 -->
+      <div
+        v-if="submitFormData.variables?.entity?.purchaseMethod === '2' && businessStatus === 'finish'"
+      >
+        <img
+          :src="zixingcaigou" alt="自行采购"
+          class="absolute top-[82px] right-[32px] w-14 h-14 opacity-70"
+        >
+      </div>
+    </div>
 
     <template v-else>
       <!-- 采购申请 -->
@@ -51,12 +63,16 @@ import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
+import zixingcaigou from '@/assets/images/wf/zixingcaigou.png'
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 // 流程
 const { loading, submitFormData, taskDefinitionKey, isView } = useWorkflow<PurchaseForm>()
+
+// 流程状态
+const businessStatus = computed(() => proxy.$route.query.wfStatus as string)
 
 // 引用
 const Detail = ref<InstanceType<typeof detail>>()
@@ -84,6 +100,7 @@ const allFields: PartialBooleanRecord<PurchaseForm> = {
   type: true,
   businessCategory: true,
   objectCategory: true,
+  purchaseMethod: true,
   serviceCategory: true,
   leaseType: true,
   isDeposit: true,

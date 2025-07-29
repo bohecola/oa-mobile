@@ -43,6 +43,7 @@ declare global {
     value: string
     elTagType?: ElTagType
     elTagClass?: string
+    remark?: string
   }
 
   // 基础选项

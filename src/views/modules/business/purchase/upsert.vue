@@ -115,7 +115,26 @@
       name="objectCategory"
       dict-type="oa_purchase_object_category"
       :rules="computedRules.objectCategory"
+      @change="onObjectCategoryChange"
     />
+
+    <DictSelect
+      v-model="form.purchaseMethod"
+      v-show-field="['purchaseMethod', includeFields]"
+      name="purchaseMethod"
+      label="采购方式"
+      dict-type="oa_purchase_method"
+      clearable
+      :rules="computedRules.purchaseMethod"
+      :disabled="purchaseMethodDisabled"
+    >
+      <template #label>
+        <div class="flex items-center gap-2">
+          <span>采购方式</span>
+          <van-icon :size="14" name="info-o" @click.stop="onPurchaseMethodDescClick" />
+        </div>
+      </template>
+    </DictSelect>
 
     <DictSelect
       v-model="form.serviceCategory"
@@ -539,6 +558,10 @@
         <UploadFile v-model="form.ossIdList" value-type="array" :exclude="excludeOssIdList" />
       </template>
     </van-field>
+
+    <van-dialog v-model:show="showPurchaseMethodDesc" title="采购方式规则说明">
+      <PurchaseMethodDesc :options="oa_project_business_type" />
+    </van-dialog>
   </van-form>
 </template>
 
@@ -548,10 +571,11 @@ import { isEmpty, isNil, isNumber } from 'lodash-es'
 import type { FieldRule } from 'vant'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
+import PurchaseMethodDesc from './components/PurchaseMethodDesc.vue'
 import { useForm } from './form'
+import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getBusinessTypeByPsId } from '@/api/oa/business/project'
-import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { useUserStore } from '@/store/user'
 import { isNumeric } from '@/utils'
 
@@ -569,6 +593,8 @@ const props = withDefaults(
   },
 )
 
+const showPurchaseMethodDesc = ref(false)
+
 const userStore = useUserStore()
 
 const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey', ref(undefined))
@@ -578,7 +604,13 @@ const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 // 采购-业务类别、项目-业务类别、服务类别、发票类型、税率
-const { oa_purchase_business_type, oa_project_business_type, oa_purchase_service_category, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(
+const {
+  oa_purchase_business_type,
+  oa_project_business_type,
+  oa_purchase_service_category,
+  oa_purchase_invoice_type,
+  oa_contract_tax_rate,
+} = toRefs(
   proxy.useDict(
     'oa_purchase_business_type',
     'oa_project_business_type',
@@ -676,6 +708,70 @@ const taxRealAmountRequired = computed(() => {
 // 业务编辑时禁用
 const upsertDisabled = computed(() => !isNil(form.value.id) && isNil(taskDefinitionKey.value))
 
+// 采购方式是否禁用
+const purchaseMethodDisabled = computed(() => {
+  // 部门预算 => 禁用采购方式
+  if (isDept.value) {
+    // 生活用品、办公用品 =>（设置自行采购）
+    // 其他 => 设置公司采购
+    return true
+  }
+
+  // 项目预算
+  if (isProject.value) {
+    // 生活用品、办公用品 禁用采购方式 =>（设置自行采购）
+    if (['3', '4'].includes(form.value.objectCategory)) {
+      return true
+    }
+    else {
+      // 根据业务类型查询备注金额
+      const item = oa_project_business_type.value.find(e => e.value === form.value.businessCategory)
+      if (!isNil(item)) {
+        // 含税总金额大于等于备注金额 => 禁用采购方式（设置公司采购）
+        if (Big(form.value.amount).gt(item.remark)) {
+          return true
+        }
+      }
+    }
+  }
+
+  return false
+})
+
+// 自动设置采购方式
+function autoSetPurchaseMethod() {
+  // 生活用品、办公用品 =>（设置自行采购）
+  if (['3', '4'].includes(form.value.objectCategory)) {
+    form.value.purchaseMethod = '2'
+    return
+  }
+
+  // 部门预算
+  if (isDept.value) {
+    // 其他 => 设置公司采购
+    form.value.purchaseMethod = '1'
+    return
+  }
+
+  // 项目预算
+  if (isProject.value) {
+    // 根据业务类型查询备注金额
+    const item = oa_project_business_type.value.find(e => e.value === form.value.businessCategory)
+
+    if (!isNil(item)) {
+      // 含税总金额大于等于备注金额 => 设置公司采购
+      if (Big(form.value.amount).gt(item.remark)) {
+        form.value.purchaseMethod = '1'
+      }
+    }
+  }
+}
+
+// 物品类别修改
+function onObjectCategoryChange(_: string) {
+  autoSetPurchaseMethod()
+}
+
 function resetPS() {
   resetFields(['psId', 'contractId', 'contractNo', 'contractExecute', 'businessCategory'])
   form.value.contractNo = undefined
@@ -757,6 +853,17 @@ function handleAdd() {
   }
 }
 
+// 采购清单删除
+function handleRemove(_: any, index: number) {
+  const { confirm } = proxy.$modal
+
+  confirm('是否删除这条数据？')
+    .then(() => {
+      form.value.itemList.splice(index, 1)
+    })
+    .catch(() => {})
+}
+
 // 更新采购清单数据
 function setItemList(obj: Partial<PurchaseItemVO>) {
   form.value.itemList.forEach((item) => {
@@ -782,6 +889,19 @@ function sumTotalMoney(list: PurchaseItemVO[], key: keyof PurchaseItemVO) {
 
   return value.toNumber()
 }
+
+// 采购方式描述点击
+function onPurchaseMethodDescClick() {
+  showPurchaseMethodDesc.value = true
+}
+
+// 含税总金额监听
+watch(
+  () => form.value.amount,
+  () => {
+    autoSetPurchaseMethod()
+  },
+)
 
 // 采购清单监听
 watch(
@@ -865,17 +985,6 @@ watch(
     immediate: true,
   },
 )
-
-// 采购清单删除
-function handleRemove(_: any, index: number) {
-  const { confirm } = proxy.$modal
-
-  confirm('是否删除这条数据？')
-    .then(() => {
-      form.value.itemList.splice(index, 1)
-    })
-    .catch(() => {})
-}
 
 watch([isYwl, isDept], ([isYwlVal, isDeptVal]) => {
   if (isYwlVal || isDeptVal) {

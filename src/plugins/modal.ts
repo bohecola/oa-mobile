@@ -1,6 +1,6 @@
-import type { ToastWrapperInstance } from 'vant'
-import { showConfirmDialog, showDialog, showFailToast, showLoadingToast, showNotify, showSuccessToast, showToast } from 'vant'
+import type { DialogMessage, ToastWrapperInstance } from 'vant'
 import type { DialogAction, DialogOptions } from 'vant/lib/dialog/types'
+import { showConfirmDialog, showDialog, showFailToast, showLoadingToast, showNotify, showSuccessToast, showToast } from 'vant'
 
 let loadingInstance: ToastWrapperInstance
 export default {
@@ -54,7 +54,7 @@ export default {
     showNotify({ type: 'warning', message: content })
   },
   // 确认窗体
-  confirm(content: any, options: DialogOptions = {}): Promise<DialogAction | undefined> {
+  confirm(content: DialogMessage, options: DialogOptions = {}): Promise<DialogAction | undefined> {
     return showConfirmDialog({
       title: '系统提示',
       message: content,

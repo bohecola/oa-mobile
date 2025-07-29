@@ -40,6 +40,11 @@ export interface PurchaseVO extends BaseEntity {
   objectCategory: string
 
   /**
+   * 采购方式
+   */
+  purchaseMethod: string
+
+  /**
    * 服务类别
    */
   serviceCategory: string
@@ -175,6 +180,11 @@ export interface PurchaseForm extends BaseEntity {
    * 物品类别
    */
   objectCategory?: string
+
+  /**
+   * 采购方式
+   */
+  purchaseMethod?: string
 
   /**
    * 服务类别

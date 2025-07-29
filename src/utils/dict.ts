@@ -23,6 +23,7 @@ export function useDict(...args: string[]): { [key: string]: DictDataOption[] } 
               value: p.dictValue,
               elTagType: p.listClass,
               elTagClass: p.cssClass,
+              remark: p.remark,
             }),
           )
           useDictStore().setDict(dictType, res.value[dictType])
@@ -55,6 +56,7 @@ export function useDictNoAuth(...args: string[]): { [key: string]: DictDataOptio
               value: p.dictValue,
               elTagType: p.listClass,
               elTagClass: p.cssClass,
+              remark: p.remark,
             }),
           )
           useDictStore().setDict(dictType, res.value[dictType])

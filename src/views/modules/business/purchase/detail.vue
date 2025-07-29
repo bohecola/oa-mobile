@@ -73,6 +73,15 @@
     />
 
     <DictSelect
+      v-if="!isNil(form.purchaseMethod)"
+      v-model="form.purchaseMethod"
+      v-show-field="['purchaseMethod', includeFields]"
+      label="采购方式"
+      name="purchaseMethod"
+      dict-type="oa_purchase_method"
+    />
+
+    <DictSelect
       v-model="form.serviceCategory"
       v-show-field="['serviceCategory', includeFields]"
       label="服务类别"

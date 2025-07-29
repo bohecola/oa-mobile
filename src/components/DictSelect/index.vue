@@ -21,11 +21,11 @@
       v-bind="attrs"
       @click="onFieldClick"
     >
-      <template v-for="(_, name) in slots" #[name]="scope">
-        <slot :name="name" v-bind="scope" />
+      <template v-for="(_, name) in slots" #[name]="scope" :key="name">
+        <slot v-bind="scope" :key="name" :name="name" />
       </template>
 
-      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+      <template v-if="clearable && !isReadonly && !attrs?.disabled && !isNil(modelValue)" #right-icon>
         <van-icon name="clear" class="text-[--van-field-clear-icon-color]" @click.stop="onClear" />
       </template>
 
