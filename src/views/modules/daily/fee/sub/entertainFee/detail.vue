@@ -66,16 +66,6 @@
     name="a_entertainAddress"
   />
 
-  <van-field
-    v-model="form.a_entertainReason"
-    v-show-field="['a_entertainReason', includeFields]"
-    type="textarea"
-    rows="1"
-    autosize
-    label="招待事由"
-    name="a_entertainReason"
-  />
-
   <FeeBaseDetail :include-fields="includeFields2" />
 </template>
 
@@ -89,7 +79,26 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'isAdministration', 'a_entertainObject', 'a_entertainCompany', 'a_customerNumber', 'a_accompanyNumber', 'a_entertainForm', 'a_entertainDate', 'a_entertainAddress', 'a_entertainReason', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => [
+      'subjectType',
+      'deptId',
+      'psId',
+      'contractNo',
+      'itemList',
+      'amount',
+      'isAdministration',
+      'a_entertainObject',
+      'a_entertainCompany',
+      'a_customerNumber',
+      'a_accompanyNumber',
+      'a_entertainForm',
+      'a_entertainDate',
+      'a_entertainAddress',
+      'a_entertainReason',
+      'reason',
+      'receiptInfo',
+      'ossIdList',
+    ],
   },
 )
 
