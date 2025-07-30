@@ -2,6 +2,7 @@
   <div class="w-full">
     <van-field
       v-if="isReadonly"
+      :model-value="modelValue"
       v-bind="attrs"
     >
       <template #input>
@@ -126,7 +127,15 @@
           :columns="columns"
           @confirm="onPickerConfirm"
           @cancel="onCancel"
-        />
+        >
+          <template #empty>
+            <van-empty
+              :image="customEmptyImage"
+              image-size="80"
+              description="暂无数据"
+            />
+          </template>
+        </van-picker>
       </template>
     </van-popup>
   </div>
@@ -138,6 +147,7 @@ import type { CheckboxInstance } from 'vant'
 import { isArray, isEmpty, isNil } from 'lodash-es'
 import { useParentForm, usePopup, useSerializer } from '@/hooks'
 import { cn } from '@/utils'
+import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 const props = withDefaults(
   defineProps<{
@@ -154,6 +164,7 @@ const props = withDefaults(
     isFilterUseSeal?: boolean
     groupClass?: string
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
+    items?: DictDataOption[]
   }>(),
   {
     readonly: undefined,
@@ -165,7 +176,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'change', 'radio-click', 'checkbox-click'])
+const emit = defineEmits(['update:modelValue', 'update:items', 'change', 'radio-click', 'checkbox-click'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -181,11 +192,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const checkboxRefs = ref<CheckboxInstance[]>([])
 
 // 字典
-const dictRefs = toRefs(
-  !isNil(props.dictType)
-    ? proxy.useDict(props.dictType)
-    : reactive<Record<string, DictDataOption[]>>({}),
-)
+const dictRefs = toRefs(proxy.useDict(props.dictType))
 
 // 选中值
 const ids = ref<string | string[]>(deserialize(props.modelValue))
@@ -246,6 +253,7 @@ const presentText = computed(() => {
 function onClear() {
   emit('update:modelValue', undefined)
   emit('change', undefined)
+  emit('update:items', [])
 }
 
 // RadioGroup / CheckboxGroup 选择
@@ -281,8 +289,15 @@ function onCancel() {
 function onPickerConfirm({ selectedValues }) {
   const [value] = selectedValues
 
+  if (props.modelValue === value) {
+    return closePopup()
+  }
+
   emit('update:modelValue', value)
   emit('change', value)
+
+  const items = options.value.filter(e => e.value === value)
+  emit('update:items', items)
 
   closePopup()
 }
@@ -291,8 +306,15 @@ function onPickerConfirm({ selectedValues }) {
 function onCheckboxPickerConfirm(values: string[]) {
   const payload = serialize(values)
 
+  if (props.modelValue === payload) {
+    return closePopup()
+  }
+
   emit('update:modelValue', payload)
   emit('change', payload)
+
+  const items = options.value.filter(e => payload?.includes(e.value))
+  emit('update:items', items)
 
   closePopup()
 }

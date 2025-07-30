@@ -15,7 +15,6 @@
           :finished="finished"
           :finished-text="finishedText"
           :error-text="errorText"
-
           @load="onLoad"
         >
           <van-cell
@@ -58,14 +57,24 @@ const { user } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-// 查询
-const queryParams = ref<PageQuery>({
-  pageNum: 1,
-  pageSize: 10,
-})
-
 // 列表
-const { refreshing, loading, list, error, finished, finishedText, errorText } = useList<ProductTaskRecordVo>()
+const {
+  refreshing,
+  loading,
+  list,
+  error,
+  finished,
+  finishedText,
+  errorText,
+  onLoad,
+  onRefresh,
+} = useList<ProductTaskRecordVo, PageQuery>({
+  initQueryParams: {
+    pageNum: 1,
+    pageSize: 10,
+  },
+  request: getProjectRecordList,
+})
 
 // 是否展示新增按钮
 const showAdd = ref(false)
@@ -73,42 +82,6 @@ const showAdd = ref(false)
 // 新增
 function handleAdd() {
   proxy.$router.push('/daily-report/new')
-}
-
-// 加载
-async function onLoad() {
-  try {
-    if (refreshing.value) {
-      list.value = []
-      refreshing.value = false
-    }
-
-    const { rows, total } = await getProjectRecordList(queryParams.value)
-
-    list.value.push(...rows)
-
-    if (list.value.length >= total) {
-      finished.value = true
-    }
-    else {
-      queryParams.value.pageNum++
-    }
-  }
-  catch {
-    error.value = true
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-// 刷新
-function onRefresh() {
-  list.value = []
-  queryParams.value.pageNum = 1
-  finished.value = false
-  loading.value = true
-  onLoad()
 }
 
 // 点击

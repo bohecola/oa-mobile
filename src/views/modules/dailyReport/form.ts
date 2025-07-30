@@ -4,17 +4,16 @@ import type { FieldRule, FormInstance } from 'vant'
 import type { ProductTaskRecordResultVo, ProductTaskRecordVo } from '@/api/ptms/task/productTaskUpdate/types'
 import { getProjectDayTaskList, getTaskRecordByRecordId, productTaskDeal } from '@/api/ptms/task/productTask'
 import { transformYnToBoolean } from '@/utils'
+import { useFormHelper } from '@/hooks'
 
 export function useForm() {
+  const { isAdd, isEdit } = useFormHelper()
+
   // 实例
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
   // 引用
   const Form = ref<FormInstance>()
-
-  // 是否是编辑
-  const isEdit = proxy.$route.path.includes('/edit')
-  const isAdd = proxy.$route.path.includes('/new')
 
   // 部门列表
   const deptList = ref<DictDataOption[]>([])
@@ -115,7 +114,8 @@ export function useForm() {
   }
 
   // 提交
-  function submit() {
+  function submit(options: SubmitOptions<ProductTaskRecordVo> = {}) {
+    const { success, fail } = options
     const { msgSuccess, loading } = proxy.$modal
     // 校验
     Form.value.validate()
@@ -127,8 +127,11 @@ export function useForm() {
 
         msgSuccess(msg)
 
+        success?.(form.value)
+
         proxy.$router.back()
       })
+      .catch(fail)
   }
 
   return {

@@ -9,7 +9,7 @@ export function useDict(...args: string[]): { [key: string]: DictDataOption[] } 
     [key: string]: DictDataOption[]
   }>({})
   return (() => {
-    args.forEach(async (dictType) => {
+    args.filter(Boolean).forEach(async (dictType) => {
       res.value[dictType] = []
       const dicts = useDictStore().getDict(dictType)
       if (dicts) {
@@ -42,7 +42,7 @@ export function useDictNoAuth(...args: string[]): { [key: string]: DictDataOptio
     [key: string]: DictDataOption[]
   }>({})
   return (() => {
-    args.forEach(async (dictType) => {
+    args.filter(Boolean).forEach(async (dictType) => {
       res.value[dictType] = []
       const dicts = useDictStore().getDict(dictType)
       if (dicts) {

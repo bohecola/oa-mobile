@@ -10,6 +10,7 @@ export interface DeptQuery extends PageQuery {
    * 标识：内部人员看到的部门数据，系统管理看到的全部部门数据
    */
   isInternal?: string
+  companyId?: string | number
 }
 
 /**

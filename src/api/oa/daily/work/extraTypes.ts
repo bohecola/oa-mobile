@@ -42,6 +42,7 @@ export interface ExtraForm
   SWHTJSZL,
   XZYYFK,
   XZCCXMWZLZ,
+  VehicleTransfer,
   SWXSHTBH,
   RSXMBTSSYBXGMSQ,
   XZXLNYNASXTZHSQ,
@@ -250,6 +251,13 @@ export interface RSJCSCGSRYLDHTSQ {
   t_deptId?: string | number
   t_isFormal?: string
   t_postIds?: string
+}
+
+// 车辆移交
+export interface VehicleTransfer {
+  u_carNumber?: string
+  u_newCompanyId?: string | number
+  u_newDeptId?: string | number
 }
 
 // 公司部门岗位名称及编制调整审批流程

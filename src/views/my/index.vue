@@ -102,8 +102,8 @@ const logoutActions = [
 <style lang="scss" scoped>
 .my-bg {
   clip-path: inset(0 -55% 0 -55% round 0 0 100% 100%);
-  background-size: cover;
-  background-position: 0px -245px;
+  background-size: 200px;
+  background-position: center 25%;
   background-repeat: no-repeat;
 
   &::after {

@@ -33,12 +33,26 @@ export interface CLSYXGFY {
   b_useMethod?: string
   b_annualReviewExpirationDate?: string
   b_verificationDate?: string
+  b_lastAnnualReviewExpirationDate?: string
+  b_lastVerificationDate?: string
   b_annualReviewMethod?: string
   b_lastStrongInsuranceExpirationDate?: string
   b_lastCommercialInsuranceExpirationDate?: string
   b_strongInsuranceAmount?: number
   b_commercialInsuranceAmount?: number
   b_totalAmount?: number
+  // 保险公司
+  b_insuranceCompany?: string
+  // 交强险购买日期
+  b_compulsoryInsuranceDate?: string
+  // 交强险到期日期
+  b_compulsoryInsuranceExpirationDate?: string
+  // 商业险购买日期
+  b_commercialInsuranceDate?: string
+  // 商业险到期日期
+  b_commercialInsuranceExpirationDate?: string
+  // 上次里程数
+  b_upMileage?: number
 }
 
 // 项目日常费用
@@ -62,8 +76,8 @@ export interface AQLPXFY {}
 
 // 项目部特殊商业保险购买申请
 export interface FYXMBTSSYBXGMSQ {
-  e_deptId?: string
   e_dailyWorkId?: string
+  e_deptId?: string
   e_personnelCategory?: string
   e_insuranceExpirationDate?: string
   e_insuranceExpirationStartDate?: string
@@ -87,7 +101,6 @@ export interface FYXMBTSSYBXGMSQ {
   e_isOldInsuranceTermination?: string
   e_isOldInsuranceTerminationReason?: string
   e_isContractPurchaseInsurance?: string // 合同中是否要求购买此类保险
-
 }
 // 生产项目部临聘人员月度食堂补助费用审批
 export interface FYSCXMBLPRYYDSTBZFYSP {

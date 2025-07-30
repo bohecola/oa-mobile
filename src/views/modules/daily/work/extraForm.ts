@@ -159,6 +159,11 @@ const extraInitFormData: DailyWorkForm = {
   t_isFormal: undefined,
   t_postIds: undefined,
 
+  // 车辆移交
+  u_carNumber: undefined,
+  u_newCompanyId: undefined,
+  u_newDeptId: undefined,
+
   // 外包员工续用意见征询
   x_userId: undefined,
   x_deptId: undefined,
@@ -506,6 +511,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // 解除生产/公司人员劳动合同申请
   t_userId: [{ required: true, message: `被解除劳动合同员工${baseMsg}`, trigger: 'onBlur' }],
   t_isFormal: [{ required: true, message: `是否已转正${baseMsg}`, trigger: 'onBlur' }],
+
+  // 车辆移交
+  u_carNumber: [{ required: true, message: `车牌号${baseMsg}`, trigger: 'onBlur' }],
+  u_newCompanyId: [{ required: true, message: `新公司${baseMsg}`, trigger: 'onBlur' }],
+  u_newDeptId: [{ required: true, message: `新部门${baseMsg}`, trigger: 'onBlur' }],
 
   // 外包员工续用意见征询
   x_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],

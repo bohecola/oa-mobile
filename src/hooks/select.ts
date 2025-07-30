@@ -574,7 +574,6 @@ export function useUserInfoSelect() {
       key: 'probationPeriod',
       type: 'plain',
     },
-
     {
       text: '状态',
       key: 'status',

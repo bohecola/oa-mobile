@@ -44,21 +44,26 @@ declare global {
     elTagType?: ElTagType
     elTagClass?: string
     remark?: string
+    [key: string]: any
   }
 
   // 基础选项
   interface BaseOptions<T = any> {
-    calledFrom?: 'bussiness' | 'workflow'
-    operation?: BaseEntity['operation']
     success?: (data?: T) => void
     fail?: (err?: any) => void
   }
 
-  // 表单提交选项
-  type SubmitOptions<T = string> = BaseOptions<T>
+  // 表单重置选项
+  type ResetOptions<T = any> = BaseOptions<T>
 
   // 表单回显选项
-  type ViewOptions = BaseOptions
+  type ViewOptions<T = any> = BaseOptions<T>
+
+  // 表单提交选项
+  interface SubmitOptions<T = string> extends BaseOptions<T> {
+    calledFrom?: 'bussiness' | 'workflow'
+    operation?: BaseEntity['operation']
+  }
 
   // 选择器自定义 label 字段描述符
   interface LabelDescriptor<T = any> {

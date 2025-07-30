@@ -239,10 +239,9 @@ async function handleApproval({ open }: ApprovalPayload) {
   await workflowSubmit({
     success: (data) => {
       Object.assign(submitFormData.value.variables.entity, data)
+      open(taskId as string)
     },
   })
-
-  open(taskId as string)
 }
 
 // 挂载

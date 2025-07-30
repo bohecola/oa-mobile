@@ -1,3 +1,4 @@
+import Big from 'big.js'
 import type { FieldRule, FormInstance } from 'vant'
 import { cloneDeep, isNil } from 'lodash-es'
 import { extraInitFormData, extraInitRules } from './extraForm'
@@ -25,6 +26,8 @@ export const dailyFeeItem: DailyFeeItemVO = {
 }
 
 export function useForm() {
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
   const { user } = useStore()
 
   // 引用
@@ -178,7 +181,15 @@ export function useForm() {
     const { success, fail } = options
 
     await Form.value?.validate()
-      .then(() => success?.(form.value))
+      .then(() => {
+        if (form.value.no === 'GSCLBXF') {
+          if (!Big(form.value.amount).eq(Big(form.value.b_totalAmount))) {
+            return proxy.$modal.msgWarning('申请总金额 = 本次交强险金额 + 本次商业险金额，请检查本次交强险金额和本次商业险金额是否与申请总金额一致')
+          }
+        }
+
+        success?.(form.value)
+      })
       .catch(fail)
   }
 
@@ -204,7 +215,6 @@ export function useForm() {
       })
     }
     catch (err) {
-      console.error(err)
       fail?.(err)
     }
   }

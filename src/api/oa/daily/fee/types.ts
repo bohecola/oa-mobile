@@ -22,6 +22,11 @@ export interface DailyFeeVO {
   deptId: string
 
   /**
+   * 部门名称
+   */
+  deptName: string
+
+  /**
    * 费用类型
    */
   feeType: number
@@ -65,6 +70,10 @@ export interface DailyFeeVO {
    * 备注
    */
   remark: string
+
+  createByName: string
+
+  createTime: string
 }
 
 export interface DailyFeeItemVO {
@@ -242,7 +251,7 @@ export interface ReceiptInfo {
   openingBank?: string
 }
 
-export interface DailyFeeQuery extends PageQuery {
+export interface DailyFeeQuery extends Partial<PageQuery> {
   /**
    * 项目
    */
@@ -256,12 +265,22 @@ export interface DailyFeeQuery extends PageQuery {
   /**
    * 部门id
    */
-  deptId?: string
+  deptId?: string | number
 
   /**
    * 费用类型
    */
   feeType?: string
+
+  /**
+   * 日常事务申请类型
+   */
+  dailyTypeNo?: string
+
+  /**
+   * 状态
+   */
+  status?: string
 
   /**
    * 预算科目

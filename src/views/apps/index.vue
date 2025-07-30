@@ -10,7 +10,7 @@
           class="
             p-2 h-32
             flex justify-center items-center gap-2
-            bg-card rounded
+            bg-[--bg-card] rounded
             border
             shadow-sm
             active:bg-[--van-primary-color]

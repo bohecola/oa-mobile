@@ -206,11 +206,9 @@ async function handleApproval({ open }: ApprovalPayload) {
   await workflowSubmit({
     success: (data) => {
       Object.assign(submitFormData.value.variables.entity, data)
+      open(taskId as string)
     },
   })
-
-  // 打开审批弹窗
-  open(taskId as string)
 }
 
 // 挂载

@@ -271,7 +271,7 @@ async function handleApproval({ open }: ApprovalPayload) {
     case 'Activity_0ccirhe':
       await CheckUpsert.value?.workflowSubmit({ success })
       break
-      // 打开审批弹窗
+    // 打开审批弹窗
     default:
       open(taskId as string)
       break

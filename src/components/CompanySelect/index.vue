@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <van-field v-if="isReadonly" v-bind="attrs">
+    <van-field v-if="isReadonly" :model-value="modelValue" v-bind="attrs">
       <template #input>
         <dict-tag :options="options" :value="id" />
       </template>
@@ -16,6 +16,7 @@
       autosize
       is-link
       v-bind="attrs"
+      :disabled="disabled"
       @click="onFieldClick"
     >
       <template v-for="(_, name) in slots" #[name]="scope">
@@ -54,10 +55,11 @@ import { useParentForm, usePopup } from '@/hooks'
 import { getCompany } from '@/api/oa/personnel/userContract'
 
 const props = defineProps<{
-  modelValue?: string
+  modelValue?: string | number
   multiple?: boolean
   readonly?: boolean
   clearable?: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue', 'change'])
@@ -65,9 +67,10 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const attrs = useAttrs()
 const slots = useSlots()
 const parentForm = useParentForm()
+
 const { visible, openPopup, closePopup } = usePopup()
 
-const id = ref<string>(props.modelValue) // 选中的值
+const id = ref<string | number>(String(props.modelValue)) // 选中的值
 const options = ref<{ text: string, label: string, value: string }[]>([])
 
 // 计算是否只读
@@ -75,10 +78,14 @@ const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 获取选项数据
 async function getOptions() {
-  if (options.value.length)
-    return // 防止重复请求
-  const res = await getCompany('0')
-  options.value = res.data
+  if (options.value.length) {
+    // 防止重复请求
+    return
+  }
+
+  const { data } = await getCompany('0')
+
+  options.value = data
     .filter(e => e.status === '0')
     .map(e => ({
       text: e.deptName,
@@ -113,7 +120,11 @@ function onConfirm({ selectedValues }) {
 
 // 选择框点击
 function onFieldClick() {
-  if (attrs?.disabled) {
+  if (isReadonly.value) {
+    return
+  }
+
+  if (props.disabled) {
     return
   }
 
@@ -126,7 +137,7 @@ onMounted(getOptions)
 watch(
   () => props.modelValue,
   (val) => {
-    id.value = val
+    id.value = String(val)
   },
   { immediate: true },
 )

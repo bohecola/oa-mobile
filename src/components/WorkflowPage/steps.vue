@@ -15,7 +15,7 @@
           <p>办理人：{{ item.nickName }}</p>
           <div class="flex gap-2">
             <div>
-              状态：<van-tag type="primary">
+              状态：<van-tag :class="getStatusClass(item.status)">
                 {{ item.statusName }}
               </van-tag>
             </div>
@@ -49,7 +49,50 @@ async function init(businessKey: string | number) {
   historyList.value = data.reverse()
 }
 
+function getStatusClass(status: string) {
+  switch (status) {
+    case 'pass':
+      return 'pass'
+    case 'back':
+      return 'back'
+    case 'pending':
+      return 'pending'
+    case 'transfer':
+      return 'transfer'
+    case 'copy':
+      return 'copy'
+    default:
+      return 'primary'
+  }
+}
+
 defineExpose({
   init,
 })
 </script>
+
+<style lang="scss" scoped>
+.pass {
+  background-color: var(--van-success-color);
+}
+
+.back {
+  background-color: var(--van-danger-color);
+}
+
+.pending {
+  background-color: #f0b100;
+}
+
+.transfer {
+  background-color: #7232dd;
+}
+
+.copy {
+  background-color: var(--van-warning-color);
+}
+
+.primary {
+  background-color: var(--van-primary-color);
+}
+</style>

@@ -80,6 +80,7 @@ declare module 'vue' {
     VanSkeleton: typeof import('vant/es')['Skeleton']
     VanSkeletonParagraph: typeof import('vant/es')['SkeletonParagraph']
     VanStep: typeof import('vant/es')['Step']
+    VanStepper: typeof import('vant/es')['Stepper']
     VanSteps: typeof import('vant/es')['Steps']
     VanSwipe: typeof import('vant/es')['Swipe']
     VanSwipeItem: typeof import('vant/es')['SwipeItem']

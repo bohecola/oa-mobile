@@ -11,6 +11,7 @@
       v-else
       :model-value="dateFormat(modelValue)"
       :is-link="!isReadonly"
+      :disabled="disabled"
       placeholder="请选择"
       readonly
       v-bind="attrs"
@@ -74,6 +75,7 @@ const props = withDefaults(
     component?: 'calendar' | 'date-picker'
     valueFormat?: string
     readonly?: boolean
+    disabled?: boolean
     clearable?: boolean
     minDate?: Date
     maxDate?: Date
@@ -137,7 +139,11 @@ function onClear() {
 
 // 选项点击
 function onFieldClick() {
-  if (attrs?.disabled) {
+  if (isReadonly.value) {
+    return
+  }
+
+  if (props.disabled) {
     return
   }
 

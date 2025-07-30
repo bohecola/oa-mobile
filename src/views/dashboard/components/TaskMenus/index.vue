@@ -72,3 +72,15 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.van-grid {
+  & > :first-child {
+    :deep(.van-grid-item__content) {
+      &::after {
+        border-width: 0 var(--van-border-width) var(--van-border-width) var(--van-border-width);
+      }
+    }
+  }
+}
+</style>

@@ -9,6 +9,7 @@
       readonly
       autosize
       v-bind="attrs"
+      :disabled="disabled"
       @click="onFieldClick"
     >
       <template v-for="(_, name) in slots" #[name]="scope">
@@ -39,6 +40,13 @@
         @confirm="onConfirm(ids)"
       />
       <div class="py-2 px-4 h-[calc(100%-44px-env(safe-area-inset-bottom))] overflow-y-auto">
+        <van-empty
+          v-if="isEmpty(treeData)"
+          :image="customEmptyImage"
+          image-size="60"
+          description="数据为空"
+        />
+
         <BaseTree
           ref="BaseTreeRef"
           v-model="treeData"
@@ -60,6 +68,7 @@
             <div
               v-if="multiple && !isEmpty(node.children)"
               class="w-full text-lg"
+              :class="{ 'opacity-50': node?.disabled }"
             >
               {{ node.label }}
             </div>
@@ -71,6 +80,7 @@
               shape="square"
               icon-size="20"
               class="w-full"
+              :class="{ 'opacity-50': node?.disabled }"
             >
               <template v-if="stat.checked === 0" #icon>
                 <div class="w-3 h-3 bg-[--van-primary-color] flex items-center justify-center">
@@ -90,21 +100,22 @@
 </template>
 
 <script setup lang="ts">
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { BaseTree, OpenIcon } from '@he-tree/vue'
 import PickerToolbar from 'vant/es/picker/PickerToolbar'
+import { isArray, isEmpty, isEqual, isNil, isNumber } from 'lodash-es'
+import { BaseTree, OpenIcon } from '@he-tree/vue'
 import type { Stat } from 'node_modules/@he-tree/vue/dist/v3/components/TreeProcessorVue'
 import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
 import { listDept } from '@/api/system/dept'
 import { useParentForm, usePopup } from '@/hooks'
+import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 type DeptTreeSelectValue = string | number | (string | number)[]
 type _DeptVO = Partial<DeptVO> & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
 
 interface DataConfig {
   disabledKey: string
-  disabledValue: string
-  enabled: boolean
+  disabledValue: string | number
+  disabled: boolean
 }
 
 const props = withDefaults(
@@ -119,7 +130,9 @@ const props = withDefaults(
     params?: Partial<DeptQuery>
     disabled?: boolean
   }>(),
-  {},
+  {
+    params: () => ({}),
+  },
 )
 
 const emit = defineEmits(['update:modelValue', 'update:value', 'change', 'nodeClick'])
@@ -164,12 +177,12 @@ const treeData = computed(() => {
   const dataConfig = props.dataConfig
   const raw = rawData.value
 
-  const data = dataConfig
-    ? raw.map(e => ({
+  const data = isNil(dataConfig)
+    ? raw
+    : raw.map(e => ({
         ...e,
-        disabled: e[dataConfig.disabledKey] === dataConfig.disabledValue ? dataConfig.enabled : e.disabled,
+        disabled: e[dataConfig.disabledKey] === dataConfig.disabledValue ? dataConfig.disabled : e.disabled,
       }))
-    : raw
 
   const options = proxy?.handleTree<_DeptVO>(data)
 
@@ -202,11 +215,11 @@ function computedLabel(id: string | number) {
   const node = rawData.value.find(e => e.id === id)
 
   // 项目部回显 => 上级部门/项目部
-  if (node.type === '2') {
+  if (node?.type === '2') {
     const parentNode = rawData.value.find(e => e.id === node.parentId)
     return `${parentNode.deptName} / ${node.deptName}`
   }
-  return node.deptName
+  return node?.deptName
 }
 
 // 数据初始时处理每一个 stat（钩子函数）
@@ -236,7 +249,7 @@ function onFieldClick() {
     return
   }
 
-  if (props?.disabled) {
+  if (props.disabled) {
     return
   }
 
@@ -260,6 +273,10 @@ function onFieldClick() {
 // 节点点击
 function onNodeClick(stat: Stat<_DeptVO>) {
   const { statsFlat } = BaseTreeRef.value
+
+  if (stat.data?.disabled) {
+    return
+  }
 
   // 单选
   if (!props.multiple) {
@@ -381,6 +398,16 @@ watch(
   (val) => {
     ids.value = deserialize(val)
   },
+)
+
+watch(
+  () => props.params,
+  (newVal, oldVal) => {
+    if (!isEqual(newVal, oldVal)) {
+      getData()
+    }
+  },
+  { deep: true },
 )
 
 onMounted(() => {
