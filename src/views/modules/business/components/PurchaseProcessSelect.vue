@@ -188,7 +188,7 @@ const queryParams: PurchaseQuery = reactive({
   createDept: undefined,
   createUserName: undefined,
   status: undefined,
-  statusList: [2, 4],
+  statusList: ['2', '3', '4'],
   businessKey: undefined,
   keyword: undefined,
   params: {},
