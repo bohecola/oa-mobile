@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4893624 */
-  src: url('iconfont.woff2?t=1748398505747') format('woff2'),
-       url('iconfont.woff?t=1748398505747') format('woff'),
-       url('iconfont.ttf?t=1748398505747') format('truetype');
+  src: url('iconfont.woff2?t=1754040954286') format('woff2'),
+       url('iconfont.woff?t=1754040954286') format('woff'),
+       url('iconfont.ttf?t=1754040954286') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-purchase_change_flow:before {
+  content: "\e602";
 }
 
 .icon-contract_phase_flow:before {

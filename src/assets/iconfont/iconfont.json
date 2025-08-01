@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "9604259",
+      "name": "采购变更申请",
+      "font_class": "purchase_change_flow",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
       "icon_id": "36875224",
       "name": "合同执行阶段",
       "font_class": "contract_phase_flow",
