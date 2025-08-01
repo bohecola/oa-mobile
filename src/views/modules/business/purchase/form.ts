@@ -1,6 +1,6 @@
 import { cloneDeep, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
-import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
+import type { PurchaseForm, PurchaseItemVO, PurchaseVO } from '@/api/oa/business/purchase/types'
 import { addPurchase, getPurchase, updatePurchase, updatePurchaseByBussiness } from '@/api/oa/business/purchase'
 import { useStore } from '@/store'
 import { getGenerateCode } from '@/api/oa/common'
@@ -156,10 +156,17 @@ export function useForm() {
     excludeCheckFiles.value = data.checkFiles?.split(',')
     excludeOssIdList.value = data.ossIdList
 
-    nextTick(() => {
-      Object.assign(form.value, data)
-      isLoading.value = false
-    })
+    Object.assign(form.value, data)
+    isLoading.value = false
+  }
+
+  // 自定义回显
+  async function viewByObject(data: PurchaseVO) {
+    reset()
+    excludeCheckFiles.value = data.checkFiles?.split(',')
+    excludeOssIdList.value = data.ossIdList
+
+    Object.assign(form.value, data)
   }
 
   // 提交表单
@@ -278,6 +285,7 @@ export function useForm() {
     reset,
     resetFields,
     view,
+    viewByObject,
     submit,
     workflowSubmit,
     workflowView,

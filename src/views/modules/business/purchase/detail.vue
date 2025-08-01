@@ -224,42 +224,35 @@
             />
 
             <van-field
+              :model-value="formatCurrency(item.budgetAmount)"
               :name="`itemList.${index}.budgetAmount`"
               label="预算金额"
-            >
-              <template #input>
-                {{ formatCurrency(item.budgetAmount) }}
-              </template>
-            </van-field>
+            />
+
             <van-field
+              :model-value="formatCurrency(item.applyingAmount)"
               :name="`itemList.${index}.applyingAmount`"
               label="申请中"
-            >
-              <template #input>
-                {{ formatCurrency(item.applyingAmount) }}
-              </template>
-            </van-field>
+            />
+
             <van-field
+              :model-value="formatCurrency(item.finishAmount)"
               :name="`itemList.${index}.finishAmount`"
               label="已申请"
-            >
-              <template #input>
-                {{ formatCurrency(item.finishAmount) }}
-              </template>
-            </van-field>
+            />
+
             <van-field
+              :model-value="formatCurrency(item.availableAmount)"
               :name="`itemList.${index}.availableAmount`"
               label="剩余金额"
-            >
-              <template #input>
-                {{ formatCurrency(item.availableAmount) }}
-              </template>
-            </van-field>
+            />
+
             <van-field
               v-model="item.name"
               :name="`itemList.${index}.name`"
               label="物品名称"
             />
+
             <van-field
               v-model="item.brand"
               :name="`itemList.${index}.brand`"
@@ -460,15 +453,14 @@ const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice
 )
 
 // 表单
-const { Form, form, isLoading, reset, view, workflowView } = useForm()
+const { Form, form, isLoading, reset, view, viewByObject, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<PurchaseForm>()
 
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')
-// 是否是部门预算
-// const isDept = computed(() => form.value.subjectType === 'dept')
+
 // 业务类型为运维类
 const isYwl = computed(() => isProject.value && ['0', '3'].includes(form.value.businessCategory))
 
@@ -488,6 +480,7 @@ defineExpose({
   form,
   reset,
   view,
+  viewByObject,
   workflowView,
 })
 </script>

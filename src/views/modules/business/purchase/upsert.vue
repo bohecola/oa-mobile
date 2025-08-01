@@ -265,12 +265,7 @@
       autosize
     />
 
-    <van-field v-show-field="['itemList', includeFields]">
-      <template #label>
-        <span class=" text-red-400 mr-1">*</span>
-        <span>采购清单</span>
-      </template>
-
+    <van-field v-if="includeFields.includes('itemList')" label="采购清单" required>
       <template #input>
         <CoolCardList accordion active-on-register>
           <CoolCard
@@ -455,7 +450,7 @@
             />
 
             <van-field
-              :model-value="item.realAmount"
+              :model-value="item.taxTotalAmount"
               :name="`itemList.${index}.taxTotalAmount`"
               label="含税合计(元)"
               placeholder="自动求和"

@@ -15,6 +15,11 @@ export interface PurchaseVO extends BaseEntity {
   subjectType?: string
 
   /**
+   * 预算id
+   */
+  psId?: string
+
+  /**
    * 状态
    */
   status?: string
@@ -30,6 +35,11 @@ export interface PurchaseVO extends BaseEntity {
   type: string
 
   /**
+   * 采购方式
+   */
+  purchaseMethod: string
+
+  /**
    * 业务类别
    */
   businessCategory: string
@@ -38,11 +48,6 @@ export interface PurchaseVO extends BaseEntity {
    * 物品类别
    */
   objectCategory: string
-
-  /**
-   * 采购方式
-   */
-  purchaseMethod: string
 
   /**
    * 服务类别
@@ -147,7 +152,7 @@ export interface PurchaseForm extends BaseEntity {
   no?: string
 
   /**
-   * 自定义流程名称
+   * 流程名称
    */
   processName?: string
 
@@ -172,6 +177,11 @@ export interface PurchaseForm extends BaseEntity {
   type?: string
 
   /**
+   * 采购方式
+   */
+  purchaseMethod?: string
+
+  /**
    * 业务类别;
    */
   businessCategory?: string
@@ -180,11 +190,6 @@ export interface PurchaseForm extends BaseEntity {
    * 物品类别
    */
   objectCategory?: string
-
-  /**
-   * 采购方式
-   */
-  purchaseMethod?: string
 
   /**
    * 服务类别
@@ -374,14 +379,19 @@ export interface PurchaseQuery extends PageQuery {
   ids?: string[]
 
   /**
-   * 搜索关键词
+   * 日期范围参数
+   */
+  params?: any
+
+  /**
+   * 关键字
    */
   keyword?: string
 
   /**
-   * 日期范围参数
+   * 是否采购变更
    */
-  params?: any
+  isPurchaseChange?: string
 }
 
 export interface PurchaseItemVO {
@@ -509,4 +519,6 @@ export interface PurchaseItemVO {
    * 备注
    */
   remark?: string
+
+  [key: string]: any
 }

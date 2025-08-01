@@ -1,8 +1,8 @@
+import { isEmpty, isNil } from 'lodash-es'
 import type { AxiosPromise } from 'axios'
 import type { LocationQuery } from 'vue-router'
-import { isEmpty, isNil } from 'lodash-es'
-import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
 import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
+import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
 
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
@@ -97,6 +97,9 @@ export function useWorkflow<T>() {
 }
 
 export function useWorkflowHelper() {
+  // 实例
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
   // 流程节点 Key
   const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey', ref(undefined))
 
@@ -112,16 +115,30 @@ export function useWorkflowHelper() {
   // 是否是流程表单
   const isWorkflowForm = computed(() => !isNil(taskDefinitionKey.value))
 
-  // 更新流程加载状态
+  // 是否草稿
+  const isDraft = computed(() => proxy.$route.query.wfStatus === 'draft')
+
+  // 是否新增
+  const isAdd = computed(() => proxy.$route.query.type === 'add')
+
+  // 是否审批
+  const isApproval = computed(() => proxy.$route.query.type === 'approval')
+
+  // 流程加载状态开启
   const workflowLoading = inject<() => void>('workflowLoading', () => {})
+
+  // 流程加载状态关闭
   const workflowCloseLoading = inject<() => void>('workflowCloseLoading', () => {})
 
   return {
     taskDefinitionKey,
+    needBMJL,
     isBusinessForm,
     isWorkflowForm,
     isView,
-    needBMJL,
+    isDraft,
+    isAdd,
+    isApproval,
     workflowLoading,
     workflowCloseLoading,
   }

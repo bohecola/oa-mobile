@@ -167,7 +167,8 @@ export function useForm() {
           id: form.value.id,
           itemList: form.value.itemList,
         })
-      }).catch(fail)
+      })
+      .catch(fail)
       .finally(() => updateLoading.value = false)
 
     return valid
@@ -189,23 +190,20 @@ export function useForm() {
           return proxy.$modal.msgWarning('应回款总和与合同金额不相等')
 
         success?.(form.value)
-      }).catch(fail)
+      })
+      .catch(fail)
   }
 
   function workflowView(entity: any, options: ViewOptions = {}) {
     const { success, fail } = options
     try {
       reset()
-      nextTick(async () => {
-        // 设置表单数据
-        Object.assign(form.value, entity)
-
-        // 成功回调
-        success?.(entity)
-      })
+      // 设置表单数据
+      Object.assign(form.value, entity)
+      // 成功回调
+      success?.(entity)
     }
     catch (err) {
-      console.error(err)
       fail?.(err)
     }
   }

@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import upsert from '../upsert.vue'
 import detail from '../detail.vue'
+import { allFields } from '../helper'
 import { useWorkflow, useWorkflowViewData } from '@/hooks'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
 import { startWorkFlow } from '@/api/workflow/task'
@@ -89,38 +90,6 @@ const CheckUpsert = ref<InstanceType<typeof upsert>>()
 const ReCheckDetail = ref<InstanceType<typeof detail>>()
 
 const CommonDetail = ref<InstanceType<typeof detail>>()
-
-const allFields: PartialBooleanRecord<PurchaseForm> = {
-  id: true,
-  no: true,
-  processName: false,
-  subjectType: true,
-  psId: true,
-  deptId: true,
-  type: true,
-  businessCategory: true,
-  objectCategory: true,
-  purchaseMethod: true,
-  serviceCategory: true,
-  leaseType: true,
-  isDeposit: true,
-  contractId: true,
-  contractNo: true,
-  contractExecute: true,
-  isOwnerSettlement: true,
-  amount: true,
-  notTaxAmount: true,
-  realAmount: true,
-  notTaxRealAmount: true,
-  description: true,
-  remark: true,
-  itemList: true,
-  ossIdList: true,
-  hasPurchaseContract: true,
-  purchaseContractIds: false,
-  purchaseFiles: true,
-  checkFiles: true,
-}
 
 // 总览字段
 const overviewFields = ref(
