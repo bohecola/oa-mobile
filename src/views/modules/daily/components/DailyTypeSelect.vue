@@ -89,8 +89,9 @@ const presentText = computed(() => {
 
 async function getData() {
   isLoading.value = true
-  const res = await queryByParentDaily(props.type, props.readonly ? 'N' : 'Y').finally(() => (isLoading.value = false))
+  const res = await queryByParentDaily(props.type, props.readonly ? 'N' : 'Y')
   data.value = res.data
+  isLoading.value = false
 }
 
 function onFinish({ value }: CascaderParams<DailyWorkTypeTreeVO>) {
