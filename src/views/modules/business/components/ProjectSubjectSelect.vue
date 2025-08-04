@@ -21,14 +21,13 @@
       <template v-if="!isNil(modelValue)" #input>
         <van-skeleton :loading="viewLoading" :row="2" class="!px-0 w-full" round>
           <div class="flex flex-wrap gap-2">
-            <van-tag
-              v-for="e in selectedList"
+            <div
+              v-for="(e, index) in selectedList"
               :key="e.id"
-              size="large"
-              type="primary"
             >
-              {{ e.name }}
-            </van-tag>
+              <span>{{ e.name }}</span>
+              <span v-if="index !== selectedList.length - 1">、</span>
+            </div>
           </div>
         </van-skeleton>
       </template>

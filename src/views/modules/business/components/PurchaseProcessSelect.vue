@@ -20,15 +20,16 @@
       <!-- 回显项 -->
       <template v-if="!isEmpty(modelValue)" #input>
         <van-skeleton :loading="viewLoading" :row="2" class="!px-0 w-full" round>
-          <div class="flex flex-wrap gap-2">
-            <van-tag
+          <div class="flex flex-col gap-2">
+            <div
               v-for="e in selectedList"
               :key="e.id"
-              size="large"
-              type="primary"
+              @click="view(e)"
             >
-              {{ e.createByName }}-{{ e.createTime }}
-            </van-tag>
+              <span :class="{ 'text-primary': isReadonly }">
+                {{ e.id }}
+              </span>
+            </div>
           </div>
         </van-skeleton>
       </template>
@@ -133,6 +134,9 @@ import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup, usePurchaseProcessSelect } from '@/hooks'
 import { listPurchase } from '@/api/oa/business/purchase'
 import type { PurchaseQuery, PurchaseVO } from '@/api/oa/business/purchase/types'
+import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
+import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
+import workflowCommon from '@/api/workflow/workflowCommon'
 
 const props = withDefaults(
   defineProps<{
@@ -385,6 +389,33 @@ async function getViewList(value: string | string[]) {
     .finally(() => (viewLoading.value = false))
 
   return rows
+}
+
+// 查看
+async function view(item: PurchaseVO) {
+  if (!isReadonly.value) {
+    return
+  }
+
+  const { loading, closeLoading } = proxy.$modal
+
+  loading()
+
+  const { data } = await getActHiProcinstByBusinessKey(item.id).finally(() => {
+    closeLoading()
+  })
+
+  const routerJumpVo = reactive<RouterJumpVo>({
+    wfDefinitionConfigVo: data.wfDefinitionConfigVo,
+    wfNodeConfigVo: data.wfNodeConfigVo,
+    businessKey: data.businessKey,
+    businessStatus: data.businessStatus,
+    taskId: '',
+    processInstanceId: data.id,
+    type: 'view',
+  })
+
+  workflowCommon.routerJump(routerJumpVo, proxy, false)
 }
 
 // 回显

@@ -177,9 +177,10 @@
       name="amount"
       label="合同金额"
       placeholder="自动计算"
+      disabled
       :rules="computedRules.amount"
     >
-      <template #input>
+      <template v-if="!isNil(form.amount)" #input>
         <div class="flex flex-col">
           <span>{{ formatCurrency(form.amount) }}</span>
           <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
