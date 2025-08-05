@@ -274,25 +274,24 @@
       :rules="computedRules.remark"
     />
 
-    <div class="px-4 text-sm mt-3 text-gray-500">
-      附件列表
-    </div>
-    <van-cell
-      v-for="(item, index) in form.ossMessageAllBoList"
-      :key="index"
-      :name="item.type"
+    <van-cell-group
+      inset
+      title="附件列表"
     >
-      <template #title>
-        <DictSelect
-          v-model="item.type"
-          dict-type="oa_train_oss_type"
-          readonly
-        />
-      </template>
-      <template #default>
-        <UploadFile v-model="item.files" />
-      </template>
-    </van-cell>
+      <van-field
+        v-for="(item, index) in form.ossMessageAllBoList"
+        :key="index"
+        :name="item.type"
+      >
+        <template #label>
+          <DictTag :options="oa_train_oss_type" :value="item.type" />
+        </template>
+
+        <template #input>
+          <UploadFile v-model="item.files" />
+        </template>
+      </van-field>
+    </van-cell-group>
   </van-form>
 </template>
 
@@ -319,6 +318,8 @@ const props = withDefaults(
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const { oa_train_oss_type } = toRefs(proxy.useDict('oa_train_oss_type'))
 
 // 表单
 const { Form, form, rules, isLoading, updateLoading, initOssMessageList, reset, submit, view, workflowSubmit, workflowView } = useForm()
@@ -363,7 +364,7 @@ function applicationTypeChange(value: string) {
   }
 }
 
-function userConfirm(value: string, selectedList: SysUserMobileVO) {
+function userConfirm(_: string, selectedList: SysUserMobileVO) {
   form.value.attendNumber = selectedList.length
 }
 

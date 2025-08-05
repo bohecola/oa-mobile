@@ -245,28 +245,24 @@
       </template>
     </van-field>
 
-    <div class="px-4 text-sm mt-3 text-gray-500">
-      附件列表
-    </div>
-    <van-cell
-      v-for="(item, index) in form.ossMessageAllBoList"
-      :key="index"
-      :name="item.type"
+    <van-cell-group
+      inset
+      title="附件列表"
     >
-      <template #title>
-        <DictSelect
-          v-model="item.type"
-          dict-type="oa_train_oss_type"
-          readonly
-        />
-      </template>
-      <template #default>
-        <UploadFile
-          v-model="item.files"
-          readonly
-        />
-      </template>
-    </van-cell>
+      <van-field
+        v-for="(item, index) in form.ossMessageAllBoList"
+        :key="index"
+        :name="item.type"
+      >
+        <template #label>
+          <DictTag :options="oa_train_oss_type" :value="item.type" />
+        </template>
+
+        <template #input>
+          <UploadFile v-model="item.files" readonly />
+        </template>
+      </van-field>
+    </van-cell-group>
   </van-form>
 </template>
 
@@ -288,6 +284,10 @@ withDefaults(
     showLoading: true,
   },
 )
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const { oa_train_oss_type } = toRefs(proxy.useDict('oa_train_oss_type'))
 
 const { Form, form, isLoading, view, reset, workflowView } = useForm()
 
