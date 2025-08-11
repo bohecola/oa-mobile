@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "39722900",
+      "name": "项目部撤场",
+      "font_class": "dept_departure_flow",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
       "icon_id": "9604259",
       "name": "采购变更申请",
       "font_class": "purchase_change_flow",
