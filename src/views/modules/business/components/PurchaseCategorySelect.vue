@@ -56,7 +56,7 @@
         </template>
         <template v-if="isEmpty(options)" #options-top>
           <div class="w-full h-1">
-            <van-empty description="暂无数据" />
+            <van-empty description="暂无数据" :image="customEmptyImage" image-size="80" />
           </div>
         </template>
       </van-cascader>
@@ -71,6 +71,7 @@ import { useParentForm, usePopup } from '@/hooks'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
 import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
 import { findPathNodes } from '@/utils'
+import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 const props = withDefaults(
   defineProps<{

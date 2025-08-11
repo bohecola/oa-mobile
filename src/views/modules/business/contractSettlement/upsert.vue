@@ -112,7 +112,16 @@
       name="isAssign"
     >
       <template #input>
-        <YesNoSwitch v-model="form.isAssign" />
+        <YesNoSwitch
+          v-model="form.isAssign"
+          @change="
+            (value) => {
+              if (value === 'N') {
+                form.assignUser = undefined;
+              }
+            }
+          "
+        />
       </template>
     </van-field>
 

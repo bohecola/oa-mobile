@@ -298,9 +298,9 @@
 <script setup lang="ts">
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import type { SysUserMobileVO } from '@/api/system/user/types'
 import type { UserTrainForm } from '@/api/oa/personnel/userTrain/types'
 import UserSelect from '@/components/UserSelect/index.vue'
-import type { SysUserMobileVO } from '@/api/system/user/types'
 
 const props = withDefaults(
   defineProps<{

@@ -56,7 +56,7 @@
             <van-checkbox-group v-model="checked">
               <van-cell-group>
                 <van-cell
-                  v-for="(item, index) in data"
+                  v-for="(item, index) in options"
                   :key="item.value"
                   :title="item.text"
                   clickable
@@ -81,7 +81,7 @@
         <van-picker
           :title="`${attrs.label}`"
           :model-value="pickerValue"
-          :columns="data"
+          :columns="options"
           @confirm="onPickerConfirm"
           @cancel="onCancel"
         />
@@ -92,8 +92,8 @@
 
 <script setup lang="ts">
 import type { CheckboxInstance } from 'vant'
-import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import PickerToolbar from 'vant/es/picker/PickerToolbar'
+import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup } from '@/hooks'
 import { listSysDeptPost } from '@/api/system/deptPost'
 import type { SysDeptPostVO } from '@/api/system/deptPost/types'
@@ -119,7 +119,6 @@ const parentForm = useParentForm()
 
 const { visible, openPopup, closePopup } = usePopup()
 
-// const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const checkboxRefs = ref<CheckboxInstance[]>([])
 
 // 选中值
@@ -134,17 +133,19 @@ const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 // 单选 Picker 回显
 const pickerValue = computed(() => isArray(ids.value) ? ids.value : [ids.value])
 
-const data = ref<_SysDeptPostVO[]>([])
+const options = ref<_SysDeptPostVO[]>([])
 
 // 选项数据
 async function getOptions() {
-  if (props.deptId) {
-    const { rows } = await listSysDeptPost({ deptId: props.deptId })
-    data.value = rows.map(e => ({ ...e, text: e.postName, label: e.postName, value: String(e.postId) }))
-  }
-  else {
-    closePopup()
-  }
+  const { rows } = await listSysDeptPost({ deptId: props.deptId })
+  options.value = rows.map((e) => {
+    return {
+      ...e,
+      text: e.postName,
+      label: e.postName,
+      value: String(e.postId),
+    }
+  })
 }
 
 // 当前文字
@@ -153,7 +154,7 @@ const presentText = computed(() => {
     return undefined
   }
   const idsArr = isArray(ids.value) ? ids.value : [ids.value]
-  const currentOptions = data.value.filter(e => idsArr.includes(e.value))
+  const currentOptions = options.value.filter(e => idsArr.includes(e.value))
 
   return currentOptions
     .map(e => e.text)
@@ -182,7 +183,7 @@ function onPickerConfirm({ selectedValues }) {
   emit('update:modelValue', value)
   emit('change', value)
 
-  const postName = data.value
+  const postName = options.value
     .filter(item => (isArray(value) ? value.includes(String(item.postId)) : String(item.postId) === value))
     .map(e => e.postName)
     .join('、')
@@ -254,9 +255,12 @@ watch(
 watch(
   () => props.deptId,
   (val) => {
-    if (!isNil(val)) {
-      getOptions()
+    if (isNil(val)) {
+      options.value = []
+      return
     }
+
+    getOptions()
   },
   {
     immediate: true,
