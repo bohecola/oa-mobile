@@ -23,15 +23,25 @@
           <div v-if="index > 0" class="flex gap2">
             <TextareaView :value="`审批意见：${item.comment ?? ''}`" />
           </div>
+          <div v-if="!isNil(item.attachmentList)" class="flex">
+            <div class="break-keep">
+              附件：
+            </div>
+            <UploadFile
+              :model-value="item.attachmentList.map((e: any) => e.contentId)"
+              value-type="array"
+              readonly
+            />
+          </div>
         </div>
       </van-step>
-      <!-- TODO 附件 -->
     </van-steps>
     <bottom-line v-if="!loading" />
   </div>
 </template>
 
 <script setup lang='ts'>
+import { isNil } from 'lodash-es'
 import { service } from '@/service'
 
 const loading = ref(false)
@@ -39,7 +49,7 @@ const historyList = ref<any[]>([])
 
 const active = computed(() => historyList.value.length - 1)
 
-async function init(businessKey: string | number) {
+async function init(businessKey: string) {
   loading.value = true
   historyList.value = []
   const { data } = await service.workflow.processInstance

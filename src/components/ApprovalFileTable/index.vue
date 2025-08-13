@@ -1,5 +1,5 @@
 <template>
-  <van-cell-group v-if="!isEmpty(historyList)" inset>
+  <div v-if="!isEmpty(historyList)" class="px-4">
     <TableCard title="审批附件" :is-empty="isEmpty(historyList)">
       <van-form label-width="auto">
         <van-field v-for="(item, index) in historyList" :key="index" :label="item.nickName" input-align="right">
@@ -11,7 +11,7 @@
         </van-field>
       </van-form>
     </TableCard>
-  </van-cell-group>
+  </div>
 </template>
 
 <script setup lang="ts">
