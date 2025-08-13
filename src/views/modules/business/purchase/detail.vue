@@ -169,6 +169,15 @@
     </van-field>
 
     <van-field
+      v-if="!isNil(form.purchaseChange)"
+      label="采购变更"
+    >
+      <template #input>
+        <span class="text-[--van-primary-color]" @click="handleViewPurchaseChange(form.purchaseChange)">{{ form.purchaseChange.id }}</span>
+      </template>
+    </van-field>
+
+    <van-field
       v-show-field="['isOwnerSettlement', includeFields]"
       label="是否业主单独结算"
       name="isOwnerSettlement"
@@ -425,8 +434,11 @@ import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import { useForm } from './form'
 import type { PurchaseForm } from '@/api/oa/business/purchase/types'
+import type { PurchaseChangeVO } from '@/api/oa/business/purchaseChange/types'
+import { getPurchase } from '@/api/oa/business/purchase'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useStore } from '@/store'
+import { useWorkflowJump } from '@/hooks'
 
 withDefaults(
   defineProps<{
@@ -475,12 +487,25 @@ const PurchaseCategorySelectParams = computed(() => {
   }
 })
 
+// 查看采购变更
+async function handleViewPurchaseChange({ id }: PurchaseChangeVO) {
+  await useWorkflowJump({ businessKey: id, proxy })
+}
+
+// 工作流回显时查询采购变更
+async function handleWorkflowView(...args: Parameters<typeof workflowView>) {
+  workflowView(...args)
+  const [entity] = args
+  const { data } = await getPurchase(entity.id)
+  form.value.purchaseChange = data.purchaseChange
+}
+
 defineExpose({
   isLoading,
   form,
   reset,
   view,
   viewByObject,
-  workflowView,
+  workflowView: handleWorkflowView,
 })
 </script>

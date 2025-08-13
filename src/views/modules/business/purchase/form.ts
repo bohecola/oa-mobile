@@ -232,42 +232,39 @@ export function useForm() {
     const { success, fail } = options
     try {
       reset()
-      nextTick(() => {
-        // 兼容旧采购流程
-        const isOldPurchase = entity.itemList.every((item: any) => isNil(item.taxAmount))
-        if (isOldPurchase) {
-          entity.itemList = entity.itemList.map((item: any) => {
-            // 普票-税率0（历史数据统一都需处理）
-            item.invoiceType = '0'
-            item.taxRate = '0'
+      // 兼容旧采购流程
+      const isOldPurchase = entity.itemList.every((item: any) => isNil(item.taxAmount))
+      if (isOldPurchase) {
+        entity.itemList = entity.itemList.map((item: any) => {
+          // 普票-税率0（历史数据统一都需处理）
+          item.invoiceType = '0'
+          item.taxRate = '0'
 
-            return {
-              ...item,
-              // 含税单价
-              taxAmount: item.amount,
-              // 含税合计
-              taxTotalAmount: item.totalAmount,
-              // 含税实际单价
-              taxRealAmount: isNil(item.realAmount) ? undefined : item.realAmount,
-              // 含税实际合计
-              taxRealTotalAmount: isNil(item.realTotalAmount) ? undefined : item.realTotalAmount,
-              // 不含税单价
-              amount: undefined,
-              // 不含税合计
-              totalAmount: undefined,
-              // 不含税实际单价
-              realAmount: undefined,
-              // 不含税实际合计
-              realTotalAmount: undefined,
-            }
-          })
-        }
+          return {
+            ...item,
+            // 含税单价
+            taxAmount: item.amount,
+            // 含税合计
+            taxTotalAmount: item.totalAmount,
+            // 含税实际单价
+            taxRealAmount: isNil(item.realAmount) ? undefined : item.realAmount,
+            // 含税实际合计
+            taxRealTotalAmount: isNil(item.realTotalAmount) ? undefined : item.realTotalAmount,
+            // 不含税单价
+            amount: undefined,
+            // 不含税合计
+            totalAmount: undefined,
+            // 不含税实际单价
+            realAmount: undefined,
+            // 不含税实际合计
+            realTotalAmount: undefined,
+          }
+        })
+      }
 
-        Object.assign(form.value, entity)
-      })
+      Object.assign(form.value, entity)
     }
     catch (err) {
-      console.error(err)
       fail?.(err)
     }
     success?.(entity)

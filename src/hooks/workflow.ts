@@ -1,8 +1,10 @@
 import { isEmpty, isNil } from 'lodash-es'
 import type { AxiosPromise } from 'axios'
 import type { LocationQuery } from 'vue-router'
-import type { StartProcessBo } from '@/api/workflow/workflowCommon/types'
+import type { RouterJumpVo, StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
+import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
+import workflowCommon from '@/api/workflow/workflowCommon'
 
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
@@ -142,4 +144,33 @@ export function useWorkflowHelper() {
     workflowLoading,
     workflowCloseLoading,
   }
+}
+
+interface WorkflowJumpOptions {
+  businessKey: string
+  proxy: any
+}
+
+export async function useWorkflowJump(options: WorkflowJumpOptions) {
+  const { proxy, businessKey } = options
+
+  const { loading, closeLoading } = proxy.$modal
+
+  loading()
+
+  const { data } = await getActHiProcinstByBusinessKey(businessKey).finally(() => {
+    closeLoading()
+  })
+
+  const routerJumpVo = reactive<RouterJumpVo>({
+    wfDefinitionConfigVo: data.wfDefinitionConfigVo,
+    wfNodeConfigVo: data.wfNodeConfigVo,
+    businessKey: data.businessKey,
+    businessStatus: data.businessStatus,
+    taskId: '',
+    processInstanceId: data.id,
+    type: 'view',
+  })
+
+  workflowCommon.routerJump(routerJumpVo, proxy, false)
 }

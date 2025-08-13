@@ -26,7 +26,7 @@
               :key="e.id"
               @click="view(e)"
             >
-              <span :class="{ 'text-primary': isReadonly }">
+              <span :class="{ 'text-[--van-primary-color]': isReadonly }">
                 {{ e.id }}
               </span>
             </div>
@@ -131,12 +131,9 @@
 
 <script setup lang='ts'>
 import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
-import { useParentForm, usePopup, usePurchaseProcessSelect } from '@/hooks'
+import { useParentForm, usePopup, usePurchaseProcessSelect, useWorkflowJump } from '@/hooks'
 import { listPurchase } from '@/api/oa/business/purchase'
 import type { PurchaseQuery, PurchaseVO } from '@/api/oa/business/purchase/types'
-import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
-import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
-import workflowCommon from '@/api/workflow/workflowCommon'
 
 const props = withDefaults(
   defineProps<{
@@ -397,25 +394,7 @@ async function view(item: PurchaseVO) {
     return
   }
 
-  const { loading, closeLoading } = proxy.$modal
-
-  loading()
-
-  const { data } = await getActHiProcinstByBusinessKey(item.id).finally(() => {
-    closeLoading()
-  })
-
-  const routerJumpVo = reactive<RouterJumpVo>({
-    wfDefinitionConfigVo: data.wfDefinitionConfigVo,
-    wfNodeConfigVo: data.wfNodeConfigVo,
-    businessKey: data.businessKey,
-    businessStatus: data.businessStatus,
-    taskId: '',
-    processInstanceId: data.id,
-    type: 'view',
-  })
-
-  workflowCommon.routerJump(routerJumpVo, proxy, false)
+  await useWorkflowJump({ businessKey: item.id, proxy })
 }
 
 // 回显

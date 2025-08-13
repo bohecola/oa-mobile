@@ -1,3 +1,5 @@
+import type { PurchaseChangeVO } from '../purchaseChange/types'
+
 export interface PurchaseVO extends BaseEntity {
   /**
    * ID
@@ -138,6 +140,11 @@ export interface PurchaseVO extends BaseEntity {
    * 附件列表
    */
   ossIdList?: string[]
+
+  /**
+   * 采购变更
+   */
+  purchaseChange?: PurchaseChangeVO
 }
 
 export interface PurchaseForm extends BaseEntity {
@@ -295,6 +302,11 @@ export interface PurchaseForm extends BaseEntity {
    * 附件列表
    */
   ossIdList?: string[]
+
+  /**
+   * 采购变更
+   */
+  purchaseChange?: PurchaseChangeVO
 }
 
 export interface PurchaseQuery extends PageQuery {

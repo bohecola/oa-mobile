@@ -49,7 +49,7 @@ export function listPurchase(query?: Partial<PurchaseQuery>): AxiosPromise<Purch
  * 查询采购管理详细
  * @param id
  */
-export function getPurchase(id: string | number): AxiosPromise<PurchaseVO> {
+export function getPurchase(id: string): AxiosPromise<PurchaseVO> {
   return request({
     url: `/oa/business/purchase/${id}`,
     method: 'get',
@@ -96,7 +96,7 @@ export function updatePurchaseByBussiness(data: PurchaseForm) {
  * 删除采购管理
  * @param id
  */
-export function delPurchase(id: string | number | Array<string | number>) {
+export function delPurchase(id: string | Array<string>) {
   return request({
     url: `/oa/business/purchase/${id}`,
     method: 'delete',
