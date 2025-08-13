@@ -131,7 +131,7 @@ export interface DailyWorkForm extends BaseEntity, ExtraForm {
   /**
    * 需求部门
    */
-  needDepts?: string
+  needDepts?: string | number
 
   /**
    * 日常事务申请类型ID

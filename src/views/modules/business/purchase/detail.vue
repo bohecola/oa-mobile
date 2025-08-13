@@ -173,7 +173,12 @@
       label="采购变更"
     >
       <template #input>
-        <span class="text-[--van-primary-color]" @click="handleViewPurchaseChange(form.purchaseChange)">{{ form.purchaseChange.id }}</span>
+        <span
+          class="text-[--van-primary-color]"
+          @click="handleViewPurchaseChange(form.purchaseChange)"
+        >
+          {{ form.purchaseChange.id }}
+        </span>
       </template>
     </van-field>
 

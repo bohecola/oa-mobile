@@ -176,6 +176,11 @@ async function handleStartWorkflow(options: StartWorkFlowOptions<DailyWorkForm>)
       return `${baseText}-${entity.a_contractNo}-${nickName}`
     }
 
+    // 岗位调整 => 流程名称添加用户名
+    if (entity.no === 'KHGWTZ') {
+      return `${baseText}(${entity.vv_userName})-${nickName}`
+    }
+
     return `${baseText}-${nickName}`
   })()
 

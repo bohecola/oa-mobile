@@ -134,6 +134,8 @@ import CGGYSZLSQ from './purchase/CGGYSZLSQ/workflow/apply.vue'
 // 考核类
 // 项目日常考核
 import KHXMRCKH from './assessment/KHXMRCKH/workflow/apply.vue'
+// 岗位调整
+import KHGWTZ from './assessment/KHGWTZ/workflow/apply.vue'
 
 export default {
   DefaultWork,
@@ -198,4 +200,5 @@ export default {
   CGCGHTSQ,
   CGGYSZLSQ,
   KHXMRCKH,
+  KHGWTZ,
 }
