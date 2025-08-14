@@ -6,11 +6,11 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "39722900",
-      "name": "项目部撤场",
+      "icon_id": "7712203",
+      "name": "项目部进场/撤场",
       "font_class": "dept_departure_flow",
-      "unicode": "e6ad",
-      "unicode_decimal": 59053
+      "unicode": "e722",
+      "unicode_decimal": 59170
     },
     {
       "icon_id": "9604259",

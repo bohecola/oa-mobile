@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4893624 */
-  src: url('iconfont.woff2?t=1754890512656') format('woff2'),
-       url('iconfont.woff?t=1754890512656') format('woff'),
-       url('iconfont.ttf?t=1754890512656') format('truetype');
+  src: url('iconfont.woff2?t=1755160068889') format('woff2'),
+       url('iconfont.woff?t=1755160068889') format('woff'),
+       url('iconfont.ttf?t=1755160068889') format('truetype');
 }
 
 .iconfont {
@@ -14,7 +14,7 @@
 }
 
 .icon-dept_departure_flow:before {
-  content: "\e6ad";
+  content: "\e722";
 }
 
 .icon-purchase_change_flow:before {
