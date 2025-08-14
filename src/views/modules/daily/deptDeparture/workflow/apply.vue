@@ -66,6 +66,7 @@ const ArchiveDetail = ref<InstanceType<typeof detail>>()
 const CommonDetail = ref<InstanceType<typeof detail>>()
 
 const allFields: PartialBooleanRecord<DeptDepartureForm> = {
+  type: true,
   deptId: true,
   departureDate: true,
   reason: true,

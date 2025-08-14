@@ -5,6 +5,11 @@ export interface DeptDepartureVO {
   id: string
 
   /**
+   * 申请类型
+   */
+  type: string
+
+  /**
    * 部门/项目部ID
    */
   deptId: string | number
@@ -35,6 +40,11 @@ export interface DeptDepartureForm extends BaseEntity {
    * ID
    */
   id?: string
+
+  /**
+   * 申请类型
+   */
+  type: string
 
   /**
    * 部门/项目部ID

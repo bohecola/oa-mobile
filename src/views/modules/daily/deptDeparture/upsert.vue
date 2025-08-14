@@ -8,18 +8,29 @@
     required="auto"
     scroll-to-error
   >
+    <DictSelect
+      v-model="form.type"
+      v-show-field="['type', includeFields]"
+      label="申请类型"
+      name="type"
+      dict-type="oa_dept_departure_type"
+      :rules="computedRules.type"
+      clearable
+    />
+
     <DeptSelect
       v-model="form.deptId"
       v-show-field="['deptId', includeFields]"
       label="部门/项目部"
       name="deptId"
       :rules="computedRules.deptId"
+      clearable
     />
 
     <DateSelect
       v-model="form.departureDate"
       v-show-field="['departureDate', includeFields]"
-      label="撤场日期"
+      label="进场/撤场日期"
       name="departureDate"
       :rules="computedRules.departureDate"
       clearable
@@ -29,7 +40,7 @@
       v-model="form.reason"
       v-show-field="['reason', includeFields]"
       name="reason"
-      label="撤场说明"
+      label="进场/撤场说明"
       type="textarea"
       placeholder="请输入"
       rows="1"
@@ -37,51 +48,53 @@
       autosize
     />
 
-    <van-field
-      v-show-field="['isAssign', includeFields]"
-      label="委托他人提交资料"
-      name="isAssign"
-      :rules="computedRules.isAssign"
-    >
-      <template #input>
-        <YesNoSwitch
-          v-model="form.isAssign"
-          @change="(value) => {
-            if (value === 'N') {
-              form.assignUser = undefined
-            }
-          }"
-        />
-      </template>
-    </van-field>
+    <template v-if="form.type === '2'">
+      <van-field
+        v-show-field="['isAssign', includeFields]"
+        label="委托他人提交资料"
+        name="isAssign"
+        :rules="computedRules.isAssign"
+      >
+        <template #input>
+          <YesNoSwitch
+            v-model="form.isAssign"
+            @change="(value) => {
+              if (value === 'N') {
+                form.assignUser = undefined
+              }
+            }"
+          />
+        </template>
+      </van-field>
 
-    <van-field
-      v-if="form.isAssign === 'Y'"
-      v-show-field="['assignUser', includeFields]"
-      label="指派人"
-      name="assignUser"
-      :rules="computedRules.assignUser"
-      is-link
-      @click="UserSelectRef?.open"
-    >
-      <template #input>
-        <UserSelect ref="UserSelectRef" v-model="form.assignUser" />
-      </template>
-    </van-field>
+      <van-field
+        v-if="form.isAssign === 'Y'"
+        v-show-field="['assignUser', includeFields]"
+        label="指派人"
+        name="assignUser"
+        :rules="computedRules.assignUser"
+        is-link
+        @click="UserSelectRef?.open"
+      >
+        <template #input>
+          <UserSelect ref="UserSelectRef" v-model="form.assignUser" />
+        </template>
+      </van-field>
 
-    <van-field
-      v-show-field="['ossIdList', includeFields]"
-      label="附件"
-      name="ossIdList"
-      :rules="computedRules.ossIdList"
-    >
-      <template #input>
-        <UploadFile
-          v-model="form.ossIdList"
-          value-type="array"
-        />
-      </template>
-    </van-field>
+      <van-field
+        v-show-field="['ossIdList', includeFields]"
+        label="附件"
+        name="ossIdList"
+        :rules="computedRules.ossIdList"
+      >
+        <template #input>
+          <UploadFile
+            v-model="form.ossIdList"
+            value-type="array"
+          />
+        </template>
+      </van-field>
+    </template>
   </van-form>
 </template>
 

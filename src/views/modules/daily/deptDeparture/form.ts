@@ -8,6 +8,7 @@ export function useForm() {
 
   const initFormData: DeptDepartureForm = {
     id: undefined,
+    type: undefined,
     deptId: undefined,
     departureDate: undefined,
     reason: undefined,
@@ -20,6 +21,7 @@ export function useForm() {
   const form = ref(cloneDeep(initFormData))
 
   const rules = ref<FormRules<DeptDepartureForm>>({
+    type: [{ required: true, message: '申请类型不能为空', trigger: 'onChange' }],
     deptId: [{ required: true, message: '部门/项目部不能为空', trigger: 'onChange' }],
     departureDate: [{ required: true, message: '撤场日期不能为空', trigger: 'onChange' }],
     reason: [{ required: true, message: '撤场说明不能为空', trigger: 'onBlur' }],
