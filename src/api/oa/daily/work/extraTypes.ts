@@ -48,8 +48,7 @@ export interface ExtraForm
   XZXLNYNASXTZHSQ,
   CGCGHTSQ,
   CGGYSZLSQ,
-  KHXMRCKH,
-  KHGWTZ {}
+  KHXMRCKH {}
 
 // 商务
 // 项目考核奖励确认单
@@ -527,13 +526,4 @@ export interface KHXMRCKH {
   uu_businessType?: string
   uu_partyA?: string
   uu_assessmentReport?: string
-}
-
-// 岗位调整
-export interface KHGWTZ {
-  vv_userId?: string
-  vv_userName?: string
-  vv_deptId?: string | number
-  vv_oldPostId?: string
-  vv_newPostId?: string
 }

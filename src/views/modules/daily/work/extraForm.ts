@@ -364,12 +364,6 @@ const extraInitFormData: DailyWorkForm = {
   uu_partyA: undefined,
   uu_assessmentReport: undefined,
 
-  // 岗位调整
-  vv_userId: undefined,
-  vv_userName: undefined,
-  vv_deptId: undefined,
-  vv_oldPostId: undefined,
-  vv_newPostId: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -724,10 +718,6 @@ const extraInitRules: Record<string, FieldRule[]> = {
   uu_contractId: [{ required: true, message: `合同名称${baseMsg}`, trigger: 'onBlur' }],
   uu_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   uu_assessmentReport: [{ required: true, message: `考核通报${baseMsg}`, trigger: 'onBlur' }],
-
-  // 岗位调整
-  vv_userId: [{ required: true, message: `员工${baseMsg}`, trigger: 'onBlur' }],
-  vv_newPostId: [{ required: true, message: `新岗位${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }
