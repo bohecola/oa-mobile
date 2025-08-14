@@ -31,8 +31,8 @@
 
   <van-field v-show-field="['amount', includeFields]" label="申请总金额" name="amount">
     <template #input>
-      <div class="flex items-baseline">
-        <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
+      <div class="flex flex-col">
+        <span>{{ formatCurrency(form.amount) }}</span>
         <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
       </div>
     </template>

@@ -180,8 +180,8 @@
       :rules="computedRules.amount"
     >
       <template #input>
-        <div class="flex items-baseline">
-          <span class="mr-3">{{ formatCurrency(form.amount) }}</span>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.amount) }}</span>
           <span class="text-red-400">{{ toCnMoney(form.amount) }}</span>
         </div>
       </template>
@@ -196,8 +196,8 @@
       :rules="computedRules.notTaxAmount"
     >
       <template #input>
-        <div class="flex items-baseline">
-          <span class="mr-3">{{ formatCurrency(form.notTaxAmount) }}</span>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.notTaxAmount) }}</span>
           <span class="text-red-400">{{ toCnMoney(form.notTaxAmount) }}</span>
         </div>
       </template>
@@ -210,8 +210,8 @@
       name="realAmount"
     >
       <template #input>
-        <div class="flex items-baseline">
-          <span class="mr-3">{{ formatCurrency(form.realAmount) }} </span>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.realAmount) }} </span>
           <span class="text-red-400">{{ toCnMoney(form.realAmount) }}</span>
         </div>
       </template>
@@ -225,8 +225,8 @@
       name="notTaxRealAmount"
     >
       <template #input>
-        <div class="flex items-baseline">
-          <span class="mr-3">{{ formatCurrency(form.notTaxRealAmount) }} </span>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.notTaxRealAmount) }} </span>
           <span class="text-red-400">{{ toCnMoney(form.notTaxRealAmount) }}</span>
         </div>
       </template>
