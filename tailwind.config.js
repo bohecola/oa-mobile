@@ -56,19 +56,7 @@ export default {
   },
   plugins: [
     iconsPlugin({
-      collections: getIconCollections([
-        'carbon',
-        'mdi',
-        'simple-icons',
-        'mingcute',
-        'solar',
-        'material-symbols',
-        'material-symbols-light',
-        'ant-design',
-        'lucide',
-        'ic',
-        'famicons',
-      ]),
+      collections: getIconCollections('all'),
     }),
     remToPx(),
     tailwindcssSafeArea,
