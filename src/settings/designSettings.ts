@@ -31,13 +31,13 @@ export const themes: Theme[] = [
     name: 'violet',
     light: '#d0378d',
     dark: '#d0378d',
-    zh: '酱紫',
+    zh: '樱桃',
   },
   {
     name: 'blue',
     light: '#2563eb',
     dark: '#3b82f6',
-    zh: '海蓝',
+    zh: '默认',
   },
   {
     name: 'teal',
@@ -47,14 +47,14 @@ export const themes: Theme[] = [
   },
   {
     name: 'emerald',
-    light: '#78dec7',
-    dark: '#78dec7',
-    zh: '翠绿',
+    light: '#3EB489',
+    dark: '#3EB489',
+    zh: '薄荷',
   },
   {
     name: 'green',
     light: '#16a34a',
     dark: '#22c55e',
-    zh: '奶绿',
+    zh: '果绿',
   },
 ]
