@@ -35,6 +35,14 @@ export default defineConfig(({ command, mode }) => {
       drop: VITE_DROP_CONSOLE ? ['debugger', 'console'] : [],
     },
 
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+
     build: {
       // 设置最终构建的浏览器兼容目标
       target: 'es2015',

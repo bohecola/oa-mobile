@@ -52,6 +52,15 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        blink: {
+          '0%, 50%, 100%': { opacity: '1' },
+          '25%, 75%': { opacity: '0' },
+        },
+      },
+      animation: {
+        blink: 'blink 1.2s step-start infinite',
+      },
     },
   },
   plugins: [
