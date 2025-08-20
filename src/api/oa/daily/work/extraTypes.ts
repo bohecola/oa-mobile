@@ -1,6 +1,5 @@
 export interface ExtraForm
-  extends SWXMKHJLQRD,
-  RSLDHTXQSP,
+  extends RSLDHTXQSP,
   RSGHYYSP,
   RSKJXGZMHRSXGZZDSQ,
   RSSCXMBYRZRYXGZMKJSP,
@@ -34,17 +33,19 @@ export interface ExtraForm
   RSQWBSCRYRZSQB,
   RSSCRYZPGZJLFYHSSPB,
   RSZPXQBGSQ,
-  CWQQZH,
-  CWCWZL,
-  CWKJBH,
+  RSXMBTSSYBXGMSQ,
+  SWXMKHJLQRD,
   SWSWZL,
   SWGSWLHJ,
   SWHTJSZL,
+  SWXSHTBH,
+  CWQQZH,
+  CWCWZL,
+  CWKJBH,
   XZYYFK,
   XZCCXMWZLZ,
-  VehicleTransfer,
-  SWXSHTBH,
-  RSXMBTSSYBXGMSQ,
+  XZCLYJ,
+  XZBGSBWX,
   XZXLNYNASXTZHSQ,
   CGCGHTSQ,
   CGGYSZLSQ,
@@ -254,10 +255,16 @@ export interface RSJCSCGSRYLDHTSQ {
 }
 
 // 车辆移交
-export interface VehicleTransfer {
+export interface XZCLYJ {
   u_carNumber?: string
+  u_vinNo?: string
   u_newCompanyId?: string | number
   u_newDeptId?: string | number
+}
+
+// 办公设备维修申请
+export interface XZBGSBWX {
+  v_assetNo?: string
 }
 
 // 公司部门岗位名称及编制调整审批流程

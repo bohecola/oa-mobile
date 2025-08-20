@@ -161,8 +161,12 @@ const extraInitFormData: DailyWorkForm = {
 
   // 车辆移交
   u_carNumber: undefined,
+  u_vinNo: undefined,
   u_newCompanyId: undefined,
   u_newDeptId: undefined,
+
+  // 办公设备维修申请
+  v_assetNo: undefined,
 
   // 外包员工续用意见征询
   x_userId: undefined,
@@ -517,6 +521,9 @@ const extraInitRules: Record<string, FieldRule[]> = {
   u_carNumber: [{ required: true, message: `车牌号${baseMsg}`, trigger: 'onBlur' }],
   u_newCompanyId: [{ required: true, message: `新公司${baseMsg}`, trigger: 'onBlur' }],
   u_newDeptId: [{ required: true, message: `新部门${baseMsg}`, trigger: 'onBlur' }],
+
+  // 办公设备维修申请
+  v_assetNo: [{ required: true, message: `资产编号${baseMsg}`, trigger: 'onBlur' }],
 
   // 外包员工续用意见征询
   x_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
