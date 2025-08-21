@@ -170,70 +170,70 @@ const projectRoutes: RouteRecordRaw[] = [
 
 // 车辆管理
 const carRoutes: RouteRecordRaw[] = [
-  // {
-  //   path: '/car-refueling-record',
-  //   meta: {
-  //     title: '车辆加油',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/index.vue'),
-  // },
-  // {
-  //   path: '/car-refueling-record/new',
-  //   meta: {
-  //     title: '车辆加油（新增）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
-  // },
-  // {
-  //   path: '/car-refueling-record/:id/edit',
-  //   meta: {
-  //     title: '车辆加油（编辑）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
-  // },
-  // {
-  //   path: '/car-refueling-record/:id',
-  //   meta: {
-  //     title: '车辆加油（查看）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/detail.vue'),
-  // },
-  // {
-  //   path: '/misc-refuel',
-  //   meta: {
-  //     title: '零星加油',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/index.vue'),
-  // },
-  // {
-  //   path: '/misc-refuel/new',
-  //   meta: {
-  //     title: '零星加油（新增）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
-  // },
-  // {
-  //   path: '/misc-refuel/:id/edit',
-  //   meta: {
-  //     title: '零星加油（编辑）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
-  // },
-  // {
-  //   path: '/misc-refuel/:id',
-  //   meta: {
-  //     title: '零星加油（查看）',
-  //     innerPage: true,
-  //   },
-  //   component: () => import('@/views/modules/car/carRefuelingRecord/detail.vue'),
-  // },
+  {
+    path: '/fuel-oilcard',
+    meta: {
+      title: '车辆油卡加油',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/index.vue'),
+  },
+  {
+    path: '/fuel-oilcard/new',
+    meta: {
+      title: '车辆油卡加油（新增）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
+  },
+  {
+    path: '/fuel-oilcard/:id/edit',
+    meta: {
+      title: '车辆油卡加油（编辑）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
+  },
+  {
+    path: '/fuel-oilcard/:id',
+    meta: {
+      title: '车辆油卡加油（查看）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/detail.vue'),
+  },
+  {
+    path: '/fuel-cash',
+    meta: {
+      title: '车辆现金加油',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/index.vue'),
+  },
+  {
+    path: '/fuel-cash/new',
+    meta: {
+      title: '车辆现金加油（新增）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
+  },
+  {
+    path: '/fuel-cash/:id/edit',
+    meta: {
+      title: '车辆现金加油（编辑）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/upsert.vue'),
+  },
+  {
+    path: '/fuel-cash/:id',
+    meta: {
+      title: '车辆现金加油（查看）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/car/carRefuelingRecord/detail.vue'),
+  },
 ]
 
 // 个人中心

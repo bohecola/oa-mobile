@@ -2,8 +2,8 @@ import type { ClassValue } from 'clsx'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { isNumber } from 'lodash-es'
-
 import storage from './storage'
+import model from '@/plugins/modal'
 
 export type ObjectValues<T> = T[keyof T]
 
@@ -48,6 +48,8 @@ export function isJSON(str: string) {
     const parsed = JSON.parse(str)
     return typeof parsed === 'object' && parsed !== null
   }
+
+  // eslint-disable-next-line unused-imports/no-unused-vars
   catch (err: any) {
     console.warn(`${str} 不是有效JSON字符串`)
 
@@ -63,6 +65,26 @@ export function transformYnToBoolean(value: string) {
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+// 重试
+export async function retry<T>(fn: () => Promise<T>, maxRetries: number, delay: number = 1000) {
+  let lastError: any
+
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn()
+    }
+    catch (error: any) {
+      lastError = error
+      // 提示
+      model.loading(`正在重新尝试，剩余 ${maxRetries - i} 次，请稍后...`)
+      // 延时后执行重试
+      await new Promise(resolve => setTimeout(resolve, delay))
+    }
+  }
+
+  throw lastError
 }
 
 export { storage }

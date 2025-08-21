@@ -13,6 +13,7 @@
           <div>申请部门：{{ item.deptName }}</div>
           <div>申请时间：{{ item.createTime }}</div>
           <div>申请金额：{{ item.amount }}</div>
+          <div>状态：<DictTag :value="item.status" :options="oa_daily_status" /></div>
           <div>申请事由：{{ item.reason }}</div>
         </template>
 
@@ -44,6 +45,9 @@ import { usePopup } from '@/hooks'
 const props = defineProps<{
   formValue: DailyFeeForm
 }>()
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const { oa_daily_status } = toRefs(proxy?.useDict('oa_daily_status'))
 
 const { visible: listVisible, openPopup: openListPopup } = usePopup()
 const { visible: itemVisible, openPopup: openItemPopup } = usePopup()

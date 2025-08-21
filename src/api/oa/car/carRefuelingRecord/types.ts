@@ -88,6 +88,21 @@ export interface CarRefuelingRecordVO {
    * 部门名称
    */
   deptName: string
+
+  /**
+   * 地址
+   */
+  address: string
+
+  /**
+   * 坐标
+   */
+  coordinate: string
+
+  /**
+   * 备注
+   */
+  remark: string
 }
 
 export interface CarRefuelingRecordForm extends BaseEntity {
@@ -197,6 +212,16 @@ export interface CarRefuelingRecordForm extends BaseEntity {
   invoiceFile?: string
 
   /**
+   * 地址
+   */
+  address?: string
+
+  /**
+   * 坐标
+   */
+  coordinate?: string
+
+  /**
    * 备注
    */
   remark?: string
@@ -237,6 +262,11 @@ export interface CarRefuelingRecordQuery extends PageQuery {
    * 查询类型
    */
   queryType?: string
+
+  /**
+   * 支付方式
+   */
+  payWay?: string
 
   /**
    * 日期范围参数

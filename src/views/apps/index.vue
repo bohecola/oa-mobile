@@ -41,6 +41,8 @@ interface AppMenu {
 const menus = ref<AppMenu[]>([
   { title: '模拟考试', path: '/exam', icon: 'i-mdi-document', visiable: true },
   { title: '每日一报', path: '/daily-report', icon: 'i-mdi-file-document-outline', visiable: false },
+  { title: '油卡加油', path: '/fuel-oilcard', icon: 'i-mingcute-bank-card-fill', visiable: true },
+  { title: '现金加油', path: '/fuel-cash', icon: 'i-nimbus-cash', visiable: true },
 ])
 
 function onClick(item: AppMenu) {

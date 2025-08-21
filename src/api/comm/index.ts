@@ -27,3 +27,17 @@ export function upload(data: FormData): AxiosPromise<UploadResult> {
     data,
   })
 }
+
+interface DingTalkSignParams {
+  nonceStr?: string
+  timeStamp?: string
+  url: string
+}
+
+export function dingTalkSign(params: DingTalkSignParams) {
+  return request({
+    url: '/auth/dingtalk/sign',
+    method: 'get',
+    params,
+  })
+}

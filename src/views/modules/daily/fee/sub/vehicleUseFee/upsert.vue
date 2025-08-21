@@ -1,15 +1,17 @@
 <template>
   <FeeBaseUpsert :include-fields="includeFields1" />
-  <!-- <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo" :rules="computedRules.d_articleName" /> -->
 
   <!-- 公共 -->
-  <van-field
+  <DictSelect
     v-model.trim="form.b_vehicleNo"
     v-show-field="['b_vehicleNo', includeFields]"
     label="车牌号"
-    placeholder="请输入"
     name="b_vehicleNo"
+    clearable
     :rules="computedRules.b_vehicleNo"
+    :options="carNumberOptions"
+    @change="onCarNumberChange"
+    @update:items="onCarNumberItemsChange"
   />
 
   <!-- 保养维修 -->
@@ -22,39 +24,51 @@
     :rules="computedRules.b_vehicleModel"
   />
 
+  <van-field
+    v-show-field="['b_lastRepairDate', includeFields]"
+    :model-value="parseTime(form.b_lastRepairDate, '{y}-{m}-{d}')"
+    label="上次维修日期"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    name="b_lastRepairDate"
+    readonly
+  />
+
   <van-field-number
     v-model.number="form.b_vehicleMileageToday"
     v-show-field="['b_vehicleMileageToday', includeFields]"
     label="今行车里程（公里）"
     placeholder="请输入"
-    name="c_invoiceType"
+    name="b_vehicleMileageToday"
     :rules="computedRules.b_vehicleMileageToday"
-  />
-
-  <DateSelect
-    v-model="form.b_lastRepairDate"
-    v-show-field="['b_lastRepairDate', includeFields]"
-    name="b_lastRepairDate"
-    label="上次维修日期"
-    :rules="computedRules.b_lastRepairDate"
+    @change="onVehicleMileageTodayChange"
   />
 
   <van-field-number
-    v-model.number="form.b_maintenanceIntervalMileage"
-    v-show-field="['b_maintenanceIntervalMileage', includeFields]"
-    label="保养间隔里程数（公里）"
-    placeholder="请输入"
-    name="b_maintenanceIntervalMileage"
-    :rules="computedRules.b_maintenanceIntervalMileage"
+    v-show-field="['b_upMileage', includeFields]"
+    :model-value="form.b_upMileage"
+    label="上次里程数（公里）"
+    name="b_upMileage"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    readonly
   />
 
-  <van-field
+  <van-field-number
+    v-show-field="['b_maintenanceIntervalMileage', includeFields]"
+    :model-value="form.b_maintenanceIntervalMileage"
+    label="保养间隔里程数（公里）"
+    name="b_maintenanceIntervalMileage"
+    placeholder="自动计算"
+    disabled
+  />
+
+  <DictSelect
     v-model.trim="form.b_type"
     v-show-field="['b_type', includeFields]"
     label="申请类型"
-    placeholder="请输入常规保养、车辆维修"
     name="b_type"
+    dict-type="oa_car_repair_maintenance_type"
     :rules="computedRules.b_type"
+    clearable
   />
 
   <van-field
@@ -92,10 +106,6 @@
     name="b_maintenanceItemsAndUnitPrice"
     :rules="computedRules.b_maintenanceItemsAndUnitPrice"
   />
-
-  <!-- <van-field v-model="form.b_invoiceType" v-show-field="['b_invoiceType', includeFields]" label="发票类型" name="b_invoiceType" :rules="computedRules.d_articleName" />
-
-    <van-field v-model="form.b_paymentMethod" v-show-field="['b_paymentMethod', includeFields]" label="付款方式" name="b_paymentMethod" :rules="computedRules.d_articleName" /> -->
 
   <van-field
     v-show-field="['b_isPlugSmartDrivingBox', includeFields]"
@@ -138,25 +148,23 @@
     :rules="computedRules.b_useMethod"
   />
 
-  <!-- <van-field
-    v-model="form.b_useReason"
-    v-show-field="['b_useReason', includeFields]"
-    type="textarea"
-    rows="1"
-    autosize
-    label="使用事由"
-    placeholder="请输入"
-    name="b_useReason"
-    :rules="computedRules.b_useReason"
-  /> -->
-
   <!-- 年审费用 -->
-  <DateSelect
-    v-model="form.b_annualReviewExpirationDate"
-    v-show-field="['b_annualReviewExpirationDate', includeFields]"
-    name="b_annualReviewExpirationDate"
-    label="年审到期日期"
-    :rules="computedRules.b_annualReviewExpirationDate"
+  <van-field
+    v-show-field="['b_lastVerificationDate', includeFields]"
+    :model-value="parseTime(form.b_lastVerificationDate, '{y}-{m}-{d}')"
+    label="上次审验日期"
+    name="b_lastVerificationDate"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    readonly
+  />
+
+  <van-field
+    v-show-field="['b_lastAnnualReviewExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastAnnualReviewExpirationDate, '{y}-{m}-{d}')"
+    label="上次到期日期"
+    name="b_lastAnnualReviewExpirationDate"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    readonly
   />
 
   <DateSelect
@@ -167,57 +175,98 @@
     :rules="computedRules.b_verificationDate"
   />
 
-  <van-field
+  <DateSelect
+    v-model="form.b_annualReviewExpirationDate"
+    v-show-field="['b_annualReviewExpirationDate', includeFields]"
+    name="b_annualReviewExpirationDate"
+    label="到期日期"
+    :rules="computedRules.b_annualReviewExpirationDate"
+  />
+
+  <DictSelect
     v-model.trim="form.b_annualReviewMethod"
     v-show-field="['b_annualReviewMethod', includeFields]"
     label="年审方式"
-    placeholder="请输入自行审验、第三方审验"
     name="b_annualReviewMethod"
+    dict-type="oa_car_annual_inspection_method"
     :rules="computedRules.b_annualReviewMethod"
   />
 
   <!-- 公司车辆保险费 -->
-  <DateSelect
-    v-model="form.b_lastStrongInsuranceExpirationDate"
-    v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
-    name="b_lastStrongInsuranceExpirationDate"
-    label="上期交强险到期日期"
-    :rules="computedRules.b_lastStrongInsuranceExpirationDate"
-  />
-
-  <DateSelect
-    v-model="form.b_lastCommercialInsuranceExpirationDate"
-    v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
-    name="b_lastCommercialInsuranceExpirationDate"
-    label="上期商业险到期日期"
-    :rules="computedRules.b_lastCommercialInsuranceExpirationDate"
+  <van-field
+    v-model.trim="form.b_insuranceCompany"
+    v-show-field="['b_insuranceCompany', includeFields]"
+    label="保险公司"
+    placeholder="请输入"
+    name="b_insuranceCompany"
+    :rules="computedRules.b_insuranceCompany"
   />
 
   <van-field-number
     v-model.number="form.b_strongInsuranceAmount"
     v-show-field="['b_strongInsuranceAmount', includeFields]"
     label="本次交强险金额"
-    placeholder="请输入"
     name="b_strongInsuranceAmount"
     :rules="computedRules.b_strongInsuranceAmount"
+  />
+
+  <van-field
+    v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastStrongInsuranceExpirationDate, '{y}-{m}-{d}')"
+    name="b_lastStrongInsuranceExpirationDate"
+    label="上期交强险到期日期"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    readonly
+  />
+
+  <DateSelect
+    v-model="form.b_compulsoryInsuranceDate"
+    v-show-field="['b_compulsoryInsuranceDate', includeFields]"
+    name="b_compulsoryInsuranceDate"
+    label="本次交强险购买日期"
+    :rules="computedRules.b_compulsoryInsuranceDate"
+  />
+
+  <DateSelect
+    v-model="form.b_compulsoryInsuranceExpirationDate"
+    v-show-field="['b_compulsoryInsuranceExpirationDate', includeFields]"
+    name="b_compulsoryInsuranceExpirationDate"
+    label="本次交强险到期日期"
+    :rules="computedRules.b_compulsoryInsuranceExpirationDate"
   />
 
   <van-field-number
     v-model.number="form.b_commercialInsuranceAmount"
     v-show-field="['b_commercialInsuranceAmount', includeFields]"
     label="本次商业险金额"
-    placeholder="请输入"
     name="b_commercialInsuranceAmount"
     :rules="computedRules.b_commercialInsuranceAmount"
   />
 
-  <van-field-number
-    v-model.number="form.b_totalAmount"
-    v-show-field="['b_totalAmount', includeFields]"
-    label="总计金额"
-    placeholder="自动计算"
-    name="b_totalAmount"
-    disabled
+  <van-field
+    v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastCommercialInsuranceExpirationDate, '{y}-{m}-{d}')"
+    name="b_lastCommercialInsuranceExpirationDate"
+    label="上期商业险到期日期"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    :rules="computedRules.b_lastCommercialInsuranceExpirationDate"
+    readonly
+  />
+
+  <DateSelect
+    v-model="form.b_commercialInsuranceDate"
+    v-show-field="['b_commercialInsuranceDate', includeFields]"
+    name="b_commercialInsuranceDate"
+    label="本次商业险购买日期"
+    :rules="computedRules.b_commercialInsuranceDate"
+  />
+
+  <DateSelect
+    v-model="form.b_commercialInsuranceExpirationDate"
+    v-show-field="['b_commercialInsuranceExpirationDate', includeFields]"
+    name="b_commercialInsuranceExpirationDate"
+    label="本次商业险到期日期"
+    :rules="computedRules.b_commercialInsuranceExpirationDate"
   />
 
   <FeeBaseUpsert :include-fields="includeFields2" />
@@ -225,17 +274,65 @@
 
 <script setup lang="ts">
 import Big from 'big.js'
+import { isNil } from 'lodash-es'
 import FeeBaseUpsert from '../../../components/FeeBaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
-import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
 import { isNumeric } from '@/utils'
+import { useCarNumberOptions } from '@/hooks'
+import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import { getLastInsuranceByCarNumber } from '@/api/oa/car/carInsurance'
+import { getLastRepairMaintenanceByCarNumber } from '@/api/oa/car/carRepairMaintenance'
+import { getLastAnnualInspectionByCarNumber } from '@/api/oa/car/carAnnualInspection'
 
 const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyFeeForm>
   }>(),
   {
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'b_contractNo', 'b_vehicleNo', 'b_vehicleModel', 'b_vehicleMileageToday', 'b_lastRepairDate', 'b_maintenanceIntervalMileage', 'b_type', 'b_maintenanceAddress', 'b_problemDescription', 'b_maintenanceItemsAndUnitPrice', 'b_invoiceType', 'b_paymentMethod', 'b_isPlugSmartDrivingBox', 'b_useTime', 'b_useReason', 'b_oilContent', 'b_useMethod', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_lastStrongInsuranceExpirationDate', 'b_lastCommercialInsuranceExpirationDate', 'b_strongInsuranceAmount', 'b_commercialInsuranceAmount', 'b_totalAmount', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => [
+      'subjectType',
+      'deptId',
+      'psId',
+      'contractNo',
+      'itemList',
+      'amount',
+      'b_contractNo',
+      'b_vehicleNo',
+      'b_vehicleModel',
+      'b_vehicleMileageToday',
+      'b_lastRepairDate',
+      'b_maintenanceIntervalMileage',
+      'b_upMileage',
+      'b_type',
+      'b_maintenanceAddress',
+      'b_problemDescription',
+      'b_maintenanceItemsAndUnitPrice',
+      'b_invoiceType',
+      'b_paymentMethod',
+      'b_isPlugSmartDrivingBox',
+      'b_useTime',
+      'b_useReason',
+      'b_oilContent',
+      'b_useMethod',
+      'b_annualReviewExpirationDate',
+      'b_verificationDate',
+      'b_lastAnnualReviewExpirationDate',
+      'b_lastVerificationDate',
+      'b_annualReviewMethod',
+      'b_lastStrongInsuranceExpirationDate',
+      'b_lastCommercialInsuranceExpirationDate',
+      'b_strongInsuranceAmount',
+      'b_commercialInsuranceAmount',
+      'b_compulsoryInsuranceDate',
+      'b_compulsoryInsuranceExpirationDate',
+      'b_commercialInsuranceDate',
+      'b_commercialInsuranceExpirationDate',
+      'b_totalAmount',
+      'b_insuranceCompany',
+      'reason',
+      'receiptInfo',
+      'ossIdList',
+    ],
   },
 )
 
@@ -253,10 +350,82 @@ trackFields(props.includeFields)
 const includeFields1 = computed(() => props.includeFields.filter(e => !['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 const includeFields2 = computed(() => props.includeFields.filter(e => ['reason', 'receiptInfo', 'ossIdList'].includes(e)))
 
-// 监听强险金额和商业险金额的变化
+const { options: carNumberOptions, fetch: fetchCarNumberOptions } = useCarNumberOptions({ initFetch: false })
+
+function resetState() {
+  form.value.b_lastStrongInsuranceExpirationDate = undefined
+  form.value.b_lastCommercialInsuranceExpirationDate = undefined
+  form.value.b_vehicleModel = undefined
+  form.value.b_lastRepairDate = undefined
+  form.value.b_upMileage = undefined
+  form.value.b_upMileage = undefined
+  form.value.b_lastAnnualReviewExpirationDate = undefined
+  form.value.b_lastVerificationDate = undefined
+}
+
+// 车牌号修改
+async function onCarNumberChange(carNumber: string) {
+  resetState()
+
+  if (!isNil(carNumber)) {
+    // 公司车辆保险费
+    if (form.value.no === 'GSCLBXF') {
+      const { data } = await getLastInsuranceByCarNumber(carNumber)
+      form.value.b_lastCommercialInsuranceExpirationDate = data?.commercialInsuranceExpirationDate
+      form.value.b_lastStrongInsuranceExpirationDate = data?.compulsoryInsuranceExpirationDate
+    }
+
+    // 保养维修费用
+    if (form.value.no === 'BYWXFY') {
+      const { data } = await getLastRepairMaintenanceByCarNumber(carNumber)
+      form.value.b_lastRepairDate = data?.createTime
+      form.value.b_upMileage = data?.mileage
+
+      // 计算间隔里程数
+      computeIntervalMileage()
+    }
+
+    // 年审费用
+    if (form.value.no === 'NSFY') {
+      const { data } = await getLastAnnualInspectionByCarNumber(carNumber)
+
+      form.value.b_lastAnnualReviewExpirationDate = data?.expirationDate
+      form.value.b_lastVerificationDate = data?.inspectionDate
+    }
+  }
+}
+
+// 车牌号 items 修改
+function onCarNumberItemsChange(items: DictDataOption[]) {
+  const [car] = items
+
+  // 保养维修费用
+  if (form.value.no === 'BYWXFY') {
+    form.value.b_vehicleModel = car?.brandModel
+  }
+}
+
+// 今行车里程数修改
+function onVehicleMileageTodayChange(_: number) {
+  computeIntervalMileage()
+}
+
+// 计算间隔里程数
+function computeIntervalMileage() {
+  if (isNil(form.value.b_vehicleMileageToday)) {
+    form.value.b_maintenanceIntervalMileage = undefined
+    return
+  }
+
+  form.value.b_maintenanceIntervalMileage = Big(form.value.b_vehicleMileageToday)
+    .minus(form.value.b_upMileage ?? 0)
+    .toNumber()
+}
+
+// 监听强险金额和商业险金额的变化 => 计算总金额
 watch([() => form.value.b_strongInsuranceAmount, () => form.value.b_commercialInsuranceAmount], (val) => {
   const totalAmount = val
-    ?.reduce<Big.Big>((acc, curr) => {
+    ?.reduce<Big>((acc, curr) => {
       if (isNumeric(curr)) {
         return acc.add(curr)
       }
@@ -266,7 +435,11 @@ watch([() => form.value.b_strongInsuranceAmount, () => form.value.b_commercialIn
     .toNumber()
 
   form.value.b_totalAmount = totalAmount
-}, {
-  immediate: true,
+})
+
+onMounted(() => {
+  if (!isNil(form.value.deptId)) {
+    fetchCarNumberOptions({ deptId: form.value.deptId })
+  }
 })
 </script>

@@ -13,6 +13,7 @@
       :preview-options="{
         images: imageFileList as string[],
       }"
+      v-bind="$attrs"
       @oversize="onOverSize"
       @delete="onDelete"
     >
@@ -81,7 +82,7 @@
 
 <script setup lang='ts'>
 import type { UploaderAfterRead } from 'vant'
-import type { Numeric } from 'vant/lib/utils'
+import type { Numeric } from 'vant/es/utils'
 import { isArray, isEmpty } from 'lodash-es'
 import { useCustomFieldValue } from '@vant/use'
 import type { FileActionEnum, FileType, UploaderFileListItem } from './helper'
@@ -127,7 +128,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'afterUpload'])
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -211,11 +212,13 @@ const afterRead: UploaderAfterRead = async (items: UploaderFileListItem | Upload
 
   const ids = getOssIds(fileList.value)
   const payload = props.valueType === 'string'
-    ? !isEmpty(ids)
-        ? ids.join(',')
-        : undefined
+    ? isEmpty(ids)
+      ? undefined
+      : ids.join(',')
     : ids
   emit('update:modelValue', payload)
+
+  emit('afterUpload')
 }
 
 // 文件大小超出
@@ -238,11 +241,11 @@ async function onDelete(item: UploaderFileListItem, detail: { name: Numeric, ind
   }
 
   const ids = getOssIds(fileList.value)
-  const payload = props.valueType === 'array'
-    ? !isEmpty(ids)
-        ? ids
-        : undefined
-    : ids.join(',')
+  const payload = props.valueType === 'string'
+    ? isEmpty(ids)
+      ? undefined
+      : ids.join(',')
+    : ids
 
   emit('update:modelValue', payload)
 }
@@ -270,9 +273,9 @@ function handleDocView(item: UploaderFileListItem) {
 useCustomFieldValue(() => {
   const ids = getOssIds(fileList.value)
   const value = props.valueType === 'string'
-    ? !isEmpty(ids)
-        ? ids.join(',')
-        : undefined
+    ? isEmpty(ids)
+      ? undefined
+      : ids.join(',')
     : ids
   return value
 })

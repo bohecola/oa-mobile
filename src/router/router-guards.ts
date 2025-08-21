@@ -1,6 +1,7 @@
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useStore } from '@/store'
+import { setupDingTalk } from '@/plugins/dingTalk'
 
 export const whitePathList = ['/login', '/404', '/social-callback', '/external-exam', '/internal-exam', '/wechat-exam-entry', '/qrcode-expired']
 
@@ -33,6 +34,9 @@ export function createRouterGuards(router: Router) {
 
     // 如果用户已登录
     if (user.token) {
+      // 钉钉鉴权
+      await setupDingTalk()
+
       return true
     }
 

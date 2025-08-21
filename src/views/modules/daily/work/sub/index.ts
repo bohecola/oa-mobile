@@ -3,53 +3,53 @@ import DefaultWork from '../../components/common/defaultWork/workflow/apply.vue'
 
 // 财务类
 // 企企账号申请
-import CWQQZH from './financial/qiqiAccount/workflow/apply.vue'
+import CWQQZH from './financial/CWQQZH/workflow/apply.vue'
 // 财务资料申请
-import CWCWZL from './financial/financialInfo/workflow/apply.vue'
+import CWCWZL from './financial/CWCWZL/workflow/apply.vue'
 // 开具资信证明申请
-import CWKJZXZM from './financial/creditCertificate/workflow/apply.vue'
+import CWKJZXZM from './financial/CWKJZXZM/workflow/apply.vue'
 // 开具保函申请
-import CWKJBH from './financial/guaranteeLetter/workflow/apply.vue'
+import CWKJBH from './financial/CWKJBH/workflow/apply.vue'
 
 // 商务类事务
 // 商务资料申请
-import SWSWZL from './business/businessInfo/workflow/apply.vue'
+import SWSWZL from './business/SWSWZL/workflow/apply.vue'
 // 公司往来函件申请
-import SWGSWLHJ from './business/companyCorrespondence/workflow/apply.vue'
+import SWGSWLHJ from './business/SWGSWLHJ/workflow/apply.vue'
 // 合同结算资料申请
-import SWHTJSZL from './business/contractSettlementData/workflow/apply.vue'
+import SWHTJSZL from './business/SWHTJSZL/workflow/apply.vue'
 // 销售合同编号申请
-import SWXSHTBH from './business/salesContractNumber/workflow/apply.vue'
+import SWXSHTBH from './business/SWXSHTBH/workflow/apply.vue'
 // 项目续签意向调研
-import SWXMXQYXDY from './business/projectRenewalIntentSurvey/workflow/apply.vue'
+import SWXMXQYXDY from './business/SWXMXQYXDY/workflow/apply.vue'
 // 项目考核奖励确认单
-import SWXMKHJLQRD from './business/projectAssessmentReward/workflow/apply.vue'
+import SWXMKHJLQRD from './business/SWXMKHJLQRD/workflow/apply.vue'
 
 // 行政类
 // 营业执照借用申请
-import XZYYZZJY from './administrative/businessLicenseBorrow/workflow/apply.vue'
+import XZYYZZJY from './administrative/XZYYZZJY/workflow/apply.vue'
 // 印章申请
-import XZYZ from './administrative/seal/workflow/apply.vue'
+import XZYZ from './administrative/XZYZ/workflow/apply.vue'
 // 用章申请
-import XZYY from './administrative/useSeal/workflow/apply.vue'
+import XZYY from './administrative/XZYY/workflow/apply.vue'
 // 预约访客申请
-import XZYYFK from './administrative/scheduledGuest/workflow/apply.vue'
+import XZYYFK from './administrative/XZYYFK/workflow/apply.vue'
 // 红头文件申请
-import XZHTWJ from './administrative/redFiles/workflow/apply.vue'
+import XZHTWJ from './administrative/XZHTWJ/workflow/apply.vue'
 // 行政管理资料申请
-import XZXZGLZL from './administrative/managementMaterials/workflow/apply.vue'
+import XZXZGLZL from './administrative/XZXZGLZL/workflow/apply.vue'
 // 车辆移交申请
-import XZCLYJ from './administrative/vehicleTransfer/workflow/apply.vue'
+import XZCLYJ from './administrative/XZCLYJ/workflow/apply.vue'
 // 办公设备维修申请
-import XZBGSBWX from './administrative/officeDeviceMaintenance/workflow/apply.vue'
+import XZBGSBWX from './administrative/XZBGSBWX/workflow/apply.vue'
 // 资质调用申请
-import XZZZDY from './administrative/qualificationBorrow/workflow/apply.vue'
+import XZZZDY from './administrative/XZZZDY/workflow/apply.vue'
 // 劳保用品更换申请
-import XZLBYPGH from './administrative/laborProtectionReplace/workflow/apply.vue'
+import XZLBYPGH from './administrative/XZLBYPGH/workflow/apply.vue'
 // 撤场项目物资流转申请
-import XZCCXMWZLZ from './administrative/projectAssetTransfer/workflow/apply.vue'
+import XZCCXMWZLZ from './administrative/XZCCXMWZLZ/workflow/apply.vue'
 // 品牌推广协助申请
-import XZPPTGXZ from './administrative/brandPromotionSupport/workflow/apply.vue'
+import XZPPTGXZ from './administrative/XZPPTGXZ/workflow/apply.vue'
 // 咸林能源NAS系统账号申请
 import XZXLNYNASXTZHSQ from './administrative/XZXLNYNASXTZHSQ/workflow/apply.vue'
 

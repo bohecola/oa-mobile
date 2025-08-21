@@ -1,6 +1,5 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" :form-value="form" />
-  <!-- <van-field v-model="form.b_contractNo" v-show-field="['b_contractNo', includeFields]" label="合同编号" name="b_contractNo"  /> -->
 
   <!-- 公共 -->
   <van-field
@@ -26,17 +25,24 @@
   />
 
   <van-field
+    v-show-field="['b_lastRepairDate', includeFields]"
+    :model-value="parseTime(form.b_lastRepairDate, '{y}-{m}-{d}')"
+    label="上次维修日期"
+    name="b_lastRepairDate"
+  />
+
+  <van-field-number
     v-model="form.b_vehicleMileageToday"
     v-show-field="['b_vehicleMileageToday', includeFields]"
     label="今行车里程（公里）"
-    name="c_invoiceType"
+    name="b_vehicleMileageToday"
   />
 
-  <DateSelect
-    v-model="form.b_lastRepairDate"
-    v-show-field="['b_lastRepairDate', includeFields]"
-    name="b_lastRepairDate"
-    label="上次维修日期"
+  <van-field-number
+    v-show-field="['b_upMileage', includeFields]"
+    :model-value="form.b_upMileage"
+    label="上次里程数（公里）"
+    name="b_upMileage"
   />
 
   <van-field
@@ -46,46 +52,45 @@
     name="b_maintenanceIntervalMileage"
   />
 
-  <van-field
-    v-model="form.b_type"
+  <DictSelect
+    v-model.trim="form.b_type"
     v-show-field="['b_type', includeFields]"
     label="申请类型"
     name="b_type"
+    dict-type="oa_car_repair_maintenance_type"
   />
 
   <van-field
+    v-model="form.b_maintenanceAddress"
     v-show-field="['b_maintenanceAddress', includeFields]"
+    type="textarea"
+    rows="1"
+    autosize
     label="车辆维修/保养地点"
     name="b_maintenanceAddress"
-  >
-    <template #input>
-      <TextareaView :value="form.b_maintenanceAddress" />
-    </template>
-  </van-field>
+  />
 
   <van-field
+    v-model="form.b_problemDescription"
     v-show-field="['b_problemDescription', includeFields]"
+    type="textarea"
+    rows="1"
+    autosize
     label="问题描述"
+    placeholder="请输入"
     name="b_problemDescription"
-  >
-    <template #input>
-      <TextareaView :value="form.b_problemDescription" />
-    </template>
-  </van-field>
+  />
 
   <van-field
+    v-model="form.b_maintenanceItemsAndUnitPrice"
     v-show-field="['b_maintenanceItemsAndUnitPrice', includeFields]"
+    type="textarea"
+    rows="1"
+    autosize
     label="维修/保养项目及单价"
+    placeholder="请输入"
     name="b_maintenanceItemsAndUnitPrice"
-  >
-    <template #input>
-      <TextareaView :value="form.b_maintenanceItemsAndUnitPrice" />
-    </template>
-  </van-field>
-
-  <!-- <van-field v-model="form.b_invoiceType" v-show-field="['b_invoiceType', includeFields]" label="发票类型" name="b_invoiceType"  />
-
-  <van-field v-model="form.b_paymentMethod" v-show-field="['b_paymentMethod', includeFields]" label="付款方式" name="b_paymentMethod"  /> -->
+  />
 
   <van-field
     v-show-field="['b_isPlugSmartDrivingBox', includeFields]"
@@ -122,22 +127,19 @@
     name="b_useMethod"
   />
 
-  <!-- <van-field
-    v-show-field="['b_useReason', includeFields]"
-    label="使用事由"
-    name="b_useReason"
-  >
-    <template #input>
-      <TextareaView :value="form.b_useReason" />
-    </template>
-  </van-field> -->
-
   <!-- 年审费用 -->
-  <DateSelect
-    v-model="form.b_annualReviewExpirationDate"
-    v-show-field="['b_annualReviewExpirationDate', includeFields]"
-    name="b_annualReviewExpirationDate"
-    label="年审到期日期"
+  <van-field
+    v-show-field="['b_lastVerificationDate', includeFields]"
+    :model-value="parseTime(form.b_lastVerificationDate, '{y}-{m}-{d}')"
+    label="上次审验日期"
+    name="b_lastVerificationDate"
+  />
+
+  <van-field
+    v-show-field="['b_lastAnnualReviewExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastAnnualReviewExpirationDate, '{y}-{m}-{d}')"
+    label="上次到期日期"
+    name="b_lastAnnualReviewExpirationDate"
   />
 
   <DateSelect
@@ -147,29 +149,30 @@
     label="审验日期"
   />
 
-  <van-field
+  <DateSelect
+    v-model="form.b_annualReviewExpirationDate"
+    v-show-field="['b_annualReviewExpirationDate', includeFields]"
+    name="b_annualReviewExpirationDate"
+    label="到期日期"
+  />
+
+  <DictSelect
     v-model="form.b_annualReviewMethod"
     v-show-field="['b_annualReviewMethod', includeFields]"
     label="年审方式"
     name="b_annualReviewMethod"
+    dict-type="oa_car_annual_inspection_method"
   />
 
   <!-- 公司车辆保险费 -->
-  <DateSelect
-    v-model="form.b_lastStrongInsuranceExpirationDate"
-    v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
-    name="b_lastStrongInsuranceExpirationDate"
-    label="上期交强险到期日期"
-  />
-
-  <DateSelect
-    v-model="form.b_lastCommercialInsuranceExpirationDate"
-    v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
-    name="b_lastCommercialInsuranceExpirationDate"
-    label="上期商业险到期日期"
-  />
-
   <van-field
+    v-model="form.b_insuranceCompany"
+    v-show-field="['b_insuranceCompany', includeFields]"
+    label="保险公司"
+    name="b_insuranceCompany"
+  />
+
+  <van-field-number
     v-model="form.b_strongInsuranceAmount"
     v-show-field="['b_strongInsuranceAmount', includeFields]"
     label="本次交强险金额"
@@ -177,6 +180,27 @@
   />
 
   <van-field
+    v-show-field="['b_lastStrongInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastStrongInsuranceExpirationDate, '{y}-{m}-{d}')"
+    label="上期交强险到期日期"
+    name="b_lastStrongInsuranceExpirationDate"
+  />
+
+  <van-field
+    v-show-field="['b_compulsoryInsuranceDate', includeFields]"
+    :model-value="parseTime(form.b_compulsoryInsuranceDate, '{y}-{m}-{d}')"
+    name="b_compulsoryInsuranceDate"
+    label="本次交强险购买日期"
+  />
+
+  <van-field
+    v-show-field="['b_compulsoryInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_compulsoryInsuranceExpirationDate, '{y}-{m}-{d}')"
+    name="b_compulsoryInsuranceExpirationDate"
+    label="本次交强险到期日期"
+  />
+
+  <van-field-number
     v-model="form.b_commercialInsuranceAmount"
     v-show-field="['b_commercialInsuranceAmount', includeFields]"
     label="本次商业险金额"
@@ -184,10 +208,24 @@
   />
 
   <van-field
-    v-model="form.b_totalAmount"
-    v-show-field="['b_totalAmount', includeFields]"
-    label="总计金额"
-    name="b_totalAmount"
+    v-show-field="['b_lastCommercialInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_lastCommercialInsuranceExpirationDate, '{y}-{m}-{d}')"
+    name="b_lastCommercialInsuranceExpirationDate"
+    label="上期商业险到期日期"
+  />
+
+  <van-field
+    v-show-field="['b_commercialInsuranceDate', includeFields]"
+    :model-value="parseTime(form.b_commercialInsuranceDate, '{y}-{m}-{d}')"
+    name="b_commercialInsuranceDate"
+    label="本次商业险购买日期"
+  />
+
+  <van-field
+    v-show-field="['b_commercialInsuranceExpirationDate', includeFields]"
+    :model-value="parseTime(form.b_commercialInsuranceExpirationDate, '{y}-{m}-{d}')"
+    name="b_commercialInsuranceExpirationDate"
+    label="本次商业险到期日期"
   />
 
   <FeeBaseDetail :include-fields="includeFields2" :form-value="form" />
@@ -210,7 +248,50 @@ const props = withDefaults(
   }>(),
   {
     showViewBtn: true,
-    includeFields: () => ['subjectType', 'deptId', 'psId', 'contractNo', 'itemList', 'amount', 'b_contractNo', 'b_vehicleNo', 'b_vehicleModel', 'b_vehicleMileageToday', 'b_lastRepairDate', 'b_maintenanceIntervalMileage', 'b_type', 'b_maintenanceAddress', 'b_problemDescription', 'b_maintenanceItemsAndUnitPrice', 'b_invoiceType', 'b_paymentMethod', 'b_isPlugSmartDrivingBox', 'b_useTime', 'b_useReason', 'b_oilContent', 'b_useMethod', 'b_annualReviewExpirationDate', 'b_verificationDate', 'b_annualReviewMethod', 'b_lastStrongInsuranceExpirationDate', 'b_lastCommercialInsuranceExpirationDate', 'b_strongInsuranceAmount', 'b_commercialInsuranceAmount', 'b_totalAmount', 'reason', 'receiptInfo', 'ossIdList'],
+    includeFields: () => [
+      'subjectType',
+      'deptId',
+      'psId',
+      'contractNo',
+      'itemList',
+      'amount',
+      'b_contractNo',
+      'b_vehicleNo',
+      'b_vehicleModel',
+      'b_vehicleMileageToday',
+      'b_lastRepairDate',
+      'b_maintenanceIntervalMileage',
+      'b_upMileage',
+      'b_type',
+      'b_maintenanceAddress',
+      'b_problemDescription',
+      'b_maintenanceItemsAndUnitPrice',
+      'b_invoiceType',
+      'b_paymentMethod',
+      'b_isPlugSmartDrivingBox',
+      'b_useTime',
+      'b_useReason',
+      'b_oilContent',
+      'b_useMethod',
+      'b_annualReviewExpirationDate',
+      'b_verificationDate',
+      'b_lastAnnualReviewExpirationDate',
+      'b_lastVerificationDate',
+      'b_annualReviewMethod',
+      'b_lastStrongInsuranceExpirationDate',
+      'b_lastCommercialInsuranceExpirationDate',
+      'b_strongInsuranceAmount',
+      'b_commercialInsuranceAmount',
+      'b_insuranceCompany',
+      'b_compulsoryInsuranceDate',
+      'b_compulsoryInsuranceExpirationDate',
+      'b_commercialInsuranceDate',
+      'b_commercialInsuranceExpirationDate',
+      'b_totalAmount',
+      'reason',
+      'receiptInfo',
+      'ossIdList',
+    ],
   },
 )
 
