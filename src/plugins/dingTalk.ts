@@ -34,7 +34,6 @@ async function setupDingTalk(): Promise<boolean> {
     return
   }
 
-  modal.loading('正在配置 DingTalk')
   const { corpId, agentId, timeStamp, nonceStr, signature } = await getDingTalkConfig()
 
   // 钉钉鉴权
@@ -52,14 +51,11 @@ async function setupDingTalk(): Promise<boolean> {
 
   return new Promise((resolve, reject) => {
     dd.ready(() => {
-      modal.closeLoading()
-
       isDdReady.value = true
       resolve(true)
     })
 
     dd.error((error) => {
-      modal.closeLoading()
       modal.alert(error?.errorMessage)
       reject(error)
     })
