@@ -330,7 +330,7 @@ const {
 
 const { Form, form, contractMode, isLoading, reset, view, workflowView } = useForm()
 
-const vShowField = createFieldVisibilityDirective<ContractForm>()
+const vShowField = createFieldVisibilityDirective<ContractForm>(form)
 
 // 是否是采购合同
 const isPurchaseContract = computed(() => form.value.category === 'out0')

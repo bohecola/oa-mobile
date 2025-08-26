@@ -270,9 +270,6 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 字典
 const { oa_contract_category_in } = toRefs(proxy.useDict('oa_contract_category_in'))
 
-// 指令
-const vShowField = createFieldVisibilityDirective<ContractSettlementForm>()
-
 // 表单
 const {
   Form,
@@ -288,6 +285,9 @@ const {
   workflowSubmit,
   workflowView,
 } = useForm()
+
+// 指令
+const vShowField = createFieldVisibilityDirective<ContractSettlementForm>(form)
 
 // 展示列
 const showColumn = computed(() => {

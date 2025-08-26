@@ -149,7 +149,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:contractNo', 'confirm', 'clear', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:contractNo', 'update:items', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -221,6 +221,7 @@ async function getList(query?: Partial<ProjectSubjectQuery>) {
 function onClear() {
   emit('update:modelValue', undefined)
   emit('update:contractNo', undefined)
+  emit('update:items', [])
   emit('change', undefined)
   emit('clear')
 }
@@ -362,6 +363,7 @@ function onConfirm() {
   emit('confirm', payload)
 
   emit('update:contractNo', contractNoStr.value)
+  emit('update:items', selectedList.value)
 
   closePopup()
 }

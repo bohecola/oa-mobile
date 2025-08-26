@@ -227,7 +227,7 @@ const { Form, form, isLoading, updateLoading, reset, view, submit, workflowSubmi
 
 const { isBusinessForm } = useWorkflowHelper()
 
-const vShowField = createFieldVisibilityDirective<PurchaseChangeForm>()
+const vShowField = createFieldVisibilityDirective<PurchaseChangeForm>(form)
 
 // 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {

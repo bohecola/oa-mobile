@@ -38,6 +38,12 @@ export function createFieldVisibilityDirective<V>(form?: Ref<any>): Directive<an
       else {
         el.style.display = 'none'
       }
+
+      if (!isNil(form) && !isNil(form.value?.id)) {
+        if (isNil(form.value[field]) || form.value[field] === '') {
+          el.style.display = 'none'
+        }
+      }
     },
   }
 }

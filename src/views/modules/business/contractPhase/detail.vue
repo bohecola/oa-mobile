@@ -153,7 +153,7 @@ const { oa_contract_category_in } = toRefs(proxy.useDict('oa_contract_category_i
 const { Form, form, isLoading, reset, view, workflowView } = useForm()
 
 // 指令
-const vShowField = createFieldVisibilityDirective<ContractPhaseCustomForm>()
+const vShowField = createFieldVisibilityDirective<ContractPhaseCustomForm>(form)
 
 defineExpose({
   isLoading,

@@ -105,6 +105,9 @@ export function useWorkflowHelper() {
   // 流程节点 Key
   const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey', ref(undefined))
 
+  // 发起人部门ID
+  const initiatorDeptId = inject<Ref<string | number>>('initiatorDeptId', ref(undefined))
+
   // 是否是查看流程
   const isView = inject<Ref<boolean>>('isView', ref(undefined))
 
@@ -134,6 +137,7 @@ export function useWorkflowHelper() {
 
   return {
     taskDefinitionKey,
+    initiatorDeptId,
     needBMJL,
     isBusinessForm,
     isWorkflowForm,

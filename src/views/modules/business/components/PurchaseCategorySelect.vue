@@ -35,8 +35,18 @@
       round
       destroy-on-close
       safe-area-inset-bottom
+      :closeable="isNil(params.psId) || isEmpty(options)"
     >
+      <div v-if="isNil(params.psId)">
+        <van-empty description="请先选择预算" :image="customEmptyImage" image-size="80" />
+      </div>
+
+      <div v-else-if="isEmpty(options)">
+        <van-empty description="暂无数据" :image="customEmptyImage" image-size="80" />
+      </div>
+
       <van-cascader
+        v-else
         v-model="cascaderValue"
         :title="`请选择${attrs.label}`"
         :options="options"
@@ -54,11 +64,6 @@
             <span v-if="treeType === 'item'">（{{ formatCurrency(availableAmount) }}）</span>
           </div>
         </template>
-        <template v-if="isEmpty(options)" #options-top>
-          <div class="w-full h-1">
-            <van-empty description="暂无数据" :image="customEmptyImage" image-size="80" />
-          </div>
-        </template>
       </van-cascader>
     </van-popup>
   </div>
@@ -67,10 +72,10 @@
 <script setup lang='ts'>
 import Big from 'big.js'
 import { isEmpty, isNil } from 'lodash-es'
-import { useParentForm, usePopup } from '@/hooks'
 import type { ProjectSubjectItemTreeVO } from '@/api/oa/finance/projectSubject/types'
 import { getItemTreeByPsIdAndApplyDeptId } from '@/api/oa/finance/projectSubject'
-import { findPathNodes } from '@/utils'
+import { findPathNodes, isNumeric } from '@/utils'
+import { useParentForm, usePopup } from '@/hooks'
 import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 const props = withDefaults(
@@ -209,7 +214,7 @@ function updateVars(value: string) {
 
   // 预算金额总和
   const amount = items.reduce((prev, curr) => {
-    if (!isNil(curr.amount) && (curr.amount as any) !== '') {
+    if (isNumeric(curr.amount)) {
       return prev.add(Big(curr.amount))
     }
 
@@ -218,7 +223,7 @@ function updateVars(value: string) {
 
   // 申请中金额总和
   const applyingAmount = items.reduce((prev, curr) => {
-    if (!isNil(curr.applyingAmount) && (curr.applyingAmount as any) !== '') {
+    if (isNumeric(curr.applyingAmount)) {
       return prev.add(Big(curr.applyingAmount))
     }
 
@@ -227,7 +232,7 @@ function updateVars(value: string) {
 
   // 已申请金额总和
   const finishAmount = items.reduce((prev, curr) => {
-    if (!isNil(curr.finishAmount) && (curr.finishAmount as any) !== '') {
+    if (isNumeric(curr.finishAmount)) {
       return prev.add(Big(curr.finishAmount))
     }
 
@@ -236,7 +241,7 @@ function updateVars(value: string) {
 
   // 剩余金额总和
   const availableAmount = items.reduce((prev, curr) => {
-    if (!isNil(curr.availableAmount) && (curr.availableAmount as any) !== '') {
+    if (isNumeric(curr.availableAmount)) {
       return prev.add(Big(curr.availableAmount))
     }
 

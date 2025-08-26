@@ -30,6 +30,7 @@
       class="h-[80%]"
       position="bottom"
       teleport="body"
+      round
       destroy-on-close
       safe-area-inset-bottom
       @click-overlay="onCancel"
