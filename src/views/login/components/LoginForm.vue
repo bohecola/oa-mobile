@@ -60,8 +60,8 @@
 
       <template #button>
         <img
-          class="w-20 cursor-pointer rounded"
           :src="base64"
+          class="w-20 cursor-pointer rounded"
           alt="captcha"
           @click="handleCaptchaClick"
         >
@@ -73,8 +73,6 @@
         <van-switch v-model="form.remenberMe" size="14px" class="mr-2" :disabled="loading" />
         <span class="text-sm">记住我</span>
       </div>
-
-      <!-- <a>忘记密码?</a> -->
     </div>
 
     <van-button
@@ -86,7 +84,9 @@
       登 录
     </van-button>
 
-    <van-divider>其他登录方式</van-divider>
+    <van-divider :style="{ borderColor: '#c5c5c5' }">
+      其他登录方式
+    </van-divider>
 
     <div class="flex justify-center gap-2">
       <span

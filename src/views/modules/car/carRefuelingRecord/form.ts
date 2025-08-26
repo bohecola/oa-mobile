@@ -72,7 +72,7 @@ export function useForm() {
     unitPrice: [{ required: true, message: '请输入单价' }],
     refuelingQuantity: [{ required: true, message: '请输入加油量' }],
     amount: [{ required: true, message: '请输入加油金额' }],
-    invoiceFile: [{ required: true, message: '请上传发票图片' }],
+    invoiceFile: [{ required: true, message: '请上照片' }],
   })
 
   // 油号选项
@@ -85,7 +85,11 @@ export function useForm() {
       return oa_car_fuel_label_cy.value
     }
 
-    return oa_car_fuel_label_qy.value
+    if (form.value.isDeptCar === 'N') {
+      return [...oa_car_fuel_label_qy.value, ...oa_car_fuel_label_cy.value]
+    }
+
+    return []
   })
 
   // 发票图片标签
@@ -111,7 +115,7 @@ export function useForm() {
       return
     }
 
-    form.value.amount = Big(form.value.unitPrice).times(form.value.refuelingQuantity).toNumber()
+    form.value.amount = Number(Big(form.value.unitPrice).times(form.value.refuelingQuantity).toNumber().toFixed(2))
   }
 
   // 回显
@@ -130,7 +134,7 @@ export function useForm() {
     const { success, fail } = options
     const { msgSuccess, loading, confirm } = proxy.$modal
 
-    Form.value?.validate()
+    Form.value.validate()
       .then(() => {
         confirm('请仔细核对信息，确认无误后提交')
           .then(async () => {

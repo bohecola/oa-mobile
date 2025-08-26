@@ -107,11 +107,9 @@
 
 <script setup lang='ts'>
 import { fieldProps } from 'vant/es/field/field'
-import { FORM_KEY } from 'vant/es/utils'
 import { isEmpty, isNil } from 'lodash-es'
-import { useParent } from '@vant/use'
 import { LETTER_LIST, LICENSE_PLATE_LENGTH, LICENSE_PLATE_RULE, NUMBER_LIST, PROVINCE_LIST } from './helper'
-import { usePopup } from '@/hooks'
+import { useParentForm, usePopup } from '@/hooks'
 
 const props = defineProps({
   ...fieldProps,
@@ -130,7 +128,7 @@ const emit = defineEmits(['update:modelValue', 'change', 'clear'])
 const attrs = useAttrs()
 const slots = useSlots()
 
-const { parent: form } = useParent(FORM_KEY)
+const parentForm = useParentForm()
 
 const { visible, openPopup, closePopup } = usePopup()
 
@@ -158,13 +156,8 @@ const KEYBOARD_KEY_LIST = computed(() => {
   return [...NUMBER_LIST, ...LETTER_LIST]
 })
 
-const isReadonly = computed(() => {
-  if (form && !isNil(form.props.readonly)) {
-    return form.props.readonly
-  }
-
-  return props.readonly
-})
+// 是否只读
+const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 
 // 选项点击
 function onFieldClick() {

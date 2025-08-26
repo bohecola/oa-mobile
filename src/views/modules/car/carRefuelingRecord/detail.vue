@@ -47,13 +47,13 @@
 
           <van-field-number
             v-model="form.amount"
-            label="总金额"
+            label="总金额（元）"
             name="amount"
           />
 
           <van-field-number
             v-model="form.unitPrice"
-            label="单价"
+            label="单价（元）"
             name="unitPrice"
           />
 
@@ -73,7 +73,7 @@
           <van-field-number
             v-model="form.mileage"
             value-type="integer"
-            label="里程数"
+            label="里程数（km）"
             name="mileage"
             placeholder="暂无数据"
           />

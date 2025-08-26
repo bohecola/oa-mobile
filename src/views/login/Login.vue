@@ -20,7 +20,7 @@ const { appTitle } = useGlobSettings()
     <a
       href="https://beian.miit.gov.cn/#/Integrated/index"
       target="_blank"
-      class="mt-3 text-xs text-center text-gray-500"
+      class="mt-3 text-xs text-center opacity-50"
     >
       备案号：陕ICP备2024032973号
     </a>

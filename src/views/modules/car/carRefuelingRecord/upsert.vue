@@ -72,7 +72,7 @@
 
           <van-field-number
             v-model="form.amount"
-            label="总金额"
+            label="总金额（元）"
             name="amount"
             placeholder="单价 * 油量（自动计算）"
             disabled
@@ -80,7 +80,7 @@
 
           <van-field-number
             v-model="form.unitPrice"
-            label="单价"
+            label="单价（元）"
             name="unitPrice"
             :rules="rules.unitPrice"
             clearable
@@ -102,13 +102,14 @@
             name="fuelLabel"
             :rules="rules.fuelLabel"
             :options="fuelLabelOptions"
+            :empty-text="fuelLabelEmptyText"
             clearable
           />
 
           <van-field-number
             v-model="form.mileage"
             value-type="integer"
-            label="里程数"
+            label="里程数（km）"
             name="mileage"
             :rules="[{ required: form.isDeptCar === 'Y', message: '请输入里程数', trigger: 'onBlur' }]"
             clearable
@@ -197,6 +198,16 @@ const { options: cardNumberOptions, fetch: fetchCardNumberOptions } = useCardNum
 
 const { deptOptions, deptReadonly } = useUserDeptOptions()
 
+const fuelLabelEmptyText = computed(() => {
+  if (isNil(form.value.isDeptCar)) {
+    return '请先选择是否为部门/项目部车辆'
+  }
+  if (form.value.isDeptCar === 'Y') {
+    return '请先选择车牌号'
+  }
+  return '暂无数据'
+})
+
 // 选择部门 => 加载车牌号和油卡
 function onDeptChange(deptId: string) {
   form.value.carNumber = undefined
@@ -216,6 +227,7 @@ function onDeptChange(deptId: string) {
 function onIsDeptCarChange() {
   // 清空车牌号、油号
   form.value.carNumber = undefined
+  form.value.fuelType = undefined
   form.value.fuelLabel = undefined
 }
 

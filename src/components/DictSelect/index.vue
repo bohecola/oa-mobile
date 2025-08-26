@@ -130,9 +130,9 @@
         >
           <template #empty>
             <van-empty
-              :image="customEmptyImage"
               image-size="80"
-              description="暂无数据"
+              :image="customEmptyImage"
+              :description="emptyText"
             />
           </template>
         </van-picker>
@@ -165,6 +165,7 @@ const props = withDefaults(
     groupClass?: string
     filterFn?: (value: DictDataOption, index: number, array: DictDataOption[]) => unknown
     items?: DictDataOption[]
+    emptyText?: string
   }>(),
   {
     readonly: undefined,
@@ -173,6 +174,7 @@ const props = withDefaults(
     iconSize: '16',
     separator: ',',
     isFilterUseSeal: true,
+    emptyText: '暂无数据',
   },
 )
 
