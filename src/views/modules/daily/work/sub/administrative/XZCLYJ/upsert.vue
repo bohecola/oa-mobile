@@ -7,6 +7,7 @@
     :rules="computedRules.needDepts"
     :params="{
       companyId: form.companyId,
+      status: undefined,
     }"
     :data-config="{
       disabledKey: 'deptId',

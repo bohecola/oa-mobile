@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-safe h-sreen bg-[--bg-card]">
+  <div class="py-safe h-sreen bg-[--bg-card]">
     <div v-loading="loading" class="social-callback h-full" />
   </div>
 </template>

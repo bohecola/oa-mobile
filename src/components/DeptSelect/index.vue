@@ -338,7 +338,7 @@ function onConfirm(value: DeptTreeSelectValue) {
 async function getData() {
   isLoading.value = true
 
-  if (props.readonly) {
+  if (isReadonly.value) {
     queryParams.status = undefined // 回显时示全部状态的部门
   }
 
