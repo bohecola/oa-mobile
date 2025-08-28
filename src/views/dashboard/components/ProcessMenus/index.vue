@@ -28,22 +28,23 @@
 </template>
 
 <script setup lang='ts'>
+import type { UseMapVO } from '@/api/workflow/task/types'
 import { getUseMap } from '@/api/workflow/task'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const loading = ref(false)
 const activeNames = ref<string[]>([])
-const menusMap = ref<Record<string, any>>({})
+const menusMap = ref<Record<string, UseMapVO[]>>({})
 
 // 流程项点击
-function handleItemClick(val: Record<string, any>) {
+function handleItemClick(item: UseMapVO) {
   proxy.$router.push({
-    path: val.router,
+    path: item.router,
     query: {
       type: 'add',
-      nodeId: val.nodeId,
-      procdefName: val.procdefName,
+      nodeId: item.nodeId,
+      procdefName: item.procdefName,
     },
   })
 }

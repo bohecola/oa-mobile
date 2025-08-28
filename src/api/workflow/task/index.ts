@@ -1,5 +1,5 @@
 import type { AxiosPromise } from 'axios'
-import type { TaskNum, TaskQuery, TaskVO } from '@/api/workflow/task/types'
+import type { TaskNum, TaskQuery, TaskVO, UseMapVO } from '@/api/workflow/task/types'
 import request from '@/service/request'
 
 // 流程待办数量
@@ -267,9 +267,10 @@ export function getListByDeleteMultiInstance(taskId: string) {
 /**
  * 查询流程定义
  */
-export function getUseMap(): AxiosPromise {
+export function getUseMap(query?: any): AxiosPromise<Record<string, UseMapVO[]>> {
   return request({
     url: '/workflow/definitionConfig/getUseMap',
     method: 'get',
+    params: query,
   })
 }

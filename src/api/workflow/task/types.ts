@@ -62,3 +62,18 @@ export interface VariableVo {
   key: string
   value: string
 }
+
+export interface UseMapVO {
+  id: string
+  tableName: string
+  definitionId: string
+  processKey: string
+  version: number
+  categoryCode: string
+  categoryName: string
+  procdefName: string
+  nodeId: string
+  formName: string
+  router: string
+  sortNum: number
+}
