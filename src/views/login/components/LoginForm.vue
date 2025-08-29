@@ -112,16 +112,17 @@ import { useStore } from '@/store'
 import { storage } from '@/utils'
 import { ResultCodeEnum } from '@/enums/httpEnum'
 
-// 路由器
-const router = useRouter()
+// 应用客户端ID
+const { appClientId } = useGlobSettings()
 // 用户状态
 const { user, menu } = useStore()
+
+// 路由器
+const router = useRouter()
 // 是否初始化完成
 const initFinished = ref(false)
 // 验证码是否启用
 const captchaEnabled = ref(false)
-// 应用客户端ID
-const { appClientId } = useGlobSettings()
 
 // 加载
 const loading = ref(false)
@@ -208,15 +209,17 @@ function getMe() {
 
 // 第三方登录
 function doSocialLogin(type: string) {
-  service.social.authBinding(type, form.value.tenantId).then((res: any) => {
-    if (res.code === ResultCodeEnum.SUCCESS) {
-      // 获取授权地址跳转
-      window.location.href = res.data
-    }
-    else {
-      showFailToast(res.msg)
-    }
-  })
+  service.social
+    .authBinding(type, form.value.tenantId)
+    .then(({ data, code, msg }) => {
+      if (code === ResultCodeEnum.SUCCESS) {
+        // 获取授权地址跳转
+        window.location.href = data
+        return
+      }
+
+      showFailToast(msg)
+    })
 }
 
 // 挂载

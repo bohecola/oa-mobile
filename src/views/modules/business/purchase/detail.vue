@@ -170,6 +170,7 @@
 
     <van-field
       v-if="!isNil(form.purchaseChange)"
+      v-show-field="['purchaseChange', includeFields]"
       label="采购变更"
     >
       <template #input>
@@ -473,7 +474,7 @@ const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice
 const { Form, form, isLoading, reset, view, viewByObject, workflowView } = useForm()
 
 // 指令
-const vShowField = createFieldVisibilityDirective<PurchaseForm>()
+const vShowField = createFieldVisibilityDirective<PurchaseForm>(form)
 
 // 是否是项目预算
 const isProject = computed(() => form.value.subjectType === 'project')

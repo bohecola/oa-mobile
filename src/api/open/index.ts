@@ -20,7 +20,7 @@ export function captcha(): AxiosPromise<CaptchaResult> {
 }
 
 // 第三方登录
-export function callback(data: LoginData): AxiosPromise<any> {
+export function callback(data: LoginData): AxiosPromise {
   return request({
     url: '/auth/social/callback',
     method: 'post',

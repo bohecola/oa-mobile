@@ -30,4 +30,5 @@ export const allFields: PartialBooleanRecord<PurchaseForm> = {
   purchaseContractIds: false,
   purchaseFiles: true,
   checkFiles: true,
+  purchaseChange: true,
 }

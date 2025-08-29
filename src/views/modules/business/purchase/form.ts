@@ -83,6 +83,7 @@ export function useForm() {
     purchaseFiles: undefined,
     checkFiles: undefined,
     ossIdList: undefined,
+    purchaseChange: undefined,
   }
 
   // 表单数据
