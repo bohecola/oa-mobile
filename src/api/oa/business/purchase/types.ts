@@ -12,6 +12,16 @@ export interface PurchaseVO extends BaseEntity {
   no: string
 
   /**
+   * 采购性质：合同采购、签证采购
+   */
+  nature: string
+
+  /**
+   * 签证收入金额/增值税率
+   */
+  taxRateList: TaxRateVO[]
+
+  /**
    * 预算类型
    */
   subjectType?: string
@@ -145,6 +155,11 @@ export interface PurchaseVO extends BaseEntity {
    * 采购变更
    */
   purchaseChange?: PurchaseChangeVO
+
+  /**
+   * 签证收入情况说明
+   */
+  qzIncomeDescription?: string
 }
 
 export interface PurchaseForm extends BaseEntity {
@@ -162,6 +177,16 @@ export interface PurchaseForm extends BaseEntity {
    * 流程名称
    */
   processName?: string
+
+  /**
+   * 采购性质：合同采购、签证采购
+   */
+  nature?: string
+
+  /**
+   * 签证收入金额/增值税率
+   */
+  taxRateList?: TaxRateVO[]
 
   /**
    * 预算类型
@@ -214,7 +239,7 @@ export interface PurchaseForm extends BaseEntity {
   isDeposit?: string
 
   /**
-   * 关联销售合同
+   * 合同
    */
   contractId?: string
 
@@ -307,6 +332,11 @@ export interface PurchaseForm extends BaseEntity {
    * 采购变更
    */
   purchaseChange?: PurchaseChangeVO
+
+  /**
+   * 签证收入情况说明
+   */
+  qzIncomeDescription?: string
 }
 
 export interface PurchaseQuery extends PageQuery {
@@ -533,4 +563,13 @@ export interface PurchaseItemVO {
   remark?: string
 
   [key: string]: any
+}
+
+/**
+ * 签证收入金额/增值税率
+ */
+export interface TaxRateVO {
+  amount: number
+  taxRate: string
+  notTaxAmount: number
 }

@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import upsert from '../upsert.vue'
 import detail from '../detail.vue'
 import { allFields } from '../helper'
@@ -178,6 +179,7 @@ async function handleStartWorkflow(options: StartWorkFlowOptions<PurchaseForm>) 
             id,
             no,
             itemList,
+            leaseType: isNil(entity.leaseType) ? '' : entity.leaseType,
           },
         },
         processInstanceName,

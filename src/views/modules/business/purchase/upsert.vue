@@ -20,69 +20,18 @@
     />
 
     <DictSelect
-      v-model="form.subjectType"
-      v-show-field="['subjectType', includeFields]"
-      name="subjectType"
-      label="预算类型"
-      dict-type="oa_project_subject_type"
-      :rules="computedRules.subjectType"
-      :disabled="upsertDisabled"
-      @change="onSubjectTypeChange"
-    />
-
-    <DeptSelect
-      v-model="form.deptId"
-      v-show-field="['deptId', includeFields]"
-      label="需求部门"
-      name="deptId"
-      :rules="computedRules.deptId"
-      :disabled="upsertDisabled"
-      @change="onDeptChange"
-    />
-
-    <ProjectSubjectSelect
-      v-model="form.psId"
-      v-model:contract-no="form.contractNo"
-      v-show-field="['psId', includeFields]"
-      label="预算"
-      name="psId"
-      :params="{
-        type: form.subjectType,
-        // 申请部门id：项目预算使用
-        projectDeptId: isProject
-          ? userStore.info.deptType === '2'
-            ? form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId
-            : undefined
-          : form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId,
-        // 需求部门id：部门预算使用
-        deptDeptId: !isProject ? form.deptId : undefined,
-        status: '5',
-      }"
-      :disabled="upsertDisabled"
-      clearable
-      :rules="computedRules.psId"
-      @change="onPsIdChange"
-    />
-
-    <van-field
-      v-if="isProject && !isNil(form.psId)"
-      v-model="form.contractNo"
-      v-show-field="['contractNo', includeFields]"
-      label="合同编号"
-      name="contractNo"
-      readonly
-    />
-
-    <DictSelect
-      v-if="isProject && !isNil(form.contractNo)"
-      v-model="form.contractExecute"
-      v-show-field="['contractExecute', includeFields]"
-      label="合同执行情况"
-      clearable
-      name="contractExecute"
-      dict-type="oa_contract_execute_situation"
-      :rules="computedRules.contractExecute"
-    />
+      v-model="form.nature"
+      v-show-field="['nature', includeFields]"
+      label="采购性质"
+      name="nature"
+      :options="oa_purchase_nature"
+      :rules="computedRules.nature"
+      @change="onNatureChange"
+    >
+      <template #button>
+        <van-icon name="info-o" @click.stop="onNatureDescClick" />
+      </template>
+    </DictSelect>
 
     <DictSelect
       v-model="form.type"
@@ -95,28 +44,140 @@
       @change="onTypeChange"
     />
 
-    <!-- 项目预算 ? 项目的业务类型 : 采购业务类别 -->
+    <DictSelect
+      v-if="isContractPurchase"
+      v-model="form.subjectType"
+      v-show-field="['subjectType', includeFields]"
+      label="预算类型"
+      name="subjectType"
+      dict-type="oa_project_subject_type"
+      :rules="computedRules.subjectType"
+      :disabled="upsertDisabled"
+      @change="onSubjectTypeChange"
+    />
+
+    <template v-if="isVisaPurchase">
+      <ContractSelect
+        v-model="form.contractId"
+        v-show-field="['contractId', includeFields]"
+        label="合同名称"
+        name="contractId"
+        :params="{ type: 'in' }"
+        :rules="computedRules.contractId"
+        clearable
+        @update:selected-list="onContractChange"
+      />
+
+      <van-field
+        v-model="form.contractNo"
+        v-show-field="['contractNo', includeFields]"
+        label="合同编号"
+        name="contractNo"
+        readonly
+      />
+    </template>
+
+    <DeptSelect
+      v-model="form.deptId"
+      v-show-field="['deptId', includeFields]"
+      label="需求部门"
+      name="deptId"
+      :rules="computedRules.deptId"
+      :disabled="upsertDisabled"
+      @change="onDeptChange"
+    />
+
+    <template v-if="isContractPurchase">
+      <ProjectSubjectSelect
+        v-model="form.psId"
+        v-model:contract-no="form.contractNo"
+        v-show-field="['psId', includeFields]"
+        label="预算"
+        name="psId"
+        :params="{
+          type: form.subjectType,
+          // 申请部门id：项目预算使用
+          projectDeptId: isProject
+            ? user.info.deptType === '2'
+              ? form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId
+              : undefined
+            : form?.initiator?.deptId ?? form?.createDept ?? initiatorDeptId,
+          // 需求部门id：部门预算使用
+          deptDeptId: !isProject ? form.deptId : undefined,
+          status: '5',
+        }"
+        clearable
+        :disabled="upsertDisabled"
+        :rules="computedRules.psId"
+        @change="onPsIdChange"
+        @update:items="onPsItemsChange"
+      />
+
+      <van-field
+        v-if="isProject && !isNil(form.psId)"
+        v-model="form.contractNo"
+        v-show-field="['contractNo', includeFields]"
+        label="合同编号"
+        name="contractNo"
+        readonly
+      />
+    </template>
+
     <DictSelect
       v-model="form.businessCategory"
       v-show-field="['businessCategory', includeFields]"
       label="业务类别"
       name="businessCategory"
-      :options="isProject ? oa_project_business_type : oa_purchase_business_type"
-      :rules="isProject ? computedRules.serviceCategory : computedRules.businessCategory"
-      :disabled="isProject"
-      :readonly="isProject"
+      clearable
+      :options="isProjectBusinessType ? oa_project_business_type : oa_purchase_business_type"
+      :rules="computedRules.businessCategory"
+      :disabled="isProjectBusinessType"
     />
 
     <DictSelect
       v-model="form.objectCategory"
       v-show-field="['objectCategory', includeFields]"
       label="物品类别"
-      clearable
       name="objectCategory"
       dict-type="oa_purchase_object_category"
+      clearable
       :rules="computedRules.objectCategory"
       @change="onObjectCategoryChange"
     />
+
+    <DictSelect
+      v-model="form.serviceCategory"
+      v-show-field="['serviceCategory', includeFields]"
+      label="服务类别"
+      name="serviceCategory"
+      placeholder="请选择服务类别"
+      clearable
+      :options="serviceCategoryOptions"
+      @change="onServiceCategoryChange"
+    />
+
+    <DictSelect
+      v-if="form.serviceCategory === '3'"
+      v-model="form.leaseType"
+      v-show-field="['leaseType', includeFields]"
+      label="租赁类型"
+      name="leaseType"
+      dict-type="oa_purchase_lease_type"
+      clearable
+      :rules="computedRules.leaseType"
+      @change="onLeaseTypeChange"
+    />
+
+    <van-field
+      v-if="form.serviceCategory === '3'"
+      v-show-field="['isDeposit', includeFields]"
+      label="是否有押金"
+      name="isDeposit"
+    >
+      <template #input>
+        <YesNoSwitch v-model="form.isDeposit" />
+      </template>
+    </van-field>
 
     <DictSelect
       v-model="form.purchaseMethod"
@@ -128,49 +189,10 @@
       :rules="computedRules.purchaseMethod"
       :disabled="purchaseMethodDisabled"
     >
-      <template #label>
-        <div class="flex items-center gap-2">
-          <span>采购方式</span>
-          <van-icon :size="14" name="info-o" @click.stop="onPurchaseMethodDescClick" />
-        </div>
+      <template #button>
+        <van-icon name="info-o" @click.stop="onPurchaseMethodDescClick" />
       </template>
     </DictSelect>
-
-    <DictSelect
-      v-model="form.serviceCategory"
-      v-show-field="['serviceCategory', includeFields]"
-      label="服务类别"
-      name="serviceCategory"
-      :options="serviceCategoryOptions"
-      placeholder="请选择服务类别"
-      clearable
-      @change="onServiceCategoryChange"
-    />
-
-    <!-- 服务类别为租赁时显示 -->
-    <DictSelect
-      v-if="form.serviceCategory === '3'"
-      v-model="form.leaseType"
-      v-show-field="['leaseType', includeFields]"
-      label="租赁类型"
-      name="leaseType"
-      dict-type="oa_purchase_lease_type"
-      :rules="computedRules.leaseType"
-      clearable
-      @change="onLeaseTypeChange"
-    />
-
-    <!-- 服务类别为租赁时显示 -->
-    <van-field
-      v-if="form.serviceCategory === '3'"
-      v-show-field="['isDeposit', includeFields]"
-      label="是否有押金"
-      name="isDeposit"
-    >
-      <template #input>
-        <YesNoSwitch v-model="form.isDeposit" />
-      </template>
-    </van-field>
 
     <van-field-number
       v-model.number="form.amount"
@@ -188,7 +210,7 @@
     </van-field-number>
 
     <van-field-number
-      v-if="isProject && !isNil(form.psId) && !isYwl"
+      v-if="showExtraData && !isNil(form.psId)"
       v-model.number="form.notTaxAmount"
       v-show-field="['notTaxAmount', includeFields]"
       label="不含税总金额"
@@ -218,7 +240,7 @@
     </van-field-number>
 
     <van-field-number
-      v-if="!isYwl && isProject"
+      v-if="showExtraData"
       v-model.number="form.notTaxRealAmount"
       v-show-field="['notTaxRealAmount', includeFields]"
       label="不含税实际总金额"
@@ -231,16 +253,6 @@
         </div>
       </template>
     </van-field-number>
-
-    <van-field
-      v-show-field="['isOwnerSettlement', includeFields]"
-      label="是否业主单独结算"
-      name="isOwnerSettlement"
-    >
-      <template #input>
-        <YesNoSwitch v-model="form.isOwnerSettlement" />
-      </template>
-    </van-field>
 
     <van-field
       v-model="form.description"
@@ -264,6 +276,101 @@
       rows="1"
       autosize
     />
+
+    <template v-if="isVisaPurchase && includeFields.includes('taxRateList')">
+      <van-field label="签证收入含税总金额">
+        <template #input>
+          <div class="flex flex-col">
+            <span>{{ formatCurrency(taxRateListTotalAmount) }}</span>
+            <span class="text-red-400">{{ toCnMoney(taxRateListTotalAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+
+      <van-field label="签证收入不含税总金额">
+        <template #input>
+          <div class="flex flex-col">
+            <span>{{ formatCurrency(taxRateListNotTaxTotalAmount) }}</span>
+            <span class="text-red-400">{{ toCnMoney(taxRateListNotTaxTotalAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+
+      <van-field label="签证收入金额/增值税率" required>
+        <template #input>
+          <CoolCardList accordion active-on-register>
+            <CoolCard
+              v-for="(item, index) in form.taxRateList"
+              :key="index"
+              :title="formatCurrency(item.amount)"
+            >
+              <template #footer>
+                <div class="text-right">
+                  <van-button
+                    v-if="form.taxRateList.length - 1 === index"
+                    type="primary"
+                    icon="plus"
+                    size="small"
+                    @click="handleAddTaxRate"
+                  />
+                  <van-button
+                    class="ml-2"
+                    type="danger"
+                    icon="delete"
+                    size="small"
+                    :disabled="form.taxRateList.length === 1"
+                    @click="handleRemoveTaxRate(item, index)"
+                  />
+                </div>
+              </template>
+
+              <van-field-number
+                v-model="item.amount"
+                label="签证收入含税金额（元）"
+                :name="`taxRateList.${index}.amount`"
+                :rules="[{ required: true, message: '不能为空', trigger: 'onBlur' }]"
+                clearable
+                @change="onTaxRateListAmountChange(item)"
+              >
+                <template #button>
+                  <van-icon name="info-o" @click.stop="handleTipTaxRateListOfAmount" />
+                </template>
+              </van-field-number>
+
+              <DictSelect
+                v-model="item.taxRate"
+                label="增值税率（%）"
+                :name="`taxRateList.${index}.taxRate`"
+                :rules="[{ required: true, message: '不能为空', trigger: 'onChange' }]"
+                :options="oa_contract_tax_rate"
+                clearable
+                @change="onTaxRateListTaxRateChange(item)"
+              />
+
+              <van-field
+                :model-value="item.notTaxAmount"
+                label="签证收入不含税金额（元）"
+                placeholder="自动计算"
+                disabled
+              />
+            </CoolCard>
+          </CoolCardList>
+        </template>
+      </van-field>
+
+      <van-field
+        v-if="taxRateListTotalAmount === 0"
+        v-model="form.qzIncomeDescription"
+        v-show-field="['qzIncomeDescription', includeFields]"
+        label="签证收入情况说明"
+        name="qzIncomeDescription"
+        type="textarea"
+        rows="1"
+        autosize
+        :placeholder="qzIncomeDescription"
+        :rules="computedRules.qzIncomeDescription"
+      />
+    </template>
 
     <van-field v-if="includeFields.includes('itemList')" label="采购清单" required>
       <template #input>
@@ -293,102 +400,97 @@
               </div>
             </template>
 
-            <PurchaseCategorySelect
-              v-model="item.psiId"
-              v-model:dept-id="item.subjectItemDeptId"
-              v-model:amount="item.budgetAmount"
-              v-model:applying-amount.v-model:amount="item.applyingAmount"
-              v-model:finish-amount.v-model:amount="item.finishAmount"
-              v-model:available-amount.v-model:amount="item.availableAmount"
-              label="预算科目"
-              :name="`itemList.${index}.subjectItemId`"
-              :rules="[{
-                required: true,
-                message: '预算科目不能为空',
-                trigger: 'onChange',
-              }]"
-              :params="PurchaseCategorySelectParams"
-              :disabled="disabledColumn"
-              :readonly="disabledColumn"
-            />
+            <template v-if="isContractPurchase">
+              <PurchaseCategorySelect
+                v-model="item.psiId"
+                v-model:dept-id="item.subjectItemDeptId"
+                v-model:amount="item.budgetAmount"
+                v-model:applying-amount.v-model:amount="item.applyingAmount"
+                v-model:finish-amount.v-model:amount="item.finishAmount"
+                v-model:available-amount.v-model:amount="item.availableAmount"
+                label="预算科目"
+                :name="`itemList.${index}.subjectItemId`"
+                :rules="[{ required: true, message: '预算科目不能为空', trigger: 'onChange' }]"
+                :params="PurchaseCategorySelectParams"
+                :disabled="disabledColumn"
+                clearable
+              />
+
+              <van-field
+                :model-value="formatCurrency(item.budgetAmount)"
+                label="预算金额"
+                readonly
+              />
+
+              <van-field
+                :model-value="formatCurrency(item.applyingAmount)"
+                label="申请中"
+                readonly
+              />
+
+              <van-field
+                :model-value="formatCurrency(item.finishAmount)"
+                label="已申请"
+                readonly
+              />
+
+              <van-field
+                :model-value="formatCurrency(item.availableAmount) "
+                label="剩余金额"
+                readonly
+              />
+            </template>
 
             <van-field
-              :name="`itemList.${index}.budgetAmount`"
-              label="预算金额"
-            >
-              <template #input>
-                {{ formatCurrency(item.budgetAmount) }}
-              </template>
-            </van-field>
-            <van-field
-              :name="`itemList.${index}.applyingAmount`"
-              label="申请中"
-            >
-              <template #input>
-                {{ formatCurrency(item.applyingAmount) }}
-              </template>
-            </van-field>
-            <van-field
-              :name="`itemList.${index}.finishAmount`"
-              label="已申请"
-            >
-              <template #input>
-                {{ formatCurrency(item.finishAmount) }}
-              </template>
-            </van-field>
-            <van-field
-              :name="`itemList.${index}.availableAmount`"
-              label="剩余金额"
-            >
-              <template #input>
-                {{ formatCurrency(item.availableAmount) }}
-              </template>
-            </van-field>
-            <van-field
               v-model.trim="item.name"
-              :name="`itemList.${index}.name`"
               label="物品名称"
               placeholder="请输入"
+              :name="`itemList.${index}.name`"
               :maxlength="100"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '物品名称不能为空', trigger: 'onBlur' }]"
             />
+
             <van-field
               v-model.trim="item.brand"
-              :name="`itemList.${index}.brand`"
               label="品牌"
               placeholder="请输入"
+              :name="`itemList.${index}.brand`"
               :maxlength="100"
               :disabled="disabledColumn"
             />
+
             <van-field
               v-model.trim="item.specsModel"
-              :name="`itemList.${index}.specsModel`"
               label="规格型号"
               placeholder="请输入"
+              :name="`itemList.${index}.specsModel`"
               :maxlength="100"
               :disabled="disabledColumn"
             />
+
             <van-field
               v-model="item.unit"
-              :name="`itemList.${index}.unit`"
               label="单位"
               placeholder="请输入"
+              :name="`itemList.${index}.unit`"
               :maxlength="10"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '单位不能为空', trigger: 'onBlur' }]"
             />
+
             <van-field-number
               v-model.number="item.num"
-              :name="`itemList.${index}.num`"
               label="数量"
               type="digit"
               placeholder="请输入"
+              :name="`itemList.${index}.num`"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '数量不能为空', trigger: 'onBlur' }]"
             />
+
             <DictSelect
-              v-if="!isYwl && isProject"
+              v-if="showExtraData"
               v-model="item.invoiceType"
               label="发票类型"
               :name="`itemList.${index}.invoiceType`"
@@ -405,7 +507,7 @@
             />
 
             <DictSelect
-              v-if="!isYwl && isProject"
+              v-if="showExtraData"
               v-model="item.taxRate"
               label="税率(%)"
               :name="`itemList.${index}.taxRate`"
@@ -416,32 +518,32 @@
 
             <van-field-number
               v-model.number="item.taxAmount"
-              :name="`itemList.${index}.taxAmount`"
               label="含税单价(元)"
               placeholder="请输入"
+              :name="`itemList.${index}.taxAmount`"
               :disabled="disabledColumn"
               :rules="[{ required: true, message: '含税单价(元)不能为空', trigger: 'onBlur' }]"
             />
 
             <van-field-number
-              v-if="!isYwl && isProject"
-              :model-value="item.amount"
-              :name="`itemList.${index}.amount`"
+              v-if="showExtraData"
               label="不含税单价(元)"
               placeholder="自动计算"
+              :model-value="item.amount"
+              :name="`itemList.${index}.amount`"
               disabled
             />
 
             <van-field-number
               v-if="includeFields.includes('realAmount')"
               v-model.number="item.taxRealAmount"
-              :name="`itemList.${index}.taxRealAmount`"
               label="含税实际单价(元)"
+              :name="`itemList.${index}.taxRealAmount`"
               :rules="[{ required: taxRealAmountRequired, message: '含税实际单价不能为空', trigger: 'onBlur' }]"
             />
 
             <van-field-number
-              v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
+              v-if="includeFields.includes('notTaxRealAmount') && showExtraData"
               :model-value="item.realAmount"
               :name="`itemList.${index}.realAmount`"
               label="不含税实际单价(元)"
@@ -450,62 +552,64 @@
             />
 
             <van-field
-              :model-value="item.taxTotalAmount"
-              :name="`itemList.${index}.taxTotalAmount`"
               label="含税合计(元)"
               placeholder="自动求和"
+              :model-value="item.taxTotalAmount"
+              :name="`itemList.${index}.taxTotalAmount`"
               disabled
             />
 
             <van-field-number
-              v-if="!isYwl && isProject"
-              :model-value="item.totalAmount"
-              :name="`itemList.${index}.totalAmount`"
+              v-if="showExtraData"
               label="不含税合计(元)"
               placeholder="自动求和"
+              :model-value="item.totalAmount"
+              :name="`itemList.${index}.totalAmount`"
               disabled
             />
 
             <van-field-number
               v-if="includeFields.includes('realAmount')"
-              :model-value="item.taxRealTotalAmount"
-              :name="`itemList.${index}.taxRealTotalAmount`"
               label="含税实际合计(元)"
               placeholder="自动求和"
+              :model-value="item.taxRealTotalAmount"
+              :name="`itemList.${index}.taxRealTotalAmount`"
               disabled
             />
 
             <van-field-number
-              v-if="includeFields.includes('notTaxRealAmount') && !isYwl && isProject"
-              :model-value="item.realTotalAmount"
-              :name="`itemList.${index}.realTotalAmount`"
+              v-if="includeFields.includes('notTaxRealAmount') && showExtraData"
               label="不含税实际合计(元)"
               placeholder="自动求和"
+              :model-value="item.realTotalAmount"
+              :name="`itemList.${index}.realTotalAmount`"
               disabled
             />
 
             <van-field
               v-model="item.inquiryWay"
-              :name="`itemList.${index}.inquiryWay`"
               label="询价途径"
               type="textarea"
               rows="1"
               autosize
               placeholder="请输入"
+              :name="`itemList.${index}.inquiryWay`"
               :maxlength="1000"
               :disabled="disabledColumn"
             />
+
             <van-field
               v-model="item.supplier"
-              :name="`itemList.${index}.supplier`"
               label="指定供应商"
               type="textarea"
               rows="1"
               autosize
               placeholder="请输入"
+              :name="`itemList.${index}.supplier`"
               :maxlength="50"
               :disabled="disabledColumn"
             />
+
             <van-field
               v-model="item.remark"
               :name="`itemList.${index}.remark`"
@@ -532,8 +636,7 @@
         <div class="flex flex-col">
           <UploadFile v-model="form.checkFiles" :exclude="excludeCheckFiles" />
           <div class="text-red-400">
-            验收附件上传说明：1.通过采购部采购的需要上传收货确认单及全部物资照片 2.自行采购需要上传网络订单截图(线上)/店内销售清单(线下)及全部物资照片
-            [注：照片必需带时间、地点(水印相机拍照)]
+            {{ checkFilesDescription }}
           </div>
         </div>
       </template>
@@ -547,7 +650,8 @@
       :rules="computedRules.ossIdList"
     >
       <template #label>
-        <span>附件列表</span><span class=" text-gray-400">（请上传申购内容附件）</span>
+        <span>附件列表</span>
+        <span class="opacity-50">（请上传申购内容附件）</span>
       </template>
       <template #input>
         <UploadFile v-model="form.ossIdList" value-type="array" :exclude="excludeOssIdList" />
@@ -562,17 +666,22 @@
 
 <script setup lang="ts">
 import Big from 'big.js'
-import { isEmpty, isNil, isNumber } from 'lodash-es'
+import { cloneDeep, isEmpty, isNil } from 'lodash-es'
 import type { FieldRule } from 'vant'
+import ContractSelect from '../components/ContractSelect.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import PurchaseMethodDesc from './components/PurchaseMethodDesc.vue'
 import { useForm } from './form'
-import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
+import { checkFilesDescription, isAllKeyNil, qzIncomeDescription, sumTotalMoney, vehiclePurchaseDescription } from './helper'
+import type { PurchaseForm, PurchaseItemVO, TaxRateVO } from '@/api/oa/business/purchase/types'
+import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
+import type { ContractVO } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getBusinessTypeByPsId } from '@/api/oa/business/project'
-import { useUserStore } from '@/store/user'
 import { isNumeric } from '@/utils'
+import { useStore } from '@/store'
+import { useWorkflowHelper } from '@/hooks'
 
 const props = withDefaults(
   defineProps<{
@@ -588,30 +697,35 @@ const props = withDefaults(
   },
 )
 
-const showPurchaseMethodDesc = ref(false)
+const { user } = useStore()
 
-const userStore = useUserStore()
-
-const taskDefinitionKey = inject<Ref<string>>('taskDefinitionKey', ref(undefined))
-const initiatorDeptId = inject<Ref<any>>('initiatorDeptId')
+// 流程辅助
+const { taskDefinitionKey, initiatorDeptId } = useWorkflowHelper()
 
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
+// 模态框
+const { confirm } = proxy.$modal
+
 // 采购-业务类别、项目-业务类别、服务类别、发票类型、税率
 const {
+  oa_purchase_nature,
   oa_purchase_business_type,
   oa_project_business_type,
   oa_purchase_service_category,
   oa_purchase_invoice_type,
   oa_contract_tax_rate,
+  oa_contract_category_in,
 } = toRefs(
   proxy.useDict(
+    'oa_purchase_nature',
     'oa_purchase_business_type',
     'oa_project_business_type',
     'oa_purchase_service_category',
     'oa_purchase_invoice_type',
     'oa_contract_tax_rate',
+    'oa_contract_category_in',
   ),
 )
 
@@ -622,9 +736,20 @@ const {
   rules,
   isLoading,
   updateLoading,
+  taxRateItem,
   purchaseItem,
   excludeCheckFiles,
   excludeOssIdList,
+  showPurchaseMethodDesc,
+  isContractPurchase,
+  isVisaPurchase,
+  isProject,
+  isDept,
+  isYwl,
+  isProjectBusinessType,
+  showExtraData,
+  taxRateListTotalAmount,
+  taxRateListNotTaxTotalAmount,
   reset,
   resetFields,
   view,
@@ -662,12 +787,6 @@ const disabledColumn = computed(() => {
   return ['Activity_0x4xddm', 'Activity_0qbyt2w'].includes(taskDefinitionKey.value)
 })
 
-// 是否是项目预算
-const isProject = computed(() => form.value.subjectType === 'project')
-// 是否是部门预算
-const isDept = computed(() => form.value.subjectType === 'dept')
-// 业务类型为运维类
-const isYwl = computed(() => isProject.value && ['0', '3'].includes(form.value.businessCategory))
 // 服务类别选项
 const serviceCategoryOptions = computed(() => {
   if (form.value.type === '1') {
@@ -679,7 +798,7 @@ const serviceCategoryOptions = computed(() => {
 // 预算科目查询条件
 const PurchaseCategorySelectParams = computed(() => {
   const psId = form.value.psId
-  const applyDeptId = (form.value as any)?.initiator?.deptId ?? form.value?.createDept ?? initiatorDeptId.value
+  const applyDeptId = form.value?.initiator?.deptId ?? form.value?.createDept ?? initiatorDeptId.value
 
   return {
     psId,
@@ -703,8 +822,13 @@ const taxRealAmountRequired = computed(() => {
 // 业务编辑时禁用
 const upsertDisabled = computed(() => !isNil(form.value.id) && isNil(taskDefinitionKey.value))
 
-// 采购方式是否禁用
+// 采购方式禁用
 const purchaseMethodDisabled = computed(() => {
+  // 生活用品、办公用品 禁用采购方式 =>（设置自行采购）
+  if (['3', '4'].includes(form.value.objectCategory)) {
+    return true
+  }
+
   // 部门预算 => 禁用采购方式
   if (isDept.value) {
     // 生活用品、办公用品 =>（设置自行采购）
@@ -714,24 +838,62 @@ const purchaseMethodDisabled = computed(() => {
 
   // 项目预算
   if (isProject.value) {
-    // 生活用品、办公用品 禁用采购方式 =>（设置自行采购）
-    if (['3', '4'].includes(form.value.objectCategory)) {
-      return true
-    }
-    else {
-      // 根据业务类型查询备注金额
-      const item = oa_project_business_type.value.find(e => e.value === form.value.businessCategory)
-      if (!isNil(item)) {
-        // 含税总金额大于等于备注金额 => 禁用采购方式（设置公司采购）
-        if (Big(form.value.amount).gt(item.remark)) {
-          return true
-        }
+    // 根据业务类型查询备注金额
+    const item = oa_project_business_type.value.find(e => e.value === form.value.businessCategory)
+    if (!isNil(item)) {
+      // 含税总金额大于等于备注金额 => 禁用采购方式（设置公司采购）
+      if (Big(form.value.amount).gt(item.remark)) {
+        return true
       }
     }
   }
 
   return false
 })
+
+// 采购性质切换
+function onNatureChange() {
+  // 合同内采购
+  if (isContractPurchase.value) {
+    form.value.subjectType = 'project'
+    form.value.deptId = user.info.deptId
+    form.value.contractId = undefined
+    form.value.contractNo = undefined
+    form.value.businessCategory = undefined
+    form.value.taxRateList = []
+  }
+
+  // 签证采购
+  if (isVisaPurchase.value) {
+    form.value.subjectType = undefined
+    form.value.taxRateList = [cloneDeep(taxRateItem)]
+    resetPS()
+  }
+}
+
+// 合同切换
+function onContractChange([contract]: ContractVO[]) {
+  const contractCategory = oa_contract_category_in.value.find(e => e.value === contract?.category)
+
+  form.value.contractId = contract?.id
+  form.value.contractNo = contract?.no
+  form.value.businessCategory = contractCategory?.remark1
+  form.value.deptId = contract?.deptId
+}
+
+function resetPS() {
+  resetFields(['psId', 'contractNo', 'businessCategory'])
+  form.value.contractNo = undefined
+
+  setItemList({
+    psiId: undefined,
+    subjectItemDeptId: undefined,
+    budgetAmount: undefined,
+    applyingAmount: undefined,
+    finishAmount: undefined,
+    availableAmount: undefined,
+  })
+}
 
 // 自动设置采购方式
 function autoSetPurchaseMethod() {
@@ -767,21 +929,6 @@ function onObjectCategoryChange(_: string) {
   autoSetPurchaseMethod()
 }
 
-function resetPS() {
-  resetFields(['psId', 'contractId', 'contractNo', 'contractExecute', 'businessCategory'])
-  form.value.contractNo = undefined
-  setItemList({
-    psiId: undefined,
-    subjectItemDeptId: undefined,
-    budgetAmount: undefined,
-    applyingAmount: undefined,
-    finishAmount: undefined,
-    availableAmount: undefined,
-  });
-  (rules.value.contractId as Array<FieldRule>).forEach(e => (e.required = false))
-  // (rules.value.contractExecute as Array<FieldRule>).forEach((e) => (e.required = false));
-}
-
 // 预算类型切换
 function onSubjectTypeChange() {
   resetPS()
@@ -794,14 +941,10 @@ function onDeptChange() {
 
 // 预算选择
 async function onPsIdChange(val: string) {
-  resetFields(['businessCategory', 'contractId', 'contractNo', 'contractExecute'])
+  resetFields(['businessCategory', 'contractNo'])
   setItemList({ psiId: undefined })
 
-  if (isEmpty(val)) {
-    (rules.value.contractId as Array<FieldRule>).forEach(e => (e.required = false))
-    // (rules.value.contractExecute as Array<FieldRule>).forEach((e) => (e.required = false));
-  }
-  else {
+  if (!isEmpty(val)) {
     // 项目预算
     if (isProject.value) {
       (rules.value.contractId as Array<FieldRule>).forEach(e => (e.required = true))
@@ -816,8 +959,13 @@ async function onPsIdChange(val: string) {
   }
 }
 
+// 预算 Item 选择
+function onPsItemsChange([psItem]: ProjectSubjectVO[]) {
+  form.value.deptId = psItem?.deptId
+}
+
 // 采购类型选择
-function onTypeChange(_?: string) {
+function onTypeChange() {
   resetFields(['serviceCategory', 'leaseType', 'isDeposit'])
 }
 
@@ -833,14 +981,51 @@ function onServiceCategoryChange(val?: string) {
 function onLeaseTypeChange(val?: string) {
   // 车辆租赁时，采购说明赋值默认值
   if (val === '1') {
-    form.value.description
-      = '使用责任人：\n租车用途：\n用车详细地点：\n车辆品牌及型号：\n租赁开始日期：\n租赁结束日期：\n用油方式：（现金加油或申请加油卡）'
+    form.value.description = vehiclePurchaseDescription
   }
+}
+
+// 新增签证收入金额/增值税率
+function handleAddTaxRate() {
+  form.value.taxRateList.push(cloneDeep(taxRateItem))
+}
+
+// 删除签证收入金额/增值税率
+function handleRemoveTaxRate(_: any, index: number) {
+  confirm('是否删除这条数据？')
+    .then(() => {
+      form.value.taxRateList.splice(index, 1)
+    })
+    .catch(() => {})
+}
+
+// 签证收入金额修改
+function onTaxRateListAmountChange(item: TaxRateVO) {
+  calcNotTaxAmount(item)
+}
+
+// 签证增值税率修改
+function onTaxRateListTaxRateChange(item: TaxRateVO) {
+  calcNotTaxAmount(item)
+}
+
+// 计算不含税金额
+function calcNotTaxAmount(item: TaxRateVO) {
+  if (!isNumeric(item.amount) || !isNumeric(item.taxRate)) {
+    item.notTaxAmount = undefined
+    return
+  }
+
+  item.notTaxAmount = Number(
+    Big(item.amount)
+      .div(Big(1).add(Big(item.taxRate).div(100)))
+      .toFixed(2),
+  )
 }
 
 // 新增采购清单
 function handleAdd() {
-  if (!isYwl.value && isProject.value) {
+  if (showExtraData.value) {
     form.value.itemList.push({ ...purchaseItem })
   }
   else {
@@ -850,8 +1035,6 @@ function handleAdd() {
 
 // 采购清单删除
 function handleRemove(_: any, index: number) {
-  const { confirm } = proxy.$modal
-
   confirm('是否删除这条数据？')
     .then(() => {
       form.value.itemList.splice(index, 1)
@@ -868,21 +1051,16 @@ function setItemList(obj: Partial<PurchaseItemVO>) {
   })
 }
 
-// 空键检查
-function isAllKeyNil(list: PurchaseItemVO[], key: keyof PurchaseItemVO) {
-  return list.every(e => isNil(e[key]))
+// 签证收入金额/增值税率提示
+function handleTipTaxRateListOfAmount() {
+  confirm(qzIncomeDescription, { messageAlign: 'left', showCancelButton: false })
 }
 
-// 总金额计算
-function sumTotalMoney(list: PurchaseItemVO[], key: keyof PurchaseItemVO) {
-  const value = list.reduce<Big.Big>((prev, curr) => {
-    if (isNumber(curr[key])) {
-      return prev.add(Big(curr[key]))
-    }
-    return prev.add(0)
-  }, Big(0))
+// 采购性质描述点击
+function onNatureDescClick() {
+  const msg = oa_purchase_nature.value.map(e => `${e.label}：\n${e.remark}`).join('\n\n')
 
-  return value.toNumber()
+  confirm(msg, { messageAlign: 'left', showCancelButton: false })
 }
 
 // 采购方式描述点击
