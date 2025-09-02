@@ -4,12 +4,12 @@
     :before-close="cancel"
     :close-on-click-overlay="false"
     position="bottom"
-    class="h-30vh"
     round
     safe-area-inset-bottom
   >
     <van-form v-loading="loading" label-width="120px">
       <van-field
+        ref="MessageFieldRef"
         v-model="form.message"
         rows="2"
         autosize
@@ -19,6 +19,24 @@
         placeholder="请输入审批意见"
         show-word-limit
       />
+      <van-field>
+        <template #input>
+          <div class="w-full flex justify-end flex-wrap">
+            <van-button
+              v-for="item in oa_workflow_comment_def"
+              :key="item.value"
+              type="primary"
+              plain
+              size="mini"
+              class="px-2"
+              round
+              @click="handleShortMessage(item.label)"
+            >
+              {{ item.label }}
+            </van-button>
+          </div>
+        </template>
+      </van-field>
       <van-field label="抄送人" is-link @click="UserSelectRef?.open">
         <template #input>
           <UserSelect
@@ -30,30 +48,40 @@
         </template>
       </van-field>
 
-      <span class="flex justify-end gap-2 px-3 py-4">
-        <van-button type="primary" size="small" :disabled="buttonDisabled" @click="handleCompleteTask">提交</van-button>
-        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openDelegateTask"> 委托 </van-button>
-        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openTransferTask"> 转办 </van-button>
+      <div class="flex justify-end gap-2 p-4">
+        <van-button type="primary" size="small" :disabled="buttonDisabled" @click="handleCompleteTask">
+          提交
+        </van-button>
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openDelegateTask">
+          委托
+        </van-button>
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openTransferTask">
+          转办
+        </van-button>
         <!-- <van-button
-        v-if="task.businessStatus === 'waiting' && task.multiInstance"
-        :disabled="buttonDisabled"
-        type="primary"
-        @click="addMultiInstanceUser"
-      >
-        加签
-      </van-button> -->
-        <!-- <van-button
-        v-if="task.businessStatus === 'waiting' && task.multiInstance"
-        :disabled="buttonDisabled"
-        type="primary"
-        @click="deleteMultiInstanceUser"
-      >
-        减签
-      </van-button> -->
-        <!-- <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
-        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen"> 退回 </van-button>
-        <van-button :disabled="buttonDisabled" size="small" @click="cancel">取消</van-button>
-      </span>
+          v-if="task.businessStatus === 'waiting' && task.multiInstance"
+          :disabled="buttonDisabled"
+          type="primary"
+          @click="addMultiInstanceUser"
+        >
+          加签
+        </van-button>
+        <van-button
+          v-if="task.businessStatus === 'waiting' && task.multiInstance"
+          :disabled="buttonDisabled"
+          type="primary"
+          @click="deleteMultiInstanceUser"
+        >
+          减签
+        </van-button>
+        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
+        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen">
+          退回
+        </van-button>
+        <van-button :disabled="buttonDisabled" size="small" @click="cancel">
+          取消
+        </van-button>
+      </div>
     </van-form>
 
     <!-- 委托 -->
@@ -101,6 +129,7 @@
 
 <script lang="ts" setup>
 import type { ComponentInternalInstance } from 'vue'
+import type { FieldInstance } from 'vant'
 import { ref } from 'vue'
 import { backProcess, completeTask, delegateTask, getTaskById, getTaskNodeList, terminationTask, transferTask } from '@/api/workflow/task'
 import UserSelect from '@/components/UserSelect/index.vue'
@@ -115,11 +144,15 @@ const props = defineProps({
   },
 })
 const emits = defineEmits(['submitCallback', 'cancelCallback'])
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const UserSelectRef = ref<InstanceType<typeof UserSelect> | null>()
-const TransferTaskRef = ref<InstanceType<typeof UserSelect> | null>()
-const DelegateTaskRef = ref<InstanceType<typeof UserSelect> | null>()
+const MessageFieldRef = ref<FieldInstance>()
+const UserSelectRef = ref<InstanceType<typeof UserSelect>>()
+const TransferTaskRef = ref<InstanceType<typeof UserSelect>>()
+const DelegateTaskRef = ref<InstanceType<typeof UserSelect>>()
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const { oa_workflow_comment_def } = toRefs(proxy?.useDict('oa_workflow_comment_def'))
+
 // const userSelectCopyRef = ref<InstanceType<typeof UserSelect>>()
 
 // 加签组件
@@ -185,6 +218,7 @@ const task = ref<TaskVO>({
 
 // 加签 减签标题
 const title = ref('')
+
 const popup = reactive<DialogOption>({
   visible: false,
   title: '提示',
@@ -197,6 +231,7 @@ const form = ref<Record<string, any>>({
   messageType: ['1'],
   wfCopyList: [],
 })
+
 const backForm = ref<Record<string, any>>({
   taskId: undefined,
   targetActivityId: undefined,
@@ -297,6 +332,7 @@ async function handleBackProcessOpen() {
   backForm.value.targetActivityId = nodeId
   rejectNodeName.value = nodeName
 }
+
 // 驳回
 async function handleBackProcess() {
   backForm.value.taskId = taskId.value
@@ -407,6 +443,11 @@ function onRejectNodeCancel() {
   // rejectNodeName.value = ''
   // backForm.value.targetActivityId = undefined
   showNodePicker.value = false
+}
+
+// 常用语点击
+function handleShortMessage(message: string) {
+  form.value.message = message
 }
 
 defineExpose({

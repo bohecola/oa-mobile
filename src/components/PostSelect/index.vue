@@ -84,7 +84,15 @@
           :columns="options"
           @confirm="onPickerConfirm"
           @cancel="onCancel"
-        />
+        >
+          <template #empty>
+            <van-empty
+              image-size="80"
+              :image="customEmptyImage"
+              :description="emptyText"
+            />
+          </template>
+        </van-picker>
       </template>
     </van-popup>
   </div>
@@ -97,18 +105,25 @@ import { isArray, isEmpty, isNil, isNumber } from 'lodash-es'
 import { useParentForm, usePopup } from '@/hooks'
 import { listSysDeptPost } from '@/api/system/deptPost'
 import type { SysDeptPostVO } from '@/api/system/deptPost/types'
+import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 type PostSelectValue = string | number | (string | number)[]
 
 type _SysDeptPostVO = SysDeptPostVO & { text: string, value: string, label: string }
 
-const props = defineProps<{
-  modelValue?: string | number
-  multiple?: boolean
-  readonly?: boolean
-  deptId?: string | number
-  clearable?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string | number
+    multiple?: boolean
+    readonly?: boolean
+    deptId?: string | number
+    clearable?: boolean
+    emptyText?: string
+  }>(),
+  {
+    emptyText: '暂无数据',
+  },
+)
 
 const emit = defineEmits(['update:modelValue', 'change', 'update:postName'])
 
