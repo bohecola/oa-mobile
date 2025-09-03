@@ -10,43 +10,35 @@
     @update:selected-list="onContractSelectedListChange"
   />
 
-  <DictSelect
-    v-model="form.uu_businessType"
-    v-show-field="['uu_businessType', includeFields]"
-    label="项目类别"
-    name="uu_businessType"
-    :rules="computedRules.uu_businessType"
-    dict-type="oa_project_business_type"
-    readonly
-  />
-
   <DeptSelect
     v-model="form.uu_deptId"
     v-show-field="['uu_deptId', includeFields]"
     name="uu_deptId"
     label="部门"
     :rules="computedRules.uu_deptId"
-    readonly
+    :readonly="!isNil(form.uu_contractId)"
   />
 
-  <van-field
-    v-model.trim="form.uu_contractNo"
-    v-show-field="['uu_contractNo', includeFields]"
-    label="合同编号"
-    name="uu_contractNo"
-    :rules="computedRules.uu_contractNo"
-    readonly
-  />
+  <template v-if="!isNil(form.uu_contractId)">
+    <van-field
+      v-model.trim="form.uu_contractNo"
+      v-show-field="['uu_contractNo', includeFields]"
+      label="合同编号"
+      name="uu_contractNo"
+      :rules="computedRules.uu_contractNo"
+      readonly
+    />
 
-  <SCSelect
-    v-model="form.uu_partyA"
-    v-show-field="['uu_partyA', includeFields]"
-    label="甲方名称"
-    name="uu_partyA"
-    :rules="computedRules.uu_partyA"
-    multiple
-    readonly
-  />
+    <SCSelect
+      v-model="form.uu_partyA"
+      v-show-field="['uu_partyA', includeFields]"
+      label="甲方名称"
+      name="uu_partyA"
+      :rules="computedRules.uu_partyA"
+      multiple
+      readonly
+    />
+  </template>
 
   <van-field
     v-show-field="['uu_assessmentReport', includeFields]"
@@ -63,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
@@ -77,7 +70,6 @@ const props = withDefaults(
   {
     includeFields: () => [
       'uu_contractId',
-      'uu_businessType',
       'uu_deptId',
       'uu_contractNo',
       'uu_partyA',
@@ -106,7 +98,6 @@ function onContractSelectedListChange(selectedList: ContractVO[]) {
   form.value.uu_deptId = contract?.deptId
   form.value.uu_partyA = contract?.partyA
   form.value.uu_contractNo = contract?.no
-  form.value.uu_businessType = contract?.businessType
   form.value.needDepts = contract?.deptId as string
 }
 </script>

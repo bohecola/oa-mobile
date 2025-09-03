@@ -7,14 +7,6 @@
     :params="{ type: 'in' }"
   />
 
-  <DictSelect
-    v-model="form.uu_businessType"
-    v-show-field="['uu_businessType', includeFields]"
-    label="项目类别"
-    name="uu_businessType"
-    dict-type="oa_project_business_type"
-  />
-
   <DeptSelect
     v-model="form.uu_deptId"
     v-show-field="['uu_deptId', includeFields]"
@@ -22,23 +14,25 @@
     label="部门"
   />
 
-  <van-field
-    v-show-field="['uu_contractNo', includeFields]"
-    label="合同编号"
-    name="uu_contractNo"
-  >
-    <template #input>
-      {{ form.uu_contractNo }}
-    </template>
-  </van-field>
+  <template v-if="!isNil(form.uu_contractId)">
+    <van-field
+      v-show-field="['uu_contractNo', includeFields]"
+      label="合同编号"
+      name="uu_contractNo"
+    >
+      <template #input>
+        {{ form.uu_contractNo }}
+      </template>
+    </van-field>
 
-  <SCSelect
-    v-model="form.uu_partyA"
-    v-show-field="['uu_partyA', includeFields]"
-    label="甲方名称"
-    name="uu_partyA"
-    multiple
-  />
+    <SCSelect
+      v-model="form.uu_partyA"
+      v-show-field="['uu_partyA', includeFields]"
+      label="甲方名称"
+      name="uu_partyA"
+      multiple
+    />
+  </template>
 
   <van-field
     v-show-field="['uu_assessmentReport', includeFields]"
@@ -54,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -67,7 +62,6 @@ withDefaults(
   {
     includeFields: () => [
       'uu_contractId',
-      'uu_businessType',
       'uu_deptId',
       'uu_contractNo',
       'uu_partyA',

@@ -39,7 +39,6 @@
       v-model:show="visible"
       class="h-full"
       position="bottom"
-      round
       destroy-on-close
       safe-area-inset-bottom
     >

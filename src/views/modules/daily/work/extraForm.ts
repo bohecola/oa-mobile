@@ -364,7 +364,6 @@ const extraInitFormData: DailyWorkForm = {
   uu_contractId: undefined,
   uu_deptId: undefined,
   uu_contractNo: undefined,
-  uu_businessType: undefined,
   uu_partyA: undefined,
   uu_assessmentReport: undefined,
 
@@ -722,7 +721,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   tt_applicationMaterials: [{ required: true, message: `申请资料${baseMsg}`, trigger: 'onBlur' }],
 
   // 项目日常考核
-  uu_contractId: [{ required: true, message: `合同名称${baseMsg}`, trigger: 'onBlur' }],
+  uu_contractId: [{ required: false, message: `合同名称${baseMsg}`, trigger: 'onBlur' }],
   uu_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   uu_assessmentReport: [{ required: true, message: `考核通报${baseMsg}`, trigger: 'onBlur' }],
 }

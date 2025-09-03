@@ -530,7 +530,6 @@ export interface KHXMRCKH {
   uu_deptId?: string | number
   uu_contractId?: string
   uu_contractNo?: string
-  uu_businessType?: string
   uu_partyA?: string
   uu_assessmentReport?: string
 }
