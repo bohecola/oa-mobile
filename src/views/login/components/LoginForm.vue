@@ -208,9 +208,9 @@ function getMe() {
 }
 
 // 第三方登录
-function doSocialLogin(type: string) {
+function doSocialLogin(source: string) {
   service.social
-    .authBinding(type, form.value.tenantId)
+    .authBinding(source, form.value.tenantId)
     .then(({ data, code, msg }) => {
       if (code === ResultCodeEnum.SUCCESS) {
         // 获取授权地址跳转

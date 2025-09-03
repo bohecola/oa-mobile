@@ -27,20 +27,26 @@ export function createRouterGuards(router: Router) {
       return to.fullPath // 重定向到原路径
     }
 
-    // 白名单中
-    if (whitePathList.includes(to.path)) {
-      return true
-    }
-
     // 如果用户已登录
     if (user.token) {
       // 钉钉鉴权
       await setupDingTalk()
 
+      // 如果当前路由是登录页，则重定向到首页
+      if (to.path === '/login') {
+        return { path: '/', replace: true }
+      }
+
       return true
     }
 
-    return '/login'
+    // 白名单中
+    if (whitePathList.includes(to.path)) {
+      return true
+    }
+
+    // 如果用户未登录，则重定向到登录页
+    return { path: '/login', replace: true }
   })
 
   // 全局后置路由钩子

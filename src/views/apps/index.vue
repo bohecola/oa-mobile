@@ -11,8 +11,7 @@
             p-2 h-32
             flex justify-center items-center gap-2
             bg-[--bg-card] rounded
-            border
-            shadow-sm
+            border shadow-sm select-none
             active:bg-[--van-primary-color]
             active:text-white
           "

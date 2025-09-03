@@ -410,7 +410,7 @@ export function useExam(options: ExamOptions) {
   async function exitExam() {
     stopCountdown()
 
-    proxy.$router.push('/exam')
+    proxy.$router.replace('/exam')
   }
 
   return {

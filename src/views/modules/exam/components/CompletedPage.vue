@@ -93,6 +93,6 @@ const layerColor = computed(() => {
 })
 
 function goBack() {
-  proxy.$router.push('/exam')
+  proxy.$router.replace('/exam')
 }
 </script>

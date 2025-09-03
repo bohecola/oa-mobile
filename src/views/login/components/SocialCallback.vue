@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import { showFailToast, showSuccessToast } from 'vant'
-import type { LoginData } from '@/api/open/types'
+import type { AxiosResponse } from 'axios'
+import type { LoginData, LoginResult } from '@/api/open/types'
 import { useGlobSettings } from '@/hooks'
 import { service } from '@/service'
 import { storage } from '@/utils'
@@ -23,23 +24,27 @@ const domain = stateJson.domain as string
 
 const { publicPath, appClientId } = useGlobSettings()
 
-async function processResponse(res: any) {
-  if (res.code !== 200) {
-    throw new Error(res.msg)
+async function processResponse({ data, code, msg }: AxiosResponse<LoginResult>) {
+  if (code !== 200) {
+    throw new Error(msg)
   }
-  if (res.data !== null) {
-    storage.set('token', res.data.access_token)
+
+  if (data !== null) {
+    storage.set('token', data.access_token)
   }
-  showSuccessToast(res.msg)
+
+  showSuccessToast(msg)
+
   setTimeout(() => {
-    location.href = `${publicPath}`
+    location.replace(`${publicPath}`)
   }, 2000)
 }
 
 function handleError(error: any) {
   showFailToast(error.message)
+
   setTimeout(() => {
-    location.href = `${publicPath}`
+    location.replace(`${publicPath}`)
   }, 2000)
 }
 

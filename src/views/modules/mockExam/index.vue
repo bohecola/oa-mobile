@@ -41,10 +41,11 @@
           @load="onLoadExam"
         >
           <van-cell
-            v-for="item in examList"
+            v-for="(item, index) in examList"
             :key="item.id"
             :title="item.id"
-            :label="`开始时间: ${item.startTime}`"
+            :label="`开始时间：${item.startTime}`"
+            title-class="!flex-[2]"
           >
             <template #title>
               <div class="flex gap-2">
@@ -67,7 +68,7 @@
                 <van-button v-if="item.status !== '2'" type="primary" size="small" @click="onContinueExam(item)">
                   继续
                 </van-button>
-                <van-button type="danger" size="small" @click="onDeleteExam(item)">
+                <van-button type="danger" size="small" @click="onDeleteExam(item, index)">
                   删除
                 </van-button>
               </div>
@@ -95,7 +96,7 @@ import type { ExamVO } from '@/api/exam/exam/types'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 // 加载
-const { confirm, msgSuccess } = proxy.$modal
+const { confirm, msgSuccess, loading } = proxy.$modal
 
 // 弹窗
 const { visible, openPopup } = usePopup()
@@ -159,16 +160,18 @@ async function onContinueExam(item: ExamVO) {
 }
 
 // 删除考试
-async function onDeleteExam(item: ExamVO) {
+async function onDeleteExam(item: ExamVO, index: number) {
   confirm('是否删除这次考试记录', {
     confirmButtonText: '删除',
     cancelButtonText: '取消',
   })
     .then(async () => {
-      await delExam(item.id)
-      msgSuccess('删除成功')
-      examList.value = []
-      examFinished.value = false
+      loading('删除中')
+
+      const { msg } = await delExam(item.id)
+      msgSuccess(msg)
+
+      examList.value.splice(index, 1)
     })
     .catch(() => {})
 }
