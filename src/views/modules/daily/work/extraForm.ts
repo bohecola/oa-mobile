@@ -10,7 +10,9 @@ const extraInitFormData: DailyWorkForm = {
   a_partyA: undefined,
   a_assessmentAmount: undefined,
   a_rewardAmount: undefined,
+  a_isAssessment: undefined,
   a_assessmentReport: '',
+  a_businessKey: undefined,
 
   // 劳动合同续签审批
   b_userId: undefined,
@@ -366,7 +368,6 @@ const extraInitFormData: DailyWorkForm = {
   uu_contractNo: undefined,
   uu_partyA: undefined,
   uu_assessmentReport: undefined,
-
 }
 
 const baseMsg = '不能为空'
@@ -377,6 +378,8 @@ const extraInitRules: Record<string, FieldRule[]> = {
   a_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   a_assessmentAmount: [{ required: true, message: `考核金额${baseMsg}`, trigger: 'onBlur' }],
   a_rewardAmount: [{ required: true, message: `奖励金${baseMsg}`, trigger: 'onBlur' }],
+  a_isAssessment: [{ required: false, message: `是否考核${baseMsg}`, trigger: 'onBlur' }],
+  a_businessKey: [{ required: false, message: `考核类事务/项目日常考核流程ID${baseMsg}`, trigger: 'onBlur' }],
 
   // 劳动合同续签审批
   b_userId: [{ required: true, message: `员工${baseMsg}`, trigger: 'onBlur' }],

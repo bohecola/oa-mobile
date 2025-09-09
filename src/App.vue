@@ -7,9 +7,15 @@ const isIOS = computed(() => /iPhone|iPad|iPod/i.test(navigator.userAgent))
 <template>
   <ThemeProvider>
     <router-view v-slot="{ Component }">
-      <component :is="Component" v-if="isIOS" class="h-screen overflow-y-auto" />
+      <component
+        :is="Component"
+        v-if="isIOS" class="h-screen overflow-y-auto"
+      />
       <transition-slide v-else :offset="[16, 0]">
-        <component :is="Component" class="h-screen overflow-y-auto" />
+        <component
+          :is="Component"
+          class="h-screen overflow-y-auto"
+        />
       </transition-slide>
     </router-view>
   </ThemeProvider>

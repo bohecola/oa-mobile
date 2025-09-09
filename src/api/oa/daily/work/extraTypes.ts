@@ -62,6 +62,8 @@ export interface SWXMKHJLQRD {
   a_assessmentAmount?: number
   a_rewardAmount?: number
   a_assessmentReport?: string
+  a_isAssessment?: string
+  a_businessKey?: string
 }
 
 // 人事

@@ -20,6 +20,9 @@ if (!data.theme) {
 }
 
 export const useAppStore = defineStore('app', () => {
+  // 是否在 iframe 中
+  const isInIframe = computed(() => window.self !== window.top)
+
   // 主题列表
   const themeList = ref(themes)
 
@@ -52,6 +55,7 @@ export const useAppStore = defineStore('app', () => {
   })
 
   return {
+    isInIframe,
     theme,
     themeList,
     colorMode,

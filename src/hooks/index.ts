@@ -27,7 +27,13 @@ export function useParentForm() {
   return parent
 }
 
-export function usePopup() {
+interface UsePopupOptions {
+  title?: string
+}
+
+export function usePopup(options: UsePopupOptions = {}) {
+  const title = ref(options.title)
+
   const visible = ref(false)
 
   function openPopup() {
@@ -43,6 +49,7 @@ export function usePopup() {
   }
 
   return {
+    title,
     visible,
     openPopup,
     closePopup,

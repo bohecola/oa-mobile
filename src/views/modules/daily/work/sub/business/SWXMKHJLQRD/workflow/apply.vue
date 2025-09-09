@@ -20,7 +20,7 @@
           'isSeal',
         ]"
       />
-      <upsert :include-fields="['a_assessmentReport']" />
+      <upsert :include-fields="['a_isAssessment', 'a_businessKey']" />
       <detail :include-fields="['reason', 'ossIdList']" />
     </div>
 

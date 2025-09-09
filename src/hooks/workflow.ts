@@ -1,10 +1,26 @@
 import { isEmpty, isNil } from 'lodash-es'
 import type { AxiosPromise } from 'axios'
 import type { LocationQuery } from 'vue-router'
+import type { ActHiProcinstVO } from '@/api/workflow/processInstance/types'
 import type { RouterJumpVo, StartProcessBo } from '@/api/workflow/workflowCommon/types'
 import { getTaskVariables, getVariablesByProcessInstanceId } from '@/api/workflow/task'
 import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
 import workflowCommon from '@/api/workflow/workflowCommon'
+
+interface GetWorkflowJumpVoOptions {
+  data: ActHiProcinstVO
+}
+
+interface WorkflowJumpOptions {
+  businessKey: string
+  proxy: any
+  openNewWindowTab?: boolean
+}
+
+interface WorkflowURLOptions {
+  businessKey: string
+  timestamp?: boolean
+}
 
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
@@ -150,23 +166,11 @@ export function useWorkflowHelper() {
   }
 }
 
-interface WorkflowJumpOptions {
-  businessKey: string
-  proxy: any
-}
+// 创建流程跳转对象
+function createWorkflowJumpVo(options: GetWorkflowJumpVoOptions): RouterJumpVo {
+  const { data } = options
 
-export async function useWorkflowJump(options: WorkflowJumpOptions) {
-  const { proxy, businessKey } = options
-
-  const { loading, closeLoading } = proxy.$modal
-
-  loading()
-
-  const { data } = await getActHiProcinstByBusinessKey(businessKey).finally(() => {
-    closeLoading()
-  })
-
-  const routerJumpVo = reactive<RouterJumpVo>({
+  return {
     wfDefinitionConfigVo: data.wfDefinitionConfigVo,
     wfNodeConfigVo: data.wfNodeConfigVo,
     businessKey: data.businessKey,
@@ -174,7 +178,78 @@ export async function useWorkflowJump(options: WorkflowJumpOptions) {
     taskId: '',
     processInstanceId: data.id,
     type: 'view',
+  }
+}
+
+export async function useWorkflowJump(options: WorkflowJumpOptions) {
+  const { proxy, businessKey, openNewWindowTab } = options
+
+  const { loading, closeLoading, msgError } = proxy.$modal
+
+  if (openNewWindowTab) {
+    return msgError('请在电脑端查看')
+  }
+
+  loading()
+
+  const { data } = await getActHiProcinstByBusinessKey(businessKey).finally(() => {
+    closeLoading()
   })
 
-  workflowCommon.routerJump(routerJumpVo, proxy, false)
+  const routerJumpVo = createWorkflowJumpVo({ data })
+
+  workflowCommon.routerJump(routerJumpVo, proxy, false, openNewWindowTab)
+}
+
+// 获取流程 URL
+export function useWorkflowURL() {
+  const url = ref(undefined)
+  const loading = ref(false)
+  const isError = ref(false)
+  const msg = ref(undefined)
+  const queryParams = ref(undefined)
+
+  async function fetchWorkflowURL(options: WorkflowURLOptions) {
+    try {
+      const { businessKey, timestamp = false } = options
+
+      loading.value = true
+
+      const { data } = await getActHiProcinstByBusinessKey(businessKey)
+        .finally(() => loading.value = false)
+
+      const routerJumpVo = createWorkflowJumpVo({ data })
+
+      const path = `${routerJumpVo.wfNodeConfigVo.wfFormManageVo.router}`
+
+      const query = {
+        id: routerJumpVo.businessKey,
+        wfStatus: routerJumpVo.businessStatus,
+        type: routerJumpVo.type,
+        taskId: routerJumpVo.taskId,
+        processInstanceId: routerJumpVo.processInstanceId,
+      }
+
+      url.value = `${location.origin}${path}?${new URLSearchParams(query).toString()}${timestamp ? `&t=${Date.now()}` : ''}`
+      msg.value = '操作成功'
+      isError.value = false
+      queryParams.value = query
+    }
+    catch (error) {
+      console.error(error)
+      url.value = undefined
+      isError.value = true
+      msg.value = '请输入有效的流程ID'
+      queryParams.value = undefined
+    }
+  }
+
+  return {
+    url,
+    loading,
+    isError,
+    msg,
+    queryParams,
+    fetchWorkflowURL,
+  }
 }

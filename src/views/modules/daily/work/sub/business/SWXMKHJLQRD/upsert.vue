@@ -73,7 +73,7 @@
   >
     <template #extra>
       <div v-if="form.a_assessmentAmount">
-        <span class=" text-red-400">{{ toCnMoney(form.a_assessmentAmount) }}</span>
+        <span class="text-red-400">{{ toCnMoney(form.a_assessmentAmount) }}</span>
       </div>
     </template>
   </van-field-number>
@@ -88,7 +88,7 @@
   >
     <template #extra>
       <div v-if="form.a_rewardAmount">
-        <span class=" text-red-400">{{ toCnMoney(form.a_rewardAmount) }}</span>
+        <span class="text-red-400">{{ toCnMoney(form.a_rewardAmount) }}</span>
       </div>
     </template>
   </van-field-number>
@@ -104,16 +104,41 @@
     </template>
   </van-field>
 
-  <van-field
-    v-if="needBMJL.includes(user.info.userId as string)"
-    v-show-field="['a_assessmentReport', includeFields]"
-    name="a_assessmentReport"
-    label="考核通报"
-  >
-    <template #input>
-      <UploadFile v-model="form.a_assessmentReport" />
-    </template>
-  </van-field>
+  <template v-if="needBMJL?.includes(user.info.userId as string)">
+    <DictSelect
+      v-model="form.a_isAssessment"
+      v-show-field="['a_isAssessment', includeFields]"
+      label="是否有公司内部考核"
+      name="a_isAssessment"
+      dict-type="sys_yes_no"
+      :rules="computedRules.a_isAssessment"
+      :readonly="false"
+      @change="onIsAssessmentChange"
+    />
+
+    <van-field
+      v-if="form.a_isAssessment === 'Y'"
+      v-model.trim="form.a_businessKey"
+      v-show-field="['a_businessKey', includeFields]"
+      label="考核类事务/项目日常考核流程ID"
+      name="a_businessKey"
+      placeholder="请输入"
+      :rules="computedRules.a_businessKey"
+      :readonly="false"
+    >
+      <template #button>
+        <van-button
+          type="primary"
+          :disabled="!form.a_businessKey"
+          :loading="loading"
+          size="small"
+          @click="handleViewBusinessKey(form.a_businessKey)"
+        >
+          查看
+        </van-button>
+      </template>
+    </van-field>
+  </template>
 
   <BaseUpsert :include-fields="includeFields" />
 </template>
@@ -124,8 +149,9 @@ import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
-import { useWorkflowHelper } from '@/hooks'
+import { useWorkflowHelper, useWorkflowURL } from '@/hooks'
 import { useStore } from '@/store'
+import { dd } from '@/plugins/dingTalk'
 import ContractSelect from '@/views/modules/business/components/ContractSelect.vue'
 import SCSelect from '@/views/modules/business/components/SCSelect.vue'
 
@@ -143,7 +169,8 @@ const props = withDefaults(
       'customizeApprover',
       'a_assessmentAmount',
       'a_rewardAmount',
-      'a_assessmentReport',
+      'a_isAssessment',
+      'a_businessKey',
       'isSeal',
       'reason',
       'ossIdList',
@@ -151,20 +178,29 @@ const props = withDefaults(
   },
 )
 
-// 依赖收集
-const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
-trackFields(props.includeFields)
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
+const { user } = useStore()
 
-const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+const { taskDefinitionKey, needBMJL } = useWorkflowHelper()
+
+const { url, loading, isError, msg, fetchWorkflowURL } = useWorkflowURL()
 
 // 表单
 const form = inject<Ref<DailyWorkForm>>('form')
 
-const { user } = useStore()
+// 校验规则
+const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 
-const { needBMJL } = useWorkflowHelper()
+// 重置字段
+const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFields')
+
+// 依赖收集
+const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
+trackFields(props.includeFields)
+
+// 更新规则
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()
@@ -181,4 +217,32 @@ function onContractSelectedListChange(selectedList: ContractVO[]) {
   // 清空审核人
   resetFields(['customizeApprover'])
 }
+
+// 是否公司内部考核修改
+function onIsAssessmentChange(value: string) {
+  updateRuleRequired('a_businessKey', value === 'Y')
+
+  if (value === 'N') {
+    form.value.a_businessKey = undefined
+  }
+}
+
+// 查看考核类事务/项目日常考核流程ID
+async function handleViewBusinessKey(businessKey: string) {
+  await fetchWorkflowURL({ businessKey, timestamp: true })
+
+  if (isError.value) {
+    return proxy.$modal.msgError(msg.value)
+  }
+
+  dd.openLink({ url: url.value })
+}
+
+onMounted(() => {
+  // 需求部门经理审批时
+  if (taskDefinitionKey.value === 'Activity_1p4ss2n' && needBMJL.value?.includes(user.info.userId as string)) {
+    // 是否公司内部考核必填
+    updateRuleRequired('a_isAssessment', true)
+  }
+})
 </script>

@@ -203,7 +203,17 @@ const ids = ref<string | string[]>(deserialize(props.modelValue))
 const checked = ref<string[]>([])
 
 // 是否只读
-const isReadonly = computed(() => props.readonly || parentForm?.props.readonly)
+const isReadonly = computed(() => {
+  if (!isNil(props.readonly)) {
+    return props.readonly
+  }
+
+  if (parentForm?.props.readonly) {
+    return true
+  }
+
+  return false
+})
 
 // 单选 Picker 回显
 const pickerValue = computed(() => isArray(ids.value) ? ids.value : [ids.value])

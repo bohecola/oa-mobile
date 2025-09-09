@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar />
+    <NavBar v-if="!app.isInIframe" />
 
     <van-floating-bubble v-if="approvalVisible" axis="xy">
       <van-button type="primary" :disabled="actionBtnDisabled" round @click="handleApproval">
@@ -13,7 +13,11 @@
     <van-tabs v-model:active="active" lazy-render @change="onTabChange">
       <div
         id="TabsContainer"
-        :class="`overflow-y-auto ${saveOrSubmitVisible ? 'bottom-panel' : ''}`"
+        class="tabs-container overflow-y-auto"
+        :class="{
+          'tabs-container__iframe': app.isInIframe,
+          'bottom-panel': saveOrSubmitVisible,
+        }"
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
           <div class="relative">
@@ -88,6 +92,7 @@ import ApprovalSteps from './steps.vue'
 import StatusIcon from './status-icon.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
 import InitiatorInfo from '@/components/InitiatorInfo/index.vue'
+import { useStore } from '@/store'
 
 interface EntityVariables {
   initiator: Initiator
@@ -115,6 +120,8 @@ const props = withDefaults(
 const emit = defineEmits<Emits>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const { app } = useStore()
 
 // 提交组件
 const submitVerifyRef = ref<InstanceType<typeof SubmitVerify>>()
@@ -260,11 +267,17 @@ function onTabChange(val: any) {
   $topHeight: calc(var(--van-nav-bar-height) + var(--van-tabs-line-height) + env(safe-area-inset-top));
   $bottomHeight: calc(var(--van-button-default-height) + env(safe-area-inset-bottom) + theme('spacing.2') * 2);
 
-  #TabsContainer {
+  $iframeTopHeight: calc(var(--van-tabs-line-height));
+
+  .tabs-container {
     height: calc(100vh - #{$topHeight});
 
     &.bottom-panel {
       height: calc(100vh - #{$topHeight} - #{$bottomHeight});
     }
+  }
+
+  .tabs-container__iframe {
+    height: calc(100vh - #{$iframeTopHeight});
   }
 </style>

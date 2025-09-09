@@ -20,6 +20,7 @@ declare module 'vue' {
     DictSelect: typeof import('./src/components/DictSelect/index.vue')['default']
     DictTag: typeof import('./src/components/DictTag/index.vue')['default']
     EditField: typeof import('./src/components/EditField/index.vue')['default']
+    IFrameDialog: typeof import('./src/components/IFrameDialog/index.vue')['default']
     InitiatorInfo: typeof import('./src/components/InitiatorInfo/index.vue')['default']
     LineShadowText: typeof import('./src/components/LineShadowText/index.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']

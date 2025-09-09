@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-field
-      :model-value="selectedLabels.join(',')"
+      :model-value="selected.map(e => e?.label).join(',')"
       :is-link="!isReadonly"
       placeholder="请选择"
       type="textarea"
@@ -22,7 +22,15 @@
       <!-- 回显项 -->
       <template v-if="!isNil(modelValue)" #input>
         <van-skeleton :loading="isLoading" :row="2" class="!px-0 w-full" round>
-          <div>{{ selectedLabels.join(',') }}</div>
+          <div v-for="item in selected" :key="item.id">
+            <span>{{ item?.label }}</span>
+            <van-icon
+              v-if="!isEmpty(item.remark)"
+              name="info-o"
+              class="text-[--van-primary-color]"
+              @click.stop="handleViewRemark(item.remark)"
+            />
+          </div>
         </van-skeleton>
       </template>
     </van-field>
@@ -58,10 +66,19 @@
         @close="onClose"
         @finish="onFinish"
       >
-        <template #option="{ option: { sciName, treeType, availableAmount } }">
+        <template #option="{ option: { sciName, treeType, availableAmount, remark } }">
           <div>
-            <span> {{ sciName }} </span>
-            <span v-if="treeType === 'item'">（{{ formatCurrency(availableAmount) }}）</span>
+            <template v-if="treeType === 'item'">
+              <span>{{ sciName }}</span>
+              <span>（{{ formatCurrency(availableAmount) }}）</span>
+              <van-icon
+                v-if="!isEmpty(remark)"
+                name="info-o"
+                class="text-[--van-primary-color]"
+                @click.stop="handleViewRemark(remark)"
+              />
+            </template>
+            <span v-else>{{ sciName }}</span>
           </div>
         </template>
       </van-cascader>
@@ -130,7 +147,7 @@ const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
 const options = computed(() => proxy?.handleTree<ProjectSubjectItemTreeVO>(rawData.value, 'uuid'))
 
 // 选中项的 labels 集合
-const selectedLabels = computed(() => {
+const selected = computed(() => {
   const { modelValue } = props
 
   if (!isNil(modelValue) && !isEmpty(rawData.value)) {
@@ -144,7 +161,13 @@ const selectedLabels = computed(() => {
       return prev
     }, [])
 
-    return pathNodes.map(e => e.map(item => item.sciName).join(' / '))
+    return pathNodes.map((nodes) => {
+      const last = nodes[nodes.length - 1]
+      const label = nodes.map(e => e.sciName).join(' / ')
+      Reflect.set(last, 'label', label)
+
+      return last
+    })
   }
 
   return []
@@ -256,6 +279,15 @@ function updateVars(value: string) {
   emit('update:finishAmount', finishAmount.toNumber())
   // 剩余金额
   emit('update:availableAmount', availableAmount.toNumber())
+}
+
+// 查看备注
+function handleViewRemark(remark: string) {
+  proxy?.$modal.confirm(remark, {
+    title: '备注',
+    messageAlign: 'left',
+    showCancelButton: false,
+  })
 }
 
 // 回显

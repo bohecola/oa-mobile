@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang='ts'>
+import dd from 'dingtalk-jsapi'
 import { cn } from '@/utils'
 
 const props = withDefaults(
@@ -28,7 +29,6 @@ const props = withDefaults(
     title?: string
     titleClass?: string
     isLeftClickBack?: boolean
-
   }>(),
   {
     title: () => {
@@ -41,21 +41,32 @@ const props = withDefaults(
 
 const emit = defineEmits(['click-left'])
 
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 const router = useRouter()
 
 const attrs = useAttrs()
 const slots = useSlots()
 
+function handleGoBackPage() {
+  window.history.state.back ? router.back() : router.push('/')
+}
+
 // 左侧按钮点击
 function handleLeftClick() {
   if (props.isLeftClickBack) {
-    if (window.history.state.back) {
-      return router.back()
+    if (dd.env.platform === 'notInDingTalk') {
+      return handleGoBackPage()
     }
-    else {
-      return router.push('/')
-    }
+
+    dd.goBackPage({
+      onFail: (error: any) => {
+        proxy?.$modal.msgError(error?.errorMessage)
+        handleGoBackPage()
+      },
+    })
   }
+
   emit('click-left')
 }
 </script>
