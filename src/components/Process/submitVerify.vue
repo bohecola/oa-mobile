@@ -255,6 +255,15 @@ function isMessageEmpty() {
   return false
 }
 
+// 获取抄送人列表
+function getWfCopyList() {
+  return selectCopyUserList.value.map((e) => {
+    return {
+      userId: e.userId,
+      userName: e.nickName,
+    }
+  })
+}
 // 打开弹窗
 function openDialog(id?: string) {
   selectCopyUserList.value = []
@@ -288,10 +297,7 @@ async function handleCompleteTask() {
   }
   form.value.taskId = taskId.value
   form.value.entityVariable = props.entityVariables
-  form.value.wfCopyList = selectCopyUserList.value.map(e => ({
-    userId: e.userId,
-    userName: e.nickName,
-  }))
+  form.value.wfCopyList = getWfCopyList()
 
   await proxy.$modal.confirm('是否确认提交？')
   loading.value = true
@@ -313,17 +319,18 @@ async function handleBackProcessOpen() {
   if (isMessageEmpty()) {
     return false
   }
-  // TODO
-  Object.assign(backForm.value, form.value)
-  backForm.value.variables = undefined
-  backForm.value.wfCopyList = undefined
-  // backForm.value = {}
-  // backForm.value.messageType = ['1']
+
+  backForm.value = {}
+  backForm.value.messageType = ['1']
+  backForm.value.message = form.value.message
+  backForm.value.fileId = form.value.fileId
+  backForm.value.wfCopyList = getWfCopyList()
+
   rejectNodeName.value = ''
   backVisible.value = true
   backLoading.value = true
   backButtonDisabled.value = true
-  const data: any = await getTaskNodeList(task.value.processInstanceId as string)
+  const data = await getTaskNodeList(task.value.processInstanceId as string)
 
   taskNodeList.value = data.data
   backLoading.value = false
@@ -367,6 +374,7 @@ async function handleBackProcess() {
 function openDelegateTask() {
   DelegateTaskRef.value?.open()
 }
+
 // 委托
 async function handleDelegateTask(user: UserVO) {
   if (user) {
@@ -375,6 +383,7 @@ async function handleDelegateTask(user: UserVO) {
       userId: user.userId,
       nickName: user.nickName,
       comment: form.value.message,
+      wfCopyList: getWfCopyList(),
     }
     await proxy.$modal.confirm('是否确认提交？')
     loading.value = true
@@ -394,8 +403,10 @@ function openTransferTask() {
   if (isMessageEmpty()) {
     return false
   }
+
   TransferTaskRef.value?.open()
 }
+
 // 转办
 async function handleTransferTask(user: UserVO) {
   if (user) {
@@ -403,6 +414,7 @@ async function handleTransferTask(user: UserVO) {
       taskId: taskId.value,
       userId: user.userId,
       comment: form.value.message,
+      wfCopyList: getWfCopyList(),
     }
     await proxy.$modal.confirm('是否确认提交？')
     loading.value = true
@@ -439,9 +451,8 @@ function onRejectNodeConfirm({ selectedOptions }: any) {
   showNodePicker.value = false
 }
 
+// 驳回节点选择器取消
 function onRejectNodeCancel() {
-  // rejectNodeName.value = ''
-  // backForm.value.targetActivityId = undefined
   showNodePicker.value = false
 }
 
