@@ -33,6 +33,8 @@ declare global {
 
   // 分页查询参数
   interface PageQuery {
+    // 业务主键
+    businessKey?: string
     pageNum: number
     pageSize: number
   }

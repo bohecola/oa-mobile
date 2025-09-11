@@ -47,6 +47,7 @@
       v-if="component === 'date-picker'"
       v-model:show="visible"
       position="bottom"
+      teleport="body"
       round
       destroy-on-close
       safe-area-inset-bottom
@@ -112,7 +113,7 @@ const { visible, openPopup, closePopup } = usePopup()
 const CalenderRef = ref<CalendarInstance>()
 
 // 是否只读
-const isReadonly = computed(() => props.readonly || parentForm.props.readonly)
+const isReadonly = computed(() => props.readonly || parentForm?.props.readonly)
 
 // Picker 回显值
 const currentDate = computed(() => props.modelValue?.split('-'))

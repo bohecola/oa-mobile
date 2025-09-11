@@ -76,7 +76,7 @@ export interface ContractPhaseQuery extends Partial<PageQuery> {
    * 状态0 草稿 1 审批中 2 审批通过 9作废
    */
   status?: string
-
+  queryType?: string
   isPhase?: string
   contractId?: string
   contractNo?: string
@@ -86,12 +86,15 @@ export interface ContractPhaseQuery extends Partial<PageQuery> {
   deptId?: string
   phaseItemPlanDate?: string
   createUserName?: string
+  receiptStatus?: string
   // 开票未回款
   isKpwhk?: string
   // 年度
   years?: string
   // 天数
   days?: string
+  // 权限
+  isCheckPermission?: string
 
   /**
    * 日期范围参数
@@ -105,7 +108,7 @@ export interface ContractSumAmountVO {
    */
   contractTotalAmount?: number
   /**
-   * 发票总金额
+   * 开票总金额
    */
   invoiceTotalAmount?: number
   /**
@@ -128,4 +131,32 @@ export interface ContractSumAmountVO {
    * 考核奖励总金额
    */
   rewardAssessmentTotalAmount?: number
+  /**
+   * 变更总金额
+   */
+  changeTotalAmount?: number
+  /**
+   * 待回款总金额（开票总金额 - 回款总金额）
+   */
+  pendingPaymentTotalAmount?: number
+}
+
+export interface AmountItem {
+  label: string
+  name: string
+  value: string
+  typeName?: string
+}
+
+export interface GroupAmountVO {
+  contractTotalAmount: AmountItem[]
+  invoiceTotalAmount: AmountItem[]
+  receiptTotalAmount: AmountItem[]
+  invoiceNotReceiptTotalAmount: AmountItem[]
+}
+
+export interface ContractPhaseGroupAmountVO {
+  total: ContractSumAmountVO
+  category: GroupAmountVO
+  dept: GroupAmountVO
 }

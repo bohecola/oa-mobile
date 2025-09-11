@@ -22,22 +22,27 @@
 
 <script setup lang='ts'>
 import dd from 'dingtalk-jsapi'
+import { navBarProps } from 'vant'
 import { cn } from '@/utils'
 
-const props = withDefaults(
-  defineProps<{
-    title?: string
-    titleClass?: string
-    isLeftClickBack?: boolean
-  }>(),
-  {
-    title: () => {
+const props = defineProps({
+  ...navBarProps,
+  title: {
+    type: String,
+    default: () => {
       const route = useRoute()
       return route.meta.title as string ?? ''
     },
-    isLeftClickBack: true,
   },
-)
+  titleClass: {
+    type: String,
+    default: '',
+  },
+  isLeftClickBack: {
+    type: Boolean,
+    default: true,
+  },
+})
 
 const emit = defineEmits(['click-left'])
 
@@ -59,9 +64,9 @@ function handleLeftClick() {
       return handleGoBackPage()
     }
 
-    dd.goBackPage({
+    return dd.goBackPage({
       onFail: (error: any) => {
-        proxy?.$modal.msgError(error?.errorMessage)
+        proxy?.$modal.alert(error?.errorMessage)
         handleGoBackPage()
       },
     })

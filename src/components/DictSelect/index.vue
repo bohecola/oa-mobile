@@ -80,6 +80,7 @@
       v-if="component === 'combine'"
       v-model:show="visible"
       position="bottom"
+      teleport="body"
       round
       destroy-on-close
       safe-area-inset-bottom

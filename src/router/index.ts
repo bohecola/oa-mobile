@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createRouterMatcher, createWebHistory } from 'vue-router'
 import { isArray } from 'lodash-es'
-import { createRouterGuards, whitePathList } from './router-guards'
+import { createRouterGuards, whitePathList } from './routerGuards'
 import { clientRoutes } from './modules'
 import { useStore } from '@/store'
 import { useGlobSettings } from '@/hooks'
@@ -168,4 +168,5 @@ export function setupRouter(app: App) {
 createRouterGuards(router)
 
 export * from './modules'
+
 export default router

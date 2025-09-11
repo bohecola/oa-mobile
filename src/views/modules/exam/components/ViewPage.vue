@@ -11,7 +11,7 @@
       </template>
     </NavBar>
 
-    <main id="content" class="view-list py-6 px-3 border-b overflow-y-auto bg-[--bg-card]">
+    <main id="content" class="scroll-container-base py-6 px-3 border-b bg-[--bg-card]">
       <div v-for="item in currentTab === 'all' ? list : errorList" :key="item.id">
         <div>
           <span>{{ item.currentIndex }}.</span>
@@ -125,11 +125,3 @@ onMounted(async () => {
   closeLoading()
 })
 </script>
-
-<style lang="scss" scoped>
-$topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
-
-.view-list {
-  height: calc(100vh - $topHeight);
-}
-</style>

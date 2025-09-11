@@ -12,6 +12,14 @@
   }
 }
 
+@layer components {
+  .scroll-container-base {
+    $topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
+    height: calc(100vh - $topHeight);
+    overflow-y: auto;
+  }
+}
+
 :root {
   // Color Palette
   --white: #fff;

@@ -8,7 +8,7 @@
   >
     <NavBar :title="title" :is-left-click-back="false" @click-left="closePopup" />
 
-    <div v-loading="loading" class="w-full h-[calc(100vh-var(--van-nav-bar-height))]">
+    <div v-loading="loading" class="w-full scroll-container-base">
       <iframe
         ref="IFrameRef"
         :key="iframeUrl"

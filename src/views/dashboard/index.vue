@@ -4,12 +4,12 @@
 
     <TaskMenus />
 
-    <ProcessMenus />
+    <appMenus />
   </div>
 </template>
 
 <script setup lang='ts'>
 import Swipe from './components/Swipe.vue'
 import TaskMenus from './components/TaskMenus/index.vue'
-import ProcessMenus from './components/ProcessMenus/index.vue'
+import appMenus from './components/appMenus/index.vue'
 </script>

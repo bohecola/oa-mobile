@@ -30,7 +30,7 @@
       </template>
     </NavBar>
 
-    <div v-loading="doc.loading" class="w-full h-[calc(100vh-var(--van-nav-bar-height))] overflow-y-auto">
+    <div v-loading="doc.loading" class="w-full scroll-container-base">
       <iframe ref="docIframe" :src="doc.url" class="border-none w-full h-full" />
     </div>
   </van-popup>

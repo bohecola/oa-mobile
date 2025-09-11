@@ -1,5 +1,11 @@
 import type { AxiosPromise } from 'axios'
-import type { ContractPhaseForm, ContractPhaseListVO, ContractPhaseQuery, ContractSumAmountVO } from '@/api/oa/business/contractPhase/types'
+import type {
+  ContractPhaseForm,
+  ContractPhaseGroupAmountVO,
+  ContractPhaseListVO,
+  ContractPhaseQuery,
+  ContractSumAmountVO,
+} from '@/api/oa/business/contractPhase/types'
 import request from '@/service/request'
 
 /**
@@ -81,5 +87,26 @@ export function getSumAmount(query: ContractPhaseQuery): AxiosPromise<ContractSu
     url: '/oa/business/contractPhase/getSumAmount',
     method: 'get',
     params: query,
+  })
+}
+
+/**
+ * 分类统计
+ */
+export function queryGroupAmount(query: ContractPhaseQuery): AxiosPromise<ContractPhaseGroupAmountVO> {
+  return request({
+    url: '/oa/business/contractPhase/queryGroupAmount',
+    method: 'get',
+    params: query,
+  })
+}
+
+/**
+ * 校验用户是否有经营合同查询角色角色
+ */
+export function checkContractReportRole(): AxiosPromise {
+  return request({
+    url: '/oa/business/contractPhase/checkContractReportRole',
+    method: 'get',
   })
 }

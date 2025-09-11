@@ -1,13 +1,8 @@
 <template>
   <div>
-    <NavBar
-      :right-text="showAdd ? '新增' : undefined"
-      :is-left-click-back="false"
-      @click-left="$router.push('/apps')"
-      @click-right="handleAdd"
-    />
+    <NavBar :right-text="showAdd ? '新增' : undefined" @click-right="handleAdd" />
 
-    <div class="h-[calc(100vh-var(--van-nav-bar-height)-env(safe-area-inset-top))] overflow-y-auto">
+    <div class="scroll-container-base">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
           v-model:loading="loading"

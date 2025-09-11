@@ -1,27 +1,26 @@
 <template>
-  <div class="p-2">
-    <div class="grid grid-cols-2 gap-2">
-      <template
-        v-for="item in menus"
-        :key="item.title"
-      >
-        <div
-          v-if="item.visiable"
-          class="
-            p-2 h-32
-            flex justify-center items-center gap-2
-            bg-[--bg-card] rounded
-            border shadow-sm select-none
+  <div class="grid grid-cols-3 gap-2">
+    <template
+      v-for="item in menus"
+      :key="item.title"
+    >
+      <div
+        v-if="item.visiable"
+        class="
+            p-2 h-24
+            flex flex-col justify-center items-center
+            r select-none
+            border rounded-xl shadow-sm
+            bg-[--bg-card]
             active:bg-[--van-primary-color]
             active:text-white
           "
-          @click="onClick(item)"
-        >
-          <span :class="`${item.icon} text-2xl`" />
-          <span>{{ item.title }}</span>
-        </div>
-      </template>
-    </div>
+        @click="onClick(item)"
+      >
+        <span :class="`${item.icon} text-2xl`" />
+        <span class="text-sm max-w-[18ch] text-center">{{ item.title }}</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -38,10 +37,12 @@ interface AppMenu {
 }
 
 const menus = ref<AppMenu[]>([
+  { title: '流程中心', path: '/start-workflow', icon: 'i-material-symbols-flowchart', visiable: true },
   { title: '模拟考试', path: '/exam', icon: 'i-mdi-document', visiable: true },
   { title: '每日一报', path: '/daily-report', icon: 'i-mdi-file-document-outline', visiable: false },
   { title: '油卡加油', path: '/fuel-oilcard', icon: 'i-mingcute-bank-card-fill', visiable: true },
   { title: '现金加油', path: '/fuel-cash', icon: 'i-nimbus-cash', visiable: true },
+  { title: '待回款查询', path: '/pendingPayment', icon: 'i-tabler-device-analytics', visiable: true },
 ])
 
 function onClick(item: AppMenu) {

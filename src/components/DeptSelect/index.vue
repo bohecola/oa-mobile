@@ -107,11 +107,14 @@ import { BaseTree, OpenIcon } from '@he-tree/vue'
 import type { Stat } from 'node_modules/@he-tree/vue/dist/v3/components/TreeProcessorVue'
 import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
 import { listDept } from '@/api/system/dept'
+import { checkContractReportRole } from '@/api/oa/business/contractPhase/index'
 import { useParentForm, usePopup } from '@/hooks'
 import customEmptyImage from '@/assets/images/custom-empty-image.png'
+import { useStore } from '@/store'
+import { findNodeById } from '@/utils'
 
 type DeptTreeSelectValue = string | number | (string | number)[]
-type _DeptVO = Partial<DeptVO> & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean }
+type _DeptVO = DeptVO & { id: DeptVO['deptId'], label: DeptVO['deptName'], disabled?: boolean, children: _DeptVO[] }
 
 interface DataConfig {
   disabledKey: string
@@ -130,6 +133,7 @@ const props = withDefaults(
     dataConfig?: DataConfig
     params?: Partial<DeptQuery>
     disabled?: boolean
+    isCheckContractReportRole?: boolean
   }>(),
   {
     params: () => ({}),
@@ -142,6 +146,10 @@ const attrs = useAttrs()
 const slots = useSlots()
 
 const route = useRoute()
+
+const { user } = useStore()
+
+const currentUserDeptId = String(user.info.deptId)
 
 const parentForm = useParentForm()
 
@@ -159,6 +167,8 @@ const ids = ref<DeptTreeSelectValue>(deserialize(props.modelValue))
 
 // 原始数据
 const rawData = ref<_DeptVO[]>([])
+
+const contractReportRoleCheckState = ref<string>(undefined)
 
 // 参数
 const queryParams: DeptQuery = reactive({
@@ -186,6 +196,12 @@ const treeData = computed(() => {
       }))
 
   const options = proxy?.handleTree<_DeptVO>(data)
+
+  // 过滤角色权限
+  if (contractReportRoleCheckState.value === 'N' && !isEmpty(options)) {
+    const node = findNodeById(options, currentUserDeptId, 'deptId') as _DeptVO
+    return [node]
+  }
 
   return options
 })
@@ -338,6 +354,11 @@ function onConfirm(value: DeptTreeSelectValue) {
 async function getData() {
   isLoading.value = true
 
+  if (props.isCheckContractReportRole) {
+    const { msg } = await checkContractReportRole()
+    contractReportRoleCheckState.value = msg
+  }
+
   if (isReadonly.value) {
     queryParams.status = undefined // 回显时示全部状态的部门
   }
@@ -354,12 +375,12 @@ async function getData() {
 
   const rootNode = { label: '根节点', deptId: '0', deptName: '根节点', type: -1 } as any
 
-  function formatFormData(item: Partial<DeptVO>): _DeptVO {
+  const formatFormData = (item: Partial<DeptVO>): _DeptVO => {
     return {
       ...item,
       id: !isNil(item.deptId) ? String(item.deptId) : item.deptId,
       label: item.deptName,
-    }
+    } as _DeptVO
   }
 
   rawData.value = props.withDefaultRootNode ? [rootNode, ...data].map(formatFormData) : data.map(formatFormData)
