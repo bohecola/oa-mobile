@@ -1,3 +1,4 @@
+import type { AxiosPromise } from 'axios'
 import type { EditOaWfFileVO } from './types'
 import request from '@/service/request'
 
@@ -19,5 +20,15 @@ export function editOaWfFile(data: EditOaWfFileVO) {
     url: `/oa/common/editOaWfFile`,
     method: 'put',
     data,
+  })
+}
+
+/**
+ * 首页应用权限检查
+ */
+export function checkIndexAppPermission(): AxiosPromise<Record<string, string>> {
+  return request({
+    url: '/oa/mobile/mobileController/checkPermission',
+    method: 'get',
   })
 }

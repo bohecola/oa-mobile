@@ -1,9 +1,9 @@
 <template>
   <van-nav-bar
-    :placeholder="true"
-    z-index="10"
-    safe-area-inset-top
     v-bind="props"
+    z-index="10"
+    :placeholder="true"
+    safe-area-inset-top
     @click-left="handleLeftClick"
   >
     <template #title>
