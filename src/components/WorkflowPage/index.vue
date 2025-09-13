@@ -37,7 +37,10 @@
             <slot v-else />
 
             <!-- 审批状态 -->
-            <StatusIcon v-if="isView && businessStatus !== 'draft'" :business-status="businessStatus" />
+            <StatusIcon
+              v-if="isView && businessStatus !== 'draft'"
+              :business-status="businessStatus"
+            />
           </div>
 
           <!-- 审批附件 -->

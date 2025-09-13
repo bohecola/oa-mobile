@@ -223,8 +223,8 @@ onMounted(async () => {
 
   if (taskId || processInstanceId) {
     loading.value = true
-    const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task, processDefinitionName } = res.data
+    const { data } = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task, processDefinitionName } = data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey

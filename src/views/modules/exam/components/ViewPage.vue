@@ -111,7 +111,7 @@ const tabOptions = computed(() => {
 })
 
 function onBackClick() {
-  proxy.$router.push('/exam')
+  proxy.$router.back()
 }
 
 function onTabChange() {

@@ -5,7 +5,13 @@
         考试成绩：<span class="text-xl font-bold">{{ totalScore }}</span> 分
       </p>
       <div class="w-28">
-        <van-button type="primary" size="small" round block @click="proxy.$router.push(`/wechat-exam-entry?userName=${exam.userName}&phonenumber=${exam.phonenumber}&reLogin=true`)">
+        <van-button
+          type="primary"
+          size="small"
+          round
+          block
+          @click="proxy.$router.push(`/wechat-exam-entry?userName=${exam.userName}&phonenumber=${exam.phonenumber}&reLogin=true`)"
+        >
           返回
         </van-button>
       </div>

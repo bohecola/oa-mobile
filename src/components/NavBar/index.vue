@@ -3,7 +3,7 @@
     :placeholder="true"
     z-index="10"
     safe-area-inset-top
-    v-bind="attrs"
+    v-bind="props"
     @click-left="handleLeftClick"
   >
     <template #title>
@@ -50,7 +50,6 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const router = useRouter()
 
-const attrs = useAttrs()
 const slots = useSlots()
 
 function handleGoBackPage() {

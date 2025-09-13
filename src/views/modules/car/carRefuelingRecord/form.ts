@@ -72,7 +72,7 @@ export function useForm() {
     unitPrice: [{ required: true, message: '请输入单价' }],
     refuelingQuantity: [{ required: true, message: '请输入加油量' }],
     amount: [{ required: true, message: '请输入加油金额' }],
-    invoiceFile: [{ required: true, message: '请上照片' }],
+    invoiceFile: [{ required: true, message: '请上传照片' }],
   })
 
   // 油号选项

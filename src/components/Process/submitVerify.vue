@@ -48,7 +48,7 @@
         </template>
       </van-field>
 
-      <div class="flex justify-end gap-2 p-4">
+      <div class="mt-4 p-4 flex justify-end gap-2">
         <van-button type="primary" size="small" :disabled="buttonDisabled" @click="handleCompleteTask">
           提交
         </van-button>

@@ -179,7 +179,7 @@ function renderPaperName(item: InterviewOrganizeUserVO) {
 }
 
 function handleClick(item: InterviewOrganizeUserVO) {
-  confirm(renderPaperName(item)).then(() => {
+  confirm(() => renderPaperName(item)).then(() => {
     proxy.$router.push({
       path: `/external-exam`,
       query: {
@@ -193,9 +193,11 @@ function handleClick(item: InterviewOrganizeUserVO) {
 }
 
 function handleBack() {
-  proxy.$router.replace('/wechat-exam-entry').then(() => {
-    location.reload()
-  })
+  proxy.$router
+    .replace('/wechat-exam-entry')
+    .then(() => {
+      location.reload()
+    })
 }
 
 onMounted(() => {

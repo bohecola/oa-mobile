@@ -277,6 +277,10 @@ function isStringOrNumberArray(arr: any[]) {
 
 // 转换 modelValue 为 id 数组
 function transformValue(value: typeof props.modelValue) {
+  if (isNumber(value)) {
+    return [value]
+  }
+
   if (isEmpty(value)) {
     return []
   }

@@ -3,12 +3,6 @@
     <div v-if="['effective', 'expired'].includes(paperStatus)">
       <h1 class="text-center text-3xl font-bold">
         {{ paper.paperName }}
-        <!-- <LineShadowText
-          class="px-1"
-          :shadow-color="app.currentColorMode === 'dark' ? 'white' : 'black'"
-        >
-          {{ paper.paperName }}
-        </LineShadowText> -->
       </h1>
 
       <van-form
@@ -81,7 +75,6 @@ import type { FormInstance } from 'vant'
 import type { PaperStatus } from '../helper'
 import type { PaperVO } from '@/api/exam/paper/types'
 import type { DoExamQrCodeParams } from '@/api/exam/exam/types'
-import { useStore } from '@/store'
 
 defineProps<{
   paperStatus: PaperStatus
@@ -89,8 +82,6 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['submit'])
-
-const { app } = useStore()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 

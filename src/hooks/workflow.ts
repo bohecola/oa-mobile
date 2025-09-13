@@ -25,6 +25,9 @@ interface WorkflowURLOptions {
 export async function useWorkflowViewData({ taskId, processInstanceId }: any): AxiosPromise {
   let res: any
 
+  const route = useRoute()
+  const router = useRouter()
+
   const needBMJL = ref([])
 
   provide('needBMJL', needBMJL)
@@ -37,6 +40,14 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
 
       needBMJL.value = data?.needBMJL ?? []
 
+      router.replace({
+        path: route.path,
+        query: {
+          ...route.query,
+          wfStatus: data?.businessStatus,
+        },
+      })
+
       return res
     }
   }
@@ -47,6 +58,14 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
   const { data } = res
 
   needBMJL.value = data?.needBMJL ?? []
+
+  router.replace({
+    path: route.path,
+    query: {
+      ...route.query,
+      wfStatus: data?.businessStatus,
+    },
+  })
 
   return res
 }
