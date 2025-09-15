@@ -7,55 +7,59 @@
     round
     safe-area-inset-bottom
   >
-    <van-form v-loading="loading" label-width="120px">
-      <van-field
-        ref="MessageFieldRef"
-        v-model="form.message"
-        rows="2"
-        autosize
-        label="审批意见"
-        type="textarea"
-        maxlength="500"
-        placeholder="请输入审批意见"
-        show-word-limit
-      />
-      <van-field>
-        <template #input>
-          <div class="w-full flex justify-end flex-wrap">
-            <van-button
-              v-for="item in oa_workflow_comment_def"
-              :key="item.value"
-              type="primary"
-              plain
-              size="mini"
-              class="px-2"
-              round
-              @click="handleShortMessage(item.label)"
-            >
-              {{ item.label }}
-            </van-button>
-          </div>
-        </template>
-      </van-field>
-      <van-field label="抄送人" is-link @click="UserSelectRef?.open">
-        <template #input>
-          <UserSelect
-            ref="UserSelectRef"
-            v-model="selectCopyUserList"
-            value-type="object"
-            :multiple="true"
-          />
-        </template>
-      </van-field>
+    <div class="flex flex-col min-h-[42vh] justify-between">
+      <van-form v-loading="loading" label-width="60px">
+        <van-field
+          ref="MessageFieldRef"
+          v-model="form.message"
+          rows="2"
+          autosize
+          label="审批意见"
+          type="textarea"
+          maxlength="500"
+          placeholder="请输入审批意见"
+          show-word-limit
+        />
+        <van-field>
+          <template #input>
+            <div class="w-full flex gap-2 justify-end flex-wrap">
+              <van-button
+                v-for="item in oa_workflow_comment_def"
+                :key="item.value"
+                type="primary"
+                plain
+                size="small"
+                class="px-3"
+                round
+                @click="handleShortMessage(item.label)"
+              >
+                {{ item.label }}
+              </van-button>
+            </div>
+          </template>
+        </van-field>
+        <van-field label="抄送人" is-link @click="UserSelectRef?.open">
+          <template #input>
+            <UserSelect
+              ref="UserSelectRef"
+              v-model="selectCopyUserList"
+              value-type="object"
+              :multiple="true"
+            />
+          </template>
+        </van-field>
 
-      <div class="mt-4 p-4 flex justify-end gap-2">
-        <van-button type="primary" size="small" :disabled="buttonDisabled" @click="handleCompleteTask">
+        <div class="hidden" />
+      </van-form>
+
+      <div class="mt-auto p-4 flex justify-end gap-2">
+        <van-button type="primary" :disabled="buttonDisabled" @click="handleCompleteTask">
           提交
         </van-button>
-        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openDelegateTask">
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" :disabled="buttonDisabled" @click="openDelegateTask">
           委托
         </van-button>
-        <van-button v-if="task.businessStatus === 'waiting'" type="primary" size="small" :disabled="buttonDisabled" @click="openTransferTask">
+        <van-button v-if="task.businessStatus === 'waiting'" type="primary" :disabled="buttonDisabled" @click="openTransferTask">
           转办
         </van-button>
         <!-- <van-button
@@ -75,14 +79,14 @@
           减签
         </van-button>
         <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
-        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleBackProcessOpen">
+        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" @click="handleBackProcessOpen">
           退回
         </van-button>
-        <van-button :disabled="buttonDisabled" size="small" @click="cancel">
+        <van-button :disabled="buttonDisabled" @click="cancel">
           取消
         </van-button>
       </div>
-    </van-form>
+    </div>
 
     <!-- 委托 -->
     <UserSelect ref="DelegateTaskRef" value-type="object" :multiple="false" popup-only @confirm="handleDelegateTask" />

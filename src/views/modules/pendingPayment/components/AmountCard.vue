@@ -12,14 +12,13 @@
     </div>
 
     <div :class="cn('mt-2', valueClass)">
-      <span v-if="!isNil(value)" class="font-bold mr-1">{{ formatCurrency(Number(value)) }}</span>
+      <span class="font-bold mr-1">{{ formatCurrency(Number(value ?? 0)) }}</span>
       <span class="text-xs">万</span>
     </div>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { isNil } from 'lodash-es'
 import { cn } from '@/utils'
 
 defineProps<{
