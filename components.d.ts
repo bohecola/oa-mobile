@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ApprovalFileTable: typeof import('./src/components/ApprovalFileTable/index.vue')['default']
-    Beam: typeof import('./src/components/WarpBackground/Beam.vue')['default']
     BottomLine: typeof import('./src/components/BottomLine/index.vue')['default']
     CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
     CellLabelItem: typeof import('./src/components/CellLabelItem/index.vue')['default']
@@ -27,7 +26,6 @@ declare module 'vue' {
     Logo: typeof import('./src/components/Logo.vue')['default']
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
     NumberView: typeof import('./src/components/NumberView/index.vue')['default']
-    PatternBackground: typeof import('./src/components/PatternBackground/PatternBackground.vue')['default']
     PostSelect: typeof import('./src/components/PostSelect/index.vue')['default']
     RadiantText: typeof import('./src/components/RadiantText/index.vue')['default']
     StatusIcon: typeof import('./src/components/WorkflowPage/status-icon.vue')['default']
@@ -93,7 +91,6 @@ declare module 'vue' {
     VanTag: typeof import('vant/es')['Tag']
     VanUploader: typeof import('vant/es')['Uploader']
     Viewer: typeof import('./src/components/UploadFile/viewer.vue')['default']
-    WarpBackground: typeof import('./src/components/WarpBackground/index.vue')['default']
     WorkflowPage: typeof import('./src/components/WorkflowPage/index.vue')['default']
     YesNoSwitch: typeof import('./src/components/YesNoSwitch/index.vue')['default']
   }
