@@ -9,6 +9,27 @@ export * from './form'
 export * from './options'
 export * from './dictConfig'
 
+export function useCopy() {
+  // 拷贝状态
+  const copied = ref(false)
+
+  // 拷贝
+  function copy(code: string, cb?: () => void) {
+    // 开始拷贝
+    copied.value = true
+    navigator.clipboard.writeText(code)
+      .then(() => {
+        cb?.()
+        copied.value = false
+      })
+  }
+
+  return {
+    copied,
+    copy,
+  }
+}
+
 export function useParentForm() {
   const d = getCurrentInstance()
 

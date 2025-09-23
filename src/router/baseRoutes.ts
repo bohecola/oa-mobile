@@ -301,3 +301,55 @@ export const contractRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/modules/pendingPayment/list.vue'),
   },
 ]
+
+// 任务管理
+export const taskRoutes: RouteRecordRaw[] = [
+  {
+    path: '/taskInfo',
+    meta: {
+      title: '工作事项',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/index.vue'),
+  },
+  {
+    path: '/taskInfo/new',
+    meta: {
+      title: '工作事项（新增）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/upsert.vue'),
+  },
+  {
+    path: '/taskInfo/:id/edit',
+    meta: {
+      title: '工作事项（编辑）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/upsert.vue'),
+  },
+  {
+    path: '/taskInfo/:id',
+    meta: {
+      title: '工作事项（查看）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/detail.vue'),
+  },
+  {
+    path: '/taskInfo/:id/execute',
+    meta: {
+      title: '工作事项（执行）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/detail.vue'),
+  },
+  {
+    path: '/taskInfo/:id/audit',
+    meta: {
+      title: '工作事项（审批）',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/task/taskInfo/detail.vue'),
+  },
+]

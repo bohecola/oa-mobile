@@ -7,14 +7,11 @@
       <div
         v-if="item.visiable"
         class="
-            p-2 h-24
-            flex flex-col justify-center items-center
-            r select-none
-            border rounded-xl shadow-sm
-            bg-[--bg-card]
-            active:bg-[--van-primary-color]
-            active:text-white
-          "
+          p-2 h-24
+          flex flex-col justify-center items-center gap-1
+          select-none border shadow-sm rounded-xl
+          bg-[--bg-card] active:bg-[--van-primary-color] active:text-white
+        "
         @click="onClick(item)"
       >
         <span :class="`${item.icon} text-2xl`" />
@@ -45,6 +42,7 @@ const menus = ref<AppMenu[]>([
   { title: '油卡加油', path: '/fuel-oilcard', icon: 'i-mingcute-bank-card-fill', visiable: true },
   { title: '现金加油', path: '/fuel-cash', icon: 'i-nimbus-cash', visiable: true },
   { title: '待回款查询', path: '/pendingPayment', icon: 'i-tabler-device-analytics', visiable: false, permissionKey: 'isDHKCX' },
+  { title: '工作事项', path: '/taskInfo', icon: 'i-carbon-task', visiable: true },
 ])
 
 function onClick(item: AppMenu) {
