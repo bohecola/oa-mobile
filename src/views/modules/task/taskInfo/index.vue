@@ -1,6 +1,12 @@
 <template>
   <div>
-    <NavBar right-text="新增" @click-right="onClickRight" />
+    <NavBar>
+      <template #right>
+        <span v-hasPermi="['oa:task:taskInfo:add']" class="text-[--van-primary-color]" @click="onClickRight">
+          新增
+        </span>
+      </template>
+    </NavBar>
 
     <van-tabs v-model:active="activeName" @change="onTabChange">
       <van-tab title="我的待办" name="waiting">
@@ -27,7 +33,7 @@
                   <div>完成日期：{{ parseTime(item.endDate, '{y}-{m}-{d}') }}</div>
                   <div>状态：<dict-tag :value="item.status" :options="oa_task_info_status" /></div>
 
-                  <div class="flex justify-end gap-2">
+                  <div class="mt-2 flex justify-end gap-3">
                     <van-button
                       v-if="['0', '1', '3'].includes(item.status) && user.info.userId === item.createBy"
                       type="primary"
@@ -35,7 +41,7 @@
                       plain
                       @click="handleEdit(item)"
                     >
-                      修改
+                      修 改
                     </van-button>
 
                     <van-button
@@ -44,7 +50,7 @@
                       size="small"
                       @click="handleView(item, 'execute')"
                     >
-                      执行
+                      执 行
                     </van-button>
 
                     <van-button
@@ -72,7 +78,7 @@
                       plain size="small"
                       @click="handleInvalid(item)"
                     >
-                      作废
+                      作 废
                     </van-button>
 
                     <van-button

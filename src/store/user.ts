@@ -12,6 +12,9 @@ export const useUserStore = defineStore('user', () => {
   // 标识
   const token = ref<string>(data.token)
 
+  const roles = ref<string[]>([])
+  const permissions = ref<string[]>([])
+
   // 设置标识
   function setToken(data: {
     token: string
@@ -51,15 +54,27 @@ export const useUserStore = defineStore('user', () => {
 
   // 获取用户信息
   async function get() {
-    return service.comm.person().then(({ data }) => {
-      set(data.user)
-      return data.user
-    })
+    return service.comm.person()
+      .then(({ data }) => {
+        set(data.user)
+
+        if (data.roles && data.roles.length > 0) {
+          roles.value = data.roles
+          permissions.value = data.permissions
+        }
+        else {
+          roles.value = ['ROLE_DEFAULT']
+        }
+
+        return data.user
+      })
   }
 
   return {
     token,
     info,
+    roles,
+    permissions,
     get,
     set,
     logout,

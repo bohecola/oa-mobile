@@ -1,4 +1,3 @@
-import type { RoleVO } from '@/api/system/role/types'
 import type { PostVO } from '@/api/system/post/types'
 
 /**
@@ -50,7 +49,7 @@ export interface UserVO extends BaseEntity {
   loginDate: string
   remark: string
   deptName: string
-  roles: RoleVO[]
+  roles: string[]
   roleIds: any
   postIds: any
   postIdStr?: string
@@ -83,10 +82,11 @@ export interface UserForm {
 
 export interface UserInfoVO {
   user: UserVO
-  roles: RoleVO[]
+  roles: string[]
   roleIds: string[]
   posts: PostVO[]
   postIds: string[]
+  permissions: string[]
   roleGroup: string
   postGroup: string
 }
