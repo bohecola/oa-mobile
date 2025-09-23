@@ -1,8 +1,20 @@
 <template>
   <FeeBaseUpsert :include-fields="includeFields1" />
 
+  <!-- 保养维修 -->
+  <DictSelect
+    v-model.trim="form.b_type"
+    v-show-field="['b_type', includeFields]"
+    label="申请类型"
+    name="b_type"
+    dict-type="oa_car_repair_maintenance_type"
+    :rules="computedRules.b_type"
+    clearable
+  />
+
   <!-- 公共 -->
   <DictSelect
+    v-if="form.no !== 'BYWXFY' || (form.no === 'BYWXFY' && !isNil(form.b_type))"
     v-model.trim="form.b_vehicleNo"
     v-show-field="['b_vehicleNo', includeFields]"
     label="车牌号"
@@ -27,7 +39,7 @@
   <van-field
     v-show-field="['b_lastRepairDate', includeFields]"
     :model-value="parseTime(form.b_lastRepairDate, '{y}-{m}-{d}')"
-    label="上次维修日期"
+    label="上次保养/维修日期"
     placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
     name="b_lastRepairDate"
     readonly
@@ -43,33 +55,25 @@
     @change="onVehicleMileageTodayChange"
   />
 
-  <van-field-number
-    v-show-field="['b_upMileage', includeFields]"
-    :model-value="form.b_upMileage"
-    label="上次里程数（公里）"
-    name="b_upMileage"
-    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
-    readonly
-  />
+  <template v-if="['1', '3'].includes(form.b_type)">
+    <van-field-number
+      v-show-field="['b_upMileage', includeFields]"
+      :model-value="form.b_upMileage"
+      label="上次里程数（公里）"
+      name="b_upMileage"
+      placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+      readonly
+    />
 
-  <van-field-number
-    v-show-field="['b_maintenanceIntervalMileage', includeFields]"
-    :model-value="form.b_maintenanceIntervalMileage"
-    label="保养间隔里程数（公里）"
-    name="b_maintenanceIntervalMileage"
-    placeholder="自动计算"
-    disabled
-  />
-
-  <DictSelect
-    v-model.trim="form.b_type"
-    v-show-field="['b_type', includeFields]"
-    label="申请类型"
-    name="b_type"
-    dict-type="oa_car_repair_maintenance_type"
-    :rules="computedRules.b_type"
-    clearable
-  />
+    <van-field-number
+      v-show-field="['b_maintenanceIntervalMileage', includeFields]"
+      :model-value="form.b_maintenanceIntervalMileage"
+      label="保养间隔里程数（公里）"
+      name="b_maintenanceIntervalMileage"
+      placeholder="自动计算"
+      disabled
+    />
+  </template>
 
   <van-field
     v-model="form.b_maintenanceAddress"
@@ -377,7 +381,7 @@ async function onCarNumberChange(carNumber: string) {
 
     // 保养维修费用
     if (form.value.no === 'BYWXFY') {
-      const { data } = await getLastRepairMaintenanceByCarNumber(carNumber)
+      const { data } = await getLastRepairMaintenanceByCarNumber(carNumber, form.value.b_type)
       form.value.b_lastRepairDate = data?.createTime
       form.value.b_upMileage = data?.mileage
 

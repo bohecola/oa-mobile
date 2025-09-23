@@ -13,33 +13,36 @@
           <div>申请部门：{{ item.deptName }}</div>
           <div>申请时间：{{ item.createTime }}</div>
           <div>申请金额：{{ item.amount }}</div>
-          <div>状态：<DictTag :value="item.status" :options="oa_daily_status" /></div>
-          <div>申请事由：{{ item.reason }}</div>
+          <div>申请类型：<DictTag :value="item.type" :options="oa_car_repair_maintenance_type" /></div>
+          <div>申请事由：{{ item.description }}</div>
         </template>
 
-        <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #right-icon>
           <div class="text-blue-600" @click="handleDetail(item)">
-            查看车辆详情
+            查看详情
           </div>
         </template>
       </van-cell>
     </van-list>
   </van-popup>
 
-  <van-popup v-model:show="itemVisible" destroy-on-close position="bottom" closeable>
+  <van-popup v-model:show="itemVisible" destroy-on-close position="bottom">
     <div v-loading="detailLoading">
-      <detail :show-view-btn="false" :vehicle-detail="vehicleDetail" />
+      <NavBar title="日常费用申请" :is-left-click-back="false" @click-left="closeItemPopup" />
+      <div class="scroll-container-base">
+        <detail :show-view-btn="false" :vehicle-detail="vehicleDetail" />
+      </div>
     </div>
   </van-popup>
 </template>
 
 <script setup lang='ts'>
 import detail from './detail.vue'
-import type { DailyFeeForm, DailyFeeQuery } from '@/api/oa/daily/fee/types'
+import type { DailyFeeForm } from '@/api/oa/daily/fee/types'
+import type { CarRepairMaintenanceQuery } from '@/api/oa/car/carRepairMaintenance/types'
 import { getActHiProcinstByBusinessKey } from '@/api/workflow/processInstance'
 import { getVariablesByProcessInstanceId } from '@/api/workflow/task'
-import { listDailyFee } from '@/api/oa/daily/fee'
+import { listCarRepairMaintenance } from '@/api/oa/car/carRepairMaintenance'
 import { usePopup } from '@/hooks'
 
 const props = defineProps<{
@@ -47,10 +50,10 @@ const props = defineProps<{
 }>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { oa_daily_status } = toRefs(proxy?.useDict('oa_daily_status'))
+const { oa_car_repair_maintenance_type } = toRefs(proxy.useDict('oa_car_repair_maintenance_type'))
 
 const { visible: listVisible, openPopup: openListPopup } = usePopup()
-const { visible: itemVisible, openPopup: openItemPopup } = usePopup()
+const { visible: itemVisible, openPopup: openItemPopup, closePopup: closeItemPopup } = usePopup()
 
 const loading = ref(false)
 const finished = ref(false)
@@ -61,16 +64,16 @@ const total = ref(0)
 const detailLoading = ref(false)
 const vehicleDetail = ref<any>({})
 
-const queryParams: DailyFeeQuery = reactive({
+const queryParams: CarRepairMaintenanceQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  feeType: props.formValue.feeType,
-  contentJson: props.formValue.b_vehicleNo,
+  type: props.formValue.b_type,
+  carNumber: props.formValue.b_vehicleNo,
 })
 
 async function getList() {
   loading.value = true
-  const res = await listDailyFee(queryParams)
+  const res = await listCarRepairMaintenance(queryParams)
   list.value = res.rows
   total.value = res.total
   loading.value = false
@@ -79,7 +82,7 @@ async function getList() {
 async function onLoad() {
   list.value = []
   try {
-    const { rows } = await listDailyFee(queryParams)
+    const { rows } = await listCarRepairMaintenance(queryParams)
 
     list.value.push(...rows)
 
@@ -104,7 +107,7 @@ async function handleDetail(row: any) {
 
   detailLoading.value = true
 
-  const { data } = await getActHiProcinstByBusinessKey(row.id)
+  const { data } = await getActHiProcinstByBusinessKey(row.wfBusinessKey)
   const { data: { entity } } = await getVariablesByProcessInstanceId(data.id)
 
   vehicleDetail.value = entity

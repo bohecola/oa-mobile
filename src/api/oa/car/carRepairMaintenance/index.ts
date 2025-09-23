@@ -65,9 +65,9 @@ export function delCarRepairMaintenance(id: string | Array<string>) {
  * 根据车牌号查询最后一次 保养维修
  * @param carNumber
  */
-export function getLastRepairMaintenanceByCarNumber(carNumber: string): AxiosPromise<CarRepairMaintenanceVO> {
+export function getLastRepairMaintenanceByCarNumber(carNumber: string, type: string): AxiosPromise<CarRepairMaintenanceVO> {
   return request({
-    url: `/oa/car/carRepairMaintenance/getLastByCarNumber/${carNumber}`,
+    url: `/oa/car/carRepairMaintenance/getLastByCarNumber/${carNumber}/${type}`,
     method: 'get',
   })
 }

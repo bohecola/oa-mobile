@@ -7,7 +7,7 @@
     </template>
 
     <!-- 回显列表 -->
-    <div v-if="existSelectedList" class="flex flex-wrap justify-end gap-2">
+    <div v-if="existSelectedList" class="flex flex-wrap gap-2">
       <van-tag
         v-for="selected in selectedList"
         :key="selected.userId"
@@ -152,8 +152,8 @@ const selectedNum = computed(() => selectedList.value.length)
 const existSelectedList = computed(() => selectedList.value.length > 0)
 
 // 搜索
-const searchText = ref('')
 const isSearchFocused = ref(false)
+const searchText = ref('')
 const searchList = computed(() => {
   const hasSearchText = searchText.value !== ''
 
@@ -182,7 +182,13 @@ function open() {
 
 // 关闭
 async function close() {
-  selectedList.value = await getSeletedList(props.modelValue)
+  const { enableDataTransform, valueType, modelValue } = props
+
+  selectedList.value = await getSeletedList(
+    enableDataTransform && valueType === 'value'
+      ? deserialize(modelValue as (string | number))
+      : modelValue,
+  )
 
   closePopup()
 }
@@ -344,7 +350,7 @@ async function getSeletedList(value: typeof props.modelValue) {
   // 已有列表过滤
   else {
     // 根据 id 数组计算已选择的列表
-    return userList.value.filter(e => ids.includes(e.userId))
+    return userList.value.filter(e => ids.includes(e.userId) || ids.includes(String(e.userId)))
   }
 }
 

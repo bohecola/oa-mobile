@@ -1,6 +1,15 @@
 <template>
   <FeeBaseDetail :include-fields="includeFields1" :form-value="form" />
 
+  <!-- 保养维修 -->
+  <DictSelect
+    v-model.trim="form.b_type"
+    v-show-field="['b_type', includeFields]"
+    label="申请类型"
+    name="b_type"
+    dict-type="oa_car_repair_maintenance_type"
+  />
+
   <!-- 公共 -->
   <van-field
     v-model="form.b_vehicleNo"
@@ -10,7 +19,6 @@
     :right-icon="form.no === 'BYWXFY' && showViewBtn ? 'eye-o' : ''"
     @click-right-icon="ListPopupRef?.openListPopup"
   >
-    <!-- 使用 right-icon 插槽来自定义右侧图标 -->
     <template #right-icon>
       <span v-if="showViewBtn" class="text-blue-600">查看</span>
     </template>
@@ -38,27 +46,21 @@
     name="b_vehicleMileageToday"
   />
 
-  <van-field-number
-    v-show-field="['b_upMileage', includeFields]"
-    :model-value="form.b_upMileage"
-    label="上次里程数（公里）"
-    name="b_upMileage"
-  />
+  <template v-if="['1', '3'].includes(form.b_type)">
+    <van-field-number
+      v-show-field="['b_upMileage', includeFields]"
+      :model-value="form.b_upMileage"
+      label="上次里程数（公里）"
+      name="b_upMileage"
+    />
 
-  <van-field
-    v-model="form.b_maintenanceIntervalMileage"
-    v-show-field="['b_maintenanceIntervalMileage', includeFields]"
-    label="保养间隔里程数（公里）"
-    name="b_maintenanceIntervalMileage"
-  />
-
-  <DictSelect
-    v-model.trim="form.b_type"
-    v-show-field="['b_type', includeFields]"
-    label="申请类型"
-    name="b_type"
-    dict-type="oa_car_repair_maintenance_type"
-  />
+    <van-field
+      v-model="form.b_maintenanceIntervalMileage"
+      v-show-field="['b_maintenanceIntervalMileage', includeFields]"
+      label="保养间隔里程数（公里）"
+      name="b_maintenanceIntervalMileage"
+    />
+  </template>
 
   <van-field
     v-model="form.b_maintenanceAddress"

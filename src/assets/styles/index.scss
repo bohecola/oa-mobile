@@ -18,6 +18,23 @@
     height: calc(100vh - $topHeight);
     overflow-y: auto;
   }
+
+  .scroll-container-tabs {
+    $topHeight: calc(var(--van-nav-bar-height) + var(--van-tabs-line-height) + env(safe-area-inset-top));
+    height: calc(100vh - $topHeight);
+    overflow-y: auto;
+  }
+
+  .scroll-container-middle {
+    $topHeight: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
+    $bottomHeight: calc(var(--van-button-default-height) + theme('spacing.2') * 2 + env(safe-area-inset-bottom));
+    height: calc(100vh - $topHeight - $bottomHeight);
+    overflow-y: auto;
+  }
+
+  .op-bottom-base {
+    @apply p-2 pb-safe-offset-2 w-full h-[calc(var(--van-button-default-height)+theme('spacing.2')*2)] flex gap-2 bg-[--bg-card]
+  }
 }
 
 :root {

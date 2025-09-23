@@ -165,7 +165,7 @@
       <BottomLine />
     </div>
 
-    <div class="p-2 pb-safe-offset-2 w-full flex gap-2 bg-[--bg-card]">
+    <div class="op-bottom-base">
       <van-button type="primary" class="flex-[4]" @click="submit">
         提交
       </van-button>
