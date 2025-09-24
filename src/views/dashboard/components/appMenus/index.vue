@@ -14,7 +14,10 @@
         "
         @click="onClick(item)"
       >
-        <span :class="`${item.icon} text-2xl`" />
+        <div class="flex items-center gap-1">
+          <span :class="`${item.icon} text-2xl`" />
+          <span v-if="item.nums" class="text-sm text-[--van-primary-color]">{{ item.nums }}</span>
+        </div>
         <span class="text-sm max-w-[18ch] text-center">{{ item.title }}</span>
       </div>
     </template>
@@ -24,6 +27,7 @@
 <script setup lang='ts'>
 import { isNil } from 'lodash-es'
 import { checkIndexAppPermission } from '@/api/oa/common'
+import { listTaskInfo } from '@/api/oa/task/taskInfo'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -33,6 +37,7 @@ interface AppMenu {
   icon: string
   visiable: boolean
   permissionKey?: string
+  nums?: number
 }
 
 const menus = ref<AppMenu[]>([
@@ -55,6 +60,18 @@ onMounted(async () => {
   menus.value.forEach((item) => {
     if (!isNil(item.permissionKey)) {
       item.visiable = data[item.permissionKey] === 'Y'
+    }
+  })
+
+  listTaskInfo({
+    pageNum: 1,
+    pageSize: 1,
+    queryStatus: 'waiting',
+  }).then(({ total }) => {
+    for (const item of menus.value) {
+      if (item.title === '工作事项') {
+        item.nums = total
+      }
     }
   })
 })

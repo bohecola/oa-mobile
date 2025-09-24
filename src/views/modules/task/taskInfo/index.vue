@@ -35,7 +35,7 @@
 
                   <div class="mt-2 flex justify-end gap-3">
                     <van-button
-                      v-if="['0', '1', '3'].includes(item.status) && user.info.userId === item.createBy"
+                      v-if="['0'].includes(item.status) && user.info.userId === item.createBy"
                       type="primary"
                       size="small"
                       plain
