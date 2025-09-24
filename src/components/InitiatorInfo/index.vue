@@ -91,7 +91,7 @@ function createInitiator(): Initiator {
   if (!isNil(data?.initiator) && !isAdd.value) {
     return {
       ...data.initiator,
-      createTime,
+      // createTime,
     }
   }
 

@@ -52,7 +52,7 @@
 
           <van-field
             v-if="!isNil(form.realEndDate) && form.status === '4'"
-            v-model="form.realEndDate"
+            :model-value="parseTime(form.realEndDate, '{y}-{m}-{d}')"
             label="实际完成日期"
             name="realEndDate"
           />
