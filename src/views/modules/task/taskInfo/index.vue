@@ -28,10 +28,12 @@
               >
                 <template #label>
                   <div class="break-words line-clamp-2 mb-1" v-html="item.content?.replace(/\n/g, '<br>')" />
-                  <div>创建人：{{ item.createByName }}</div>
-                  <div>开始日期：{{ parseTime(item.startDate, '{y}-{m}-{d}') }}</div>
-                  <div>完成日期：{{ parseTime(item.endDate, '{y}-{m}-{d}') }}</div>
-                  <div>状态：<dict-tag :value="item.status" :options="oa_task_info_status" /></div>
+                  <div class="grid grid-cols-2">
+                    <div>创建人：{{ item.createByName }}</div>
+                    <div>状态：<dict-tag :value="item.status" :options="oa_task_info_status" /></div>
+                    <div>开始日期：{{ parseTime(item.startDate, '{y}-{m}-{d}') }}</div>
+                    <div>完成日期：{{ parseTime(item.endDate, '{y}-{m}-{d}') }}</div>
+                  </div>
 
                   <div class="mt-2 flex justify-end gap-3">
                     <van-button
@@ -117,10 +119,20 @@
               >
                 <template #label>
                   <div class="break-words line-clamp-2 mb-1" v-html="item.content?.replace(/\n/g, '<br>')" />
-                  <div>创建人：{{ item.createByName }}</div>
-                  <div>开始日期：{{ parseTime(item.startDate, '{y}-{m}-{d}') }}</div>
-                  <div>完成日期：{{ parseTime(item.endDate, '{y}-{m}-{d}') }}</div>
-                  <div>状态：<dict-tag :value="item.status" :options="oa_task_info_status" /></div>
+                  <div class="grid grid-cols-2">
+                    <div>创建人：{{ item.createByName }}</div>
+                    <div>状态：<dict-tag :value="item.status" :options="oa_task_info_status" /></div>
+                    <div>开始日期：{{ parseTime(item.startDate, '{y}-{m}-{d}') }}</div>
+                    <div>完成日期：{{ parseTime(item.endDate, '{y}-{m}-{d}') }}</div>
+                    <div
+                      :class="{
+                        'text-[--van-warning-color]': dayjs(item.realEndDate).isAfter(dayjs(item.endDate)),
+                      }"
+                    >
+                      实际完成日期：{{ parseTime(item.realEndDate, '{y}-{m}-{d}') }}
+                    </div>
+                    <div>完成人：{{ item.endUserName }}</div>
+                  </div>
                 </template>
               </van-cell>
             </van-list>
@@ -132,6 +144,7 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import type { ViewAndRecordType } from './form'
 import type { TaskInfoQuery, TaskInfoVO } from '@/api/oa/task/taskInfo/types'
 import { delTaskInfo, editStatus, listTaskInfo } from '@/api/oa/task/taskInfo'
