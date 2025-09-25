@@ -89,7 +89,7 @@
                       size="small"
                       @click="handleDelete(item)"
                     >
-                      删除
+                      删 除
                     </van-button>
                   </div>
                 </template>
