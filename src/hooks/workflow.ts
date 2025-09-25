@@ -40,7 +40,7 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
 
       needBMJL.value = data?.needBMJL ?? []
 
-      router.replace({
+      router?.replace({
         path: route.path,
         query: {
           ...route.query,
@@ -51,6 +51,7 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
       return res
     }
   }
+
   if (processInstanceId) {
     res = await getVariablesByProcessInstanceId(processInstanceId as string)
   }
@@ -59,7 +60,7 @@ export async function useWorkflowViewData({ taskId, processInstanceId }: any): A
 
   needBMJL.value = data?.needBMJL ?? []
 
-  router.replace({
+  router?.replace({
     path: route.path,
     query: {
       ...route.query,

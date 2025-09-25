@@ -45,13 +45,13 @@
             @click.stop="handleDelete(row)"
           />
 
-          <van-button
+          <!-- <van-button
             v-if="row.businessStatus === 'waiting'"
             color="#7232dd"
             text="添加附件"
             size="small"
             @click.stop="openFilePopup(row)"
-          />
+          /> -->
         </div>
       </template>
     </van-cell>
