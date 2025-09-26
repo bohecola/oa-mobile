@@ -7,18 +7,24 @@
       <div
         v-if="item.visiable"
         class="
-          p-2 h-24
+          p-2 h-24 relative
           flex flex-col justify-center items-center gap-1
           select-none border shadow-sm rounded-xl
           bg-[--bg-card] active:bg-[--van-primary-color] active:text-white
         "
         @click="onClick(item)"
       >
-        <div class="flex items-center gap-1">
-          <span :class="`${item.icon} text-2xl`" />
-          <span v-if="item.nums" class="text-sm text-[--van-primary-color]">{{ item.nums }}</span>
-        </div>
+        <span :class="`${item.icon} text-2xl`" />
         <span class="text-sm max-w-[18ch] text-center">{{ item.title }}</span>
+        <span
+          v-if="item.nums"
+          class="
+            absolute top-3 leading-6 right-3 w-6 h-6
+            text-xs text-white text-center bg-red-500 rounded-full
+          "
+        >
+          {{ item.nums > 99 ? '99+' : item.nums }}
+        </span>
       </div>
     </template>
   </div>
