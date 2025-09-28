@@ -8,7 +8,7 @@
   <van-field
     v-model="form.s_costCategory"
     v-show-field="['s_costCategory', includeFields]"
-    label="申请费用类别"
+    label="补助类别"
     name="s_costCategory"
   />
 
@@ -55,7 +55,7 @@ import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
