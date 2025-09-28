@@ -4,6 +4,7 @@ import type {
   ContractPhaseGroupAmountVO,
   ContractPhaseListVO,
   ContractPhaseQuery,
+  ContractPhaseVO,
   ContractSumAmountVO,
 } from '@/api/oa/business/contractPhase/types'
 import request from '@/service/request'
@@ -25,9 +26,20 @@ export function listContractPhase(query?: ContractPhaseQuery): AxiosPromise<Cont
  * 查询合同执行阶段详细
  * @param id
  */
-export function getContractPhase(id: string): AxiosPromise<ContractPhaseListVO> {
+export function getContractPhase(id: string): AxiosPromise<ContractPhaseVO> {
   return request({
     url: `/oa/business/contractPhase/${id}`,
+    method: 'get',
+  })
+}
+
+/**
+ * 查询合同执行阶段详细
+ * @param contractId
+ */
+export function getContractPhaseByContractId(contractId: string): AxiosPromise<ContractPhaseListVO> {
+  return request({
+    url: `/oa/business/contractPhase/getByContractId/${contractId}`,
     method: 'get',
   })
 }
@@ -107,6 +119,16 @@ export function queryGroupAmount(query: ContractPhaseQuery): AxiosPromise<Contra
 export function checkContractReportRole(): AxiosPromise {
   return request({
     url: '/oa/business/contractPhase/checkContractReportRole',
+    method: 'get',
+  })
+}
+
+/**
+ * 已申请应收款对应 => 合同执行阶段流程明细
+ */
+export function getVoListByContractId(contractId: string) {
+  return request({
+    url: `oa/business/contractPhase/getVoListByContractId/${contractId}`,
     method: 'get',
   })
 }

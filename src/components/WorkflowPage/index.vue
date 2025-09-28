@@ -15,8 +15,8 @@
         id="TabsContainer"
         class="tabs-container overflow-y-auto"
         :class="{
-          'tabs-container__iframe': app.isInIframe,
           'bottom-panel': saveOrSubmitVisible,
+          'tabs-container__iframe': app.isInIframe,
         }"
       >
         <van-tab v-loading="loading" title="审批表单" name="form">
@@ -278,9 +278,9 @@ function onTabChange(val: any) {
     &.bottom-panel {
       height: calc(100vh - #{$topHeight} - #{$bottomHeight});
     }
-  }
 
-  .tabs-container__iframe {
-    height: calc(100vh - #{$iframeTopHeight});
+    &.tabs-container__iframe {
+      height: calc(100vh - #{$iframeTopHeight});
+    }
   }
 </style>

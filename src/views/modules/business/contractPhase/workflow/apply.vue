@@ -16,7 +16,8 @@
 
       <!-- 需求部门经理填报确认 -->
       <div v-else-if="taskDefinitionKey === 'Activity_1p6s0tb'">
-        <upsert ref="ConfirmUpsert" :include-fields="confirmFields" :show-loading="false" />
+        <detail ref="ConfirmDetail" :include-fields="confirmDetailFields" :show-loading="false" />
+        <upsert ref="ConfirmUpsert" :include-fields="['remark', 'itemList', 'ossIdList']" :show-loading="false" />
       </div>
 
       <!-- 通用审批节点 -->
@@ -45,6 +46,7 @@ const { loading, submitFormData, taskDefinitionKey, procdefName, isView } = useW
 const Detail = ref<InstanceType<typeof detail>>()
 const Upsert = ref<InstanceType<typeof upsert>>()
 
+const ConfirmDetail = ref<InstanceType<typeof detail>>()
 const ConfirmUpsert = ref<InstanceType<typeof upsert>>()
 
 const CommonDetail = ref<InstanceType<typeof detail>>()
@@ -57,7 +59,10 @@ const allFields: PartialBooleanRecord<ContractPhaseCustomForm> = {
   contractStartDate: true,
   contractEndDate: true,
   contractAmount: true,
+  appliedReceivableAmount: true,
+  canApplyReceivableAmount: true,
   itemList: true,
+  ossIdList: true,
 }
 
 // 总览字段
@@ -71,8 +76,11 @@ const applyFields = filterTruthyKeys<ContractPhaseCustomForm>({
 })
 
 // 需求部门经理填报确认字段
-const confirmFields = filterTruthyKeys<ContractPhaseCustomForm>({
+const confirmDetailFields = filterTruthyKeys<ContractPhaseCustomForm>({
   ...allFields,
+  remark: false,
+  itemList: false,
+  ossIdList: false,
 })
 
 // 开始流程
@@ -160,8 +168,8 @@ onMounted(async () => {
 
   if (taskId || processInstanceId) {
     loading.value = true
-    const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task, processDefinitionName } = res.data
+    const { data } = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task, processDefinitionName } = data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
@@ -173,6 +181,7 @@ onMounted(async () => {
           case 'update':
           case 'approval':
             Upsert.value?.workflowView(entity)
+            ConfirmDetail.value?.workflowView(entity)
             ConfirmUpsert.value?.workflowView(entity)
             CommonDetail.value?.workflowView(entity)
             Detail.value?.workflowView(entity)

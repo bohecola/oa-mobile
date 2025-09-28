@@ -42,6 +42,11 @@ export interface ContractPhaseVO {
    * 子表数据
    */
   itemList: ContractPhaseItemVO[]
+
+  /**
+   * 附件列表
+   */
+  ossIdList: string[]
 }
 
 export interface ContractPhaseForm extends BaseEntity {
@@ -69,6 +74,11 @@ export interface ContractPhaseForm extends BaseEntity {
    * 子表数据
    */
   itemList?: ContractPhaseItemVO[]
+
+  /**
+   * 附件列表
+   */
+  ossIdList?: string[]
 }
 
 export interface ContractPhaseQuery extends Partial<PageQuery> {

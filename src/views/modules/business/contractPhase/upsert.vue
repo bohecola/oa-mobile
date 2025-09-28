@@ -15,7 +15,6 @@
       label="合同"
       :params="{
         type: 'in',
-        phaseType: '1',
         queryType: 'my',
         statusList: ['1', '2', '3', '4'],
       }"
@@ -73,6 +72,57 @@
       name="contractAmount"
       label="合同金额"
       readonly
+    >
+      <template #input>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.contractAmount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.contractAmount) }}</span>
+        </div>
+      </template>
+    </van-field>
+
+    <template v-if="!isNil(form.appliedReceivableAmount)">
+      <van-field
+        v-show-field="['appliedReceivableAmount', includeFields]"
+        label="已申请应回款"
+        name="appliedReceivableAmount"
+        readonly
+        @click="handleViewAppliedReceivableAmount(form.contractId)"
+      >
+        <template #input>
+          <div class="flex flex-col">
+            <span class="text-[--van-primary-color]">
+              {{ formatCurrency(form.appliedReceivableAmount) }}
+            </span>
+            <span class="text-red-400">{{ toCnMoney(form.appliedReceivableAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+
+      <van-field
+        v-show-field="['canApplyReceivableAmount', includeFields]"
+        label="可申请应回款"
+        name="canApplyReceivableAmount"
+        readonly
+      >
+        <template #input>
+          <div class="flex flex-col">
+            <span>{{ formatCurrency(form.canApplyReceivableAmount) }}</span>
+            <span class="text-red-400">{{ toCnMoney(form.canApplyReceivableAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+    </template>
+
+    <van-field
+      v-model="form.remark"
+      v-show-field="['remark', includeFields]"
+      label="备注"
+      name="remark"
+      type="textarea"
+      placeholder="请输入"
+      rows="1"
+      autosize
     />
 
     <van-field
@@ -165,18 +215,35 @@
         </CoolCardList>
       </template>
     </van-field>
+
+    <van-field
+      v-show-field="['ossIdList', includeFields]"
+      name="ossIdList"
+      label="附件列表"
+      placeholder="请选择"
+      :rules="computedRules.ossIdList"
+    >
+      <template #input>
+        <UploadFile v-model="form.ossIdList" value-type="array" />
+      </template>
+    </van-field>
+
+    <AppliedReceivableAmountDialog ref="AppliedReceivableAmountDialogRef" />
   </van-form>
 </template>
 
 <script setup lang="ts">
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, isNil } from 'lodash-es'
+import Big from 'big.js'
 import ContractSelect from '../components/ContractSelect.vue'
+import AppliedReceivableAmountDialog from './components/AppliedReceivableAmountDialog.vue'
 import { useForm } from './form'
 import type { ContractPhaseCustomForm } from './form'
 import type { ContractVO } from '@/api/oa/business/contract/types'
 import type { ContractPhaseItemVO } from '@/api/oa/business/contractPhaseItem/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { useWorkflowHelper } from '@/hooks'
+import { getReceivableAmountByContractId } from '@/api/oa/business/contractPhaseItem'
 
 const props = withDefaults(
   defineProps<{
@@ -191,6 +258,8 @@ const props = withDefaults(
     showLoading: true,
   },
 )
+
+const AppliedReceivableAmountDialogRef = ref<InstanceType<typeof AppliedReceivableAmountDialog>>()
 
 // 辅助
 const { taskDefinitionKey } = useWorkflowHelper()
@@ -225,11 +294,36 @@ const computedRules = computed(() => {
   return newRules
 })
 
+// 重置金额
+function resetAmount() {
+  form.value.appliedReceivableAmount = undefined
+  form.value.canApplyReceivableAmount = undefined
+}
+
 // 合同选择器 selectedList 更新
-function onContractSelectedListChange(selectedList: ContractVO[]) {
-  const [data] = selectedList
+async function onContractSelectedListChange(selectedList: ContractVO[]) {
+  const [contract] = selectedList
   // 设置合同数据
-  setContractData(data)
+  setContractData(contract)
+
+  if (isNil(contract)) {
+    return resetAmount()
+  }
+
+  const { data } = await getReceivableAmountByContractId(contract.id)
+  const receivableAmount = Number(data ?? 0)
+
+  if (receivableAmount === 0) {
+    return resetAmount()
+  }
+
+  form.value.appliedReceivableAmount = receivableAmount
+  form.value.canApplyReceivableAmount = Big(contract.amount).minus(receivableAmount).toNumber()
+}
+
+// 查看已申请应回款
+async function handleViewAppliedReceivableAmount(contractId: string) {
+  AppliedReceivableAmountDialogRef.value?.open(contractId)
 }
 
 // 新增

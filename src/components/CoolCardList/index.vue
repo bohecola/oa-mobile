@@ -1,14 +1,24 @@
 <template>
   <div class="w-full flex flex-col gap-2">
+    <van-empty
+      v-if="isEmpty"
+      :image="emptyImage"
+      description="暂无数据"
+      image-size="60"
+    />
+
     <slot />
   </div>
 </template>
 
 <script setup lang='ts'>
+import emptyImage from '@/assets/images/custom-empty-image.png'
+
 const { accordion, defaultStartActive, activeOnRegister } = defineProps<{
   accordion?: boolean
   defaultStartActive?: boolean
   activeOnRegister?: boolean
+  isEmpty?: boolean
 }>()
 
 // 计数器

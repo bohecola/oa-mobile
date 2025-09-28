@@ -15,7 +15,6 @@
       label="合同"
       :params="{
         type: 'in',
-        phaseType: '1',
         queryType: 'my',
         statusList: ['1', '2', '3', '4'],
       }"
@@ -63,6 +62,58 @@
       :model-value="formatCurrency(form.contractAmount)"
       name="contractAmount"
       label="合同金额"
+    >
+      <template #input>
+        <div class="flex flex-col">
+          <span>{{ formatCurrency(form.contractAmount) }}</span>
+          <span class="text-red-400">{{ toCnMoney(form.contractAmount) }}</span>
+        </div>
+      </template>
+    </van-field>
+
+    <template v-if="!isNil(form.appliedReceivableAmount)">
+      <van-field
+        v-show-field="['appliedReceivableAmount', includeFields]"
+        label="已申请应回款"
+        name="appliedReceivableAmount"
+        is-link
+        readonly
+        @click="handleViewAppliedReceivableAmount(form.contractId)"
+      >
+        <template #input>
+          <div class="flex flex-col">
+            <span class="text-[--van-primary-color]">
+              {{ formatCurrency(form.appliedReceivableAmount) }}
+            </span>
+            <span class="text-red-400">{{ toCnMoney(form.appliedReceivableAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+
+      <van-field
+        v-show-field="['canApplyReceivableAmount', includeFields]"
+        label="可申请应回款"
+        name="canApplyReceivableAmount"
+        readonly
+      >
+        <template #input>
+          <div class="flex flex-col">
+            <span>{{ formatCurrency(form.canApplyReceivableAmount) }}</span>
+            <span class="text-red-400">{{ toCnMoney(form.canApplyReceivableAmount) }}</span>
+          </div>
+        </template>
+      </van-field>
+    </template>
+
+    <van-field
+      v-model="form.remark"
+      v-show-field="['remark', includeFields]"
+      label="备注"
+      name="remark"
+      type="textarea"
+      placeholder="请输入"
+      rows="1"
+      autosize
     />
 
     <van-field v-show-field="['itemList', includeFields]" label="执行阶段">
@@ -70,6 +121,7 @@
         <CoolCardList
           accordion
           active-on-register
+          :is-empty="isEmpty(form.itemList)"
         >
           <CoolCard
             v-for="(item, index) in form.itemList"
@@ -120,11 +172,25 @@
         </CoolCardList>
       </template>
     </van-field>
+
+    <van-field
+      v-show-field="['ossIdList', includeFields]"
+      name="ossIdList"
+      label="附件列表"
+    >
+      <template #input>
+        <UploadFile v-model="form.ossIdList" value-type="array" readonly />
+      </template>
+    </van-field>
+
+    <AppliedReceivableAmountDialog ref="AppliedReceivableAmountDialogRef" />
   </van-form>
 </template>
 
 <script setup lang="ts">
+import { isEmpty, isNil } from 'lodash-es'
 import ContractSelect from '../components/ContractSelect.vue'
+import AppliedReceivableAmountDialog from './components/AppliedReceivableAmountDialog.vue'
 import type { ContractPhaseCustomForm } from './form'
 import { useForm } from './form'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -143,6 +209,8 @@ withDefaults(
   },
 )
 
+const AppliedReceivableAmountDialogRef = ref<InstanceType<typeof AppliedReceivableAmountDialog>>()
+
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -154,6 +222,10 @@ const { Form, form, isLoading, reset, view, workflowView } = useForm()
 
 // 指令
 const vShowField = createFieldVisibilityDirective<ContractPhaseCustomForm>(form)
+
+function handleViewAppliedReceivableAmount(contractId: string) {
+  AppliedReceivableAmountDialogRef.value?.open(contractId)
+}
 
 defineExpose({
   isLoading,

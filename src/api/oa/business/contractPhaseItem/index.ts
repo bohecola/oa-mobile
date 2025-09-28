@@ -60,3 +60,13 @@ export function delContractPhaseItem(id: string | string[]) {
     method: 'delete',
   })
 }
+
+/**
+ * 根据合同ID获取应回款金额
+ */
+export function getReceivableAmountByContractId(contractId: string) {
+  return request({
+    url: `/oa/business/contractPhaseItem/getReceivableAmountByContractId/${contractId}`,
+    method: 'get',
+  })
+}

@@ -1,12 +1,13 @@
 import Big from 'big.js'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
 import { isNumeric } from '@/utils'
 import type { ContractPhaseForm } from '@/api/oa/business/contractPhase/types'
 import type { ContractPhaseItemVO } from '@/api/oa/business/contractPhaseItem/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
-import { addContractPhase, updateContractPhase } from '@/api/oa/business/contractPhase'
+import { addContractPhase, getContractPhase, updateContractPhase } from '@/api/oa/business/contractPhase'
 import { useWorkflowHelper } from '@/hooks'
+import { getContract } from '@/api/oa/business/contract'
 
 // 成功回调数据
 export interface SuccessData {
@@ -23,6 +24,8 @@ export interface ContractPhaseCustomForm extends ContractPhaseForm {
   contractStartDate: string
   contractEndDate: string
   contractAmount: number
+  appliedReceivableAmount?: number
+  canApplyReceivableAmount?: number
 }
 
 export function useForm() {
@@ -58,7 +61,10 @@ export function useForm() {
     contractStartDate: undefined,
     contractEndDate: undefined,
     contractAmount: undefined,
+    appliedReceivableAmount: undefined,
+    canApplyReceivableAmount: undefined,
     itemList: [cloneDeep(phaseItem)],
+    ossIdList: [],
   }
 
   const form = ref<ContractPhaseCustomForm>(cloneDeep(initFormData))
@@ -115,20 +121,17 @@ export function useForm() {
   }
 
   // 回显
-  async function view(_: string) {
-    // isLoading.value = true
-    // reset()
-    // const { data } = await getContractPhase(id)
-    // Object.assign(form.value, data)
-
-    // // 获取合同数据
-    // const { data: contract } = await getContract(form.value.contractId)
-
-    // // 设置合同数据
-    // setContractData(contract)
-
-    // // 回款总金额不等与合同金额
-    // isLoading.value = false
+  async function view(id: string) {
+    isLoading.value = true
+    reset()
+    const { data } = await getContractPhase(id)
+    // 获取合同数据
+    const { data: contract } = await getContract(data.contractId)
+    // 设置表单数据
+    Object.assign(form.value, data)
+    // 设置合同数据
+    setContractData(contract)
+    isLoading.value = false
   }
 
   // 提交
@@ -177,7 +180,19 @@ export function useForm() {
   async function workflowSubmit(options: SubmitOptions<ContractPhaseCustomForm> = {}) {
     const { success, fail } = options
 
-    const isNotEqual = !Big(form.value.contractAmount ?? 0).eq(totalReturnAmount.value)
+    // 应回款总和与合同金额不相等
+    const isNotEqualContractAmount = !Big(totalReturnAmount.value).eq(form.value.contractAmount ?? 0)
+    // 应回款总和大于合同金额
+    const isGreaterThanContractAmount = Big(totalReturnAmount.value).gt(form.value.contractAmount ?? 0)
+
+    // 应回款总和与可申请应回款不相等
+    const isNotEqualCanApplyReceivableAmount = !Big(totalReturnAmount.value).eq(form.value.canApplyReceivableAmount ?? 0)
+    // 应回款总和大于可申请应回款
+    const isGreaterThanCanApplyReceivableAmount = Big(totalReturnAmount.value).gt(form.value.canApplyReceivableAmount ?? 0)
+
+    // 申请节点
+    const isFirst = taskDefinitionKey.value === 'Activity_14g39r6'
+    // 需求部门经理填报节点
     const isManager = taskDefinitionKey.value === 'Activity_1p6s0tb'
 
     await Form.value?.validate()
@@ -185,9 +200,37 @@ export function useForm() {
         // 同步合同 id
         form.value.itemList.forEach(e => (e.contractId = form.value.contractId))
 
-        // 回款总金额不等与合同金额（需求部门经理填报确认节点）
-        if (isNotEqual && isManager)
-          return proxy.$modal.msgWarning('应回款总和与合同金额不相等')
+        if (isFirst || isManager) {
+          if (!isNil(form.value.appliedReceivableAmount)) {
+            // 应回款总和大于可申请应回款
+            if (isGreaterThanCanApplyReceivableAmount) {
+              return proxy.$modal.msgWarning('应回款总和不能超过可申请应回款')
+            }
+
+            // 应回款总和与可申请应回款不相等
+            if (isNotEqualCanApplyReceivableAmount) {
+              return proxy.$modal
+                .confirm('应回款总和与可申请应回款不相等，是否继续提交？')
+                .then(() => success?.(form.value))
+                .catch(() => fail?.())
+            }
+          }
+        }
+
+        if (isManager) {
+          // 应回款总和与合同金额不相等
+          if (isNil(form.value.appliedReceivableAmount)) {
+            // 应回款总和大于合同金额
+            if (isGreaterThanContractAmount) {
+              return proxy.$modal.msgWarning('应回款总和不能超过合同金额')
+            }
+
+            // 应回款总和与合同金额不相等
+            if (isNotEqualContractAmount) {
+              return proxy.$modal.msgWarning('应回款总和与合同金额不相等')
+            }
+          }
+        }
 
         success?.(form.value)
       })
@@ -215,6 +258,7 @@ export function useForm() {
     phaseItem,
     isLoading,
     updateLoading,
+    totalReturnAmount,
     setContractData,
     submit,
     view,

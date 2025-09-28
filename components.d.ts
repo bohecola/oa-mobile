@@ -12,6 +12,7 @@ declare module 'vue' {
     CardCell: typeof import('./src/components/TableCard/card-cell.vue')['default']
     CellLabelItem: typeof import('./src/components/CellLabelItem/index.vue')['default']
     CompanySelect: typeof import('./src/components/CompanySelect/index.vue')['default']
+    ComplexTabs: typeof import('./src/components/ComplexTabs/index.vue')['default']
     CoolCard: typeof import('./src/components/CoolCard/index.vue')['default']
     CoolCardList: typeof import('./src/components/CoolCardList/index.vue')['default']
     DateSelect: typeof import('./src/components/DateSelect/index.vue')['default']
