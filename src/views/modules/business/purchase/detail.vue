@@ -8,7 +8,12 @@
     input-align="left"
     readonly
   >
-    <van-notice-bar v-if="taskDefinitionKey === 'Activity_1r6z0az'" v-show-field="['nature', includeFields]" :scrollable="false" wrapable>
+    <van-notice-bar
+      v-if="['Activity_1r6z0az', 'Activity_05nwy5m'].includes(taskDefinitionKey)"
+      v-show-field="['nature', includeFields]"
+      :scrollable="false"
+      wrapable
+    >
       <div v-html="`<div>注意事项</div>${businessDepartmentNotice}`" />
     </van-notice-bar>
 
@@ -321,6 +326,7 @@
           >
             <template v-if="isContractPurchase">
               <PurchaseCategorySelect
+                v-if="itemListFields.includes('psiId')"
                 v-model="item.psiId"
                 v-model:amount="item.budgetAmount"
                 v-model:applying-amount="item.applyingAmount"
@@ -332,24 +338,28 @@
               />
 
               <van-field
+                v-if="itemListFields.includes('budgetAmount')"
                 label="预算金额"
                 :model-value="formatCurrency(item.budgetAmount)"
                 :name="`itemList.${index}.budgetAmount`"
               />
 
               <van-field
+                v-if="itemListFields.includes('applyingAmount')"
                 label="申请中"
                 :model-value="formatCurrency(item.applyingAmount)"
                 :name="`itemList.${index}.applyingAmount`"
               />
 
               <van-field
+                v-if="itemListFields.includes('finishAmount')"
                 label="已申请"
                 :model-value="formatCurrency(item.finishAmount)"
                 :name="`itemList.${index}.finishAmount`"
               />
 
               <van-field
+                v-if="itemListFields.includes('availableAmount')"
                 label="剩余金额"
                 :model-value="formatCurrency(item.availableAmount)"
                 :name="`itemList.${index}.availableAmount`"
@@ -357,37 +367,42 @@
             </template>
 
             <van-field
+              v-if="itemListFields.includes('name')"
               v-model="item.name"
               label="物品名称"
               :name="`itemList.${index}.name`"
             />
 
             <van-field
+              v-if="itemListFields.includes('brand')"
               v-model="item.brand"
               label="品牌"
               :name="`itemList.${index}.brand`"
             />
 
             <van-field
+              v-if="itemListFields.includes('specsModel')"
               v-model="item.specsModel"
               label="规格型号"
               :name="`itemList.${index}.specsModel`"
             />
 
             <van-field
+              v-if="itemListFields.includes('unit')"
               v-model="item.unit"
               label="单位"
               :name="`itemList.${index}.unit`"
             />
 
             <van-field
+              v-if="itemListFields.includes('num')"
               v-model.number="item.num"
               label="数量"
               :name="`itemList.${index}.num`"
             />
 
             <DictSelect
-              v-if="showExtraData"
+              v-if="itemListFields.includes('invoiceType') && showExtraData"
               v-model="item.invoiceType"
               label="发票类型"
               :name="`itemList.${index}.invoiceType`"
@@ -395,68 +410,71 @@
             />
 
             <DictSelect
-              v-if="showExtraData"
+              v-if="itemListFields.includes('taxRate') && showExtraData"
               v-model="item.taxRate"
-              label="税率(%)"
+              label="税率（%）"
               :name="`itemList.${index}.taxRate`"
               :options="oa_contract_tax_rate"
             />
 
             <van-field
-              label="含税单价(元)"
+              v-if="itemListFields.includes('taxAmount')"
+              label="含税单价（元）"
               :model-value="formatCurrency(item.taxAmount)"
               :name="`itemList.${index}.taxAmount`"
             />
 
             <van-field
-              v-if="showExtraData"
-              label="不含税单价(元)"
+              v-if="itemListFields.includes('amount') && showExtraData"
+              label="不含税单价（元）"
               :model-value="formatCurrency(item.amount)"
               :name="`itemList.${index}.amount`"
             />
 
             <van-field
-              v-if="includeFields.includes('realAmount')"
-              label="含税实际单价(元)"
+              v-if="itemListFields.includes('taxRealAmount')"
+              label="含税实际单价（元）"
               :model-value="formatCurrency(item.taxRealAmount)"
               :name="`itemList.${index}.taxRealAmount`"
             />
 
             <van-field
-              v-if="includeFields.includes('notTaxRealAmount') && showExtraData"
-              label="不含税实际单价(元)"
+              v-if="itemListFields.includes('realAmount') && showExtraData"
+              label="不含税实际单价（元）"
               :model-value="formatCurrency(item.realAmount)"
               :name="`itemList.${index}.realAmount`"
             />
 
             <van-field
-              label="含税合计(元)"
+              v-if="itemListFields.includes('taxTotalAmount')"
+              label="含税合计（元）"
               :model-value="formatCurrency(item.taxTotalAmount)"
               :name="`itemList.${index}.taxTotalAmount`"
             />
 
             <van-field
-              v-if="showExtraData"
-              label="不含税合计(元)"
+              v-if="itemListFields.includes('totalAmount') && showExtraData"
+              label="不含税合计（元）"
               :model-value="formatCurrency(item.totalAmount)"
               :name="`itemList.${index}.totalAmount`"
             />
 
             <van-field
-              v-if="includeFields.includes('realAmount')"
-              label="含税实际合计(元)"
+              v-if="itemListFields.includes('taxRealTotalAmount')"
+              label="含税实际合计（元）"
               :model-value="formatCurrency(item.taxRealTotalAmount)"
               :name="`itemList.${index}.taxRealTotalAmount`"
             />
 
             <van-field
-              v-if="includeFields.includes('notTaxRealAmount') && showExtraData"
-              label="不含税实际合计(元)"
+              v-if="itemListFields.includes('realTotalAmount') && showExtraData"
+              label="不含税实际合计（元）"
               :model-value="formatCurrency(item.realTotalAmount)"
               :name="`itemList.${index}.realTotalAmount`"
             />
 
             <van-field
+              v-if="itemListFields.includes('inquiryWay')"
               v-model="item.inquiryWay"
               label="询价途径"
               type="textarea"
@@ -466,6 +484,7 @@
             />
 
             <van-field
+              v-if="itemListFields.includes('supplier')"
               v-model="item.supplier"
               label="指定供应商"
               type="textarea"
@@ -475,6 +494,7 @@
             />
 
             <van-field
+              v-if="itemListFields.includes('remark')"
               v-model="item.remark"
               label="备注"
               type="textarea"
@@ -518,9 +538,9 @@ import { isNil } from 'lodash-es'
 import ContractSelect from '../components/ContractSelect.vue'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
-import { businessDepartmentNotice, checkFilesDescription } from './helper'
+import { businessDepartmentNotice, checkFilesDescription, purchaseItem } from './helper'
 import { useForm } from './form'
-import type { PurchaseForm } from '@/api/oa/business/purchase/types'
+import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import type { PurchaseChangeVO } from '@/api/oa/business/purchaseChange/types'
 import { getPurchase } from '@/api/oa/business/purchase'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -530,12 +550,16 @@ import { useStore } from '@/store'
 withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<PurchaseForm>
+    itemListFields?: KeysOfArray<PurchaseItemVO>
     showLoading?: boolean
   }>(),
   {
     includeFields: () => {
       const { form } = useForm()
       return Object.keys(form.value) as KeysOfArray<PurchaseForm>
+    },
+    itemListFields: () => {
+      return Object.keys(purchaseItem) as KeysOfArray<PurchaseItemVO>
     },
     showLoading: true,
   },

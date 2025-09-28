@@ -40,6 +40,39 @@ export const allFields: PartialBooleanRecord<PurchaseForm> = {
   qzIncomeDescription: true,
 }
 
+export const allItemListFields: PartialBooleanRecord<PurchaseItemVO> = {
+  psiId: true,
+  subjectItemDeptId: true,
+  budgetAmount: true,
+  applyingAmount: true,
+  finishAmount: true,
+  availableAmount: true,
+  name: true,
+  brand: true,
+  specsModel: true,
+  unit: true,
+  num: true,
+
+  invoiceType: true,
+  taxRate: true,
+
+  amount: true,
+  taxAmount: true,
+
+  totalAmount: true,
+  taxTotalAmount: true,
+
+  realAmount: true,
+  taxRealAmount: true,
+
+  realTotalAmount: true,
+  taxRealTotalAmount: true,
+
+  inquiryWay: true,
+  supplier: true,
+  remark: true,
+}
+
 // 签证收入金额/增值税率明细
 export const taxRateItem: TaxRateVO = {
   amount: undefined,

@@ -1,5 +1,6 @@
 import { cloneDeep, isNil } from 'lodash-es'
 import type { FormInstance } from 'vant'
+import Big from 'big.js'
 import { purchaseItem, sumTotalMoney, taxRateItem } from './helper'
 import type { PurchaseForm, PurchaseItemVO, PurchaseVO, TaxRateVO } from '@/api/oa/business/purchase/types'
 import { addPurchase, getPurchase, updatePurchase, updatePurchaseByBussiness } from '@/api/oa/business/purchase'
@@ -15,6 +16,9 @@ export interface SuccessData {
 
 export function useForm() {
   const { user } = useStore()
+
+  // 代理
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
   // 引用
   const Form = ref<FormInstance>()
@@ -232,6 +236,23 @@ export function useForm() {
     const { success, fail } = options
     await Form.value?.validate()
       .then(() => {
+        if (isVisaPurchase.value) {
+          const isAmountGreaterThanTaxRateListTotalAmount = Big(form.value.amount).gt(taxRateListTotalAmount.value)
+          const isRealAmountGreaterThanTaxRealTotalAmount = Big(form.value.realAmount ?? 0).gt(taxRateListTotalAmount.value)
+
+          if (!isNil(form.value.realAmount)) {
+            if (isRealAmountGreaterThanTaxRealTotalAmount) {
+              return proxy.$modal.msgWarning('含税实际总金额不能超出签证收入含税总金额')
+            }
+            else {
+              return success?.(form.value)
+            }
+          }
+
+          if (isAmountGreaterThanTaxRateListTotalAmount) {
+            return proxy.$modal.msgWarning('含税总金额不能超出签证收入含税总金额')
+          }
+        }
         success?.(form.value)
       }).catch(fail)
   }

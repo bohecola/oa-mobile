@@ -11,20 +11,15 @@
       <detail ref="Detail" :include-fields="overviewFields" :show-loading="false" />
 
       <!-- 自行采购通过后展示 -->
-      <div
-        v-if="submitFormData.variables?.entity?.purchaseMethod === '2' && businessStatus === 'finish'"
-      >
-        <img
-          :src="zixingcaigou" alt="自行采购"
-          class="absolute top-[82px] right-[32px] w-14 h-14 opacity-70"
-        >
+      <div v-if="submitFormData.variables?.entity?.purchaseMethod === '2' && businessStatus === 'finish'">
+        <img :src="zixingcaigou" alt="自行采购" class="absolute top-[82px] right-[32px] w-14 h-14 opacity-70">
       </div>
     </div>
 
     <template v-else>
       <!-- 采购申请 -->
       <div v-if="taskDefinitionKey === 'Activity_11sjm5p'">
-        <upsert ref="Upsert" :include-fields="applyFields" :show-loading="false" />
+        <upsert ref="Upsert" :include-fields="applyFields" :item-list-fields="applyItemListFields" :show-loading="false" />
       </div>
 
       <!-- 采购执行节点 -->
@@ -48,9 +43,16 @@
         <detail ref="ReCheckDetail" :include-fields="overviewFields" :show-loading="false" />
       </div>
 
+      <!-- 签证采购：商务办理 -->
+      <div v-else-if="taskDefinitionKey === 'Activity_05nwy5m'">
+        <detail ref="BusinessDetailTop" :include-fields="businessDetailTopFields" :show-loading="false" />
+        <upsert ref="BusinessUpsert" :include-fields="['taxRateList', 'qzIncomeDescription']" :show-loading="false" />
+        <detail ref="BusinessDetailBottom" :include-fields="['itemList', 'purchaseContractIds', 'checkFiles', 'ossIdList']" :show-loading="false" />
+      </div>
+
       <!-- 其他审批通用节点 -->
       <div v-else>
-        <detail ref="CommonDetail" :include-fields="commonFields" :show-loading="false" />
+        <detail ref="CommonDetail" :include-fields="commonFields" :item-list-fields="commonItemListFields" :show-loading="false" />
       </div>
     </template>
   </WorkflowPage>
@@ -60,9 +62,9 @@
 import { isNil } from 'lodash-es'
 import upsert from '../upsert.vue'
 import detail from '../detail.vue'
-import { allFields } from '../helper'
+import { allFields, allItemListFields } from '../helper'
 import { useWorkflow, useWorkflowViewData } from '@/hooks'
-import type { PurchaseForm } from '@/api/oa/business/purchase/types'
+import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
 import { startWorkFlow } from '@/api/workflow/task'
 import { filterTruthyKeys } from '@/utils'
 import zixingcaigou from '@/assets/images/wf/zixingcaigou.png'
@@ -90,6 +92,10 @@ const CheckUpsert = ref<InstanceType<typeof upsert>>()
 
 const ReCheckDetail = ref<InstanceType<typeof detail>>()
 
+const BusinessDetailTop = ref<InstanceType<typeof detail>>()
+const BusinessUpsert = ref<InstanceType<typeof upsert>>()
+const BusinessDetailBottom = ref<InstanceType<typeof detail>>()
+
 const CommonDetail = ref<InstanceType<typeof detail>>()
 
 // 总览字段
@@ -112,6 +118,15 @@ const applyFields = ref(
     checkFiles: false,
   }),
 )
+const applyItemListFields = ref(
+  filterTruthyKeys<PurchaseItemVO>({
+    ...allItemListFields,
+    realAmount: false,
+    taxRealAmount: false,
+    taxRealTotalAmount: false,
+    realTotalAmount: false,
+  }),
+)
 
 // 其他通用节点审批字段
 const commonFields = ref(
@@ -123,6 +138,15 @@ const commonFields = ref(
     purchaseContractIds: false,
     purchaseFiles: false,
     checkFiles: false,
+  }),
+)
+const commonItemListFields = ref(
+  filterTruthyKeys<PurchaseItemVO>({
+    ...allItemListFields,
+    realAmount: false,
+    taxRealAmount: false,
+    taxRealTotalAmount: false,
+    realTotalAmount: false,
   }),
 )
 
@@ -155,6 +179,19 @@ const executeUpsertFields = ref(
 const checkDetailFields = ref(
   filterTruthyKeys<PurchaseForm>({
     ...allFields,
+    checkFiles: false,
+    ossIdList: false,
+  }),
+)
+
+// 签证采购：商务办理字段
+const businessDetailTopFields = ref(
+  filterTruthyKeys<PurchaseForm>({
+    ...allFields,
+    taxRateList: false,
+    qzIncomeDescription: false,
+    itemList: false,
+    purchaseContractIds: false,
     checkFiles: false,
     ossIdList: false,
   }),
@@ -242,6 +279,10 @@ async function handleApproval({ open }: ApprovalPayload) {
     case 'Activity_0ccirhe':
       await CheckUpsert.value?.workflowSubmit({ success })
       break
+    // 签证采购：商务办理
+    case 'Activity_05nwy5m':
+      await BusinessUpsert.value?.workflowSubmit({ success })
+      break
     // 打开审批弹窗
     default:
       open(taskId as string)
@@ -257,8 +298,8 @@ onMounted(async () => {
 
   if (taskId || processInstanceId) {
     loading.value = true
-    const res = await useWorkflowViewData({ taskId, processInstanceId })
-    const { entity, task } = res.data
+    const { data } = await useWorkflowViewData({ taskId, processInstanceId })
+    const { entity, task } = data
 
     submitFormData.value.variables.entity = entity
     taskDefinitionKey.value = task.taskDefinitionKey
@@ -275,6 +316,9 @@ onMounted(async () => {
             CheckDetail.value?.workflowView(entity)
             CheckUpsert.value?.workflowView(entity)
             ReCheckDetail.value?.workflowView(entity)
+            BusinessDetailTop.value?.workflowView(entity)
+            BusinessUpsert.value?.workflowView(entity)
+            BusinessDetailBottom.value?.workflowView(entity)
             CommonDetail.value?.workflowView(entity)
             break
           case 'view':
