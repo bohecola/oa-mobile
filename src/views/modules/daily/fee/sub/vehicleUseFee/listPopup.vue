@@ -67,7 +67,6 @@ const vehicleDetail = ref<any>({})
 const queryParams: CarRepairMaintenanceQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  type: props.formValue.b_type,
   carNumber: props.formValue.b_vehicleNo,
 })
 
