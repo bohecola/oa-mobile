@@ -275,12 +275,23 @@
             <CoolCard
               v-for="(item, index) in form.taxRateList"
               :key="index"
-              :title="formatCurrency(item.amount)"
             >
-              <van-field-number
-                v-model="item.amount"
-                label="签证收入含税金额（元）"
+              <template #title>
+                <div class="flex items-center justify-between">
+                  <span>{{ formatCurrency(item.amount) }}</span>
+                  <van-icon
+                    v-if="!isEmpty(item.editList)"
+                    name="info-o"
+                    class="mr-2"
+                    @click.stop="handleViewTaxRateInfo(item)"
+                  />
+                </div>
+              </template>
+
+              <van-field
+                :model-value="formatCurrency(item.amount)"
                 :name="`taxRateList.${index}.amount`"
+                label="签证收入含税金额（元）"
               />
 
               <DictSelect
@@ -291,7 +302,7 @@
               />
 
               <van-field
-                :model-value="item.notTaxAmount"
+                :model-value="formatCurrency(item.notTaxAmount)"
                 label="签证收入不含税金额（元）"
                 placeholder="自动计算"
                 disabled
@@ -530,17 +541,20 @@
         <UploadFile v-model="form.ossIdList" readonly />
       </template>
     </van-field>
+
+    <HistoryTaxRateList ref="HistoryTaxRateListRef" />
   </van-form>
 </template>
 
 <script setup lang="ts">
-import { isNil } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import ContractSelect from '../components/ContractSelect.vue'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
+import HistoryTaxRateList from './components/HistoryTaxRateList.vue'
 import { businessDepartmentNotice, checkFilesDescription, purchaseItem } from './helper'
 import { useForm } from './form'
-import type { PurchaseForm, PurchaseItemVO } from '@/api/oa/business/purchase/types'
+import type { PurchaseForm, PurchaseItemVO, TaxRateVO } from '@/api/oa/business/purchase/types'
 import type { PurchaseChangeVO } from '@/api/oa/business/purchaseChange/types'
 import { getPurchase } from '@/api/oa/business/purchase'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -574,6 +588,9 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { oa_purchase_business_type, oa_project_business_type, oa_purchase_invoice_type, oa_contract_tax_rate } = toRefs(
   proxy.useDict('oa_purchase_business_type', 'oa_project_business_type', 'oa_purchase_invoice_type', 'oa_contract_tax_rate'),
 )
+
+// 签证金额历史记录
+const HistoryTaxRateListRef = ref<InstanceType<typeof HistoryTaxRateList>>(null)
 
 // 流程辅助
 const { taskDefinitionKey } = useWorkflowHelper()
@@ -621,6 +638,11 @@ async function handleWorkflowView(...args: Parameters<typeof workflowView>) {
   const [entity] = args
   const { data } = await getPurchase(entity.id)
   form.value.purchaseChange = data.purchaseChange
+}
+
+// 查看签证收入金额/税率
+function handleViewTaxRateInfo(item: TaxRateVO) {
+  HistoryTaxRateListRef.value?.open(item)
 }
 
 defineExpose({

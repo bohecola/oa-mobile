@@ -682,6 +682,7 @@
 <script setup lang="ts">
 import Big from 'big.js'
 import { cloneDeep, isEmpty, isNil } from 'lodash-es'
+import { v4 as uuidv4 } from 'uuid'
 import type { FieldRule } from 'vant'
 import ContractSelect from '../components/ContractSelect.vue'
 import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
@@ -885,7 +886,7 @@ function onNatureChange() {
   // 签证采购
   if (isVisaPurchase.value) {
     form.value.subjectType = undefined
-    form.value.taxRateList = [cloneDeep(taxRateItem)]
+    form.value.taxRateList = [createTaxRateItem()]
     resetPS()
   }
 }
@@ -1004,9 +1005,16 @@ function onLeaseTypeChange(val?: string) {
   }
 }
 
+function createTaxRateItem() {
+  const item = cloneDeep(taxRateItem)
+  const index = uuidv4()
+  item.index = index
+  return item
+}
+
 // 新增签证收入金额/增值税率
 function handleAddTaxRate() {
-  form.value.taxRateList.push(cloneDeep(taxRateItem))
+  form.value.taxRateList.push(createTaxRateItem())
 }
 
 // 删除签证收入金额/增值税率

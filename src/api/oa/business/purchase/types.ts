@@ -569,7 +569,11 @@ export interface PurchaseItemVO {
  * 签证收入金额/增值税率
  */
 export interface TaxRateVO {
+  index?: string
   amount: number
   taxRate: string
   notTaxAmount: number
+  createName?: string
+  createTime?: string
+  editList?: TaxRateVO[]
 }

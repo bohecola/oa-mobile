@@ -140,6 +140,7 @@ import UserSelect from '@/components/UserSelect/index.vue'
 // import MultiInstanceUser from '@/components/Process/multiInstanceUser.vue'
 import type { UserVO } from '@/api/system/user/types'
 import type { TaskVO } from '@/api/workflow/task/types'
+import { useStore } from '@/store'
 
 const props = defineProps({
   entityVariables: {
@@ -156,6 +157,8 @@ const DelegateTaskRef = ref<InstanceType<typeof UserSelect>>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { oa_workflow_comment_def } = toRefs(proxy?.useDict('oa_workflow_comment_def'))
+
+const { user } = useStore()
 
 // const userSelectCopyRef = ref<InstanceType<typeof UserSelect>>()
 
@@ -299,13 +302,17 @@ async function handleCompleteTask() {
   if (isMessageEmpty()) {
     return false
   }
+
+  const currentCompleteUser = { userId: user.info.userId, nickName: user.info.nickName }
+
   form.value.taskId = taskId.value
-  form.value.entityVariable = props.entityVariables
+  form.value.entityVariable = { ...props.entityVariables, currentCompleteUser }
   form.value.wfCopyList = getWfCopyList()
 
   await proxy.$modal.confirm('是否确认提交？')
   loading.value = true
   buttonDisabled.value = true
+
   try {
     await completeTask(form.value)
     popup.visible = false
