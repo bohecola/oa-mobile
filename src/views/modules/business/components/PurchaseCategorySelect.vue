@@ -15,7 +15,7 @@
         <slot :name="name" v-bind="scope" />
       </template>
 
-      <template v-if="clearable && !isReadonly && !isNil(modelValue)" #right-icon>
+      <template v-if="clearable && !isReadonly && !attrs?.disabled && !isNil(modelValue)" #right-icon>
         <van-icon name="clear" class="text-[--van-field-clear-icon-color]" @click.stop="onClear" />
       </template>
 
@@ -100,7 +100,6 @@ const props = withDefaults(
     modelValue?: string
     multiple?: boolean
     readonly?: boolean
-    disabled?: boolean
     clearable?: boolean
     params: {
       psId: string

@@ -550,7 +550,7 @@
               v-model.number="item.taxRealAmount"
               label="含税实际单价（元）"
               :name="`itemList.${index}.taxRealAmount`"
-              :rules="[{ required: taxRealAmountRequired, message: '含税实际单价不能为空', trigger: 'onBlur' }]"
+              :rules="[{ validator: taxRealAmountValidator(item) }]"
             />
 
             <van-field-number
@@ -828,7 +828,7 @@ const PurchaseCategorySelectParams = computed(() => {
 
 // 含税实际金额是否必填
 const taxRealAmountRequired = computed(() => {
-  if (props.includeFields.includes('realAmount')) {
+  if (props.itemListFields.includes('taxRealAmount')) {
     if (taskDefinitionKey.value === 'Activity_0x4xddm') {
       return true
     }
@@ -870,6 +870,28 @@ const purchaseMethodDisabled = computed(() => {
 
   return false
 })
+
+// 含税实际单价校验
+function taxRealAmountValidator(item: PurchaseItemVO) {
+  return function (value: number) {
+    if (taxRealAmountRequired.value) {
+      if (!isNumeric(value)) {
+        const msg = '含税实际单价不能为空'
+        proxy.$modal.msg(msg)
+        return msg
+      }
+
+      if (Big(value).gt(item.taxAmount)) {
+        const msg = `含税实际单价 ${value} 不能大于含税单价 ${item.taxAmount}`
+        proxy.$modal.msg(msg)
+        return msg
+      }
+
+      return true
+    }
+    return true
+  }
+}
 
 // 采购性质切换
 function onNatureChange() {

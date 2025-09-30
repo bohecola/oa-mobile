@@ -7,6 +7,7 @@ import { addPurchase, getPurchase, updatePurchase, updatePurchaseByBussiness } f
 import { useStore } from '@/store'
 import { getGenerateCode } from '@/api/oa/common'
 import { BusinessCodeEnum } from '@/enums/BusinessCodeEnum'
+import { useWorkflowHelper } from '@/hooks'
 
 export interface SuccessData {
   id: PurchaseForm['id']
@@ -16,6 +17,8 @@ export interface SuccessData {
 
 export function useForm() {
   const { user } = useStore()
+
+  const { taskDefinitionKey } = useWorkflowHelper()
 
   // 代理
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -240,17 +243,36 @@ export function useForm() {
           const isAmountGreaterThanTaxRateListTotalAmount = Big(form.value.amount).gt(taxRateListTotalAmount.value)
           const isRealAmountGreaterThanTaxRealTotalAmount = Big(form.value.realAmount ?? 0).gt(taxRateListTotalAmount.value)
 
+          const isLastBusinessNode = taskDefinitionKey.value === 'Activity_05nwy5m'
+
+          const msgAmount = `含税总金额 ${form.value.amount} 不能超出签证收入含税总金额 ${taxRateListTotalAmount.value}`
+          const msgRealAmount = `含税实际总金额 ${form.value.realAmount} 不能超出签证收入含税总金额 ${taxRateListTotalAmount.value}`
+
+          // 含税实际总金额不为空
           if (!isNil(form.value.realAmount)) {
-            if (isRealAmountGreaterThanTaxRealTotalAmount) {
-              return proxy.$modal.msgWarning('含税实际总金额不能超出签证收入含税总金额')
+            // 含税实际总金额超过签证收入含税总金额
+            if (isRealAmountGreaterThanTaxRealTotalAmount && taxRateListTotalAmount.value !== 0) {
+              return proxy.$modal.msgWarning(msgRealAmount)
             }
-            else {
-              return success?.(form.value)
-            }
+
+            return success?.(form.value)
           }
 
+          // 含税总金额超过签证收入
           if (isAmountGreaterThanTaxRateListTotalAmount) {
-            return proxy.$modal.msgWarning('含税总金额不能超出签证收入含税总金额')
+            // 不是商务办理节点
+            if (!isLastBusinessNode) {
+              // 签证收入含税总金额不为 0
+              if (taxRateListTotalAmount.value !== 0) {
+                return proxy.$modal.msgWarning(msgAmount)
+              }
+
+              // 签证收入含税总金额为 0
+              return success?.(form.value)
+            }
+
+            // 商务办理节点
+            return proxy.$modal.msgWarning(msgAmount)
           }
         }
         success?.(form.value)
