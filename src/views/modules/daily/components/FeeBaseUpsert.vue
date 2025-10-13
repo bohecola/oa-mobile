@@ -188,6 +188,8 @@ const props = withDefaults(
   },
 )
 
+const emit = defineEmits(['onDeptChange'])
+
 const { user } = useStore()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -251,9 +253,11 @@ function onSubjectTypeChange() {
 }
 
 // 部门修改
-function onDeptSelectChange() {
+function onDeptSelectChange(deptId: string) {
   resetFields(['psId', 'contractId', 'contractNo'])
   resetSubjectItemId()
+
+  emit('onDeptChange', deptId)
 }
 
 // 预算修改

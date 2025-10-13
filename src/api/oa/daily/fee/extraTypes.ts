@@ -16,7 +16,7 @@ export interface ZDFY {
 export interface CLSYXGFY {
   b_contractNo?: string
   b_vehicleNo?: string
-  b_vehicleModel?: number
+  b_vehicleModel?: string
   b_vehicleMileageToday?: number
   b_lastRepairDate?: string
   b_maintenanceIntervalMileage?: number

@@ -1,5 +1,5 @@
 <template>
-  <FeeBaseUpsert :include-fields="includeFields1" />
+  <FeeBaseUpsert :include-fields="includeFields1" @on-dept-change="onDeptChange" />
 
   <!-- 保养维修 -->
   <DictSelect
@@ -28,12 +28,12 @@
 
   <!-- 保养维修 -->
   <van-field
-    v-model.trim="form.b_vehicleModel"
+    v-model="form.b_vehicleModel"
     v-show-field="['b_vehicleModel', includeFields]"
     label="车型"
-    placeholder="请输入"
     name="b_vehicleModel"
-    :rules="computedRules.b_vehicleModel"
+    placeholder="选择车牌号后自动填充（没有填充则无相关数据）"
+    readonly
   />
 
   <van-field
@@ -340,6 +340,10 @@ const props = withDefaults(
   },
 )
 
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+const { oa_car_vehicle_type } = toRefs(proxy?.useDict('oa_car_vehicle_type'))
+
 const form = inject<Ref<DailyFeeForm>>('form')
 
 // 指令
@@ -365,6 +369,18 @@ function resetState() {
   form.value.b_upMileage = undefined
   form.value.b_lastAnnualReviewExpirationDate = undefined
   form.value.b_lastVerificationDate = undefined
+}
+
+// 需求部门修改
+function onDeptChange(deptId: string) {
+  form.value.b_vehicleNo = undefined
+  carNumberOptions.value = []
+
+  resetState()
+
+  if (!isNil(deptId)) {
+    fetchCarNumberOptions({ deptId })
+  }
 }
 
 // 车牌号修改
@@ -405,7 +421,7 @@ function onCarNumberItemsChange(items: DictDataOption[]) {
 
   // 保养维修费用
   if (form.value.no === 'BYWXFY') {
-    form.value.b_vehicleModel = car?.brandModel
+    form.value.b_vehicleModel = proxy.selectDictLabel(oa_car_vehicle_type.value, car?.vehicleType)
   }
 }
 
@@ -416,7 +432,7 @@ function onVehicleMileageTodayChange(_: number) {
 
 // 计算间隔里程数
 function computeIntervalMileage() {
-  if (isNil(form.value.b_vehicleMileageToday)) {
+  if (!isNumeric(form.value.b_vehicleMileageToday)) {
     form.value.b_maintenanceIntervalMileage = undefined
     return
   }
