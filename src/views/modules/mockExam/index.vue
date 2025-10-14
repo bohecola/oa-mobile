@@ -45,7 +45,7 @@
               v-for="(item, index) in examList"
               :key="item.id"
               :title="item.id"
-              :label="`开始时间：${item.startTime}`"
+
               title-class="!flex-[2]"
             >
               <template #title>
@@ -58,6 +58,13 @@
                     <span>得分</span>
                     <span class="ml-1 italic font-bold text-base text-blue-500">{{ item.totalScore }}</span>
                   </div>
+                </div>
+              </template>
+
+              <template #label>
+                <div>开始时间：{{ item.startTime }}</div>
+                <div v-if="!isNil(item.endTime)">
+                  结束时间：{{ item.endTime }}
                 </div>
               </template>
 
@@ -91,6 +98,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from 'lodash-es'
 import { useMockPaper } from './helper'
 import { useList, usePopup } from '@/hooks'
 import { delExam, listExam } from '@/api/exam/exam'
