@@ -844,6 +844,11 @@ const upsertDisabled = computed(() => !isNil(form.value.id) && isNil(taskDefinit
 
 // 采购方式禁用
 const purchaseMethodDisabled = computed(() => {
+  // 服务类别为租赁时不控制
+  if (form.value.serviceCategory === '3') {
+    return false
+  }
+
   // 生活用品、办公用品 禁用采购方式 =>（设置自行采购）
   if (['3', '4'].includes(form.value.objectCategory)) {
     return true
@@ -939,6 +944,11 @@ function resetPS() {
 
 // 自动设置采购方式
 function autoSetPurchaseMethod() {
+  // 服务类别为租赁时不控制
+  if (form.value.serviceCategory === '3') {
+    return
+  }
+
   // 生活用品、办公用品 =>（设置自行采购）
   if (['3', '4'].includes(form.value.objectCategory)) {
     form.value.purchaseMethod = '2'
@@ -1017,6 +1027,8 @@ function onServiceCategoryChange(val?: string) {
   if (val !== '3') {
     resetFields(['leaseType', 'isDeposit'])
   }
+
+  autoSetPurchaseMethod()
 }
 
 // 租赁类型选择
@@ -1117,13 +1129,10 @@ function onPurchaseMethodDescClick() {
   showPurchaseMethodDesc.value = true
 }
 
-// 含税总金额监听
-watch(
-  () => form.value.amount,
-  () => {
-    autoSetPurchaseMethod()
-  },
-)
+// 含税总金额、业务类别监听
+watch([() => form.value.amount, () => form.value.businessCategory], () => {
+  autoSetPurchaseMethod()
+})
 
 // 采购清单监听
 watch(

@@ -22,6 +22,7 @@
         <span class="text-red-400">公司采购</span>
         并且禁止修改
       </div>
+      <div>4. 服务类别为 <span class="text-red-400">租赁</span> 时，采购方式由申请人根据实际情况自行选择</div>
     </div>
 
     <div class="mt-2 mb-1 font-bold">
