@@ -114,7 +114,7 @@ export function queryGroupAmount(query: ContractPhaseQuery): AxiosPromise<Contra
 }
 
 /**
- * 校验用户是否有经营合同查询角色角色
+ * 校验用户是否有经营合同查询角色
  */
 export function checkContractReportRole(): AxiosPromise {
   return request({

@@ -105,9 +105,10 @@ import PickerToolbar from 'vant/es/picker/PickerToolbar'
 import { isArray, isEmpty, isEqual, isNil, isNumber } from 'lodash-es'
 import { BaseTree, OpenIcon } from '@he-tree/vue'
 import type { Stat } from 'node_modules/@he-tree/vue/dist/v3/components/TreeProcessorVue'
+import type { RoleConfig } from './types'
 import type { DeptQuery, DeptVO } from '@/api/system/dept/types'
 import { listDept } from '@/api/system/dept'
-import { checkContractReportRole } from '@/api/oa/business/contractPhase/index'
+import { checkUserHaveRoleByRoleKey } from '@/api/system/role'
 import { useParentForm, usePopup } from '@/hooks'
 import customEmptyImage from '@/assets/images/custom-empty-image.png'
 import { useStore } from '@/store'
@@ -133,10 +134,14 @@ const props = withDefaults(
     dataConfig?: DataConfig
     params?: Partial<DeptQuery>
     disabled?: boolean
-    isCheckContractReportRole?: boolean
+    roleConfig?: RoleConfig
   }>(),
   {
     params: () => ({}),
+    roleConfig: () => ({
+      check: false,
+      key: undefined,
+    }),
   },
 )
 
@@ -354,8 +359,8 @@ function onConfirm(value: DeptTreeSelectValue) {
 async function getData() {
   isLoading.value = true
 
-  if (props.isCheckContractReportRole) {
-    const { msg } = await checkContractReportRole()
+  if (props.roleConfig.check) {
+    const { msg } = await checkUserHaveRoleByRoleKey(props.roleConfig.key)
     contractReportRoleCheckState.value = msg
   }
 

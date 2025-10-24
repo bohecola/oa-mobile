@@ -153,6 +153,16 @@ export function deptTreeSelect(roleId: string | number): AxiosPromise<RoleDeptTr
   })
 }
 
+/**
+ * 校验用户是否有指定角色
+ */
+export function checkUserHaveRoleByRoleKey(roleKey: string): AxiosPromise {
+  return request({
+    url: `/system/role/checkUserHaveRoleByRoleKey/${roleKey}`,
+    method: 'get',
+  })
+}
+
 export default {
   optionSelect,
   listRole,

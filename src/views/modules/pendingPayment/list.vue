@@ -75,7 +75,10 @@
       <DeptSelect
         v-model="queryParams.deptId"
         label="需求部门"
-        is-check-contract-report-role
+        :role-config="{
+          check: true,
+          key: 'ContractReport',
+        }"
       />
 
       <DictSelect
