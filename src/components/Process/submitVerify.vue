@@ -134,13 +134,11 @@
 <script lang="ts" setup>
 import type { ComponentInternalInstance } from 'vue'
 import type { FieldInstance } from 'vant'
-import { ref } from 'vue'
-import { backProcess, completeTask, delegateTask, getTaskById, getTaskNodeList, terminationTask, transferTask } from '@/api/workflow/task'
-import UserSelect from '@/components/UserSelect/index.vue'
-// import MultiInstanceUser from '@/components/Process/multiInstanceUser.vue'
 import type { UserVO } from '@/api/system/user/types'
 import type { TaskVO } from '@/api/workflow/task/types'
+import { backProcess, completeTask, delegateTask, getTaskById, getTaskNodeList, transferTask } from '@/api/workflow/task'
 import { useStore } from '@/store'
+import UserSelect from '@/components/UserSelect/index.vue'
 
 const props = defineProps({
   entityVariables: {
@@ -223,8 +221,8 @@ const task = ref<TaskVO>({
   wfNodeConfigVo: undefined,
 })
 
-// 加签 减签标题
-const title = ref('')
+// // 加签 减签标题
+// const title = ref('')
 
 const popup = reactive<DialogOption>({
   visible: false,
@@ -249,10 +247,6 @@ const backForm = ref<Record<string, any>>({
 
 const backNode = computed(() => taskNodeList.value.find(e => e.nodeId === backForm.value.targetActivityId))
 
-function closeDialog() {
-  popup.visible = false
-}
-
 // 审批意见校验
 function isMessageEmpty() {
   if (!form.value.message) {
@@ -275,7 +269,7 @@ function getWfCopyList() {
 function openDialog(id?: string) {
   selectCopyUserList.value = []
   form.value.fileId = undefined
-  taskId.value = id as string
+  taskId.value = id
   form.value.message = undefined
   popup.visible = true
   loading.value = true
@@ -341,14 +335,15 @@ async function handleBackProcessOpen() {
   backVisible.value = true
   backLoading.value = true
   backButtonDisabled.value = true
-  const data = await getTaskNodeList(task.value.processInstanceId as string)
+  const { data } = await getTaskNodeList(task.value.processInstanceId)
 
-  taskNodeList.value = data.data
+  const [{ nodeId, nodeName }] = data
+  rejectNodeName.value = nodeName
+
+  taskNodeList.value = data
   backLoading.value = false
   backButtonDisabled.value = false
-  const [{ nodeId, nodeName }] = taskNodeList.value
   backForm.value.targetActivityId = nodeId
-  rejectNodeName.value = nodeName
 }
 
 // 驳回
@@ -366,21 +361,6 @@ async function handleBackProcess() {
   proxy.$modal.msgSuccess('操作成功')
 }
 
-// // 加签
-// function addMultiInstanceUser() {
-//   if (multiInstanceUserRef.value) {
-//     title.value = '加签人员'
-//     multiInstanceUserRef.value.getAddMultiInstanceList(taskId.value, [])
-//   }
-// }
-// // 减签
-// function deleteMultiInstanceUser() {
-//   if (multiInstanceUserRef.value) {
-//     title.value = '减签人员'
-//     multiInstanceUserRef.value.getDeleteMultiInstanceList(taskId.value)
-//   }
-// }
-
 // 打开委托
 function openDelegateTask() {
   DelegateTaskRef.value?.open()
@@ -396,6 +376,7 @@ async function handleDelegateTask(user: UserVO) {
       comment: form.value.message,
       wfCopyList: getWfCopyList(),
     }
+
     await proxy.$modal.confirm('是否确认提交？')
     loading.value = true
     buttonDisabled.value = true
@@ -440,21 +421,6 @@ async function handleTransferTask(user: UserVO) {
   }
 }
 
-// 终止任务
-async function handleTerminationTask(data: any) {
-  const params = {
-    taskId: taskId.value,
-    comment: form.value.message,
-  }
-  await proxy.$modal.confirm('是否确认终止？')
-  loading.value = true
-  buttonDisabled.value = true
-  await terminationTask(params).finally(() => (loading.value = false))
-  popup.visible = false
-  emits('submitCallback')
-  proxy.$modal.msgSuccess('操作成功')
-}
-
 // 驳回节点选择器确认
 function onRejectNodeConfirm({ selectedOptions }: any) {
   rejectNodeName.value = selectedOptions[0]?.text
@@ -471,6 +437,40 @@ function onRejectNodeCancel() {
 function handleShortMessage(message: string) {
   form.value.message = message
 }
+
+// function closeDialog() {
+//   popup.visible = false
+// }
+
+// // 加签
+// function addMultiInstanceUser() {
+//   if (multiInstanceUserRef.value) {
+//     title.value = '加签人员'
+//     multiInstanceUserRef.value.getAddMultiInstanceList(taskId.value, [])
+//   }
+// }
+// // 减签
+// function deleteMultiInstanceUser() {
+//   if (multiInstanceUserRef.value) {
+//     title.value = '减签人员'
+//     multiInstanceUserRef.value.getDeleteMultiInstanceList(taskId.value)
+//   }
+// }
+
+// // 终止任务
+// async function handleTerminationTask(data: any) {
+//   const params = {
+//     taskId: taskId.value,
+//     comment: form.value.message,
+//   }
+//   await proxy.$modal.confirm('是否确认终止？')
+//   loading.value = true
+//   buttonDisabled.value = true
+//   await terminationTask(params).finally(() => (loading.value = false))
+//   popup.visible = false
+//   emits('submitCallback')
+//   proxy.$modal.msgSuccess('操作成功')
+// }
 
 defineExpose({
   openDialog,
