@@ -110,7 +110,6 @@
         :disabled="upsertDisabled"
         :rules="computedRules.psId"
         @change="onPsIdChange"
-        @update:items="onPsItemsChange"
       />
 
       <van-field
@@ -691,7 +690,6 @@ import PurchaseMethodDesc from './components/PurchaseMethodDesc.vue'
 import { useForm } from './form'
 import { purchaseItem as _purchaseItem, checkFilesDescription, isAllKeyNil, qzIncomeDescription, sumTotalMoney, vehiclePurchaseDescription } from './helper'
 import type { PurchaseForm, PurchaseItemVO, TaxRateVO } from '@/api/oa/business/purchase/types'
-import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 import { getBusinessTypeByPsId } from '@/api/oa/business/project'
@@ -1009,11 +1007,6 @@ async function onPsIdChange(val: string) {
       resetFields(['serviceCategory', 'leaseType', 'isDeposit'])
     }
   }
-}
-
-// 预算 Item 选择
-function onPsItemsChange([psItem]: ProjectSubjectVO[]) {
-  form.value.deptId = psItem?.deptId
 }
 
 // 采购类型选择
