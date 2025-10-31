@@ -110,6 +110,7 @@
         :disabled="upsertDisabled"
         :rules="computedRules.psId"
         @change="onPsIdChange"
+        @update:items="onPsItemsChange"
       />
 
       <van-field
@@ -688,7 +689,7 @@ import ProjectSubjectSelect from '../components/ProjectSubjectSelect.vue'
 import PurchaseCategorySelect from '../components/PurchaseCategorySelect.vue'
 import PurchaseMethodDesc from './components/PurchaseMethodDesc.vue'
 import { useForm } from './form'
-import { purchaseItem as _purchaseItem, checkFilesDescription, isAllKeyNil, qzIncomeDescription, sumTotalMoney, vehiclePurchaseDescription } from './helper'
+import { purchaseItem as _purchaseItem, checkFilesDescription, getPsDeptId, getPsDeptName, isAllKeyNil, qzIncomeDescription, sumTotalMoney, vehiclePurchaseDescription } from './helper'
 import type { PurchaseForm, PurchaseItemVO, TaxRateVO } from '@/api/oa/business/purchase/types'
 import type { ContractVO } from '@/api/oa/business/contract/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -696,6 +697,7 @@ import { getBusinessTypeByPsId } from '@/api/oa/business/project'
 import { isNumeric } from '@/utils'
 import { useStore } from '@/store'
 import { useWorkflowHelper } from '@/hooks'
+import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 
 const props = withDefaults(
   defineProps<{
@@ -1006,6 +1008,32 @@ async function onPsIdChange(val: string) {
       // 部门预算
       resetFields(['serviceCategory', 'leaseType', 'isDeposit'])
     }
+  }
+}
+
+// 是否同步预算需求部门
+function onPsItemsChange(items: ProjectSubjectVO[]) {
+  const [item] = items
+
+  if (!isNil(item)) {
+    const psDeptId = getPsDeptId(item)
+
+    if (form.value.deptId === psDeptId) {
+      return
+    }
+
+    proxy?.$modal
+      .confirm(
+        () => h('div', null, [
+          h('span', null, '是否需要将所选预算的需求部门'),
+          h('span', { class: 'font-bold' }, ` ${getPsDeptName(item)} `),
+          h('span', null, '设置为当前表单的需求部门？'),
+        ]),
+      )
+      .then(() => {
+        form.value.deptId = psDeptId
+      })
+      .catch(() => {})
   }
 }
 

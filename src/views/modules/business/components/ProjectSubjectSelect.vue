@@ -88,7 +88,7 @@
             <div class="grid grid-cols-1 text-gray-400">
               <CellLabelItem
                 v-for="d in labelDescriptors"
-                :key="d.key"
+                :key="d.text"
                 :descriptor="d"
                 :item="item"
               />

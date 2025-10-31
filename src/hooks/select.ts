@@ -53,9 +53,9 @@ export function useSelect<T>() {
 
 // 供应商客户选择
 export function useSCSelect() {
-  const selectState = useSelect<SupplierCustomerVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<SupplierCustomerVO>()
 
   const { oa_supplier_customer_type } = toRefs(proxy.useDict('oa_supplier_customer_type'))
 
@@ -86,9 +86,9 @@ export function useSCSelect() {
 
 // 项目选择
 export function useProjectSelect() {
-  const selectState = useSelect<ProjectVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<ProjectVO>()
 
   const {
     oa_project_business_type,
@@ -147,9 +147,9 @@ export function useProjectSelect() {
 
 // 合同选择
 export function useContractSelect() {
-  const selectState = useSelect<ContractVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<ContractVO>()
 
   const {
     oa_contract_type,
@@ -248,9 +248,9 @@ export function useContractSelect() {
 
 // 预算选择
 export function useProjectSubjectSelect() {
-  const selectState = useSelect<ProjectSubjectVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<ProjectSubjectVO>()
 
   // 字典
   const {
@@ -272,7 +272,7 @@ export function useProjectSubjectSelect() {
     ]
   })
 
-  const labelDescriptors: LabelDescriptor<ProjectVO>[] = [
+  const labelDescriptors: LabelDescriptor<ProjectSubjectVO>[] = [
     {
       text: '业务类型',
       key: 'businessType',
@@ -285,12 +285,25 @@ export function useProjectSubjectSelect() {
       type: 'plain',
     },
     {
+      text: '需求部门',
+      key: (item) => {
+        switch (item.type) {
+          case 'dept':
+            return 'deptName'
+          case 'project':
+            return 'projectDeptName'
+          default:
+            return undefined
+        }
+      },
+      type: 'plain',
+    },
+    {
       text: '状态',
       key: 'status',
       type: 'dict',
       options: oa_project_subject_status,
     },
-
   ]
 
   return {
@@ -301,9 +314,9 @@ export function useProjectSubjectSelect() {
 
 // 关联采购流程选择
 export function usePurchaseProcessSelect() {
-  const selectState = useSelect<PurchaseVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<PurchaseVO>()
 
   const {
     oa_purchase_type,
@@ -389,9 +402,9 @@ export function usePurchaseProcessSelect() {
 
 // 预入职流程选择员工
 export function usePendingUserEmploymentSelect() {
-  const selectState = useSelect<UserEmploymentVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<UserEmploymentVO>()
 
   const {
     oa_education_type,
@@ -449,9 +462,9 @@ export function usePendingUserEmploymentSelect() {
 
 // 入职流程选择员工
 export function useUserEmploymentSelect() {
-  const selectState = useSelect<UserPreEmploymentVO>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<UserPreEmploymentVO>()
 
   const {
     sys_user_sex,
@@ -525,9 +538,9 @@ export function useUserEmploymentSelect() {
 
 // 转正流程选择员工
 export function useUserInfoSelect() {
-  const selectState = useSelect<UserInfoVo>()
-
   const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+  const selectState = useSelect<UserInfoVo>()
 
   const {
     oa_education_type,

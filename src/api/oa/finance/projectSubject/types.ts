@@ -171,6 +171,11 @@ export interface ProjectSubjectVO {
   name?: string
 
   /**
+   * 业务类型
+   */
+  businessType?: string
+
+  /**
    * 项目id
    */
   projectId?: string
@@ -179,6 +184,16 @@ export interface ProjectSubjectVO {
    * 项目名称
    */
   projectName?: string
+
+  /**
+   * 项目部门id
+   */
+  projectDeptId?: string | number
+
+  /**
+   * 项目部门名称
+   */
+  projectDeptName?: string
 
   /**
    * 部门id

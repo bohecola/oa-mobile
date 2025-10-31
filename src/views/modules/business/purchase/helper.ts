@@ -3,6 +3,7 @@ import Big from 'big.js'
 import { isNil } from 'lodash-es'
 import type { PurchaseForm, PurchaseItemVO, TaxRateVO } from '@/api/oa/business/purchase/types'
 import { isNumeric } from '@/utils'
+import type { ProjectSubjectVO } from '@/api/oa/finance/projectSubject/types'
 
 export const allFields: PartialBooleanRecord<PurchaseForm> = {
   id: true,
@@ -152,4 +153,26 @@ export function sumTotalMoney<T extends Record<string, any>>(list: T[], key: key
   }, Big(0))
 
   return value.toNumber()
+}
+
+export function getPsDeptName(row: ProjectSubjectVO) {
+  switch (row.type) {
+    case 'dept':
+      return row.deptName
+    case 'project':
+      return row.projectDeptName
+    default:
+      return undefined
+  }
+}
+
+export function getPsDeptId(row: ProjectSubjectVO) {
+  switch (row.type) {
+    case 'dept':
+      return row.deptId
+    case 'project':
+      return row.projectDeptId
+    default:
+      return undefined
+  }
 }

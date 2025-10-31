@@ -70,7 +70,7 @@ declare global {
   // 选择器自定义 label 字段描述符
   interface LabelDescriptor<T = any> {
     text: string
-    key: keyof T
+    key: keyof T | ((item: T) => keyof T)
     type: 'dict' | 'time' | 'plain' | 'amount'
     options?: Ref<DictDataOption[]> | ((item: T) => DictDataOption[])
   }
