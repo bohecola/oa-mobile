@@ -18,7 +18,12 @@
     </form>
 
     <div class="h-[calc(100vh-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-env(safe-area-inset-top))] overflow-y-auto">
-      <component :is="currentTab.component" :ref="setSubCompRef(currentTab.category)" :keywords="keywords" />
+      <component
+        :is="currentTab.component"
+        :ref="setSubCompRef(currentTab.category)"
+        :keywords="keywords"
+        :immediate-check="false"
+      />
     </div>
   </div>
 </template>
@@ -42,9 +47,9 @@ const tabs = [
 const keywords = ref('')
 const componentRefs = ref<Record<string, any>>({})
 
-const title = computed(() => tabs.find(tab => tab.category === proxy.$route.query.category)?.title)
+const title = computed(() => tabs.find(({ category }) => category === proxy.$route.query.category)?.title)
 
-const currentTab = computed(() => tabs.find(tab => tab.category === proxy.$route.query.category))
+const currentTab = computed(() => tabs.find(({ category }) => category === proxy.$route.query.category))
 
 function setSubCompRef(category: string) {
   return (el: any) => {
@@ -59,8 +64,6 @@ function search() {
     return
   }
 
-  nextTick(() => {
-    componentRefs.value[currentTab.value.category]?.refetch()
-  })
+  componentRefs.value[currentTab.value.category]?.refresh()
 }
 </script>

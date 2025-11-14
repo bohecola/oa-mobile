@@ -13,11 +13,11 @@
           <van-search
             placeholder="搜索"
             readonly
-            @focus="onFocus()"
+            @focus="onFocus"
           />
         </form>
         <div class="h-[calc(100vh-var(--van-tabs-line-height)-var(--van-nav-bar-height)-var(--van-search-input-height)-20px-env(safe-area-inset-top))] overflow-y-auto approval-list-wrapper">
-          <component :is="item.component" v-if="active === item.category" :ref="setSubCompRef(item.category)" />
+          <component :is="item.component" />
         </div>
       </van-tab>
     </van-tabs>
@@ -32,8 +32,8 @@ import MyCc from './components/my-cc.vue'
 import NavBar from '@/components/NavBar/index.vue'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 const active = ref(proxy.$route.query.category as string ?? 'my-initiated')
-const componentRefs = ref<Record<string, any>>({})
 
 const tabs = [
   { title: '我发起的', category: 'my-initiated', component: MyInitiated },
@@ -42,41 +42,19 @@ const tabs = [
   { title: '我的抄送', category: 'my-cc', component: MyCc },
 ]
 
-const title = computed(() => tabs.find(tab => tab.category === active.value)?.title)
-
-function setSubCompRef(category: string) {
-  return (el: any) => {
-    if (el) {
-      componentRefs.value[category] = el
-    }
-  }
-}
+const title = computed(() => tabs.find(({ category }) => category === active.value)?.title)
 
 function handleTabChange(name: string) {
   proxy.$router.replace({
     path: proxy.$route.path,
-    query: {
-      category: name,
-    },
-  })
-
-  nextTick(() => {
-    componentRefs.value[name]?.refetch()
+    query: { category: name },
   })
 }
 
 function onFocus() {
   proxy.$router.push({
     path: '/approval-search',
-    query: {
-      category: active.value,
-    },
+    query: { category: active.value },
   })
 }
-
-onMounted(() => {
-  nextTick(() => {
-    componentRefs.value[active.value]?.refetch()
-  })
-})
 </script>

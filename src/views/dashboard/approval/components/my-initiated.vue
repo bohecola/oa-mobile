@@ -1,27 +1,36 @@
 <template>
-  <van-list :loading="isFetching" :finished="!hasNextPage && !isFetching" @load="fetchNextPage">
-    <van-cell
-      v-for="row in list"
-      :key="row.id"
-      @click="handleOpen(row, 'view')"
+  <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+    <van-list
+      v-model:loading="loading"
+      v-model:error="error"
+      :finished="finished"
+      :finished-text="finishedText"
+      :error-text="errorText"
+      :immediate-check="immediateCheck"
+      @load="onLoad"
     >
-      <!-- 标题 -->
-      <template #title>
-        <span class="mr-2">{{ row.name }}</span>
-      </template>
+      <van-cell
+        v-for="row in list"
+        :key="row.id"
+        @click="handleOpen(row, 'view')"
+      >
+        <!-- 标题 -->
+        <template #title>
+          <span class="mr-2">{{ row.name }}</span>
+        </template>
 
-      <!-- 描述 -->
-      <template #label>
-        <div class="flex flex-col gap-1">
-          <span>流程ID：{{ row.businessKey }}</span>
-          <div class="flex gap-2 text-xs">
-            <span>流程状态：<dict-tag :options="wf_business_status" :value="row.businessStatus" /></span>
+        <!-- 描述 -->
+        <template #label>
+          <div class="flex flex-col gap-1">
+            <span>流程ID：{{ row.businessKey }}</span>
+            <div class="flex gap-2 text-xs">
+              <span>流程状态：<dict-tag :options="wf_business_status" :value="row.businessStatus" /></span>
+            </div>
+            <span>发起时间：{{ row.startTime }}</span>
+            <span>结束时间：{{ row.endTime ?? '--' }}</span>
           </div>
-          <span>发起时间：{{ row.startTime }}</span>
-          <span>结束时间：{{ row.endTime ?? '--' }}</span>
-        </div>
-        <div class="mt-1 flex gap-2 justify-end">
-          <!-- <van-button
+          <div class="mt-1 flex gap-2 justify-end">
+            <!-- <van-button
             v-if="row.businessStatus === 'waiting'"
             color="#8b898d"
             text="撤销"
@@ -29,21 +38,21 @@
             @click.stop="handleCancelProcessApply(row)"
           /> -->
 
-          <van-button
-            v-if="row.businessStatus === 'draft' || row.businessStatus === 'back'"
-            type="primary"
-            text="修改"
-            size="small"
-            @click.stop="handleOpen(row, 'update')"
-          />
+            <van-button
+              v-if="row.businessStatus === 'draft' || row.businessStatus === 'back'"
+              type="primary"
+              text="修改"
+              size="small"
+              @click.stop="handleOpen(row, 'update')"
+            />
 
-          <van-button
-            v-if="row.businessStatus === 'draft'"
-            type="danger"
-            text="删除"
-            size="small"
-            @click.stop="handleDelete(row)"
-          />
+            <van-button
+              v-if="row.businessStatus === 'draft'"
+              type="danger"
+              text="删除"
+              size="small"
+              @click.stop="handleDelete(row)"
+            />
 
           <!-- <van-button
             v-if="row.businessStatus === 'waiting'"
@@ -52,11 +61,11 @@
             size="small"
             @click.stop="openFilePopup(row)"
           /> -->
-        </div>
-      </template>
-    </van-cell>
-    <bottom-line v-if="!hasNextPage && !isFetching" />
-  </van-list>
+          </div>
+        </template>
+      </van-cell>
+    </van-list>
+  </van-pull-refresh>
 
   <van-popup
     v-model:show="visible"
@@ -94,30 +103,46 @@
 </template>
 
 <script setup lang='ts'>
-import { useInfiniteQuery } from '@tanstack/vue-query'
-import { showConfirmDialog, showLoadingToast, showSuccessToast } from 'vant'
 import { isEqual } from 'lodash-es'
-import { service } from '@/service'
-import { usePopup, useWorkflowViewData } from '@/hooks'
+import { showConfirmDialog, showLoadingToast, showSuccessToast } from 'vant'
+import { useList, usePopup, useWorkflowViewData } from '@/hooks'
 import type { ProcessInstanceQuery, ProcessInstanceVO } from '@/api/workflow/processInstance/types'
 import type { RouterJumpVo } from '@/api/workflow/workflowCommon/types'
 import type { EditOaWfFileVO } from '@/api/oa/common/types'
+import { deleteRunAndHisInstance, getPageByCurrent } from '@/api/workflow/processInstance'
 import { editOaWfFile } from '@/api/oa/common'
 import workflowCommon from '@/api/workflow/workflowCommon'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   keywords?: string
-}>()
+  immediateCheck?: boolean
+}>(), {
+  immediateCheck: true,
+})
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const { wf_business_status } = toRefs<any>(proxy?.useDict('wf_business_status'))
+const { wf_business_status } = toRefs(proxy?.useDict('wf_business_status'))
 
-// 查询参数
-const queryParams = ref<ProcessInstanceQuery>({
-  pageNum: 1,
-  pageSize: 10,
-  name: undefined,
-  categoryCode: undefined,
+// 列表
+const {
+  refreshing,
+  loading,
+  list,
+  error,
+  finished,
+  finishedText,
+  errorText,
+  queryParams,
+  onLoad,
+  onRefresh,
+} = useList<ProcessInstanceVO, ProcessInstanceQuery>({
+  initQueryParams: {
+    pageNum: 1,
+    pageSize: 10,
+    name: undefined,
+    categoryCode: undefined,
+  },
+  request: getPageByCurrent,
 })
 
 const { visible, openPopup, closePopup } = usePopup()
@@ -128,43 +153,6 @@ const currentRow = ref<ProcessInstanceVO>(undefined)
 
 const fileViewLoading = ref(false)
 const fileConfirmLoading = ref(false)
-
-watch(() => props.keywords, (val) => {
-  queryParams.value.name = val
-})
-
-const { isFetching, data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
-  queryKey: ['my-initiate', queryParams, proxy.$route.path, Date.now],
-  queryFn: async (ctx) => {
-    const { pageParam } = ctx
-
-    const { rows, total } = await service.workflow.processInstance.getPageByCurrent(pageParam)
-
-    // 返回当前页的数据和总数
-    return {
-      rows,
-      total,
-      ...pageParam,
-    }
-  },
-  initialPageParam: queryParams,
-  enabled: false,
-  getNextPageParam: (lastPage) => {
-    const { total, pageNum, pageSize } = lastPage
-    const totalPages = Math.ceil(total / pageSize)
-
-    // 生成下一页查询参数
-    return pageNum < totalPages
-      ? { ...queryParams.value, pageNum: pageNum + 1 }
-      : undefined
-  },
-})
-
-const list = computed(() => {
-  return data.value?.pages.reduce<ProcessInstanceVO[]>((prev, curr) => {
-    return prev.concat(curr.rows)
-  }, [])
-})
 
 function handleOpen(row: any, type: string) {
   const routerJumpVo = reactive<RouterJumpVo>({
@@ -187,9 +175,9 @@ function handleDelete(row: ProcessInstanceVO) {
     .then(async () => {
       // 开启加载
       showLoadingToast({ duration: 0, message: '处理中' })
-      await service.workflow.processInstance.deleteRunAndHisInstance(row.businessKey)
-      await refetch()
+      await deleteRunAndHisInstance(row.businessKey)
       showSuccessToast('删除成功')
+      onRefresh()
     })
     .catch(() => {})
 }
@@ -257,7 +245,11 @@ function onFilePopupClosed() {
   currentRow.value = undefined
 }
 
+watch(() => props.keywords, (val) => {
+  queryParams.value.name = val
+})
+
 defineExpose({
-  refetch,
+  refresh: onRefresh,
 })
 </script>
