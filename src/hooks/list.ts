@@ -1,6 +1,6 @@
+import type { Ref } from 'vue'
 import type { AxiosPromise } from 'axios'
 import { cloneDeep } from 'lodash-es'
-import type { Ref } from 'vue'
 
 interface UseListOptions<T, Q> {
   initQueryParams: Q
