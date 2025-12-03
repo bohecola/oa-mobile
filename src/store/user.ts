@@ -42,9 +42,9 @@ export const useUserStore = defineStore('user', () => {
 
   // 退出登录
   async function logout(options?: { quiet?: boolean }) {
+    await service.comm.userLogout()
     clear()
     router.clear()
-    await service.comm.userLogout()
     await router.push('/login')
 
     if (!options?.quiet) {

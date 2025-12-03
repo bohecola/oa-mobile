@@ -9,6 +9,13 @@
         </span>
       </van-button>
     </van-floating-bubble>
+    <van-floating-bubble v-if="isView" axis="xy">
+      <van-button plain type="primary" :disabled="actionBtnDisabled" round @click="handleProcessReview">
+        <span class="!text-xs text-nowrap w-[4ch] inline-block">
+          评论
+        </span>
+      </van-button>
+    </van-floating-bubble>
 
     <van-tabs v-model:active="active" lazy-render @change="onTabChange">
       <div
@@ -45,7 +52,7 @@
 
           <!-- 审批附件 -->
           <div v-if="!isNil(entityVariables?.id)" class="!mt-2">
-            <ApprovalFileTable :business-key="entityVariables?.id" />
+            <ApprovalFileTable ref="approvalFileTableRef" :business-key="entityVariables?.id" />
           </div>
 
           <!-- 底线 -->
@@ -85,6 +92,9 @@
 
     <!-- 提交组件 -->
     <SubmitVerify ref="submitVerifyRef" :entity-variables="entityVariables" @submit-callback="submitCallback" />
+
+    <!-- 回复弹窗 -->
+    <ProcessReview ref="ProcessReviewRef" :business-key="entityVariables?.id" @approvalfiletable-init="approvalFileTableInit" />
   </div>
 </template>
 
@@ -93,20 +103,11 @@ import { isNil } from 'lodash-es'
 import type { ApprovalPayload, Initiator, SubmitPayload, TempSavePayload } from './types'
 import ApprovalSteps from './steps.vue'
 import StatusIcon from './status-icon.vue'
+import ProcessReview from './processReview.vue'
+import ApprovalFileTable from '@/components/ApprovalFileTable/index.vue'
 import SubmitVerify from '@/components/Process/submitVerify.vue'
 import InitiatorInfo from '@/components/InitiatorInfo/index.vue'
 import { useStore } from '@/store'
-
-interface EntityVariables {
-  initiator: Initiator
-  [key: string]: any
-}
-
-interface Emits {
-  (event: 'temp-save', payload: TempSavePayload): void
-  (event: 'submit', payload: SubmitPayload): void
-  (event: 'approval', payload: ApprovalPayload): void
-}
 
 const props = withDefaults(
   defineProps<{
@@ -121,6 +122,22 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<Emits>()
+
+// 评论记录
+const ProcessReviewRef = ref<InstanceType<typeof ProcessReview>>()
+// 审批附件表格组件
+const approvalFileTableRef = ref<InstanceType<typeof ApprovalFileTable>>()
+
+interface EntityVariables {
+  initiator: Initiator
+  [key: string]: any
+}
+
+interface Emits {
+  (event: 'temp-save', payload: TempSavePayload): void
+  (event: 'submit', payload: SubmitPayload): void
+  (event: 'approval', payload: ApprovalPayload): void
+}
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -263,6 +280,18 @@ function onTabChange(val: any) {
       break
     }
   }
+}
+// 打开评论
+function handleProcessReview() {
+  ProcessReviewRef.value?.open({
+    placeholder: `添加评论`,
+    businessKey: props.entityVariables?.id,
+  })
+}
+
+// 刷新审批表单数据
+function approvalFileTableInit() {
+  approvalFileTableRef.value.init(props.entityVariables.id)
 }
 </script>
 

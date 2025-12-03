@@ -405,6 +405,7 @@ async function handleTransferTask(user: UserVO) {
     const params = {
       taskId: taskId.value,
       userId: user.userId,
+      nickName: user.nickName,
       comment: form.value.message,
       wfCopyList: getWfCopyList(),
     }

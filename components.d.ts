@@ -28,6 +28,7 @@ declare module 'vue' {
     NavBar: typeof import('./src/components/NavBar/index.vue')['default']
     NumberView: typeof import('./src/components/NumberView/index.vue')['default']
     PostSelect: typeof import('./src/components/PostSelect/index.vue')['default']
+    ProcessReview: typeof import('./src/components/WorkflowPage/processReview.vue')['default']
     RadiantText: typeof import('./src/components/RadiantText/index.vue')['default']
     StatusIcon: typeof import('./src/components/WorkflowPage/status-icon.vue')['default']
     Steps: typeof import('./src/components/WorkflowPage/steps.vue')['default']
