@@ -10,6 +10,7 @@
     dict-type="oa_car_repair_maintenance_type"
     :rules="computedRules.b_type"
     clearable
+    @change="onTypeChange"
   />
 
   <!-- 公共 -->
@@ -380,6 +381,21 @@ function onDeptChange(deptId: string) {
 
   if (!isNil(deptId)) {
     fetchCarNumberOptions({ deptId })
+  }
+}
+
+// 保养维修 -申请类型修改
+async function onTypeChange(type: string) {
+  if (!isNil(type)) {
+    // 保养维修费用
+    if (form.value.no === 'BYWXFY' && form.value.b_vehicleNo) {
+      const { data } = await getLastRepairMaintenanceByCarNumber(form.value.b_vehicleNo, type)
+      form.value.b_lastRepairDate = data?.createTime
+      form.value.b_upMileage = data?.mileage
+
+      // 计算间隔里程数
+      computeIntervalMileage()
+    }
   }
 }
 
