@@ -16,6 +16,15 @@
     dict-type="oa_daily_work_rskjxgzmhrsxgzzdsq_prove_category"
   />
 
+  <DictSelect
+    v-model="form.d_personnelCategory"
+    v-show-field="['d_personnelCategory', includeFields]"
+    label="人员类别"
+    name="d_personnelCategory"
+    dict-type="oa_user_type"
+    multiple
+  />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -24,12 +33,12 @@ import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['d_deptId', 'd_proveType', 'reason', 'ossIdList'],
+    includeFields: () => ['d_deptId', 'd_proveType', 'd_personnelCategory', 'reason', 'ossIdList'],
   },
 )
 

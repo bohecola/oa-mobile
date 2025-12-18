@@ -1,11 +1,4 @@
 <template>
-  <!-- <el-row :gutter="20">
-    <el-col v-show-field="['f_userId', includeFields]" :span="24">
-      <el-form-item prop="f_userId" label="申请人">
-        <UserSelectPro v-model="form.f_userId" :multiple="false" readonly />
-      </el-form-item>
-    </el-col>
-  </el-row> -->
   <DeptSelect
     v-model="form.f_deptId"
     v-show-field="['f_deptId', includeFields]"
@@ -22,6 +15,15 @@
     dict-type="oa_daily_work_rsdygsygdzbxxsq_file_type"
   />
 
+  <DictSelect
+    v-model="form.f_personnelCategory"
+    v-show-field="['f_personnelCategory', includeFields]"
+    label="人员类别"
+    name="f_personnelCategory"
+    dict-type="oa_user_type"
+    multiple
+  />
+
   <BaseDetail :include-fields="includeFields" />
 </template>
 
@@ -30,12 +32,12 @@ import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['f_userId', 'f_deptId', 'f_fileType', 'reason', 'ossIdList'],
+    includeFields: () => ['f_userId', 'f_deptId', 'f_fileType', 'f_personnelCategory', 'reason', 'ossIdList'],
   },
 )
 

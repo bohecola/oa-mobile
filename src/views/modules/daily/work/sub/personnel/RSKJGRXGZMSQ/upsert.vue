@@ -1,13 +1,4 @@
 <template>
-  <!-- <el-row :gutter="20">
-      <el-col v-show-field="['l_userId', includeFields]" :span="24">
-        <el-form-item prop="l_userId" label="申请人">
-          <UserSelectPro v-model="form.l_userId" :multiple="false" readonly />
-        </el-form-item>
-      </el-col>
-    </el-row> -->
-
-  <!-- TODO -->
   <DictSelect
     v-model="form.l_userType"
     v-show-field="['l_userType', includeFields]"
@@ -47,6 +38,7 @@
     label="用印类型"
     name="sealUseType"
     dict-type="oa_seal_use_type"
+    multiple
     :is-filter-use-seal="false"
     :rules="computedRules.sealUseType"
   />
@@ -55,7 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
@@ -70,8 +61,6 @@ const props = withDefaults(
 )
 
 const form = inject<Ref<DailyWorkForm>>('form')
-
-const Form = inject<Ref<FormInstance>>('Form')
 
 // 指令
 const vShowField = createFieldVisibilityDirective<DailyWorkForm>()

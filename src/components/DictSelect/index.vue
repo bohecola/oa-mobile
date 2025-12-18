@@ -6,7 +6,9 @@
       v-bind="attrs"
     >
       <template #input>
-        <dict-tag :options="options" :value="ids" />
+        <div>
+          <dict-tag :options="options" :value="ids" />
+        </div>
       </template>
     </van-field>
 

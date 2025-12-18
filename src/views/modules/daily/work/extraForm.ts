@@ -31,6 +31,7 @@ const extraInitFormData: DailyWorkForm = {
   // 开具相关证明或人事相关资质的申请
   d_deptId: undefined,
   d_proveType: undefined,
+  d_personnelCategory: undefined,
 
   // 生产项目部预入职人员相关证明开具审批
   e_deptId: undefined,
@@ -41,6 +42,7 @@ const extraInitFormData: DailyWorkForm = {
   f_userId: undefined,
   f_deptId: undefined,
   f_fileType: undefined,
+  f_personnelCategory: undefined,
 
   // 需加入鸿蒙公司钉钉组织架构申请
   g_userId: undefined,
@@ -394,6 +396,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   // 开具相关证明或人事相关资质的申请
   d_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
   d_proveType: [{ required: true, message: `证明类别${baseMsg}`, trigger: 'onBlur' }],
+  d_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
 
   // 生产项目部预入职人员相关证明开具审批，
   e_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],
@@ -404,6 +407,7 @@ const extraInitRules: Record<string, FieldRule[]> = {
   f_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],
   f_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   f_fileType: [{ required: true, message: `资料类别${baseMsg}`, trigger: 'onBlur' }],
+  f_personnelCategory: [{ required: true, message: `人员类别${baseMsg}`, trigger: 'onBlur' }],
 
   // 需加入鸿蒙公司钉钉组织架构申请
   g_userId: [{ required: true, message: `申请人${baseMsg}`, trigger: 'onBlur' }],

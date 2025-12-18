@@ -89,6 +89,7 @@ export interface RSGHYYSP {
 export interface RSKJXGZMHRSXGZZDSQ {
   d_deptId?: string | number
   d_proveType?: string
+  d_personnelCategory?: string
 }
 
 // 生产项目部预入职人员相关证明开具审批
@@ -103,6 +104,7 @@ export interface RSDYGSYGDZBXXSQ {
   f_userId?: string
   f_deptId?: string | number
   f_fileType?: string
+  f_personnelCategory?: string
 }
 
 // 需加入鸿蒙公司钉钉组织架构申请

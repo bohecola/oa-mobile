@@ -1,12 +1,4 @@
 <template>
-  <!-- <el-row :gutter="20">
-      <el-col v-show-field="['f_userId', includeFields]" :span="24">
-        <el-form-item prop="f_userId" label="申请人">
-          <UserSelectPro v-model="form.f_userId" :multiple="false" readonly />
-        </el-form-item>
-      </el-col>
-    </el-row> -->
-
   <DeptSelect
     v-model="form.f_deptId"
     v-model:value="form.needDepts"
@@ -27,6 +19,17 @@
     clearable
   />
 
+  <DictSelect
+    v-if="isShowPersonnelCategory"
+    v-model="form.f_personnelCategory"
+    v-show-field="['f_personnelCategory', includeFields]"
+    label="人员类别"
+    name="f_personnelCategory"
+    dict-type="oa_user_type"
+    multiple
+    :rules="computedRules.f_personnelCategory"
+  />
+
   <BaseUpsert :include-fields="includeFields" />
 </template>
 
@@ -40,7 +43,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['f_userId', 'f_deptId', 'f_fileType', 'reason', 'ossIdList'],
+    includeFields: () => ['f_userId', 'f_deptId', 'f_fileType', 'f_personnelCategory', 'reason', 'ossIdList'],
   },
 )
 
@@ -53,4 +56,9 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 是否显示人员类别
+const isShowPersonnelCategory = computed(() => {
+  return form.value.f_fileType?.includes('3')
+})
 </script>

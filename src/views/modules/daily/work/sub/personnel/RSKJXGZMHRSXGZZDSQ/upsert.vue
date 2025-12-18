@@ -19,6 +19,17 @@
     :rules="computedRules.d_proveType"
   />
 
+  <DictSelect
+    v-if="isShowPersonnelCategory"
+    v-model="form.d_personnelCategory"
+    v-show-field="['d_personnelCategory', includeFields]"
+    label="人员类别"
+    name="d_personnelCategory"
+    dict-type="oa_user_type"
+    multiple
+    :rules="computedRules.d_personnelCategory"
+  />
+
   <BaseUpsert :include-fields="includeFields" />
 </template>
 
@@ -32,7 +43,7 @@ const props = withDefaults(
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
   {
-    includeFields: () => ['d_deptId', 'd_proveType', 'reason', 'ossIdList'],
+    includeFields: () => ['d_deptId', 'd_proveType', 'd_personnelCategory', 'reason', 'ossIdList'],
   },
 )
 
@@ -45,4 +56,9 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 // 依赖收集
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
+
+// 是否显示人员类别
+const isShowPersonnelCategory = computed(() => {
+  return form.value.d_proveType?.split(',').some(item => ['0', '1', '4'].includes(item))
+})
 </script>
