@@ -10,6 +10,7 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
     inject: {
       data: {
         title: VITE_GLOB_APP_TITLE,
+        t: Date.now(),
       },
     },
   })
