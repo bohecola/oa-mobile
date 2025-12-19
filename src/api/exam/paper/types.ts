@@ -16,7 +16,7 @@ export interface PaperQuery extends PageQuery {
    */
   paperName?: string
   /**
-   * 试卷类型(模拟考试、面试考试、内部考试)
+   * 试卷类型(模拟考试、面试考试、内部考试、培训考试)
    */
   paperType?: string
   /**

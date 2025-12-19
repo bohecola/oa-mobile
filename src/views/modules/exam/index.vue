@@ -91,7 +91,7 @@
           </div>
 
           <!-- 解析 -->
-          <div v-if="isDisabled && isMockExam" class="mt-3 text-sm rounded">
+          <div v-if="isDisabled && (isMockExam || isTrainingExam)" class="mt-3 text-sm rounded">
             <div v-if="isSelectQuestion" class="p-3 flex gap-1 font-bold bg-[--bg-color]">
               <template v-if="isJsonQuestion">
                 <span>您选择</span>
@@ -176,6 +176,7 @@
         :exam="exam"
         :paper="paper"
         :is-mock-exam="isMockExam"
+        :is-training-exam="isTrainingExam"
         :is-external-exam="isExternalExam"
       />
     </template>
@@ -220,6 +221,7 @@ const {
   paperStatus,
   isExternalExam,
   isMockExam,
+  isTrainingExam,
   isRealExam,
   isInternalExam,
   // 倒计时
@@ -293,6 +295,7 @@ function onBackClick() {
     return onSubmitPaper()
   }
 
+  // 模拟考试、培训考试
   confirm('确认是否退出考试')
     .then(exitExam)
     .catch(() => {})
@@ -377,6 +380,11 @@ onMounted(async () => {
     // 模拟考试
     if (isMockExam.value) {
       return await doExam('mock')
+    }
+
+    // 培训考试
+    if (isTrainingExam.value) {
+      return await doExam('training')
     }
 
     // 内部考试

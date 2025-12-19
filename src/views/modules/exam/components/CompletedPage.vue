@@ -50,11 +50,11 @@
         </div>
 
         <van-button
-          v-if="isMockExam"
+          v-if="isMockExam || isTrainingExam"
           class="mt-3"
           type="primary"
           block
-          @click="goBack"
+          @click="mockGoBack"
         >
           返回
         </van-button>
@@ -73,6 +73,7 @@ const props = defineProps<{
   exam: ExamVO
   isExternalExam: boolean
   isMockExam: boolean
+  isTrainingExam: boolean
 }>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -98,7 +99,13 @@ const layerColor = computed(() => {
   return '#FFEBEE'
 })
 
-function goBack() {
-  proxy.$router.replace('/exam')
+function mockGoBack() {
+  if (props.isMockExam) {
+    proxy.$router.replace('/mock-exam-entry')
+  }
+
+  if (props.isTrainingExam) {
+    proxy.$router.replace('/training-exam-entry')
+  }
 }
 </script>

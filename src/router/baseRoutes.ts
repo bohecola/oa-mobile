@@ -129,12 +129,28 @@ export const approvalRoutes: RouteRecordRaw[] = [
 // 考试管理
 export const examRoutes: RouteRecordRaw[] = [
   {
-    path: '/exam',
+    path: '/mock-exam-entry',
     meta: {
       title: '模拟考试',
       innerPage: true,
     },
-    component: () => import('@/views/modules/mockExam/index.vue'),
+    component: () => import('@/views/modules/examEntry/mock.vue'),
+  },
+  {
+    path: '/training-exam-entry',
+    meta: {
+      title: '培训考试',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/examEntry/training.vue'),
+  },
+  {
+    path: '/wechat-exam-entry',
+    meta: {
+      title: '微信公众号考试入口',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/exam/wechat-entry.vue'),
   },
   {
     path: '/qrcode-expired',
@@ -169,12 +185,12 @@ export const examRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/modules/exam/index.vue'),
   },
   {
-    path: '/wechat-exam-entry',
+    path: '/training-exam',
     meta: {
-      title: '微信公众号考试入口',
+      title: '培训考试',
       innerPage: true,
     },
-    component: () => import('@/views/modules/exam/wechat-entry.vue'),
+    component: () => import('@/views/modules/exam/index.vue'),
   },
 ]
 

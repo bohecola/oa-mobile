@@ -1,7 +1,13 @@
-import type { PaperVO } from '@/api/exam/paper/types'
+import type { PaperQuery, PaperVO } from '@/api/exam/paper/types'
 import { listPaperNoPage } from '@/api/exam/paper'
 
-export function useMockPaper() {
+interface UsePaperListOptions {
+  query?: Partial<PaperQuery>
+}
+
+export function usePaperList(options: UsePaperListOptions = {}) {
+  const { query = {} } = options
+
   const loading = ref(false)
   const finished = ref(false)
   const list = ref<PaperVO[]>([])
@@ -21,7 +27,7 @@ export function useMockPaper() {
         refreshing.value = false
       }
 
-      const { data } = await listPaperNoPage({ paperType: '1', isValid: 'Y' })
+      const { data } = await listPaperNoPage(Object.assign({ isValid: 'Y' }, query))
 
       list.value = data
 

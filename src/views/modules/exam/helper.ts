@@ -140,6 +140,7 @@ export function useExam(options: ExamOptions) {
 
   // 考试类型
   const isMockExam = computed(() => proxy.$route.path === '/mock-exam')
+  const isTrainingExam = computed(() => proxy.$route.path === '/training-exam')
   const isExternalExam = computed(() => proxy.$route.path === '/external-exam')
   const isInternalExam = computed(() => proxy.$route.path === '/internal-exam')
   const isRealExam = computed(() => isExternalExam.value || isInternalExam.value)
@@ -211,7 +212,7 @@ export function useExam(options: ExamOptions) {
   }
 
   // 开始考试
-  async function doExam(type: 'real' | 'mock', value?: DoExamQrCodeParams) {
+  async function doExam(type: 'real' | 'mock' | 'training', value?: DoExamQrCodeParams) {
     if (isInternalExam.value) {
       // 当前时间戳
       const now = dayjs().valueOf()
@@ -242,8 +243,8 @@ export function useExam(options: ExamOptions) {
         .format('YYYY-MM-DD HH:mm:ss')
     }
 
-    // 设置模拟考试结束时间 = 当前时间 + 剩余秒数
-    if (type === 'mock') {
+    // 设置模拟考试、培训考试结束时间 = 当前时间 + 剩余秒数
+    if (['mock', 'training'].includes(type)) {
       // 剩余秒数 = 考试时长 - 已作答时长
       const remainingSeconds = paper.value.duration * 60 - data.duration
       // 当前时间
@@ -378,8 +379,8 @@ export function useExam(options: ExamOptions) {
       return
     }
 
-    // 模拟考试
-    if (isMockExam.value && isSelectQuestion.value && !isCurrentCorrect.value) {
+    // 模拟考试、培训考试
+    if ((isMockExam.value || isTrainingExam.value) && isSelectQuestion.value && !isCurrentCorrect.value) {
       // 当前题目回答不正确不自动下一题
       closeLoading()
       return
@@ -410,7 +411,13 @@ export function useExam(options: ExamOptions) {
   async function exitExam() {
     stopCountdown()
 
-    proxy.$router.replace('/exam')
+    if (isMockExam.value) {
+      proxy.$router.replace('/mock-exam-entry')
+    }
+
+    if (isTrainingExam.value) {
+      proxy.$router.replace('/training-exam-entry')
+    }
   }
 
   return {
@@ -418,6 +425,7 @@ export function useExam(options: ExamOptions) {
     paperStatus,
     isRealExam,
     isMockExam,
+    isTrainingExam,
     isExternalExam,
     isInternalExam,
     fetchPaper,

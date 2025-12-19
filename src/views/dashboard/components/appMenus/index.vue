@@ -48,7 +48,8 @@ interface AppMenu {
 
 const menus = ref<AppMenu[]>([
   { title: '流程中心', path: '/start-workflow', icon: 'i-material-symbols-flowchart', visiable: true },
-  { title: '模拟考试', path: '/exam', icon: 'i-mdi-document', visiable: true },
+  { title: '模拟考试', path: '/mock-exam-entry', icon: 'i-mdi-document', visiable: true },
+  { title: '培训考试', path: '/training-exam-entry', icon: 'i-mdi-file-document', visiable: true },
   { title: '每日一报', path: '/daily-report', icon: 'i-mdi-file-document-outline', visiable: false, permissionKey: 'isProjectDayTask' },
   { title: '油卡加油', path: '/fuel-oilcard', icon: 'i-mingcute-bank-card-fill', visiable: true },
   { title: '现金加油', path: '/fuel-cash', icon: 'i-nimbus-cash', visiable: true },
