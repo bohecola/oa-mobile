@@ -27,6 +27,7 @@
     name="f_personnelCategory"
     dict-type="oa_user_type"
     multiple
+    :readonly="false"
     :rules="computedRules.f_personnelCategory"
   />
 
@@ -57,8 +58,15 @@ const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
 const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
+// 更新规则
+const updateRuleRequired = inject<UpdateRuleRequiredFn>('updateRuleRequired')
+
 // 是否显示人员类别
 const isShowPersonnelCategory = computed(() => {
   return form.value.f_fileType?.includes('3')
+})
+
+onMounted(() => {
+  updateRuleRequired('f_personnelCategory', isShowPersonnelCategory.value)
 })
 </script>
