@@ -1,11 +1,4 @@
 <template>
-  <!-- <el-row :gutter="20">
-    <el-col v-show-field="['c_deptId', includeFields]" :span="24">
-      <el-form-item prop="c_deptId" label="申请部门">
-        <DeptSelect v-model="form.c_deptId" clearable readonly />
-      </el-form-item>
-    </el-col>
-  </el-row> -->
   <DateSelect
     v-model="form.c_useDate"
     v-show-field="['c_useDate', includeFields]"
@@ -30,7 +23,7 @@ import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),
