@@ -94,7 +94,7 @@ import RSSCXMBRYYDXFFGLBZFYSQ from './personnel/RSSCXMBRYYDXFFGLBZFYSQ/workflow/
 import RSXMBRSZGQXGHSP from './personnel/RSXMBRSZGQXGHSP/workflow/apply.vue'
 // 生产项目部交通费、驻勤补助标准申请
 import RSSCXMBJTFZQBZBZSQ from './personnel/RSSCXMBJTFZQBZBZSQ/workflow/apply.vue'
-// 公司部门岗位名称及编制调整审批流程
+// 公司部门岗位新增及变更审批流程
 import RSGSBMGWMCJBZTZSPLC from './personnel/RSGSBMGWMCJBZTZSPLC/workflow/apply.vue'
 // 外包员工续用意见征询
 import RSWBYGXYYJZX from './personnel/RSWBYGXYYJZX/workflow/apply.vue'

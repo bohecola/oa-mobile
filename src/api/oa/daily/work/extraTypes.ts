@@ -271,8 +271,12 @@ export interface XZBGSBWX {
   v_assetNo?: string
 }
 
-// 公司部门岗位名称及编制调整审批流程
-export interface RSGSBMGWMCJBZTZSPLC {}
+// 公司部门岗位新增及变更审批流程
+export interface RSGSBMGWMCJBZTZSPLC {
+  w_changeType?: string
+  w_postName?: string
+  w_adjustedContent?: string
+}
 
 // 外包员工续用意见征询
 export interface RSWBYGXYYJZX {

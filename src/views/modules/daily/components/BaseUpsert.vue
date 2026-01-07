@@ -26,7 +26,11 @@
     :rules="computedRules.ossIdList"
   >
     <template #input>
-      <UploadFile v-model="form.ossIdList" value-type="array" />
+      <UploadFile
+        v-model="form.ossIdList"
+        value-type="array"
+        :desc="desc"
+      />
     </template>
   </van-field>
 </template>
@@ -44,9 +48,11 @@ type DailyForm = DailyWorkForm & DailyFeeForm
 const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyForm>
+    desc?: string
   }>(),
   {
     includeFields: () => ['reason', 'ossIdList'],
+    desc: undefined,
   },
 )
 

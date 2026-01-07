@@ -22,7 +22,7 @@
     label="附件列表"
   >
     <template #input>
-      <UploadFile v-model="form.ossIdList" readonly />
+      <UploadFile v-model="form.ossIdList" readonly :desc="desc" />
     </template>
   </van-field>
 </template>
@@ -41,9 +41,11 @@ const props = withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyForm>
     formValue?: DailyWorkForm | DailyFeeForm
+    desc?: string
   }>(),
   {
     includeFields: () => ['reason', 'ossIdList'],
+    desc: undefined,
   },
 )
 

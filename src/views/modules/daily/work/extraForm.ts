@@ -172,6 +172,11 @@ const extraInitFormData: DailyWorkForm = {
   // 办公设备维修申请
   v_assetNo: undefined,
 
+  // 公司部门岗位新增及变更审批流程
+  w_changeType: undefined,
+  w_postName: undefined,
+  w_adjustedContent: undefined,
+
   // 外包员工续用意见征询
   x_userId: undefined,
   x_deptId: undefined,
@@ -530,6 +535,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 办公设备维修申请
   v_assetNo: [{ required: true, message: `资产编号${baseMsg}`, trigger: 'onBlur' }],
+
+  // 公司部门岗位新增及变更审批流程
+  w_changeType: [{ required: true, message: `变更类型${baseMsg}`, trigger: 'onBlur' }],
+  w_postName: [{ required: true, message: `岗位名称${baseMsg}`, trigger: 'onBlur' }],
+  w_adjustedContent: [{ required: true, message: `调整内容${baseMsg}`, trigger: 'onBlur' }],
 
   // 外包员工续用意见征询
   x_deptId: [{ required: true, message: `部门/项目部${baseMsg}`, trigger: 'onBlur' }],

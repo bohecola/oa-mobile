@@ -75,6 +75,10 @@
       </template>
     </van-uploader>
 
+    <div v-if="desc" class="mt-2 text-xs opacity-50">
+      <div v-html="desc?.replace(/\n/g, '<br>')" />
+    </div>
+
     <!-- 文件预览 -->
     <viewer ref="viewerRef" />
   </div>
@@ -117,6 +121,8 @@ const props = withDefaults(
     valueType?: 'string' | 'array'
     // 排除的 ossId
     exclude?: string[]
+    // 描述
+    desc?: string
   }>(),
   {
     limit: 10,
@@ -125,6 +131,7 @@ const props = withDefaults(
     valueType: 'string',
     fileType: () => allTypeEnum,
     exclude: () => [],
+    desc: undefined,
   },
 )
 
