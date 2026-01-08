@@ -42,6 +42,7 @@ export interface ExtraForm
   CWQQZH,
   CWCWZL,
   CWKJBH,
+  CWSKSJKJ,
   XZYYFK,
   XZCCXMWZLZ,
   XZCLYJ,
@@ -540,4 +541,11 @@ export interface KHXMRCKH {
   uu_contractNo?: string
   uu_partyA?: string
   uu_assessmentReport?: string
+}
+
+// 收款收据开具申请
+export interface CWSKSJKJ {
+  vv_customerName?: string
+  vv_issueDate?: string
+  vv_issueAmount?: number
 }

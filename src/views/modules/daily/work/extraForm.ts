@@ -375,6 +375,11 @@ const extraInitFormData: DailyWorkForm = {
   uu_contractNo: undefined,
   uu_partyA: undefined,
   uu_assessmentReport: undefined,
+
+  // 收款收据开具申请
+  vv_customerName: undefined,
+  vv_issueDate: undefined,
+  vv_issueAmount: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -741,6 +746,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
   uu_contractId: [{ required: false, message: `合同名称${baseMsg}`, trigger: 'onBlur' }],
   uu_deptId: [{ required: true, message: `部门${baseMsg}`, trigger: 'onBlur' }],
   uu_assessmentReport: [{ required: true, message: `考核通报${baseMsg}`, trigger: 'onBlur' }],
+
+  // 收款收据开具申请
+  vv_customerName: [{ required: true, message: `客户名称${baseMsg}`, trigger: 'onBlur' }],
+  vv_issueDate: [{ required: true, message: `开具日期${baseMsg}`, trigger: 'onBlur' }],
+  vv_issueAmount: [{ required: true, message: `开具金额${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

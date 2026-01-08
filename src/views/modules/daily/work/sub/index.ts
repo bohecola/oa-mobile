@@ -10,6 +10,8 @@ import CWCWZL from './financial/CWCWZL/workflow/apply.vue'
 import CWKJZXZM from './financial/CWKJZXZM/workflow/apply.vue'
 // 开具保函申请
 import CWKJBH from './financial/CWKJBH/workflow/apply.vue'
+// 收款收据开具申请
+import CWSKSJKJ from './financial/CWSKSJKJ/workflow/apply.vue'
 
 // 商务类事务
 // 商务资料申请
@@ -143,6 +145,7 @@ export default {
   CWCWZL,
   CWKJZXZM,
   CWKJBH,
+  CWSKSJKJ,
   SWSWZL,
   SWGSWLHJ,
   SWHTJSZL,
