@@ -10,7 +10,7 @@
       </van-button>
     </van-floating-bubble>
     <van-floating-bubble v-if="isView" axis="xy">
-      <van-button plain type="primary" :disabled="actionBtnDisabled" round @click="handleProcessReview">
+      <van-button type="primary" :disabled="actionBtnDisabled" round class="w-full h-full border-[3px] border-slate-300" @click="handleProcessReview">
         <span class="!text-xs text-nowrap w-[4ch] inline-block">
           评论
         </span>

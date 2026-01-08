@@ -1,15 +1,4 @@
 <template>
-  <!-- <van-field v-show-field="['hh_deptId', includeFields]" label="项目部" name="hh_deptId" >
-    <template #input>
-      <DeptSelect v-model="form.hh_deptId" readonly />
-    </template>
-  </van-field>
-  <van-field v-show-field="['hh_userId', includeFields]" label="姓名" name="hh_userId" >
-    <template #input>
-      <UserSelect v-model="form.hh_userId" :multiple="false" readonly />
-    </template>
-  </van-field> -->
-
   <van-field
     v-model="form.hh_userName"
     v-show-field="['hh_userName', includeFields]"

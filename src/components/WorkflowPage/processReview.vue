@@ -77,7 +77,7 @@ function onClosed() {
 }
 
 function reset() {
-  newForm.value = cloneDeep(form)
+  newForm.value = cloneDeep(form.value)
   options.value = cloneDeep(defaultOptions)
 }
 
