@@ -35,7 +35,7 @@
       <div class="flex items-baseline">
         <span>调整内容</span>
         <span v-if="form.w_changeType === '4'" class="text-xs text-red-400">
-          （人员岗位变更释放已告知本人）
+          （人员岗位变更需已告知本人）
         </span>
       </div>
     </template>
