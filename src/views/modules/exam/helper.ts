@@ -110,6 +110,9 @@ export function useExam(options: ExamOptions) {
   // 当前题目的用户答案
   const currentAnswer = ref<string>(undefined)
 
+  // 当前题目的附件
+  const currentOssIdList = ref<string[]>([])
+
   // 是否是简答题
   const isFieldQuestion = computed(() => currentQuestion.value.type === '4')
 
@@ -265,8 +268,10 @@ export function useExam(options: ExamOptions) {
     const { data: question } = await getExamQuestion(exam.value.id, currentIndex.value)
     currentQuestion.value = question
 
-    // 设置当前题目答案
-    currentAnswer.value = itemList.value.find(e => e.currentIndex === currentIndex.value)?.userAnswer
+    // 设置当前题目答案和附件
+    const item = itemList.value.find(e => e.currentIndex === currentIndex.value)
+    currentAnswer.value = item?.userAnswer
+    currentOssIdList.value = item?.ossIdList ?? []
 
     closeLoading()
 
@@ -302,8 +307,9 @@ export function useExam(options: ExamOptions) {
   async function updateItem() {
     for (const item of itemList.value) {
       if (item.currentIndex === currentIndex.value) {
-        // 设置答案
+        // 更新答案和附件
         item.userAnswer = currentAnswerSorted.value
+        item.ossIdList = currentOssIdList.value
 
         // 选择题 => 设置是否正确
         if (isSelectQuestion.value) {
@@ -337,8 +343,9 @@ export function useExam(options: ExamOptions) {
     // 设置当前题目
     currentQuestion.value = question
 
-    // 设置用户答案
+    // 设置用户答案和附件
     currentAnswer.value = item.userAnswer
+    currentOssIdList.value = item.ossIdList ?? []
 
     // 更新题目索引
     currentIndex.value = index
@@ -441,6 +448,7 @@ export function useExam(options: ExamOptions) {
     currentOptions,
     currentAnswer,
     currentAnswerSorted,
+    currentOssIdList,
     isCurrentCorrect,
     isSelectQuestion,
     isFieldQuestion,

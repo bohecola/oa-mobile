@@ -156,6 +156,10 @@ export interface PaperVO {
    * 总分数
    */
   totalScore: number
+  /**
+   * 是否存在简答题
+   */
+  isExistsJdt: string
 }
 
 /**

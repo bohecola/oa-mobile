@@ -1,8 +1,9 @@
 <template>
-  <div class="flex flex-col items-center justify-center gap-3 h-full">
+  <div v-loading="loading" class="flex flex-col items-center justify-center gap-3 h-full">
     <template v-if="isExternalExam">
       <p>
-        考试成绩：<span class="text-xl font-bold">{{ totalScore }}</span> 分
+        <span>考试成绩：</span>
+        <span class="text-xl font-bold">{{ totalScore }}</span> 分
       </p>
       <div class="w-28">
         <van-button
@@ -18,37 +19,30 @@
     </template>
 
     <template v-else>
-      <van-circle
-        :current-rate="totalScore"
-        :rate="paper.totalScore"
-        :speed="100"
-        :color="color"
-        :layer-color="layerColor"
-        :text="isPassed ? '通过' : '未通过'"
-        :stroke-width="120"
-      />
+      <template v-if="paper.isExistsJdt !== 'Y'">
+        <van-circle
+          :current-rate="totalScore"
+          :rate="paper.totalScore"
+          :speed="100"
+          :color="color"
+          :layer-color="layerColor"
+          :text="isPassed ? '通过' : '未通过'"
+          :stroke-width="120"
+        />
 
-      <div class="text-center">
-        <div v-if="isPassed" class="flex flex-col gap-1">
-          <p class="text-2xl text-green-400">
-            恭喜你！通过考试🎉
-          </p>
-          <p>
-            考试成绩：<span class="text-xl font-bold">{{ totalScore }}</span> 分
-          </p>
-          <p>再接再厉！</p>
-        </div>
+        <p v-if="isPassed" cclass="text-2xl text-green-400">
+          恭喜你！通过考试🎉
+        </p>
+        <p v-else class="text-2xl text-red-400">
+          很遗憾，未通过考试😭
+        </p>
+      </template>
 
-        <div v-else class="flex flex-col gap-1">
-          <p class="text-2xl text-red-400">
-            很遗憾，未通过考试😭
-          </p>
-          <p>
-            考试成绩：<span class="text-xl font-bold">{{ totalScore }}</span> 分
-          </p>
-          <p>继续加油！</p>
-        </div>
+      <div>
+        考试成绩：<span class="text-xl font-bold">{{ totalScore }}</span> 分
+      </div>
 
+      <div class="w-28">
         <van-button
           v-if="isMockExam || isTrainingExam"
           class="mt-3"
@@ -60,15 +54,28 @@
         </van-button>
       </div>
     </template>
+
+    <div v-if="paper.isExistsJdt === 'Y'" class="mt-2">
+      <div class="text-sm opacity-50 mb-2">
+        <p>当前考试包含简答题，存在人工阅卷过程</p>
+      </div>
+      <van-button
+        type="primary"
+        block
+        @click="getExamDetail"
+      >
+        点击查询最新数据
+      </van-button>
+    </div>
   </div>
 </template>
 
 <script setup lang='ts'>
+import { getExam } from '@/api/exam/exam'
 import type { ExamVO } from '@/api/exam/exam/types'
 import type { PaperVO } from '@/api/exam/paper/types'
 
 const props = defineProps<{
-  totalScore: number
   paper: PaperVO
   exam: ExamVO
   isExternalExam: boolean
@@ -77,9 +84,12 @@ const props = defineProps<{
 }>()
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const loading = ref(false)
+
+const totalScore = ref<number>(0)
 
 const isPassed = computed(() => {
-  const { paper, totalScore } = props
+  const { paper } = props
   return Number(totalScore) >= Number(paper.passScore)
 })
 
@@ -97,6 +107,19 @@ const layerColor = computed(() => {
   }
 
   return '#FFEBEE'
+})
+
+// 获取考试详情
+async function getExamDetail() {
+  loading.value = true
+  const { data } = await getExam(props.exam.id).finally(() => loading.value = false)
+  totalScore.value = Number(data.totalScore ?? 0)
+}
+
+onMounted(() => {
+  if (props.paper.isExistsJdt) {
+    getExamDetail()
+  }
 })
 
 function mockGoBack() {

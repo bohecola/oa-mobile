@@ -45,19 +45,33 @@
             <span>【{{ currentQuestion.score }}分】</span>
           </div>
 
-          <!-- 简答题输入框 -->
-          <van-field
-            v-if="isFieldQuestion"
-            v-model.trim="currentAnswer"
-            rows="2"
-            type="textarea"
-            maxlength="200"
-            placeholder="请输入答案"
-            autosize
-            clearable
-            show-word-limit
-            :disabled="isDisabled"
-          />
+          <!-- 简答题 -->
+          <template v-if="isFieldQuestion">
+            <van-field
+              v-model.trim="currentAnswer"
+              rows="2"
+              type="textarea"
+              maxlength="200"
+              placeholder="请输入答案"
+              autosize
+              clearable
+              show-word-limit
+              :disabled="isDisabled"
+            />
+
+            <van-field label-align="top">
+              <template #input>
+                <UploadFile
+                  v-model="currentOssIdList"
+                  capture="camera"
+                  accept="image/*"
+                  value-type="array"
+                  :limit="1"
+                  :readonly="isDisabled"
+                />
+              </template>
+            </van-field>
+          </template>
 
           <!-- 选择题选项 -->
           <DictSelect
@@ -157,7 +171,7 @@
                 :class="{
                   'bg-blue-500/20 text-blue-500': item.isCorrect === 'Y',
                   'bg-red-500/20 text-red-500': item.isCorrect === 'N',
-                  'border-blue-500': item.currentIndex === currentIndex && (isNil(item.userAnswer) || item.isCorrect === 'Y'),
+                  'border-blue-500': item.currentIndex === currentIndex && (isEmpty(item.userAnswer) || item.isCorrect === 'Y'),
                   'border-red-500': item.currentIndex === currentIndex && item.isCorrect === 'N',
                   'border-none': item.currentIndex !== currentIndex && !isNil(item.isCorrect),
                 }"
@@ -172,7 +186,6 @@
 
       <CompletedPage
         v-if="examStatus === 'completed'"
-        :total-score="totalScore"
         :exam="exam"
         :paper="paper"
         :is-mock-exam="isMockExam"
@@ -238,6 +251,7 @@ const {
   currentOptions,
   currentAnswer,
   currentAnswerSorted,
+  currentOssIdList,
   isCurrentCorrect,
   isSelectQuestion,
   isFieldQuestion,
@@ -248,7 +262,6 @@ const {
   unAnsweredCount,
   correctCount,
   errorCount,
-  totalScore,
 
   // 其他状态
   isMultiple,
@@ -316,8 +329,17 @@ function onRadioClick() {
 
 // 确认点击
 async function onConfirmAnswer() {
-  if (isEmpty(currentAnswer.value))
-    return msg(`请${isSelectQuestion.value ? '选择' : '输入'}答案`)
+  if (isEmpty(currentAnswer.value)) {
+    if (isSelectQuestion.value) {
+      return msg('请选择答案')
+    }
+
+    if (isFieldQuestion.value) {
+      if (isEmpty(currentOssIdList.value)) {
+        return msg('请输入答案或拍照')
+      }
+    }
+  }
 
   // if (currentAnswer.value.length === 1) {
   //   return msg('请选择多个答案')

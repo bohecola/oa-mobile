@@ -212,6 +212,7 @@ export interface UpdateExamRecordData {
   isCorrect: string
   score: number
   currentIndex?: number
+  ossIdList?: string[]
 }
 
 export interface DoExamQrCodeParams {
@@ -253,6 +254,11 @@ export interface ExamHistoryRecordVO {
    * 题目分数
    */
   score?: number
+
+  /**
+   * 附件列表
+   */
+  ossIdList?: string[]
 }
 
 export interface ExamRecordQuery {
@@ -282,4 +288,5 @@ export interface ExamRecordVO {
   analysis: string
   category: string
   difficulty: string
+  ossIdList?: string[]
 }

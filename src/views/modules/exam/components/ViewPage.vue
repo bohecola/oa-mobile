@@ -12,14 +12,21 @@
     </NavBar>
 
     <main id="content" class="scroll-container-base py-6 px-3 border-b bg-[--bg-card]">
-      <div v-for="item in currentTab === 'all' ? list : errorList" :key="item.id">
+      <van-empty
+        v-show="isEmpty(currentList)"
+        :image="customEmptyImage"
+        image-size="100"
+        description="暂无数据"
+      />
+
+      <div v-for="item in currentList" :key="item.id">
         <div>
           <span>{{ item.currentIndex }}.</span>
           <van-tag class="mx-2" :color="getQuestionTypeColor(item.type)">
             <dict-tag
               :options="questionTypeOptions"
               :value="item.type"
-              tag-class="text-base text-nowrap "
+              tag-class="text-base text-nowrap"
             />
           </van-tag>
           <span :class="{ 'text-red-500': item.isCorrect === 'N' }">{{ item.content }}</span>
@@ -37,26 +44,50 @@
             </div>
           </div>
 
-          <div class="mt-3 px-3 py-2 flex gap-1 text-sm font-bold rounded bg-[--bg-color]">
-            <!-- 简答题答案 -->
-            <template v-if="item.type === '4'">
-              <span>答：</span>
-              <span class="font-normal">{{ item.userAnswer }}</span>
-            </template>
+          <div class="mt-3 px-3 py-2 rounded bg-[--bg-color]">
+            <div class="flex gap-1 text-sm font-bold">
+              <!-- 简答题答案 -->
+              <template v-if="item.type === '4'">
+                <span>答：</span>
+                <span class="font-normal">{{ isEmpty(item.userAnswer) ? '（未填写）' : item.userAnswer }}</span>
+              </template>
 
-            <!-- 选择题答案 -->
-            <template v-else>
-              <template v-if="isJSON(item.correctAnswer)">
-                <span>您选择</span>
-                <span class="font-bold text-blue-500">{{ item.userAnswer }}</span>
-              </template>
+              <!-- 选择题答案 -->
               <template v-else>
-                <span>答案</span>
-                <span class="text-blue-500">{{ item.correctAnswer }}</span>
-                <span>您选择</span>
-                <span class="font-bold" :class="[isAnswerEqual(item.userAnswer, item.correctAnswer) ? 'text-blue-500' : 'text-red-500']">{{ item.userAnswer }}</span>
+                <template v-if="isJSON(item.correctAnswer)">
+                  <span>您选择</span>
+                  <span class="font-bold text-blue-500">{{ item.userAnswer }}</span>
+                </template>
+                <template v-else>
+                  <span>答案</span>
+                  <span class="text-blue-500">{{ item.correctAnswer }}</span>
+                  <span>您选择</span>
+                  <span
+                    class="font-bold"
+                    :class="[
+                      isAnswerEqual(item.userAnswer, item.correctAnswer)
+                        ? 'text-blue-500'
+                        : 'text-red-500',
+                    ]"
+                  >
+                    {{ item.userAnswer }}
+                  </span>
+                </template>
               </template>
-            </template>
+            </div>
+            <div v-if="!isEmpty(item.ossIdList)" class="mt-2">
+              <UploadFile
+                :model-value="item.ossIdList"
+                value-type="array"
+                readonly
+              />
+              <span
+                v-if="!isNil(item.answerScore)"
+                class="text-sm font-normal text-blue-400"
+              >
+                {{ item.answerScore }} 分
+              </span>
+            </div>
           </div>
 
           <div class="p-2">
@@ -71,10 +102,12 @@
 </template>
 
 <script setup lang='ts'>
+import { isEmpty, isNil } from 'lodash-es'
 import { getQuestionTypeColor, isAnswerEqual } from '../helper'
 import { queryExamRecordList } from '@/api/exam/exam'
 import type { ExamRecordVO } from '@/api/exam/exam/types'
 import { isJSON } from '@/utils'
+import customEmptyImage from '@/assets/images/custom-empty-image.png'
 
 const props = defineProps<{
   examId: string
@@ -84,6 +117,7 @@ const props = defineProps<{
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { loading, closeLoading } = proxy.$modal
 
+const currentTab = ref<'all' | 'error'>('all')
 const rawList = ref<ExamRecordVO[]>([])
 const list = computed(() => {
   return rawList.value.map((item) => {
@@ -95,8 +129,14 @@ const list = computed(() => {
 })
 
 const errorList = computed(() => list.value.filter(e => e.isCorrect === 'N'))
+const currentList = computed(() => {
+  if (currentTab.value === 'error') {
+    return errorList.value
+  }
 
-const currentTab = ref<'all' | 'error'>('all')
+  return list.value
+})
+
 const tabOptions = computed(() => {
   return [
     {
