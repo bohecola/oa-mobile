@@ -12,9 +12,17 @@ export function listOss(query: OssQuery): AxiosPromise<OssVO[]> {
 }
 
 // 查询OSS对象基于id串
-export function listByIds(ossId: string): AxiosPromise<OssVO[]> {
+export function listByIds(ossIds: string): AxiosPromise<OssVO[]> {
   return request({
-    url: `/resource/oss/listByIds/${ossId}`,
+    url: `/resource/oss/listByIds/${ossIds}`,
+    method: 'get',
+  })
+}
+
+// 查询OSS对象基于id串（不鉴权）
+export function listByIdsNoAuth(ossIds: string): AxiosPromise<OssVO[]> {
+  return request({
+    url: `/resource/oss/ignore/listByIds/${ossIds}`,
     method: 'get',
   })
 }

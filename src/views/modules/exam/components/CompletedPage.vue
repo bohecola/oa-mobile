@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang='ts'>
-import { getExam } from '@/api/exam/exam'
+import { getExamNoAuth } from '@/api/exam/exam'
 import type { ExamVO } from '@/api/exam/exam/types'
 import type { PaperVO } from '@/api/exam/paper/types'
 
@@ -112,7 +112,7 @@ const layerColor = computed(() => {
 // 获取考试详情
 async function getExamDetail() {
   loading.value = true
-  const { data } = await getExam(props.exam.id).finally(() => loading.value = false)
+  const { data } = await getExamNoAuth(props.exam.id).finally(() => loading.value = false)
   totalScore.value = Number(data.totalScore ?? 0)
 }
 

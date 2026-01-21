@@ -123,6 +123,8 @@ const props = withDefaults(
     exclude?: string[]
     // 描述
     desc?: string
+    // 上传、预览不鉴权
+    noAuth?: boolean
   }>(),
   {
     limit: 10,
@@ -200,7 +202,9 @@ const afterRead: UploaderAfterRead = async (items: UploaderFileListItem | Upload
 
     try {
       // 上传请求
-      const { data } = await service.comm.upload(formData)
+      const { data } = props.noAuth
+        ? await service.comm.uploadNoAuth(formData)
+        : await service.comm.upload(formData)
 
       Reflect.set(item, 'url', data.url)
       Reflect.set(item, 'name', data.fileName)
@@ -235,15 +239,17 @@ function onOverSize() {
 
 // 预览删除
 async function onDelete(item: UploaderFileListItem, detail: { name: Numeric, index: number }) {
-  if (item.ossId) {
-    try {
-      // 删除请求
-      await service.system.oss.delOss(item.ossId)
-      proxy?.$modal.msgSuccess('删除成功')
-    }
-    catch {
-      // 删除请求失败时，前端 fileList -> item 不删除
-      fileList.value.splice(detail.index, 0, item)
+  if (!props.noAuth) {
+    if (item.ossId) {
+      try {
+        // 删除请求
+        await service.system.oss.delOss(item.ossId)
+        proxy?.$modal.msgSuccess('删除成功')
+      }
+      catch {
+        // 删除请求失败时，前端 fileList -> item 不删除
+        fileList.value.splice(detail.index, 0, item)
+      }
     }
   }
 
@@ -342,7 +348,9 @@ watch(
     if (!isEmpty(val)) {
       const idsStr = Array.isArray(val) ? val.toString() : val!
 
-      const { data } = await service.system.oss.listByIds(idsStr)
+      const { data } = props.noAuth
+        ? await service.system.oss.listByIdsNoAuth(idsStr)
+        : await service.system.oss.listByIds(idsStr)
 
       fileList.value = data.map((e) => {
         return {

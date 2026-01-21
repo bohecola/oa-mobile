@@ -153,17 +153,17 @@
       </template>
     </van-field>
 
-    <div v-if="form.k_isUseOriginalSalaryStandard === 'N'">
-      <van-field-number
-        v-model.number="form.k_originalSalaryStandard"
-        v-show-field="['k_originalSalaryStandard', includeFields]"
-        label="原工资标准（人/元/月）"
-        placeholder="请输入"
-        name="k_originalSalaryStandard"
-        :rules="computedRules.k_originalSalaryStandard"
-        clearable
-      />
+    <van-field-number
+      v-model.number="form.k_originalSalaryStandard"
+      v-show-field="['k_originalSalaryStandard', includeFields]"
+      label="原工资标准（人/元/月）"
+      placeholder="请输入"
+      name="k_originalSalaryStandard"
+      :rules="computedRules.k_originalSalaryStandard"
+      clearable
+    />
 
+    <div v-if="form.k_isUseOriginalSalaryStandard === 'N'">
       <van-field-number
         v-model.number="form.k_newSalaryStandard"
         v-show-field="['k_newSalaryStandard', includeFields]"
@@ -416,10 +416,9 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance } from 'vant'
 import BaseUpsert from '../../../../components/BaseUpsert.vue'
-import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
+import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 
 const props = withDefaults(
   defineProps<{
@@ -435,7 +434,6 @@ const trackFields = inject<TrackFieldsFn<DailyWorkForm>>('trackFields')
 trackFields(props.includeFields)
 
 const form = inject<Ref<DailyWorkForm>>('form')
-const Form = inject<Ref<FormInstance>>('Form')
 const showPicker = ref(false)
 const pickerValue = ref()
 const computedRules = inject<Ref<FormRules<DailyWorkForm>>>('computedRules')
@@ -452,7 +450,7 @@ const resetFields = inject<(names: KeysOfArray<DailyWorkForm>) => void>('resetFi
 // 是否延用原工资标准
 function onIsUseOriginalChange() {
   // 原工资标准和新工资标准
-  resetFields(['k_originalSalaryStandard', 'k_newSalaryStandard'])
+  resetFields(['k_newSalaryStandard'])
 }
 
 function onCategoryChange() {
@@ -472,7 +470,6 @@ function onCategoryChange() {
     'k_signeContractType',
     'k_purchaseInsuranceType',
     'k_employInformation',
-
   ])
 }
 

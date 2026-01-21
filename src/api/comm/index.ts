@@ -28,6 +28,14 @@ export function upload(data: FormData): AxiosPromise<UploadResult> {
   })
 }
 
+export function uploadNoAuth(data: FormData): AxiosPromise<UploadResult> {
+  return request({
+    url: '/resource/oss/ignore/upload',
+    method: 'post',
+    data,
+  })
+}
+
 interface DingTalkSignParams {
   nonceStr?: string
   timeStamp?: string

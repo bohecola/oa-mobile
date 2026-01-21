@@ -122,21 +122,21 @@
       </template>
     </van-field>
 
-    <div v-if="form.k_isUseOriginalSalaryStandard === 'N'">
-      <van-field
-        v-show-field="['k_originalSalaryStandard', includeFields]"
-        label="原工资标准（人/元/月）"
-        name="k_originalSalaryStandard"
-      >
-        <template #input>
-          {{ form.k_originalSalaryStandard }}
-          <span
-            v-if="!isNil(form.k_originalSalaryStandard)"
-            class="ml-3 text-red-400"
-          >{{ toCnMoney(form.k_originalSalaryStandard) }}</span>
-        </template>
-      </van-field>
+    <van-field
+      v-show-field="['k_originalSalaryStandard', includeFields]"
+      label="原工资标准（人/元/月）"
+      name="k_originalSalaryStandard"
+    >
+      <template #input>
+        {{ form.k_originalSalaryStandard }}
+        <span
+          v-if="!isNil(form.k_originalSalaryStandard)"
+          class="ml-3 text-red-400"
+        >{{ toCnMoney(form.k_originalSalaryStandard) }}</span>
+      </template>
+    </van-field>
 
+    <div v-if="form.k_isUseOriginalSalaryStandard === 'N'">
       <van-field
         v-show-field="['k_newSalaryStandard', includeFields]"
         label="新工资标准（人/元/月）"
@@ -319,7 +319,7 @@ import BaseDetail from '../../../../components/BaseDetail.vue'
 import type { DailyWorkForm } from '@/api/oa/daily/work/types'
 import { createFieldVisibilityDirective } from '@/directive/fieldVisibility'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     includeFields?: KeysOfArray<DailyWorkForm>
   }>(),

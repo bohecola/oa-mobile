@@ -79,6 +79,13 @@ export function getExam(id: string): AxiosPromise<ExamVO> {
   })
 }
 
+export function getExamNoAuth(id: string): AxiosPromise<ExamVO> {
+  return request({
+    url: `/exam/exam/ignore/${id}`,
+    method: 'get',
+  })
+}
+
 // 新增考试记录
 export function addExam(data: ExamForm) {
   return request({

@@ -68,6 +68,7 @@
                   value-type="array"
                   :limit="1"
                   :readonly="isDisabled"
+                  no-auth
                 />
               </template>
             </van-field>
