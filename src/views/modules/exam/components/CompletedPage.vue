@@ -90,7 +90,7 @@ const totalScore = ref<number>(0)
 
 const isPassed = computed(() => {
   const { paper } = props
-  return Number(totalScore) >= Number(paper.passScore)
+  return Number(totalScore.value) >= Number(paper.passScore)
 })
 
 const color = computed(() => {
