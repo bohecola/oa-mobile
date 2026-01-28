@@ -54,7 +54,7 @@
 
       <div class="mt-auto p-4 flex justify-end gap-2">
         <van-button type="primary" :disabled="buttonDisabled" @click="handleCompleteTask">
-          提交
+          同意
         </van-button>
         <van-button v-if="task.businessStatus === 'waiting'" type="primary" :disabled="buttonDisabled" @click="openDelegateTask">
           委托
@@ -80,7 +80,7 @@
         </van-button>
         <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
         <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" @click="handleBackProcessOpen">
-          退回
+          拒绝
         </van-button>
         <van-button :disabled="buttonDisabled" @click="cancel">
           取消
