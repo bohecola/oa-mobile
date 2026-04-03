@@ -1,27 +1,29 @@
 <template>
-  <van-grid :column-num="4">
-    <van-grid-item
-      v-for="menu in menus"
-      :key="menu.name"
-      :to="{
-        path: menu.path,
-        query: { category: menu.category },
-      }"
-    >
-      <template #icon>
-        <div class="flex items-center gap-2">
-          <!-- 图标 -->
-          <span class="text-xl" :class="menu.icon" />
-          <!-- 数量 -->
-          <span v-if="menu.badge" class="text-xs" :style="{ color: getBadgeColor(menu.category) }">{{ menu.badge }}</span>
-        </div>
-      </template>
+  <div class="border rounded-xl overflow-hidden">
+    <van-grid :column-num="4">
+      <van-grid-item
+        v-for="menu in menus"
+        :key="menu.name"
+        :to="{
+          path: menu.path,
+          query: { category: menu.category },
+        }"
+      >
+        <template #icon>
+          <div class="flex items-center gap-2">
+            <!-- 图标 -->
+            <span class="text-xl" :class="menu.icon" />
+            <!-- 数量 -->
+            <span v-if="menu.badge" class="text-xs" :style="{ color: getBadgeColor(menu.category) }">{{ menu.badge }}</span>
+          </div>
+        </template>
 
-      <template #text>
-        <span class="text-xs mt-2">{{ menu.name }}</span>
-      </template>
-    </van-grid-item>
-  </van-grid>
+        <template #text>
+          <span class="text-xs mt-2">{{ menu.name }}</span>
+        </template>
+      </van-grid-item>
+    </van-grid>
+  </div>
 </template>
 
 <script setup lang='ts'>
