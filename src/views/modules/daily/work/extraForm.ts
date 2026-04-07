@@ -380,6 +380,11 @@ const extraInitFormData: DailyWorkForm = {
   vv_customerName: undefined,
   vv_issueDate: undefined,
   vv_issueAmount: undefined,
+
+  // 项目交付中心立项审批
+  ww_projectId: undefined,
+  ww_contractNo: undefined,
+  ww_fileMap: {},
 }
 
 const baseMsg = '不能为空'
@@ -751,6 +756,9 @@ const extraInitRules: Record<string, FieldRule[]> = {
   vv_customerName: [{ required: true, message: `客户名称${baseMsg}`, trigger: 'onBlur' }],
   vv_issueDate: [{ required: true, message: `开具日期${baseMsg}`, trigger: 'onBlur' }],
   vv_issueAmount: [{ required: true, message: `开具金额${baseMsg}`, trigger: 'onBlur' }],
+
+  // 项目交付中心立项审批
+  ww_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'onBlur' }],
 }
 
 export { extraInitFormData, extraInitRules }

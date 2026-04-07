@@ -59,7 +59,7 @@
 
 <script setup name="DailyWorkApply" lang="ts">
 import type { FieldRule } from 'vant'
-import { isNil } from 'lodash-es'
+import { isEmpty, isNil } from 'lodash-es'
 import { useForm } from '../form'
 import SubComponent from '../sub'
 import DailyTypeSelect from '../../components/DailyTypeSelect.vue'
@@ -70,7 +70,7 @@ import { getDept } from '@/api/system/dept'
 import { startWorkFlow } from '@/api/workflow/task'
 
 // 状态
-const { user } = useStore()
+const { user, dict } = useStore()
 // 实例
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 // 表单
@@ -222,6 +222,23 @@ async function handleSubmit({ load, done, open, initiator }: SubmitPayload) {
       if (data.qq_isContractPurchaseInsurance === 'N') {
         return proxy.$modal.msgError('该流程提交合同中必须要求购买此类保险！')
       }
+
+      // 交付中心立项审批
+      if (data.no === 'JFLXSP') {
+        // 获取文件字典
+        const file_dict = dict.getDict('oa_daily_work_jflxsp_files')
+        // 遍历文件Map集合
+        for (const fileDictValue in data.ww_fileMap) {
+          // 不校验其他类型的文件
+          if (fileDictValue === '9') {
+            continue
+          }
+          if (isEmpty(data.ww_fileMap[fileDictValue])) {
+            return proxy.$modal.msgWarning(`请上传附件列表中的${proxy?.selectDictLabel(file_dict, fileDictValue)}`)
+          }
+        }
+      }
+
       load()
       const options = {
         entity: { ...data, initiator },

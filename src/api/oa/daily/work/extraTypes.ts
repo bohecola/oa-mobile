@@ -50,7 +50,8 @@ export interface ExtraForm
   XZXLNYNASXTZHSQ,
   CGCGHTSQ,
   CGGYSZLSQ,
-  KHXMRCKH {}
+  KHXMRCKH,
+  JFLXSP {}
 
 // 商务
 // 项目考核奖励确认单
@@ -548,4 +549,12 @@ export interface CWSKSJKJ {
   vv_customerName?: string
   vv_issueDate?: string
   vv_issueAmount?: number
+}
+
+// 项目交付类
+// 项目交付中心立项审批
+export interface JFLXSP {
+  ww_projectId?: string
+  ww_contractNo?: string
+  ww_fileMap?: Record<string, string[]>
 }

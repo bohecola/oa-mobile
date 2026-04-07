@@ -85,6 +85,7 @@
         >
           <template #label>
             <div class="grid grid-cols-1 text-gray-400">
+              <!-- @vue-ignore -->
               <CellLabelItem
                 v-for="d in labelDescriptors"
                 :key="d.key"

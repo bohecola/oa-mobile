@@ -139,6 +139,10 @@ import KHXMRCKH from './assessment/KHXMRCKH/workflow/apply.vue'
 // 岗位调整
 import KHGWTZ from './assessment/KHGWTZ/workflow/apply.vue'
 
+// 项目交付类
+// 项目交付中心立项审批
+import JFLXSP from './delivery/JFLXSP/workflow/apply.vue'
+
 export default {
   DefaultWork,
   CWQQZH,
@@ -204,4 +208,5 @@ export default {
   CGGYSZLSQ,
   KHXMRCKH,
   KHGWTZ,
+  JFLXSP,
 }

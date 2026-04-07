@@ -8,6 +8,7 @@ export * from './list'
 export * from './form'
 export * from './options'
 export * from './dictConfig'
+export * from './common'
 
 export function useCopy() {
   // 拷贝状态
