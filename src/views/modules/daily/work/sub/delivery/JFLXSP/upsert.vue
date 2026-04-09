@@ -2,6 +2,8 @@
   <ProjectSelect
     v-model="form.ww_projectId"
     v-model:contract-no-str="form.ww_contractNo"
+    v-model:business-type="form.ww_businessType"
+    v-model:dept-id="form.needDepts"
     v-show-field="['ww_projectId', includeFields]"
     name="ww_projectId"
     label="项目"

@@ -149,7 +149,7 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue', 'update:businessType', 'update:contractNoStr', 'confirm', 'clear', 'change'])
+const emit = defineEmits(['update:modelValue', 'update:deptId', 'update:businessType', 'update:contractNoStr', 'confirm', 'clear', 'change'])
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -219,6 +219,7 @@ function onClear() {
 
   emit('update:businessType', undefined)
   emit('update:contractNoStr', undefined)
+  emit('update:deptId', undefined)
 }
 
 // 选项点击
@@ -358,6 +359,11 @@ function onConfirm() {
 
   emit('update:businessType', b)
   emit('update:contractNoStr', contractNoStr.value)
+
+  // 单选
+  if (!multiple) {
+    emit('update:deptId', selectedList.value[0]?.deptId)
+  }
 
   closePopup()
 }

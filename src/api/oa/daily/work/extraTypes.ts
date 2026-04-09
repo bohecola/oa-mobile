@@ -556,5 +556,6 @@ export interface CWSKSJKJ {
 export interface JFLXSP {
   ww_projectId?: string
   ww_contractNo?: string
+  ww_businessType?: string
   ww_fileMap?: Record<string, string[]>
 }

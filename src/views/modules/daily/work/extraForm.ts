@@ -384,6 +384,7 @@ const extraInitFormData: DailyWorkForm = {
   // 项目交付中心立项审批
   ww_projectId: undefined,
   ww_contractNo: undefined,
+  ww_businessType: undefined,
   ww_fileMap: {},
 }
 
