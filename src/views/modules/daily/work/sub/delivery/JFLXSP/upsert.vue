@@ -9,7 +9,7 @@
     label="项目"
     :rules="computedRules.ww_projectId"
     :params="{
-      businessType: '1,2',
+      businessType: '1,2,5',
     }"
     clearable
   />
