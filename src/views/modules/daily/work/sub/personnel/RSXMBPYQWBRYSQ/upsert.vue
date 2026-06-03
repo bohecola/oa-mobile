@@ -141,7 +141,7 @@
     clearable
   />
 
-  <div v-if="['3', '5'].includes(form.k_category)">
+  <div v-if="['3', '4', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_isUseOriginalSalaryStandard', includeFields]"
       name="k_isUseOriginalSalaryStandard"
@@ -226,7 +226,7 @@
     :rules="computedRules.k_specialInstructions"
   />
 
-  <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
+  <div v-if="['0', '1', '2', '3', '4', '5'].includes(form.k_category)">
     <van-field
       v-model="form.k_otherDistribution"
       v-show-field="['k_otherDistribution', includeFields]"

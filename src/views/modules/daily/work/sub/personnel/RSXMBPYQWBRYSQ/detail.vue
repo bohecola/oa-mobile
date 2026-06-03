@@ -108,7 +108,7 @@
     name="k_monthlyWorkingMode"
   />
 
-  <div v-if="['3', '5'].includes(form.k_category)">
+  <div v-if="['3', '4', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_isUseOriginalSalaryStandard', includeFields]"
       name="k_isUseOriginalSalaryStandard"
@@ -194,7 +194,7 @@
     </template>
   </van-field>
 
-  <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
+  <div v-if="['0', '1', '2', '3', '4', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_otherDistribution', includeFields]"
       label="其他补助、发放标准及发放形式"
