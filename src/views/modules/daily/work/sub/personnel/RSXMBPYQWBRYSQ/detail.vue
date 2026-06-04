@@ -108,7 +108,37 @@
     name="k_monthlyWorkingMode"
   />
 
-  <div v-if="['3', '4', '5'].includes(form.k_category)">
+  <div v-if="['4'].includes(form.k_category)">
+    <van-field
+      v-show-field="['k_originalSalaryStandard', includeFields]"
+      label="原工资标准（人/元/月）"
+      name="k_originalSalaryStandard"
+    >
+      <template #input>
+        {{ form.k_originalSalaryStandard }}
+        <span
+          v-if="!isNil(form.k_originalSalaryStandard)"
+          class="ml-3 text-red-400"
+        >{{ toCnMoney(form.k_originalSalaryStandard) }}</span>
+      </template>
+    </van-field>
+
+    <van-field
+      v-show-field="['k_newSalaryStandard', includeFields]"
+      label="新工资标准（人/元/月）"
+      name="k_newSalaryStandard"
+    >
+      <template #input>
+        {{ form.k_newSalaryStandard }}
+        <span
+          v-if="!isNil(form.k_newSalaryStandard)"
+          class="ml-3 text-red-400"
+        >{{ toCnMoney(form.k_newSalaryStandard) }}</span>
+      </template>
+    </van-field>
+  </div>
+
+  <div v-if="['3', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_isUseOriginalSalaryStandard', includeFields]"
       name="k_isUseOriginalSalaryStandard"
@@ -194,7 +224,19 @@
     </template>
   </van-field>
 
-  <div v-if="['0', '1', '2', '3', '4', '5'].includes(form.k_category)">
+  <div v-if="['4'].includes(form.k_category)">
+    <van-field
+      v-show-field="['k_otherDistribution', includeFields]"
+      label="其他补助、发放标准及发放形式"
+      name="k_otherDistribution"
+    >
+      <template #input>
+        <TextareaView :value="form.k_otherDistribution" />
+      </template>
+    </van-field>
+  </div>
+
+  <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_otherDistribution', includeFields]"
       label="其他补助、发放标准及发放形式"

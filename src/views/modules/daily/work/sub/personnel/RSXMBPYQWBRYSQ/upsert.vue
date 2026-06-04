@@ -141,7 +141,28 @@
     clearable
   />
 
-  <div v-if="['3', '4', '5'].includes(form.k_category)">
+  <div v-if="['4'].includes(form.k_category)">
+    <van-field-number
+      v-model.number="form.k_originalSalaryStandard"
+      v-show-field="['k_originalSalaryStandard', includeFields]"
+      label="原工资标准（人/元/月）"
+      placeholder="请输入"
+      name="k_originalSalaryStandard"
+      :rules="computedRules.k_originalSalaryStandard"
+      clearable
+    />
+    <van-field-number
+      v-model.number="form.k_newSalaryStandard"
+      v-show-field="['k_newSalaryStandard', includeFields]"
+      label="新工资标准（人/元/月）"
+      placeholder="请输入"
+      name="k_newSalaryStandard"
+      :rules="computedRules.k_newSalaryStandard"
+      clearable
+    />
+  </div>
+
+  <div v-if="['3', '5'].includes(form.k_category)">
     <van-field
       v-show-field="['k_isUseOriginalSalaryStandard', includeFields]"
       name="k_isUseOriginalSalaryStandard"
@@ -226,7 +247,21 @@
     :rules="computedRules.k_specialInstructions"
   />
 
-  <div v-if="['0', '1', '2', '3', '4', '5'].includes(form.k_category)">
+  <div v-if="['4'].includes(form.k_category)">
+    <van-field
+      v-model="form.k_otherDistribution"
+      v-show-field="['k_otherDistribution', includeFields]"
+      type="textarea"
+      rows="1"
+      autosize
+      label="其他补助、发放标准及发放形式"
+      placeholder="请输入"
+      name="k_otherDistribution"
+      :rules="computedRules.k_otherDistribution"
+    />
+  </div>
+
+  <div v-if="['0', '1', '2', '3', '5'].includes(form.k_category)">
     <van-field
       v-model="form.k_otherDistribution"
       v-show-field="['k_otherDistribution', includeFields]"
