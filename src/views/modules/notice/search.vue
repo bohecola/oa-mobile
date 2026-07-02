@@ -91,11 +91,14 @@ import { getNoticeMobileList } from '@/api/system/notice'
 import { useList } from '@/hooks'
 
 type SearchType = 'title' | 'content'
+type RouteSearchType = SearchType | undefined
 
 const keywords = ref('')
 const searched = ref(false)
+const isRestoring = ref(false)
 
 const activeTab = ref<SearchType>('title')
+const route = useRoute()
 const router = useRouter()
 const pageSize = 5
 
@@ -126,13 +129,27 @@ function setSearchParams() {
   delete queryParams.value.noticeTitle
   delete queryParams.value.noticeContent
 
-  if (activeTab.value === 'all' || activeTab.value === 'title') {
+  if (activeTab.value === 'title') {
     queryParams.value.noticeTitle = keywords.value
   }
 
-  if (activeTab.value === 'all' || activeTab.value === 'content') {
+  if (activeTab.value === 'content') {
     queryParams.value.noticeContent = keywords.value
   }
+}
+
+function syncSearchRoute() {
+  if (isEmpty(keywords.value)) {
+    router.replace({ query: {} })
+    return
+  }
+
+  router.replace({
+    query: {
+      keyword: keywords.value,
+      searchType: activeTab.value,
+    },
+  })
 }
 
 function resetSearch() {
@@ -149,11 +166,13 @@ function resetSearch() {
 function handleSearch() {
   if (isEmpty(keywords.value)) {
     resetSearch()
+    syncSearchRoute()
     return
   }
 
   searched.value = true
   setSearchParams()
+  syncSearchRoute()
   onRefresh()
 }
 
@@ -173,11 +192,33 @@ function handleSubmitSearch() {
 }
 
 watch(keywords, () => {
+  if (isRestoring.value) {
+    return
+  }
+
   debouncedSearch()
 })
 
 onBeforeUnmount(() => {
   debouncedSearch.cancel()
+})
+
+onMounted(() => {
+  const keyword = String(route.query.keyword ?? '').trim()
+  const searchType = route.query.searchType as RouteSearchType
+
+  if (isEmpty(keyword)) {
+    resetSearch()
+    return
+  }
+
+  isRestoring.value = true
+  keywords.value = keyword
+  activeTab.value = searchType === 'content' ? 'content' : 'title'
+  handleSearch()
+  nextTick(() => {
+    isRestoring.value = false
+  })
 })
 
 function handleView(notice: NoticeMobileVO) {
@@ -194,7 +235,12 @@ function getNoticeTitle(notice: NoticeMobileVO) {
 
 function getNoticeContent(notice: NoticeMobileVO) {
   const content = notice.noticeContent ?? notice.content ?? ''
-  return String(content).replace(/<[^>]+>/g, '')
+  return String(content)
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;|\u00A0/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 function getNoticePublisher(notice: NoticeMobileVO) {
