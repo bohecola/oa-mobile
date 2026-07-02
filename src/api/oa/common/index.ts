@@ -26,7 +26,9 @@ export function editOaWfFile(data: EditOaWfFileVO) {
 /**
  * 首页应用权限检查
  */
-export function checkIndexAppPermission(): AxiosPromise<Record<string, string>> {
+export function checkIndexAppPermission(): AxiosPromise<Record<string, string> & {
+  notReadNoticeNum?: string | number
+}> {
   return request({
     url: '/oa/mobile/mobileController/checkPermission',
     method: 'get',

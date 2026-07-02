@@ -64,12 +64,19 @@ function onClick(item: AppMenu) {
 
 onMounted(async () => {
   const { data } = await checkIndexAppPermission()
+  const notReadNoticeNum = Number(data.notReadNoticeNum ?? 0)
 
   menus.value.forEach((item) => {
     if (!isNil(item.permissionKey)) {
       item.visiable = data[item.permissionKey] === 'Y'
     }
   })
+
+  for (const item of menus.value) {
+    if (item.title === '公告') {
+      item.nums = notReadNoticeNum > 0 ? notReadNoticeNum : undefined
+    }
+  }
 
   listTaskInfo({
     pageNum: 1,

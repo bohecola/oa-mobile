@@ -9,7 +9,7 @@
           :key="tab.value"
           class="relative h-10 text-sm"
           :class="activeTab === tab.value ? 'text-[#20242a]' : 'text-[#9aa0a6]'"
-          @click="activeTab = tab.value"
+          @click="handleTabClick(tab.value)"
         >
           {{ tab.label }}
           <span
@@ -21,10 +21,18 @@
     </div>
 
     <main class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
-      <div>
+      <van-list
+        v-model:loading="loading"
+        v-model:error="error"
+        :finished="finished"
+        :finished-text="finishedText"
+        :error-text="errorText"
+        :immediate-check="false"
+        @load="onLoad"
+      >
         <div
-          v-for="person in currentUsers"
-          :key="person.name"
+          v-for="person in users"
+          :key="getUserKey(person)"
           class="ml-4 flex h-14 items-center border-b border-[#edf0f3]"
         >
           <div
@@ -33,75 +41,162 @@
             <img
               v-if="person.avatar"
               :src="person.avatar"
-              :alt="person.name"
+              :alt="getUserName(person)"
               class="h-full w-full object-cover"
             >
-            <span v-else>{{ person.name.slice(0, 1) }}</span>
+            <span v-else>{{ getUserName(person).slice(0, 1) }}</span>
           </div>
           <div class="text-sm text-[#20242a]">
-            {{ person.name }}
+            {{ getUserName(person) }}
           </div>
         </div>
-      </div>
+      </van-list>
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-const activeTab = ref<'unread' | 'read'>('unread')
+import type { NoticeUserVO } from '@/api/system/notice/types'
+import { getNoticeUserList } from '@/api/system/notice'
 
-const unreadUsers = []
+const route = useRoute()
 
-const readUsers = [
-  { name: '何程' },
-  { name: '穆宝亮' },
-  { name: '刘玟才' },
-  { name: '黄光伟' },
-  { name: '寇天坤' },
-  { name: '周海洋' },
-  { name: '王亮亮' },
-  { name: '李超' },
-  { name: '白鹏飞' },
-  { name: '胡元' },
-  { name: '牛俊虎' },
-  { name: '陈浩东' },
-  { name: '张明' },
-  { name: '李娜' },
-  { name: '王磊' },
-  { name: '赵敏' },
-  { name: '陈晨' },
-  { name: '刘洋' },
-  { name: '孙浩' },
-  { name: '周倩' },
-  { name: '吴迪' },
-  { name: '郑伟' },
-  { name: '冯雪' },
-  { name: '蒋欣' },
-  { name: '韩旭' },
-  { name: '马超' },
-  { name: '何静' },
-  { name: '罗峰' },
-  { name: '梁爽' },
-  { name: '宋佳' },
-  { name: '唐雨' },
-  { name: '许鹏' },
-  { name: '邓琳' },
-  { name: '姚远' },
-  { name: '沈涛' },
-  { name: '任洁' },
-  { name: '高翔' },
-  { name: '贾宁' },
-  { name: '潘越' },
-  { name: '苏航' },
-]
+type ReadStatus = '0' | '1'
 
-const readCount = readUsers.length
-const unreadCount = unreadUsers.length
+interface NoticeUserPageResult {
+  rows?: NoticeUserVO[]
+  data?: NoticeUserVO[] | { rows?: NoticeUserVO[], total?: number }
+  total?: number
+}
+
+const pageSize = 13
+const finishedText = '没有更多了'
+const errorText = '请求失败，点击重新加载'
+
+const activeTab = ref<'0' | '1'>('0')
+const loading = ref(false)
+const error = ref(false)
+
+const usersMap = reactive<Record<ReadStatus, NoticeUserVO[]>>({
+  0: [],
+  1: [],
+})
+
+const totalMap = reactive<Record<ReadStatus, number>>({
+  0: 0,
+  1: 0,
+})
+
+const pageMap = reactive<Record<ReadStatus, number>>({
+  0: 1,
+  1: 1,
+})
+
+const finishedMap = reactive<Record<ReadStatus, boolean>>({
+  0: false,
+  1: false,
+})
 
 const tabs = computed(() => [
-  { label: `未读 ${unreadCount}`, value: 'unread' as const },
-  { label: `已读 ${readCount}`, value: 'read' as const },
+  { label: `未读 ${totalMap['0']}`, value: '0' as const },
+  { label: `已读 ${totalMap['1']}`, value: '1' as const },
 ])
 
-const currentUsers = computed(() => activeTab.value === 'unread' ? unreadUsers : readUsers)
+const users = computed(() => usersMap[activeTab.value])
+const finished = computed(() => finishedMap[activeTab.value])
+
+function normalizeUserPage(result: NoticeUserPageResult) {
+  const data = result.data
+
+  if (Array.isArray(data)) {
+    return {
+      rows: data,
+      total: result.total ?? data.length,
+    }
+  }
+
+  const rows = result.rows ?? data?.rows ?? []
+
+  return {
+    rows,
+    total: result.total ?? data?.total ?? rows.length,
+  }
+}
+
+async function requestUsers(status: ReadStatus, pageNum: number) {
+  const noticeId = route.params.id as string
+
+  if (!noticeId) {
+    return { rows: [], total: 0 }
+  }
+
+  const result = await getNoticeUserList(noticeId, status, {
+    pageNum,
+    pageSize,
+  }) as unknown as NoticeUserPageResult
+
+  return normalizeUserPage(result)
+}
+
+function setPageData(status: ReadStatus, rows: NoticeUserVO[], total: number, pageNum: number) {
+  usersMap[status] = pageNum === 1 ? rows : usersMap[status].concat(rows)
+  totalMap[status] = total
+  finishedMap[status] = usersMap[status].length >= total || rows.length < pageSize
+  pageMap[status] = finishedMap[status] ? pageNum : pageNum + 1
+}
+
+async function fetchFirstPage() {
+  loading.value = true
+
+  try {
+    const [unreadResult, readResult] = await Promise.all([
+      requestUsers('0', 1),
+      requestUsers('1', 1),
+    ])
+
+    setPageData('0', unreadResult.rows, unreadResult.total, 1)
+    setPageData('1', readResult.rows, readResult.total, 1)
+    activeTab.value = totalMap['0'] === 0 && totalMap['1'] > 0 ? '1' : '0'
+  }
+  catch {
+    error.value = true
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function onLoad() {
+  const status = activeTab.value
+
+  if (finishedMap[status]) {
+    loading.value = false
+    return
+  }
+
+  try {
+    const { rows, total } = await requestUsers(status, pageMap[status])
+    setPageData(status, rows, total, pageMap[status])
+  }
+  catch {
+    error.value = true
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+function handleTabClick(value: '0' | '1') {
+  activeTab.value = value
+}
+
+function getUserName(person: NoticeUserVO) {
+  return person.nickName ?? person.userName ?? '--'
+}
+
+function getUserKey(person: NoticeUserVO) {
+  return person.userId ?? getUserName(person)
+}
+
+fetchFirstPage()
 </script>
