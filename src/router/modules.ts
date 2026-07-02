@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { approvalRoutes, carRoutes, contractRoutes, examRoutes, menuRoutes, myInfoRoutes, projectRoutes, taskRoutes } from './baseRoutes'
+import { approvalRoutes, carRoutes, contractRoutes, examRoutes, menuRoutes, myInfoRoutes, noticeRoutes, projectRoutes, taskRoutes } from './baseRoutes'
 
 // 基础路由
 export const clientBaseRoutes: RouteRecordRaw[] = [
@@ -27,6 +27,7 @@ export const clientModuleRoutes: RouteRecordRaw[] = [
   ...contractRoutes,
   // 任务
   ...taskRoutes,
+  ...noticeRoutes,
 ]
 
 export const clientRoutes = [...clientBaseRoutes, ...clientModuleRoutes]

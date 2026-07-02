@@ -369,3 +369,38 @@ export const taskRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/modules/task/taskInfo/detail.vue'),
   },
 ]
+
+export const noticeRoutes: RouteRecordRaw[] = [
+  {
+    path: '/notice',
+    meta: {
+      title: '公告',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/notice/index.vue'),
+  },
+  {
+    path: '/notice-search',
+    meta: {
+      title: '搜索',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/notice/search.vue'),
+  },
+  {
+    path: '/notice/:id',
+    meta: {
+      title: '公告',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/notice/detail.vue'),
+  },
+  {
+    path: '/notice/:id/receivers',
+    meta: {
+      title: '公告接收列表',
+      innerPage: true,
+    },
+    component: () => import('@/views/modules/notice/receivers.vue'),
+  },
+]

@@ -55,6 +55,7 @@ const menus = ref<AppMenu[]>([
   { title: '现金加油', path: '/fuel-cash', icon: 'i-nimbus-cash', visiable: true },
   { title: '待回款查询', path: '/pendingPayment', icon: 'i-tabler-device-analytics', visiable: false, permissionKey: 'isDHKCX' },
   { title: '工作事项', path: '/taskInfo', icon: 'i-carbon-task', visiable: true },
+  { title: '公告', path: '/notice', icon: 'i-material-symbols-volume-up-rounded', visiable: true },
 ])
 
 function onClick(item: AppMenu) {
