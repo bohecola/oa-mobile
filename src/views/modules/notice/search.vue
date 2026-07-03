@@ -58,6 +58,12 @@
             <h3 class="flex-1 truncate text-sm font-normal leading-6 text-[#20242a]">
               {{ getNoticeTitle(notice) }}
             </h3>
+            <span
+              v-if="getNoticeTag(notice)"
+              class="mt-0.5 shrink-0 rounded-full border border-[#fde7a8] bg-[#fffaf0] px-1.5 py-0.5 text-xs text-[#e6a23c]"
+            >
+              {{ getNoticeTag(notice) }}
+            </span>
           </div>
 
           <p class="mt-2 line-clamp-2 text-xs leading-5 text-[#747b85]">
@@ -92,6 +98,9 @@ import { useList } from '@/hooks'
 
 type SearchType = 'title' | 'content'
 type RouteSearchType = SearchType | undefined
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const { sys_notice_tags } = toRefs(proxy.useDict('sys_notice_tags'))
 
 const keywords = ref('')
 const searched = ref(false)
@@ -249,6 +258,21 @@ function getNoticePublisher(notice: NoticeMobileVO) {
 
 function getNoticePublishTime(notice: NoticeMobileVO) {
   return notice.publishTime ?? notice.createTime ?? '--'
+}
+
+function getNoticeTag(notice: NoticeMobileVO) {
+  const value = notice.tags ?? notice.tag
+
+  if (!value) {
+    return ''
+  }
+
+  return String(value)
+    .split(',')
+    .map((item) => {
+      return sys_notice_tags.value.find(dict => String(dict.value) === item)?.label ?? item
+    })
+    .join('、')
 }
 </script>
 
