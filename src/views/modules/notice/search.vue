@@ -71,7 +71,7 @@
           </p>
 
           <div class="mt-4 flex items-center gap-3 text-xs text-[#a7adb5]">
-            <span>{{ getNoticePublisher(notice) }}</span>
+            <span v-if="getNoticePublisher(notice)">{{ getNoticePublisher(notice) }}</span>
             <span>{{ getNoticePublishTime(notice) }} 发布</span>
           </div>
         </article>
@@ -253,7 +253,7 @@ function getNoticeContent(notice: NoticeMobileVO) {
 }
 
 function getNoticePublisher(notice: NoticeMobileVO) {
-  return notice.createByName ?? notice.publisher ?? notice.createBy ?? '--'
+  return notice.createByName ?? notice.publisher ?? notice.createBy ?? ''
 }
 
 function getNoticePublishTime(notice: NoticeMobileVO) {

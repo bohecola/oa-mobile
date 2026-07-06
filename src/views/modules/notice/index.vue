@@ -64,12 +64,8 @@
             </p>
 
             <div class="mt-4 flex items-center gap-3 text-xs text-[#a7adb5]">
-              <span v-if="notice.avatar" class="grid h-5 w-5 place-items-center overflow-hidden rounded-sm bg-[#e8f1fb] text-[10px] text-[#3f8ed8]">
-                {{ notice.avatar }}
-              </span>
-              <span>{{ getNoticePublisher(notice) }}</span>
+              <span v-if="getNoticePublisher(notice)">{{ getNoticePublisher(notice) }}</span>
               <span>{{ getNoticePublishTime(notice) }} 发布</span>
-              <span v-if="notice.more" class="ml-auto text-base leading-none text-[#8f96a0]">...</span>
             </div>
           </article>
         </van-list>
@@ -156,7 +152,7 @@ function getNoticeContent(notice: NoticeMobileVO) {
 }
 
 function getNoticePublisher(notice: NoticeMobileVO) {
-  return notice.createByName ?? notice.publisher ?? notice.createBy ?? '--'
+  return notice.createByName ?? notice.publisher ?? notice.createBy ?? ''
 }
 
 function getNoticePublishTime(notice: NoticeMobileVO) {
