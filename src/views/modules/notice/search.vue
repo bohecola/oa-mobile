@@ -257,7 +257,13 @@ function getNoticePublisher(notice: NoticeMobileVO) {
 }
 
 function getNoticePublishTime(notice: NoticeMobileVO) {
-  return notice.publishTime ?? notice.createTime ?? '--'
+  const time = notice.publishTime ?? notice.createTime
+
+  if (!time) {
+    return '--'
+  }
+
+  return String(time).replace('T', ' ').slice(0, 16)
 }
 
 function getNoticeTag(notice: NoticeMobileVO) {

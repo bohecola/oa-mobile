@@ -141,7 +141,13 @@ function getNoticeTag() {
 }
 
 function getNoticePublishTime() {
-  return notice.value.publishTime ?? notice.value.createTime ?? ''
+  const time = notice.value.publishTime ?? notice.value.createTime
+
+  if (!time) {
+    return ''
+  }
+
+  return String(time).replace('T', ' ').slice(0, 16)
 }
 
 function getNoticeContent() {
