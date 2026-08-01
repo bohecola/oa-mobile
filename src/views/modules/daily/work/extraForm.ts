@@ -386,6 +386,26 @@ const extraInitFormData: DailyWorkForm = {
   ww_contractNo: undefined,
   ww_businessType: undefined,
   ww_fileMap: {},
+
+  // 项目计划表更新
+  xx_projectId: undefined,
+  xx_contractNo: undefined,
+  xx_businessType: undefined,
+
+  // 项目月度差旅费计划表
+  zz_projectId: undefined,
+  zz_contractNo: undefined,
+  zz_businessType: undefined,
+
+  // 项目月度差旅费明细表
+  ab_projectId: undefined,
+  ab_contractNo: undefined,
+  ab_businessType: undefined,
+
+  // 项目预算执行表
+  ac_projectId: undefined,
+  ac_contractNo: undefined,
+  ac_businessType: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -760,6 +780,15 @@ const extraInitRules: Record<string, FieldRule[]> = {
 
   // 项目交付中心立项审批
   ww_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'onBlur' }],
+  // 项目计划表更新
+  xx_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+  // 项目月度差旅费计划表
+  zz_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+  // 项目月度差旅费明细表
+  ab_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+  // 项目预算执行表
+  ac_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+
 }
 
 export { extraInitFormData, extraInitRules }

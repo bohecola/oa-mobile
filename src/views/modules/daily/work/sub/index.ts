@@ -142,6 +142,14 @@ import KHGWTZ from './assessment/KHGWTZ/workflow/apply.vue'
 // 项目交付类
 // 项目交付中心立项审批
 import JFLXSP from './delivery/JFLXSP/workflow/apply.vue'
+// 项目计划表更新
+import JFLJHBGX from './delivery/JFLJHBGX/workflow/apply.vue'
+// 项目月度差旅费计划表
+import JFLCLFJHB from './delivery/JFLCLFJHB/workflow/apply.vue'
+// 项目月度差旅费明细表
+import JFLCLFMXB from './delivery/JFLCLFMXB/workflow/apply.vue'
+// 项目预算执行表
+import JFLYSZXB from './delivery/JFLYSZXB/workflow/apply.vue'
 
 export default {
   DefaultWork,
@@ -209,4 +217,8 @@ export default {
   KHXMRCKH,
   KHGWTZ,
   JFLXSP,
+  JFLJHBGX,
+  JFLCLFJHB,
+  JFLCLFMXB,
+  JFLYSZXB,
 }

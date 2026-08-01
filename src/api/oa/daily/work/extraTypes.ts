@@ -51,6 +51,10 @@ export interface ExtraForm
   CGCGHTSQ,
   CGGYSZLSQ,
   KHXMRCKH,
+  JFLJHBGX,
+  JFLCLFJHB,
+  JFLCLFMXB,
+  JFLYSZXB,
   JFLXSP {}
 
 // 商务
@@ -558,4 +562,28 @@ export interface JFLXSP {
   ww_contractNo?: string
   ww_businessType?: string
   ww_fileMap?: Record<string, string[]>
+}
+// 项目计划更新表
+export interface JFLJHBGX {
+  xx_projectId?: string
+  xx_contractNo?: string
+  xx_businessType?: string
+}
+// 项目月度差旅费计划表
+export interface JFLCLFJHB {
+  zz_projectId?: string
+  zz_contractNo?: string
+  zz_businessType?: string
+}
+// 项目月度差旅费明细表
+export interface JFLCLFMXB {
+  ab_projectId?: string
+  ab_contractNo?: string
+  ab_businessType?: string
+}
+// 项目预算执行表
+export interface JFLYSZXB {
+  ac_projectId?: string
+  ac_contractNo?: string
+  ac_businessType?: string
 }
