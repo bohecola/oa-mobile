@@ -27,20 +27,20 @@
       clearable
     />
 
-    <DateSelect
+    <van-field
       v-model="form.departureDate"
       v-show-field="['departureDate', includeFields]"
-      label="进场/撤场日期"
+      label="进场/撤场/实施日期"
+      placeholder="请输入"
       name="departureDate"
       :rules="computedRules.departureDate"
-      clearable
     />
 
     <van-field
       v-model="form.reason"
       v-show-field="['reason', includeFields]"
       name="reason"
-      label="进场/撤场说明"
+      label="进场/撤场/实施说明"
       type="textarea"
       placeholder="请输入"
       rows="1"
@@ -83,6 +83,20 @@
 
       <van-field
         v-show-field="['ossIdList', includeFields]"
+        label="附件"
+        name="ossIdList"
+        :rules="computedRules.ossIdList"
+      >
+        <template #input>
+          <UploadFile
+            v-model="form.ossIdList"
+            value-type="array"
+          />
+        </template>
+      </van-field>
+    </template>
+    <template v-if="form.type === '3'">
+      <van-field
         label="附件"
         name="ossIdList"
         :rules="computedRules.ossIdList"

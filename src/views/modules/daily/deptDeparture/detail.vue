@@ -23,19 +23,18 @@
       name="deptId"
     />
 
-    <DateSelect
+    <van-field
       v-model="form.departureDate"
       v-show-field="['departureDate', includeFields]"
-      label="进场/撤场日期"
+      label="进场/撤场/实施日期"
       name="departureDate"
-      clearable
     />
 
     <van-field
       v-model="form.reason"
       v-show-field="['reason', includeFields]"
       name="reason"
-      label="进场/撤场说明"
+      label="进场/撤场/实施说明"
       type="textarea"
       rows="1"
       autosize
@@ -65,6 +64,20 @@
 
       <van-field
         v-show-field="['ossIdList', includeFields]"
+        label="附件"
+        name="ossIdList"
+      >
+        <template #input>
+          <UploadFile
+            v-model="form.ossIdList"
+            value-type="array"
+            readonly
+          />
+        </template>
+      </van-field>
+    </template>
+    <template v-if="form.type === '3'">
+      <van-field
         label="附件"
         name="ossIdList"
       >
