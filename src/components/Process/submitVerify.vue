@@ -79,7 +79,7 @@
           减签
         </van-button>
         <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" size="small" @click="handleTerminationTask"> 终止 </van-button> -->
-        <van-button v-if="task.businessStatus === 'waiting'" :disabled="buttonDisabled" type="danger" @click="handleBackProcessOpen">
+        <van-button v-if="showRejectButton" :disabled="buttonDisabled" type="danger" @click="handleBackProcessOpen">
           拒绝
         </van-button>
         <van-button :disabled="buttonDisabled" @click="cancel">
@@ -246,6 +246,21 @@ const backForm = ref<Record<string, any>>({
 })
 
 const backNode = computed(() => taskNodeList.value.find(e => e.nodeId === backForm.value.targetActivityId))
+
+// 拒绝按钮显示条件：
+// 1. businessStatus === 'waiting'
+// 2. 排除 purchase_flow 流程中特定节点（Activity_0ccirhe、Activity_10qfp2k、Activity_05nwy5m）
+const showRejectButton = computed(() => {
+  if (task.value.businessStatus !== 'waiting') {
+    // 流程状态 不是 审批中，不显示（审批中才显示）
+    return false
+  }
+  // 采购申请流程 以 purchase_flow: 开头
+  const isPurchaseFlow = task.value.processDefinitionId?.startsWith('purchase_flow:')
+  // 采购申请流程中 提交验收资料（Activity_0ccirhe）、验收确认（Activity_10qfp2k）、商务办理（Activity_05nwy5m） 即采购执行节点后的节点都不能拒绝
+  const isExcludedNode = ['Activity_0ccirhe', 'Activity_10qfp2k', 'Activity_05nwy5m'].includes(task.value.taskDefinitionKey)
+  return !(isPurchaseFlow && isExcludedNode)
+})
 
 // 审批意见校验
 function isMessageEmpty() {
