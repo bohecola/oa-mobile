@@ -1187,9 +1187,15 @@ watch(
       if (!isNumeric(item.amount)) {
         return
       }
-      // 不含税合计
+      // 不含税合计 = 含税单价 * 数量 / （1 + 税率）
+      // item.totalAmount = Number(
+      //   Big(item.amount).times(item.num).toFixed(2),
+      // )
       item.totalAmount = Number(
-        Big(item.amount).times(item.num).toFixed(2),
+        Big(item.taxAmount)
+          .times(item.num)
+          .div(Big(1).add(Big(item.taxRate).div(100)))
+          .toFixed(2),
       )
 
       // 含税实际单价为空
