@@ -12,6 +12,10 @@ import CWKJZXZM from './financial/CWKJZXZM/workflow/apply.vue'
 import CWKJBH from './financial/CWKJBH/workflow/apply.vue'
 // 收款收据开具申请
 import CWSKSJKJ from './financial/CWSKSJKJ/workflow/apply.vue'
+// 运维预算评审
+import CWYWYSPS from './financial/CWYWYSPS/workflow/apply.vue'
+// 预算追加申请
+import CWYSZJSQ from './financial/CWYSZJSQ/workflow/apply.vue'
 
 // 商务类事务
 // 商务资料申请
@@ -158,6 +162,8 @@ export default {
   CWKJZXZM,
   CWKJBH,
   CWSKSJKJ,
+  CWYWYSPS,
+  CWYSZJSQ,
   SWSWZL,
   SWGSWLHJ,
   SWHTJSZL,

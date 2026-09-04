@@ -406,6 +406,16 @@ const extraInitFormData: DailyWorkForm = {
   ac_projectId: undefined,
   ac_contractNo: undefined,
   ac_businessType: undefined,
+
+  // 运维预算评审
+  ad_projectId: undefined,
+  ad_contractNo: undefined,
+  ad_businessType: undefined,
+
+  // 预算追加申请
+  ae_projectId: undefined,
+  ae_contractNo: undefined,
+  ae_businessType: undefined,
 }
 
 const baseMsg = '不能为空'
@@ -788,6 +798,11 @@ const extraInitRules: Record<string, FieldRule[]> = {
   ab_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
   // 项目预算执行表
   ac_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+
+  // 项目预算执行表
+  ad_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
+  // 预算追加申请
+  ae_projectId: [{ required: true, message: `项目${baseMsg}`, trigger: 'blur' }],
 
 }
 

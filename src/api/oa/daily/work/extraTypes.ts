@@ -43,6 +43,8 @@ export interface ExtraForm
   CWCWZL,
   CWKJBH,
   CWSKSJKJ,
+  CWYWYSPS,
+  CWYSZJSQ,
   XZYYFK,
   XZCCXMWZLZ,
   XZCLYJ,
@@ -586,4 +588,18 @@ export interface JFLYSZXB {
   ac_projectId?: string
   ac_contractNo?: string
   ac_businessType?: string
+}
+
+// 运维预算评审
+export interface CWYWYSPS {
+  ad_projectId?: string
+  ad_contractNo?: string
+  ad_businessType?: string
+}
+
+// 预算追加申请
+export interface CWYSZJSQ {
+  ae_projectId?: string
+  ae_contractNo?: string
+  ae_businessType?: string
 }
