@@ -8,9 +8,6 @@
     name="ae_projectId"
     label="项目"
     :rules="computedRules.ae_projectId"
-    :params="{
-      businessType: '0,3,4,6',
-    }"
     clearable
   />
 
